@@ -1,10 +1,10 @@
 package it.polimi.ingsw;
 
 public enum Colors {
-
-    GREEN,
-    BLUE,
-    YELLOW,
-    VIOLET;
-
+	
+	GREEN,
+	BLUE,
+	YELLOW,
+	VIOLET;
+	
 }

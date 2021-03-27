@@ -13,6 +13,10 @@ public class WarehouseDepot {
 	private Resources[] depot; // array of fixed length = 6, representing the pyramid
 	private ArrayList<Integer> positionsIncomingResources;
 	
+	private Resources[] additionalDepotResources; // array of 2 resources defining the resources and if they are enabled or not
+	private boolean[][] additionalDepotContents; // matrix containing the boolean flags indicating if the corresponding slots are occupied or not
+	
+	
 	/**
 	 * constructor for instantiating the default values
 	 */
@@ -20,7 +24,13 @@ public class WarehouseDepot {
 		incomingResources = new ArrayList<>();
 		positionsIncomingResources = new ArrayList<>();
 		depot = new Resources[6];
+		
 		for (int i = 0; i < 6; i++) depot[i] = Resources.NO_RESOURCE;
+		
+		additionalDepotResources = new Resources[]{Resources.NO_RESOURCE, Resources.NO_RESOURCE};
+		additionalDepotContents = new boolean[][] {{false, false}, {false, false}}; // might be expanded in size if the special abilities are
+		// modified
+		
 	}
 	
 	/**
@@ -185,9 +195,48 @@ public class WarehouseDepot {
 	 * adds new resources to the deck, from the market
 	 * @param list of resources to add. Its length must be from 1 to 4
 	 */
-	protected void addResource(ArrayList<Resources> list) {
+	protected void addIncomingResources(ArrayList<Resources> list) {
 		this.incomingResources = list;
 	}
+	
+	/**
+	 * enables the arrays containing the additional resources. The resource is empty if the ability is not enabled yet. Otherwise its value
+	 * corresponds to the chosen resource
+	 * @param res the additional resource defined for the leader
+	 * @param whichLeader is 1 for the first leader, is 2 for the second leader
+	 */
+	protected void enableAdditionalDepot(Resources res, int whichLeader) {
+		additionalDepotResources[whichLeader - 1] = res;
+	}
+	
+	/**
+	 * this function moves automatically the biggest number of resources from the incoming deck to the additional depots, where possible.
+	 * It works for 2 leaders, whether they are activated or not. For each leader, if enabled, it moves the resources inside, if there are any
+	 * spots available. Otherwise, it does nothing if the resources can't be inserted. This method is automatic.
+	 */
+	protected void moveResourceToAdditionalDepot() {
+		for (int j = 0; j < 2; j++) { // iterates for the 2 leaders which may have this ability enabled
+			if (additionalDepotResources[j] != Resources.NO_RESOURCE) { //selected depot is enabled
+				
+				for (int i = 0; i < 2; i++) { //cycles for every position in the additional depot
+					if (incomingResources.contains(additionalDepotResources[j])) { // resource can be inserted because the resources match
+						
+						if (!(additionalDepotContents[j][0] && additionalDepotContents[j][1])) { // there is at least one empty spot
+							//tries to insert the resource
+							if (additionalDepotContents[j][0]) {
+								additionalDepotContents[j][1] = true;
+							} else {
+								additionalDepotContents[j][0] = true;
+							}
+							incomingResources.remove(additionalDepotResources[j]);
+						}
+						
+					}
+				}
+			}
+		}
+	}
+	
 	
 	/**
 	 * helper function that shows the user how to interact with the CLI
