@@ -83,7 +83,7 @@ public class ProductionRules {
 		if (this.input.isEmpty())
 			return (input.size()>1);
 		else
-		return input.contains(this.input);
+			return input.containsAll(this.input);
 	}
 	
 	/**
