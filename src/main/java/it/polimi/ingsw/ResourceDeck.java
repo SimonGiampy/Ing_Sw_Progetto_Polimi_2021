@@ -8,92 +8,79 @@ public class ResourceDeck {
 	private Resources whiteMarble1;
 	private Resources whiteMarble2;
 	int faithPoint;
+	
+	WarehouseDepot playerDepot;
 
 	/**
 	 * Constructor that assigns default values to the parameters
 	 */
-	public ResourceDeck(){
-
+	public ResourceDeck(WarehouseDepot depot) {
 		resourceList = new ArrayList<>();
 		whiteMarble1 = Resources.NO_RESOURCE;
-		whiteMarble2= Resources.NO_RESOURCE;
+		whiteMarble2 = Resources.NO_RESOURCE;
 		faithPoint = 0;
+		
+		playerDepot = depot;
 	}
 
 	/**
 	 * Add resources to the list based on the colors of the marbles taken in the market
 	 * @param marblesFromMarket array of the marbles
 	 */
-
-	protected void addResources(Marbles[] marblesFromMarket){
-		faithPoint = 0;
-		for(Marbles x: marblesFromMarket) {
-			switch (x) {
-				case YELLOW -> resourceList.add(Resources.COIN);
-				case BLUE -> resourceList.add(Resources.SHIELD);
-				case GREY -> resourceList.add(Resources.STONE);
-				case VIOLET -> resourceList.add(Resources.SERVANT);
-				case RED -> faithPoint = 1;
-				case WHITE -> resourceList.add(whiteMarble1);
-			}
-		}
+	protected void addResources(Marbles[] marblesFromMarket)  {
+		addResources(marblesFromMarket, 0, 0);
 	}
 
 	/**
 	 * Handles the case of a player playing two leader cards with the white marble ability, if this player
 	 * get white marbles from the market he can choose which resource to get
 	 * @param marblesFromMarket array of the marbles
-	 * @param quantity1 quantity of whiteMarble1, the resource of the first leader who has been played
+	 * @param quantityLeader1 quantity of whiteMarble1, the resource of the first leader who has been played
+	 * @param quantityLeader2 quantity of whiteMarble2, the resource of the second leader who has been played
 	 */
-
-	protected void addResources(Marbles[] marblesFromMarket, int quantity1){
+	protected void addResources(Marbles[] marblesFromMarket, int quantityLeader1, int quantityLeader2) {
 		faithPoint = 0;
-		for(Marbles x: marblesFromMarket){
-			switch(x){
-				case YELLOW:
-					resourceList.add(Resources.COIN);
-					break;
-				case BLUE:
-					resourceList.add(Resources.SHIELD);
-					break;
-				case GREY:
-					resourceList.add(Resources.STONE);
-					break;
-				case VIOLET:
-					resourceList.add(Resources.SERVANT);
-					break;
-				case RED:
-					faithPoint = 1;
-					break;
-				case WHITE:
-					if(quantity1 > 0){
+		for(Marbles x: marblesFromMarket) {
+			switch (x) {
+				case YELLOW -> resourceList.add(Resources.COIN);
+				case BLUE -> resourceList.add(Resources.SHIELD);
+				case GREY -> resourceList.add(Resources.STONE);
+				case PURPLE -> resourceList.add(Resources.SERVANT);
+				case RED -> faithPoint = 1;
+				case WHITE -> {
+					if (quantityLeader1 > 0) {
 						resourceList.add(whiteMarble1);
-						quantity1--;
-					}
-					else
+						quantityLeader1 --;
+					} else if (quantityLeader2 > 0) {
 						resourceList.add(whiteMarble2);
-					break;
+						quantityLeader2 --;
+					}
+					
+				}
 			}
 		}
+		
+		playerDepot.addIncomingResources(getResourceList()); // sends the resources list from the market to the player warehouse depot
 	}
 
 	/**
 	 * When a leader card with white marble ability is played, this set whiteMarble with the corresponding resource
 	 * @param res resource specified by the leader played
 	 */
-	protected void setWhiteMarble(Resources res){
-		if(whiteMarble1 == Resources.NO_RESOURCE)
+	protected void setWhiteMarble(Resources res) {
+		if (whiteMarble1 == Resources.NO_RESOURCE)
 			whiteMarble1 = res;
-		else
+		else {
 			whiteMarble2 = res;
+		}
+		
 	}
-
-
+	
 	protected ArrayList<Resources> getResourceList(){
 		return resourceList;
 	}
 
-	protected int getFaithPoint(){
+	protected int getFaithPoint() {
 		return faithPoint;
 	}
 
