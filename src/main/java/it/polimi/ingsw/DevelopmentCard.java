@@ -9,8 +9,7 @@ public class DevelopmentCard {
 	
 	private final int level,victoryPoints;
 	private final Colors color;
-	private final ArrayList<Integer> costResourceList;
-	private final ArrayList<Resources> typeResourceList;
+	private final ArrayList<Resources> resourcesRequirement;
 	private final ProductionRules productionRules;
 	
 	/**
@@ -18,19 +17,16 @@ public class DevelopmentCard {
 	 * @param level is the level of the card
 	 * @param color is the color of the card
 	 * @param victoryPoints is the number of card's victory points
-	 * @param costResourceList //
-	 * @param typeResourceList is a list of needed resources to buy the card
+	 * @param resourceList is a list of needed resources to buy the card
 	 * @param productionRules is the instance of the corresponding production rules
 	 */
 	
-	public DevelopmentCard(int level, Colors color, int victoryPoints, ArrayList<Integer> costResourceList,
-	                       ArrayList<Resources> typeResourceList, ProductionRules productionRules){
-		this.level=level;
-		this.color=color;
-		this.victoryPoints=victoryPoints;
-		this.costResourceList=costResourceList;
-		this.typeResourceList=typeResourceList;
-		this.productionRules=productionRules;
+	public DevelopmentCard(int level, Colors color, int victoryPoints, ArrayList<Resources> resourceList, ProductionRules productionRules) {
+		this.level = level;
+		this.color = color;
+		this.victoryPoints = victoryPoints;
+		this.resourcesRequirement = resourceList;
+		this.productionRules = productionRules;
 	}
 	
 	/**
@@ -42,27 +38,19 @@ public class DevelopmentCard {
 	}
 	
 	/**
-	 * getter for the attribute victorypoints
+	 * getter for the attribute victoryPoints
 	 * @return the number of Victory points
 	 */
 	public int getVictoryPoints(){
 		return victoryPoints;
 	}
-	
+
 	/**
-	 * //
+	 * too lazy to write something here
 	 * @return //
 	 */
-	public ArrayList<Integer> getCostResourceList(){
-		return costResourceList;
-	}
-	
-	/**
-	 * //
-	 * @return //
-	 */
-	public ArrayList<Resources> getTypeResourceList(){
-		return typeResourceList;
+	public ArrayList<Resources> getResourcesRequirement(){
+		return resourcesRequirement;
 	}
 	
 	/**
@@ -105,10 +93,6 @@ public class DevelopmentCard {
 	public int returnFaithPoints(){
 		return productionRules.getFaithOutput();
 	}
-	
-	
-	
-	
 	
 	
 	

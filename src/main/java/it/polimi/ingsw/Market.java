@@ -2,7 +2,6 @@ package it.polimi.ingsw;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Random;
 
 /**
  * Market management
@@ -20,8 +19,6 @@ public class Market {
 	public Market() {
 		market = new Marbles[3][4];
 		
-		Random random = new Random();
-		
 		ArrayList<Marbles> marblesList = new ArrayList<>(13);
 		marblesList.add(Marbles.RED);
 		marblesList.add(Marbles.WHITE);
@@ -34,10 +31,10 @@ public class Market {
 		marblesList.add(Marbles.GREY);
 		marblesList.add(Marbles.YELLOW);
 		marblesList.add(Marbles.YELLOW);
-		marblesList.add(Marbles.VIOLET);
-		marblesList.add(Marbles.VIOLET);
+		marblesList.add(Marbles.PURPLE);
+		marblesList.add(Marbles.PURPLE);
 		
-		Collections.shuffle(marblesList, new Random());
+		Collections.shuffle(marblesList);
 		extraBall = marblesList.get(0);
 		int k = 1;
 		for (int i = 0; i < 3; i++) {
