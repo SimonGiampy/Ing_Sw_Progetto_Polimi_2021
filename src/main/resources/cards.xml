@@ -15,8 +15,6 @@
             <victory points = "1"/>
             <color value = "green"/>
         </card>
-    </development_cards>
-    <development_cards>
         <card number = "2">
             <required_resources>
                 <res value = "servant"/>

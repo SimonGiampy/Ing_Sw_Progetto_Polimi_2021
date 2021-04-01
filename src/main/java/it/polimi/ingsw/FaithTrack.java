@@ -8,26 +8,18 @@ public class FaithTrack {
 	private Integer currentPosition;
 	private ArrayList<Tile> track;
 	private ArrayList<Integer> reportPoints;
-
+	
+	
 	/**
-	 * Constructor that initializes all the tiles
-	 * @param insideVaticanValues array of arrays of booleans containing the values of insideVatican of each tile
-	 * @param papalSpaceValues array of the papalSpace's values
-	 * @param victoryPointsValues array of integer that indicates the victory points of every tile
-	 * @param reportPoints points assigned by every report
+	 * Constructor that initializes the entire faith track
+	 * @param tiles all the tiles contained in the faith track
+	 * @param reportPoints the points gained from each report
 	 */
-	public FaithTrack(ArrayList<ArrayList<Boolean>> insideVaticanValues, ArrayList<Boolean> papalSpaceValues,
-					  ArrayList<Integer> victoryPointsValues, ArrayList<Integer> reportPoints) {
-
-		this.vaticanReports = new ArrayList<>();
-		this.currentPosition = 0;
-		this.track = new ArrayList<>();
+	public FaithTrack(ArrayList<Tile> tiles, ArrayList<Integer> reportPoints) {
+		track = tiles;
+		currentPosition = 0;
+		vaticanReports = new ArrayList<>();
 		this.reportPoints = reportPoints;
-
-		//Creates all the tiles with their relative parameters
-		for(int i = 0; i < victoryPointsValues.size(); i++)
-			track.add(new Tile(victoryPointsValues.get(i), insideVaticanValues.get(i), papalSpaceValues.get(i)));
-
 	}
 
 	
@@ -52,7 +44,7 @@ public class FaithTrack {
 	
 	
 	/**
-	 * When someone triggers one report, checks if this player is in the right position update the vaticaReports array
+	 * When someone triggers one report, checks if this player is in the right position update the vaticanReports array
 	 */
 	public void checkVaticanReport(){
 		if(track.get(currentPosition).isInsideVatican(vaticanReports.size()))

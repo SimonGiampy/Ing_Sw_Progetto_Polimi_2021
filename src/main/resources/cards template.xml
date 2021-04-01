@@ -81,6 +81,10 @@
 					</input>
 					<faith output = "2"/>
 					<free_choice number = "2"/>
+					<output>
+						<res value = "coin"/>
+						<res value = "stone"/>
+					</output>
 				</power>
 				
 				<power type = "discount">

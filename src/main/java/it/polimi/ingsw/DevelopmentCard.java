@@ -86,9 +86,6 @@ public class DevelopmentCard {
 		return productionRules.getFaithOutput();
 	}
 
-	public void resetCardProduction(){
-		productionRules.resetProduction();
-	}
 
 	/**
 	 *
