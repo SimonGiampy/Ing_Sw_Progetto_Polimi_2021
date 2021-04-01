@@ -36,3 +36,15 @@
         </inside_vatican>
     </tile>
 </faith_track>
+
+<!-- points gained from every vatican zone -->
+<report_points>
+
+<report>
+    <!-- number of points for every zone in ascendent order -->
+    <zone points = "2"/>
+    <zone points = "3"/>
+    <zone points = "4"/>
+</report>
+
+</report_points>

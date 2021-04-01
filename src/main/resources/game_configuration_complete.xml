@@ -1,0 +1,1233 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<game_configuration>
+    <faith_track>
+        <faith_tiles>
+            <tile number = "0">
+                <victory points = "0"/>
+                <papal_space value = "false"/>
+                <inside_vatican>
+                    <vatican value = "false"/>
+                    <vatican value = "false"/>
+                    <vatican value = "false"/>
+                </inside_vatican>
+            </tile>
+            <tile number = "1">
+                <victory points = "0"/>
+                <papal_space value = "false"/>
+                <inside_vatican>
+                    <vatican value = "false"/>
+                    <vatican value = "false"/>
+                    <vatican value = "false"/>
+                </inside_vatican>
+            </tile>
+            <tile number = "2">
+                <victory points = "0"/>
+                <papal_space value = "false"/>
+                <inside_vatican>
+                    <vatican value = "false"/>
+                    <vatican value = "false"/>
+                    <vatican value = "false"/>
+                </inside_vatican>
+            </tile>
+            <tile number = "3">
+                <victory points = "1"/>
+                <papal_space value = "false"/>
+                <inside_vatican>
+                    <vatican value = "false"/>
+                    <vatican value = "false"/>
+                    <vatican value = "false"/>
+                </inside_vatican>
+            </tile>
+            <tile number = "4">
+                <victory points = "1"/>
+                <papal_space value = "false"/>
+                <inside_vatican>
+                    <vatican value = "false"/>
+                    <vatican value = "false"/>
+                    <vatican value = "false"/>
+                </inside_vatican>
+            </tile>
+            <tile number = "5">
+                <victory points = "1"/>
+                <papal_space value = "false"/>
+                <inside_vatican>
+                    <vatican value = "true"/>
+                    <vatican value = "false"/>
+                    <vatican value = "false"/>
+                </inside_vatican>
+            </tile>
+            <tile number = "6">
+                <victory points = "2"/>
+                <papal_space value = "false"/>
+                <inside_vatican>
+                    <vatican value = "true"/>
+                    <vatican value = "false"/>
+                    <vatican value = "false"/>
+                </inside_vatican>
+            </tile>
+            <tile number = "7">
+                <victory points = "2"/>
+                <papal_space value = "false"/>
+                <inside_vatican>
+                    <vatican value = "true"/>
+                    <vatican value = "false"/>
+                    <vatican value = "false"/>
+                </inside_vatican>
+            </tile>
+            <tile number = "8">
+                <victory points = "2"/>
+                <papal_space value = "true"/>
+                <inside_vatican>
+                    <vatican value = "true"/>
+                    <vatican value = "false"/>
+                    <vatican value = "false"/>
+                </inside_vatican>
+            </tile>
+            <tile number = "9">
+                <victory points = "4"/>
+                <papal_space value = "false"/>
+                <inside_vatican>
+                    <vatican value = "true"/>
+                    <vatican value = "false"/>
+                    <vatican value = "false"/>
+                </inside_vatican>
+            </tile>
+            <tile number = "10">
+                <victory points = "4"/>
+                <papal_space value = "false"/>
+                <inside_vatican>
+                    <vatican value = "true"/>
+                    <vatican value = "false"/>
+                    <vatican value = "false"/>
+                </inside_vatican>
+            </tile>
+            <tile number = "11">
+                <victory points = "4"/>
+                <papal_space value = "false"/>
+                <inside_vatican>
+                    <vatican value = "true"/>
+                    <vatican value = "false"/>
+                    <vatican value = "false"/>
+                </inside_vatican>
+            </tile>
+            <tile number = "12">
+                <victory points = "6"/>
+                <papal_space value = "false"/>
+                <inside_vatican>
+                    <vatican value = "true"/>
+                    <vatican value = "true"/>
+                    <vatican value = "false"/>
+                </inside_vatican>
+            </tile>
+            <tile number = "13">
+                <victory points = "6"/>
+                <papal_space value = "false"/>
+                <inside_vatican>
+                    <vatican value = "true"/>
+                    <vatican value = "true"/>
+                    <vatican value = "false"/>
+                </inside_vatican>
+            </tile>
+            <tile number = "14">
+                <victory points = "6"/>
+                <papal_space value = "false"/>
+                <inside_vatican>
+                    <vatican value = "true"/>
+                    <vatican value = "true"/>
+                    <vatican value = "false"/>
+                </inside_vatican>
+            </tile>
+            <tile number = "15">
+                <victory points = "9"/>
+                <papal_space value = "false"/>
+                <inside_vatican>
+                    <vatican value = "true"/>
+                    <vatican value = "true"/>
+                    <vatican value = "false"/>
+                </inside_vatican>
+            </tile>
+            <tile number = "16">
+                <victory points = "9"/>
+                <papal_space value = "true"/>
+                <inside_vatican>
+                    <vatican value = "true"/>
+                    <vatican value = "true"/>
+                    <vatican value = "false"/>
+                </inside_vatican>
+            </tile>
+            <tile number = "17">
+                <victory points = "9"/>
+                <papal_space value = "false"/>
+                <inside_vatican>
+                    <vatican value = "true"/>
+                    <vatican value = "true"/>
+                    <vatican value = "false"/>
+                </inside_vatican>
+            </tile>
+            <tile number = "18">
+                <victory points = "12"/>
+                <papal_space value = "false"/>
+                <inside_vatican>
+                    <vatican value = "true"/>
+                    <vatican value = "true"/>
+                    <vatican value = "false"/>
+                </inside_vatican>
+            </tile>
+            <tile number = "19">
+                <victory points = "12"/>
+                <papal_space value = "false"/>
+                <inside_vatican>
+                    <vatican value = "true"/>
+                    <vatican value = "true"/>
+                    <vatican value = "true"/>
+                </inside_vatican>
+            </tile>
+            <tile number = "20">
+                <victory points = "12"/>
+                <papal_space value = "false"/>
+                <inside_vatican>
+                    <vatican value = "true"/>
+                    <vatican value = "true"/>
+                    <vatican value = "true"/>
+                </inside_vatican>
+            </tile>
+            <tile number = "21">
+                <victory points = "16"/>
+                <papal_space value = "false"/>
+                <inside_vatican>
+                    <vatican value = "true"/>
+                    <vatican value = "true"/>
+                    <vatican value = "true"/>
+                </inside_vatican>
+            </tile>
+            <tile number = "22">
+                <victory points = "16"/>
+                <papal_space value = "false"/>
+                <inside_vatican>
+                    <vatican value = "true"/>
+                    <vatican value = "true"/>
+                    <vatican value = "true"/>
+                </inside_vatican>
+            </tile>
+            <tile number = "23">
+                <victory points = "16"/>
+                <papal_space value = "false"/>
+                <inside_vatican>
+                    <vatican value = "true"/>
+                    <vatican value = "true"/>
+                    <vatican value = "true"/>
+                </inside_vatican>
+            </tile>
+            <tile number = "24">
+                <victory points = "20"/>
+                <papal_space value = "true"/>
+                <inside_vatican>
+                    <vatican value = "true"/>
+                    <vatican value = "true"/>
+                    <vatican value = "true"/>
+                </inside_vatican>
+            </tile>
+        </faith_tiles>
+        <report_points>
+            <report>
+                <zone points = "2"/>
+                <zone points = "3"/>
+                <zone points = "4"/>
+            </report>
+        </report_points>
+    </faith_track>
+    <cards>
+        <development_cards>
+            <card number = "1">
+                <required_resources>
+                    <res value = "shield"/>
+                    <res value = "shield"/>
+                </required_resources>
+                <production_input>
+                    <res value = "coin"/>
+                </production_input>
+                <production_output/>
+                <faith output = "1"/>
+                <level value ="1"/>
+                <victory points = "1"/>
+                <color value = "green"/>
+            </card>
+            <card number = "2">
+                <required_resources>
+                    <res value = "servant"/>
+                    <res value = "servant"/>
+                </required_resources>
+                <production_input>
+                    <res value = "stone"/>
+                </production_input>
+                <production_output/>
+                <faith output = "1"/>
+                <level value ="1"/>
+                <victory points = "1"/>
+                <color value = "purple"/>
+            </card>
+            <card number = "3">
+                <required_resources>
+                    <res value = "coin"/>
+                    <res value = "coin"/>
+                </required_resources>
+                <production_input>
+                    <res value = "shield"/>
+                </production_input>
+                <production_output/>
+                <faith output = "1"/>
+                <level value ="1"/>
+                <victory points = "1"/>
+                <color value = "blue"/>
+            </card>
+            <card number = "4">
+                <required_resources>
+                    <res value = "stone"/>
+                    <res value = "stone"/>
+                </required_resources>
+                <production_input>
+                    <res value = "servant"/>
+                </production_input>
+                <production_output/>
+                <faith output = "1"/>
+                <level value ="1"/>
+                <victory points = "1"/>
+                <color value = "yellow"/>
+            </card>
+            <card number = "5">
+                <required_resources>
+                    <res value = "shield"/>
+                    <res value = "stone"/>
+                    <res value = "servant"/>
+                </required_resources>
+                <production_input>
+                    <res value = "stone"/>
+                </production_input>
+                <production_output>
+                    <res value = "servant"/>
+                </production_output>
+                <faith output = "0"/>
+                <level value ="1"/>
+                <victory points = "2"/>
+                <color value = "green"/>
+            </card>
+            <card number = "6">
+                <required_resources>
+                    <res value = "shield"/>
+                    <res value = "coin"/>
+                    <res value = "servant"/>
+                </required_resources>
+                <production_input>
+                    <res value = "coin"/>
+                </production_input>
+                <production_output>
+                    <res value = "shield"/>
+                </production_output>
+                <faith output = "0"/>
+                <level value ="1"/>
+                <victory points = "2"/>
+                <color value = "purple"/>
+            </card>
+            <card number = "7">
+                <required_resources>
+                    <res value = "coin"/>
+                    <res value = "stone"/>
+                    <res value = "servant"/>
+                </required_resources>
+                <production_input>
+                    <res value = "servant"/>
+                </production_input>
+                <production_output>
+                    <res value = "stone"/>
+                </production_output>
+                <faith output = "0"/>
+                <level value ="1"/>
+                <victory points = "2"/>
+                <color value = "blue"/>
+            </card>
+            <card number = "8">
+                <required_resources>
+                    <res value = "coin"/>
+                    <res value = "stone"/>
+                    <res value = "shield"/>
+                </required_resources>
+                <production_input>
+                    <res value = "shield"/>
+                </production_input>
+                <production_output>
+                    <res value = "coin"/>
+                </production_output>
+                <faith output = "0"/>
+                <level value ="1"/>
+                <victory points = "2"/>
+                <color value = "yellow"/>
+            </card>
+            <card number = "9">
+                <required_resources>
+                    <res value = "shield"/>
+                    <res value = "shield"/>
+                    <res value = "shield"/>
+                </required_resources>
+                <production_input>
+                    <res value = "servant"/>
+                    <res value = "servant"/>
+                </production_input>
+                <production_output>
+                    <res value = "coin"/>
+                    <res value = "shield"/>
+                    <res value = "stone"/>
+                </production_output>
+                <faith output = "0"/>
+                <level value ="1"/>
+                <victory points = "3"/>
+                <color value = "green"/>
+            </card>
+            <card number = "10">
+                <required_resources>
+                    <res value = "servant"/>
+                    <res value = "servant"/>
+                    <res value = "servant"/>
+                </required_resources>
+                <production_input>
+                    <res value = "coin"/>
+                    <res value = "coin"/>
+                </production_input>
+                <production_output>
+                    <res value = "servant"/>
+                    <res value = "shield"/>
+                    <res value = "stone"/>
+                </production_output>
+                <faith output = "0"/>
+                <level value ="1"/>
+                <victory points = "3"/>
+                <color value = "purple"/>
+            </card>
+            <card number = "11">
+                <required_resources>
+                    <res value = "coin"/>
+                    <res value = "coin"/>
+                    <res value = "coin"/>
+                </required_resources>
+                <production_input>
+                    <res value = "stone"/>
+                    <res value = "stone"/>
+                </production_input>
+                <production_output>
+                    <res value = "servant"/>
+                    <res value = "shield"/>
+                    <res value = "coin"/>
+                </production_output>
+                <faith output = "0"/>
+                <level value ="1"/>
+                <victory points = "3"/>
+                <color value = "blue"/>
+            </card>
+            <card number = "12">
+                <required_resources>
+                    <res value = "stone"/>
+                    <res value = "stone"/>
+                    <res value = "stone"/>
+                </required_resources>
+                <production_input>
+                    <res value = "shield"/>
+                    <res value = "shield"/>
+                </production_input>
+                <production_output>
+                    <res value = "servant"/>
+                    <res value = "stone"/>
+                    <res value = "coin"/>
+                </production_output>
+                <faith output = "0"/>
+                <level value ="1"/>
+                <victory points = "3"/>
+                <color value = "yellow"/>
+            </card>
+            <card number = "13">
+                <required_resources>
+                    <res value = "shield"/>
+                    <res value = "shield"/>
+                    <res value = "coin"/>
+                    <res value = "coin"/>
+                </required_resources>
+                <production_input>
+                    <res value = "stone"/>
+                    <res value = "servant"/>
+                </production_input>
+                <production_output>
+                    <res value = "coin"/>
+                    <res value = "coin"/>
+                </production_output>
+                <faith output = "1"/>
+                <level value ="1"/>
+                <victory points = "4"/>
+                <color value = "green"/>
+            </card>
+            <card number = "14">
+                <required_resources>
+                    <res value = "servant"/>
+                    <res value = "servant"/>
+                    <res value = "stone"/>
+                    <res value = "stone"/>
+                </required_resources>
+                <production_input>
+                    <res value = "coin"/>
+                    <res value = "shield"/>
+                </production_input>
+                <production_output>
+                    <res value = "stone"/>
+                    <res value = "stone"/>
+                </production_output>
+                <faith output = "1"/>
+                <level value ="1"/>
+                <victory points = "4"/>
+                <color value = "purple"/>
+            </card>
+            <card number = "15">
+                <required_resources>
+                    <res value = "servant"/>
+                    <res value = "servant"/>
+                    <res value = "coin"/>
+                    <res value = "coin"/>
+                </required_resources>
+                <production_input>
+                    <res value = "stone"/>
+                    <res value = "shield"/>
+                </production_input>
+                <production_output>
+                    <res value = "servant"/>
+                    <res value = "servant"/>
+                </production_output>
+                <faith output = "1"/>
+                <level value ="1"/>
+                <victory points = "4"/>
+                <color value = "blue"/>
+            </card>
+            <card number = "16">
+                <required_resources>
+                    <res value = "stone"/>
+                    <res value = "stone"/>
+                    <res value = "shield"/>
+                    <res value = "shield"/>
+                </required_resources>
+                <production_input>
+                    <res value = "coin"/>
+                    <res value = "servant"/>
+                </production_input>
+                <production_output>
+                    <res value = "shield"/>
+                    <res value = "shield"/>
+                </production_output>
+                <faith output = "1"/>
+                <level value ="1"/>
+                <victory points = "4"/>
+                <color value = "yellow"/>
+            </card>
+            <card number = "17">
+                <required_resources>
+                    <res value = "shield"/>
+                    <res value = "shield"/>
+                    <res value = "shield"/>
+                    <res value = "shield"/>
+                </required_resources>
+                <production_input>
+                    <res value = "stone"/>
+                </production_input>
+                <production_output/>
+                <faith output = "2"/>
+                <level value ="2"/>
+                <victory points = "5"/>
+                <color value = "green"/>
+            </card>
+            <card number = "18">
+                <required_resources>
+                    <res value = "servant"/>
+                    <res value = "servant"/>
+                    <res value = "servant"/>
+                    <res value = "servant"/>
+                </required_resources>
+                <production_input>
+                    <res value = "stone"/>
+                </production_input>
+                <production_output/>
+                <faith output = "2"/>
+                <level value ="2"/>
+                <victory points = "5"/>
+                <color value = "purple"/>
+            </card>
+            <card number = "19">
+                <required_resources>
+                    <res value = "coin"/>
+                    <res value = "coin"/>
+                    <res value = "coin"/>
+                    <res value = "coin"/>
+                </required_resources>
+                <production_input>
+                    <res value = "servant"/>
+                </production_input>
+                <production_output/>
+                <faith output = "2"/>
+                <level value ="2"/>
+                <victory points = "5"/>
+                <color value = "blue"/>
+            </card>
+            <card number = "20">
+                <required_resources>
+                    <res value = "stone"/>
+                    <res value = "stone"/>
+                    <res value = "stone"/>
+                    <res value = "stone"/>
+                </required_resources>
+                <production_input>
+                    <res value = "shield"/>
+                </production_input>
+                <production_output/>
+                <faith output = "2"/>
+                <level value ="2"/>
+                <victory points = "5"/>
+                <color value = "yellow"/>
+            </card>
+            <card number = "21">
+                <required_resources>
+                    <res value = "shield"/>
+                    <res value = "shield"/>
+                    <res value = "shield"/>
+                    <res value = "servant"/>
+                    <res value = "servant"/>
+                </required_resources>
+                <production_input>
+                    <res value = "shield"/>
+                    <res value = "servant"/>
+                </production_input>
+                <production_output>
+                    <res value = "stone"/>
+                    <res value = "stone"/>
+                    <res value = "stone"/>
+                </production_output>
+                <faith output = "0"/>
+                <level value ="2"/>
+                <victory points = "6"/>
+                <color value = "green"/>
+            </card>
+            <card number = "22">
+                <required_resources>
+                    <res value = "servant"/>
+                    <res value = "servant"/>
+                    <res value = "servant"/>
+                    <res value = "coin"/>
+                    <res value = "coin"/>
+                </required_resources>
+                <production_input>
+                    <res value = "coin"/>
+                    <res value = "servant"/>
+                </production_input>
+                <production_output>
+                    <res value = "shield"/>
+                    <res value = "shield"/>
+                    <res value = "shield"/>
+                </production_output>
+                <faith output = "0"/>
+                <level value ="2"/>
+                <victory points = "6"/>
+                <color value = "purple"/>
+            </card>
+            <card number = "23">
+                <required_resources>
+                    <res value = "coin"/>
+                    <res value = "coin"/>
+                    <res value = "coin"/>
+                    <res value = "stone"/>
+                    <res value = "stone"/>
+                </required_resources>
+                <production_input>
+                    <res value = "coin"/>
+                    <res value = "stone"/>
+                </production_input>
+                <production_output>
+                    <res value = "servant"/>
+                    <res value = "servant"/>
+                    <res value = "servant"/>
+                </production_output>
+                <faith output = "0"/>
+                <level value ="2"/>
+                <victory points = "6"/>
+                <color value = "blue"/>
+            </card>
+            <card number = "24">
+                <required_resources>
+                    <res value = "stone"/>
+                    <res value = "stone"/>
+                    <res value = "stone"/>
+                    <res value = "shield"/>
+                    <res value = "shield"/>
+                </required_resources>
+                <production_input>
+                    <res value = "shield"/>
+                    <res value = "stone"/>
+                </production_input>
+                <production_output>
+                    <res value = "coin"/>
+                    <res value = "coin"/>
+                    <res value = "coin"/>
+                </production_output>
+                <faith output = "0"/>
+                <level value ="2"/>
+                <victory points = "6"/>
+                <color value = "yellow"/>
+            </card>
+            <card number = "25">
+                <required_resources>
+                    <res value = "shield"/>
+                    <res value = "shield"/>
+                    <res value = "shield"/>
+                    <res value = "shield"/>
+                    <res value = "shield"/>
+                </required_resources>
+                <production_input>
+                    <res value = "coin"/>
+                    <res value = "coin"/>
+                </production_input>
+                <production_output>
+                    <res value = "stone"/>
+                    <res value = "stone"/>
+                </production_output>
+                <faith output = "2"/>
+                <level value ="2"/>
+                <victory points = "7"/>
+                <color value = "green"/>
+            </card>
+            <card number = "26">
+                <required_resources>
+                    <res value = "servant"/>
+                    <res value = "servant"/>
+                    <res value = "servant"/>
+                    <res value = "servant"/>
+                    <res value = "servant"/>
+                </required_resources>
+                <production_input>
+                    <res value = "stone"/>
+                    <res value = "stone"/>
+                </production_input>
+                <production_output>
+                    <res value = "coin"/>
+                    <res value = "coin"/>
+                </production_output>
+                <faith output = "2"/>
+                <level value ="2"/>
+                <victory points = "7"/>
+                <color value = "purple"/>
+            </card>
+            <card number = "27">
+                <required_resources>
+                    <res value = "coin"/>
+                    <res value = "coin"/>
+                    <res value = "coin"/>
+                    <res value = "coin"/>
+                    <res value = "coin"/>
+                </required_resources>
+                <production_input>
+                    <res value = "servant"/>
+                    <res value = "servant"/>
+                </production_input>
+                <production_output>
+                    <res value = "shield"/>
+                    <res value = "shield"/>
+                </production_output>
+                <faith output = "2"/>
+                <level value ="2"/>
+                <victory points = "7"/>
+                <color value = "blue"/>
+            </card>
+            <card number = "28">
+                <required_resources>
+                    <res value = "stone"/>
+                    <res value = "stone"/>
+                    <res value = "stone"/>
+                    <res value = "stone"/>
+                    <res value = "stone"/>
+                </required_resources>
+                <production_input>
+                    <res value = "shield"/>
+                    <res value = "shield"/>
+                </production_input>
+                <production_output>
+                    <res value = "servant"/>
+                    <res value = "servant"/>
+                </production_output>
+                <faith output = "2"/>
+                <level value ="2"/>
+                <victory points = "7"/>
+                <color value = "yellow"/>
+            </card>
+            <card number = "29">
+                <required_resources>
+                    <res value = "shield"/>
+                    <res value = "shield"/>
+                    <res value = "shield"/>
+                    <res value = "coin"/>
+                    <res value = "coin"/>
+                    <res value = "coin"/>
+                </required_resources>
+                <production_input>
+                    <res value = "coin"/>
+                </production_input>
+                <production_output>
+                    <res value = "shield"/>
+                    <res value = "shield"/>
+                </production_output>
+                <faith output = "1"/>
+                <level value ="2"/>
+                <victory points = "8"/>
+                <color value = "green"/>
+            </card>
+            <card number = "30">
+                <required_resources>
+                    <res value = "servant"/>
+                    <res value = "servant"/>
+                    <res value = "servant"/>
+                    <res value = "shield"/>
+                    <res value = "shield"/>
+                    <res value = "shield"/>
+                </required_resources>
+                <production_input>
+                    <res value = "stone"/>
+                </production_input>
+                <production_output>
+                    <res value = "servant"/>
+                    <res value = "servant"/>
+                </production_output>
+                <faith output = "1"/>
+                <level value ="2"/>
+                <victory points = "8"/>
+                <color value = "purple"/>
+            </card>
+            <card number = "31">
+                <required_resources>
+                    <res value = "coin"/>
+                    <res value = "coin"/>
+                    <res value = "coin"/>
+                    <res value = "stone"/>
+                    <res value = "stone"/>
+                    <res value = "stone"/>
+                </required_resources>
+                <production_input>
+                    <res value = "servant"/>
+                </production_input>
+                <production_output>
+                    <res value = "stone"/>
+                    <res value = "stone"/>
+                </production_output>
+                <faith output = "1"/>
+                <level value ="2"/>
+                <victory points = "8"/>
+                <color value = "blue"/>
+            </card>
+            <card number = "32">
+                <required_resources>
+                    <res value = "servant"/>
+                    <res value = "servant"/>
+                    <res value = "servant"/>
+                    <res value = "stone"/>
+                    <res value = "stone"/>
+                    <res value = "stone"/>
+                </required_resources>
+                <production_input>
+                    <res value = "shield"/>
+                </production_input>
+                <production_output>
+                    <res value = "coin"/>
+                    <res value = "coin"/>
+                </production_output>
+                <faith output = "1"/>
+                <level value ="2"/>
+                <victory points = "8"/>
+                <color value = "yellow"/>
+            </card>
+            <card number = "33">
+                <required_resources>
+                    <res value = "shield"/>
+                    <res value = "shield"/>
+                    <res value = "shield"/>
+                    <res value = "shield"/>
+                    <res value = "shield"/>
+                    <res value = "shield"/>
+                </required_resources>
+                <production_input>
+                    <res value = "coin"/>
+                    <res value = "coin"/>
+                </production_input>
+                <production_output>
+                    <res value = "stone"/>
+                    <res value = "stone"/>
+                    <res value = "stone"/>
+                </production_output>
+                <faith output = "2"/>
+                <level value ="3"/>
+                <victory points = "9"/>
+                <color value = "green"/>
+            </card>
+            <card number = "34">
+                <required_resources>
+                    <res value = "servant"/>
+                    <res value = "servant"/>
+                    <res value = "servant"/>
+                    <res value = "servant"/>
+                    <res value = "servant"/>
+                    <res value = "servant"/>
+                </required_resources>
+                <production_input>
+                    <res value = "stone"/>
+                    <res value = "stone"/>
+                </production_input>
+                <production_output>
+                    <res value = "coin"/>
+                    <res value = "coin"/>
+                    <res value = "coin"/>
+                </production_output>
+                <faith output = "2"/>
+                <level value ="3"/>
+                <victory points = "9"/>
+                <color value = "purple"/>
+            </card>
+            <card number = "35">
+                <required_resources>
+                    <res value = "coin"/>
+                    <res value = "coin"/>
+                    <res value = "coin"/>
+                    <res value = "coin"/>
+                    <res value = "coin"/>
+                    <res value = "coin"/>
+                </required_resources>
+                <production_input>
+                    <res value = "servant"/>
+                    <res value = "servant"/>
+                </production_input>
+                <production_output>
+                    <res value = "shield"/>
+                    <res value = "shield"/>
+                    <res value = "shield"/>
+                </production_output>
+                <faith output = "2"/>
+                <level value ="3"/>
+                <victory points = "9"/>
+                <color value = "blue"/>
+            </card>
+            <card number = "36">
+                <required_resources>
+                    <res value = "stone"/>
+                    <res value = "stone"/>
+                    <res value = "stone"/>
+                    <res value = "stone"/>
+                    <res value = "stone"/>
+                    <res value = "stone"/>
+                </required_resources>
+                <production_input>
+                    <res value = "shield"/>
+                    <res value = "shield"/>
+                </production_input>
+                <production_output>
+                    <res value = "servant"/>
+                    <res value = "servant"/>
+                    <res value = "servant"/>
+                </production_output>
+                <faith output = "2"/>
+                <level value ="3"/>
+                <victory points = "9"/>
+                <color value = "yellow"/>
+            </card>
+            <card number = "37">
+                <required_resources>
+                    <res value = "shield"/>
+                    <res value = "shield"/>
+                    <res value = "shield"/>
+                    <res value = "shield"/>
+                    <res value = "shield"/>
+                    <res value = "servant"/>
+                    <res value = "servant"/>
+                </required_resources>
+                <production_input>
+                    <res value = "coin"/>
+                    <res value = "servant"/>
+                </production_input>
+                <production_output>
+                    <res value = "shield"/>
+                    <res value = "shield"/>
+                    <res value = "stone"/>
+                    <res value = "stone"/>
+                </production_output>
+                <faith output = "1"/>
+                <level value ="3"/>
+                <victory points = "10"/>
+                <color value = "green"/>
+            </card>
+            <card number = "38">
+                <required_resources>
+                    <res value = "servant"/>
+                    <res value = "servant"/>
+                    <res value = "servant"/>
+                    <res value = "servant"/>
+                    <res value = "servant"/>
+                    <res value = "coin"/>
+                    <res value = "coin"/>
+                </required_resources>
+                <production_input>
+                    <res value = "stone"/>
+                    <res value = "shield"/>
+                </production_input>
+                <production_output>
+                    <res value = "coin"/>
+                    <res value = "coin"/>
+                    <res value = "servant"/>
+                    <res value = "servant"/>
+                </production_output>
+                <faith output = "1"/>
+                <level value ="3"/>
+                <victory points = "10"/>
+                <color value = "purple"/>
+            </card>
+            <card number = "39">
+                <required_resources>
+                    <res value = "coin"/>
+                    <res value = "coin"/>
+                    <res value = "coin"/>
+                    <res value = "coin"/>
+                    <res value = "coin"/>
+                    <res value = "stone"/>
+                    <res value = "stone"/>
+                </required_resources>
+                <production_input>
+                    <res value = "coin"/>
+                    <res value = "shield"/>
+                </production_input>
+                <production_output>
+                    <res value = "stone"/>
+                    <res value = "stone"/>
+                    <res value = "servant"/>
+                    <res value = "servant"/>
+                </production_output>
+                <faith output = "1"/>
+                <level value ="3"/>
+                <victory points = "10"/>
+                <color value = "blue"/>
+            </card>
+            <card number = "40">
+                <required_resources>
+                    <res value = "stone"/>
+                    <res value = "stone"/>
+                    <res value = "stone"/>
+                    <res value = "stone"/>
+                    <res value = "stone"/>
+                    <res value = "servant"/>
+                    <res value = "servant"/>
+                </required_resources>
+                <production_input>
+                    <res value = "stone"/>
+                    <res value = "servant"/>
+                </production_input>
+                <production_output>
+                    <res value = "coin"/>
+                    <res value = "coin"/>
+                    <res value = "shield"/>
+                    <res value = "shield"/>
+                </production_output>
+                <faith output = "1"/>
+                <level value ="3"/>
+                <victory points = "10"/>
+                <color value = "yellow"/>
+            </card>
+            <card number = "41">
+                <required_resources>
+                    <res value = "shield"/>
+                    <res value = "shield"/>
+                    <res value = "shield"/>
+                    <res value = "shield"/>
+                    <res value = "shield"/>
+                    <res value = "shield"/>
+                    <res value = "shield"/>
+                </required_resources>
+                <production_input>
+                    <res value = "servant"/>
+                </production_input>
+                <production_output>
+                    <res value = "coin"/>
+                </production_output>
+                <faith output = "3"/>
+                <level value ="3"/>
+                <victory points = "11"/>
+                <color value = "green"/>
+            </card>
+            <card number = "42">
+                <required_resources>
+                    <res value = "servant"/>
+                    <res value = "servant"/>
+                    <res value = "servant"/>
+                    <res value = "servant"/>
+                    <res value = "servant"/>
+                    <res value = "servant"/>
+                    <res value = "servant"/>
+                </required_resources>
+                <production_input>
+                    <res value = "coin"/>
+                </production_input>
+                <production_output>
+                    <res value = "stone"/>
+                </production_output>
+                <faith output = "3"/>
+                <level value ="3"/>
+                <victory points = "11"/>
+                <color value = "purple"/>
+            </card>
+            <card number = "43">
+                <required_resources>
+                    <res value = "coin"/>
+                    <res value = "coin"/>
+                    <res value = "coin"/>
+                    <res value = "coin"/>
+                    <res value = "coin"/>
+                    <res value = "coin"/>
+                    <res value = "coin"/>
+                </required_resources>
+                <production_input>
+                    <res value = "stone"/>
+                </production_input>
+                <production_output>
+                    <res value = "shield"/>
+                </production_output>
+                <faith output = "3"/>
+                <level value ="3"/>
+                <victory points = "11"/>
+                <color value = "blue"/>
+            </card>
+            <card number = "44">
+                <required_resources>
+                    <res value = "stone"/>
+                    <res value = "stone"/>
+                    <res value = "stone"/>
+                    <res value = "stone"/>
+                    <res value = "stone"/>
+                    <res value = "stone"/>
+                    <res value = "stone"/>
+                </required_resources>
+                <production_input>
+                    <res value = "shield"/>
+                </production_input>
+                <production_output>
+                    <res value = "servant"/>
+                </production_output>
+                <faith output = "3"/>
+                <level value ="3"/>
+                <victory points = "11"/>
+                <color value = "yellow"/>
+            </card>
+            <card number = "45">
+                <required_resources>
+                    <res value = "shield"/>
+                    <res value = "shield"/>
+                    <res value = "shield"/>
+                    <res value = "shield"/>
+                    <res value = "coin"/>
+                    <res value = "coin"/>
+                    <res value = "coin"/>
+                    <res value = "coin"/>
+                </required_resources>
+                <production_input>
+                    <res value = "stone"/>
+                </production_input>
+                <production_output>
+                    <res value = "coin"/>
+                    <res value = "coin"/>
+                    <res value = "coin"/>
+                    <res value = "shield"/>
+                </production_output>
+                <faith output = "0"/>
+                <level value ="3"/>
+                <victory points = "12"/>
+                <color value = "green"/>
+            </card>
+            <card number = "46">
+                <required_resources>
+                    <res value = "servant"/>
+                    <res value = "servant"/>
+                    <res value = "servant"/>
+                    <res value = "servant"/>
+                    <res value = "shield"/>
+                    <res value = "shield"/>
+                    <res value = "shield"/>
+                    <res value = "shield"/>
+                </required_resources>
+                <production_input>
+                    <res value = "coin"/>
+                </production_input>
+                <production_output>
+                    <res value = "stone"/>
+                    <res value = "stone"/>
+                    <res value = "stone"/>
+                    <res value = "servant"/>
+                </production_output>
+                <faith output = "0"/>
+                <level value ="3"/>
+                <victory points = "12"/>
+                <color value = "purple"/>
+            </card>
+            <card number = "47">
+                <required_resources>
+                    <res value = "coin"/>
+                    <res value = "coin"/>
+                    <res value = "coin"/>
+                    <res value = "coin"/>
+                    <res value = "stone"/>
+                    <res value = "stone"/>
+                    <res value = "stone"/>
+                    <res value = "stone"/>
+                </required_resources>
+                <production_input>
+                    <res value = "servant"/>
+                </production_input>
+                <production_output>
+                    <res value = "coin"/>
+                    <res value = "shield"/>
+                    <res value = "shield"/>
+                    <res value = "shield"/>
+                </production_output>
+                <faith output = "0"/>
+                <level value ="3"/>
+                <victory points = "12"/>
+                <color value = "blue"/>
+            </card>
+            <card number = "48">
+                <required_resources>
+                    <res value = "servant"/>
+                    <res value = "servant"/>
+                    <res value = "servant"/>
+                    <res value = "servant"/>
+                    <res value = "stone"/>
+                    <res value = "stone"/>
+                    <res value = "stone"/>
+                    <res value = "stone"/>
+                </required_resources>
+                <production_input>
+                    <res value = "shield"/>
+                </production_input>
+                <production_output>
+                    <res value = "stone"/>
+                    <res value = "servant"/>
+                    <res value = "servant"/>
+                    <res value = "servant"/>
+                </production_output>
+                <faith output = "0"/>
+                <level value ="3"/>
+                <victory points = "12"/>
+                <color value = "yellow"/>
+            </card>
+        </development_cards>
+    </cards>
+    <base_production>
+        <input>
+            <res value = "free_choice"/>
+            <res value = "stone"/>
+        </input>
+        <output>
+            <res value = "coin"/>
+            <res value = "free_choice"/>
+        </output>
+    </base_production>
+</game_configuration>

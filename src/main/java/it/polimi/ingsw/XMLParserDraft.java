@@ -56,12 +56,7 @@ public class XMLParserDraft {
 		}
 		
 	}
+
 }
 
-/*
-	public void readCards(String[] filename){
-		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-	}
-}
 
- */

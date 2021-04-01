@@ -21,80 +21,51 @@ public class GameMechanicsMultiPlayer {
 	}
 	
 	
-	/* this method is a draft of what the builder will do, before calling instantiateGame
-	public void xmlBuilding() {
-		TODO: every leader can be instantiated after creating its ability effect instance
-		leaderCards[0] = new LeaderCard();
-		leaderCards[1] = new LeaderCard();
-		leaderCards[2] = new LeaderCard();
-		leaderCards[3] = new LeaderCard();
-
-		}
-	 */
-	
 	/**
 	 * create common instances shared by every player. Then instantiate all the players in the game (from 2 to 4).
 	 * All the data in input is received from the XML parser, since they represent the base components of the game data.
 	 * @param allLeaderCards a list of all the leader cards present in the XML. Will be shuffled
 	 * @param rules the base production rule
-	 * @param faithTrack the same faith track for every player
+	 * @param xmlTiles the list of tiles for the creation of the faith tracks
+	 * @param reportPoints points to earn from each report zone
 	 */
-	/*
-	public void instantiateGame(ArrayList<LeaderCard> allLeaderCards, ProductionRules rules, FaithTrack[] faithTrack) {
-		gameDevCardsDeck = new DevelopmentCardsDeck(createCommonCardsDeck());
+	public void instantiateGame(ArrayList<DevelopmentCard> allDevelopmentCards, ArrayList<LeaderCard> allLeaderCards, ProductionRules rules,
+	                            ArrayList<Tile> xmlTiles, ArrayList<Integer> reportPoints) {
+		gameDevCardsDeck = new DevelopmentCardsDeck(createCommonCardsDeck(allDevelopmentCards));
 		market = new Market();
 		players = new Player[numberOfPlayers];
 		
 		Collections.shuffle(allLeaderCards);
 		// matrix of 4 columns (one per leader card) and a number of rows
 		LeaderCard[][] gameLeaders = new LeaderCard[numberOfPlayers][4];
+		FaithTrack[] playersTracks = new FaithTrack[numberOfPlayers];
 		
 		for (int i = 0; i < numberOfPlayers * 4; i++) {
 			gameLeaders[i / 4][i % 4] = allLeaderCards.get(i);
+			playersTracks[i / 4] = new FaithTrack(xmlTiles, reportPoints);
 		}
 		
 		for (int i = 0; i < numberOfPlayers; i++) {
-			//TODO: check if the rules apply to all the players, or if the object must be cloned
-			players[i] = instantiatePlayer(gameLeaders[i], faithTrack[i], rules);
+			players[i] = instantiatePlayer(gameLeaders[i], playersTracks[i], rules);
 		}
+		
 	}
-
-	/*This will be updated
-	public FaithTrack[] getFaithTrackAttributes(ArrayList<Tile> tiles) {
-		FaithTrack[] tracks = new FaithTrack[numberOfPlayers];
-		for (int i = 0; i < numberOfPlayers * 4; i++) {
-			tracks[i] = new FaithTrack(tiles);
-		}
-		return tracks;
-	}
-
-	 */
-
-
-
 	
-	/** TODO: this is a draft for the player instantiation
+	
+	/**
 	 * to be called once for each player to create in the game
+	 * @param playersLeaders the array of 4 leader cards to assign to each player in the game
+	 * @param track the player's faith track
+	 * @param rules common base production rules object
 	 * @return Player instance created
 	 */
-	/*
 	public Player instantiatePlayer(LeaderCard[] playersLeaders, FaithTrack track, ProductionRules rules) {
 		WarehouseDepot depot = new WarehouseDepot();
 		ResourceDeck resourceDeck = new ResourceDeck(depot);
-		FaithTrack track = new FaithTrack(); //TODO: read faith track parameters from XML and input them here
 		Strongbox strongbox = new Strongbox();
-		ProductionRules productionRules = new ProductionRules(); //TODO: read base production parameters from XML and input them here
-		CardManagement cardManagement = new CardManagement(strongbox, depot, productionRules);
+		CardManagement cardManagement = new CardManagement(strongbox, depot, rules);
 		
-		AbilityEffectActivation sampleEffect1 = new AdditionalDepotAbility(new ArrayList<>());
-		AbilityEffectActivation sampleEffect2 = new WhiteMarbleAbility(new ArrayList<>(), 1);
-		
-		LeaderCard[] leaderCards = playersLeaders; //TODO: read leader cards parameters from XML and input them here
-		
-		
-		Player player = new Player(market, gameDevCardsDeck, depot, strongbox, resourceDeck, track, cardManagement, leaderCards);
-		
-		return player;
+		return new Player(market, gameDevCardsDeck, depot, strongbox, resourceDeck, track, cardManagement, playersLeaders);
 	}
 
 	
@@ -103,30 +74,27 @@ public class GameMechanicsMultiPlayer {
 	 * Then shuffle them in piles of 4 (standard number of cards) and create the cards deck matrix
 	 * @return the matrix representing the piles of development cards
 	 */
-	/*
-	public ArrayList<DevelopmentCard>[][] createCommonCardsDeck() {
+	public ArrayList<DevelopmentCard>[][] createCommonCardsDeck(ArrayList<DevelopmentCard> developmentCards) {
+		//TODO: create cards with parameters read from the XML configuration file and instantiate all the DevCards
 		ArrayList<DevelopmentCard>[][] matrixDeck = new ArrayList[3][4]; //fixed matrix size
+		//NOTE: the warning above cannot be fixed in any way but the code is absolutely correct
 		for (int i = 0; i < 3; i++) {
-			for (Colors j: Colors.values()) {
-				//TODO: create cards with parameters read from the XML configuration file and instantiate all the DevCards
-				//TODO: order the cards by color and level before passing them to the gameDevCardsDeck
-				//matrixDeck[i][j] = new DevelopmentCard();
+			for (int j = 0; j < 4; j++) {
+				matrixDeck[i][j] = new ArrayList<DevelopmentCard>();
 			}
 		}
+		
+		assert developmentCards.size() % 12 == 0; // in order to create a grid
+		int level, color;
+		for (DevelopmentCard card: developmentCards) {
+			level = card.getLevel();
+			color = card.getColor().getColorNumber();
+			matrixDeck[level][color].add(card);
+		}
+		
 		return matrixDeck;
 	}
 	
-	/*TODO: create LeaderBuilder class for creating the instances of the leader cards from the data read in the xml parser
-	
-	public LeaderBuilder xmlDataFromLeader(int leaderCardNumber, int victoryPoints, ArrayList<Resources> requirements,
-	                              ArrayList<CardRequirement> cardRequirements) {
-		
-	}
-	
-	public LeaderBuilder xmlDataFromLeader(String ability, ArrayList<Resources> list) {
-	
-	}
-	 */
 	
 	
 }
