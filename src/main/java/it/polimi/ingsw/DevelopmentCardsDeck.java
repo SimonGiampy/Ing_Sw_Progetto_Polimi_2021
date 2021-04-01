@@ -70,7 +70,6 @@ public class DevelopmentCardsDeck {
 
 	}
 	
-	//TODO: check if exists a viable production that can be done
 	
 	/**
 	 * checks if there exists at least one dev card that can be bought from the player
