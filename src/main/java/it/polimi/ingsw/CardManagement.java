@@ -3,6 +3,7 @@ package it.polimi.ingsw;
 import java.security.InvalidParameterException;
 import java.util.ArrayList;
 import java.util.Stack;
+import java.util.stream.Collectors;
 
 /**
  * this class handles player's cards management
@@ -87,45 +88,44 @@ public class CardManagement {
 	 * it activates production
 	 * @param selectedProduction is the number of the selected stack
 	 */
-	public void activateSingleProduction(int selectedProduction) {
-		switch (selectedProduction) {
-			case 1 -> {
-				myStrongbox.storeResources(cards.get(1).peek().produce());
-				cards.get(0).peek().resetCardProduction();
-			}
-			case 2 -> {
-				myStrongbox.storeResources(cards.get(2).peek().produce());
-				cards.get(1).peek().resetCardProduction();
-			}
-			case 3 -> {
-				myStrongbox.storeResources(cards.get(3).peek().produce());
-				cards.get(2).peek().resetCardProduction();
-			}
-			case 4 -> {
-				myStrongbox.storeResources(baseProductionRules.produce());
-				baseProductionRules.resetProduction();
-			}
-			case 5 -> {
-				myStrongbox.storeResources(leaderProductionRules.get(1).produce());
-				leaderProductionRules.get(0).resetProduction();
-			}
-			case 6 -> {
-				myStrongbox.storeResources(leaderProductionRules.get(2).produce());
-				leaderProductionRules.get(1).resetProduction();
-			}
+	public ArrayList<Resources> activateSingleProduction(int selectedProduction) {
+		return switch (selectedProduction) {
+			case 1 -> cards.get(0).peek().produce();
+			case 2 -> cards.get(1).peek().produce();
+			case 3 -> cards.get(2).peek().produce();
+			case 4 -> baseProductionRules.produce();
+			case 5 -> leaderProductionRules.get(0).produce();
+			case 6 -> leaderProductionRules.get(1).produce();
 			default -> throw new InvalidParameterException("invalid parameter");
-		}
+		};
 	}
-
+	/* TODO: if ? are equals to 0 set nput ArrayList (or Array) to [0,0,0,0] */
 	/**
-	 * it activates all player's input production
-	 * @param playerInput is a list of production selected by the player
+	 * it activates all selected production
+	 * @param playerInput is a list of selected production
+	 * @param inputResources is a list of resources selected by the player
 	 */
-	public void activateSelectedProduction(ArrayList<Integer> playerInput){
+	public void activateSelectedProduction(ArrayList<Integer> playerInput,ArrayList<Integer> inputResources){
+		ArrayList<Resources> selectedProduction= new ArrayList<>();
 		for (Integer integer : playerInput) {
-			activateSingleProduction(integer);
+			selectedProduction.addAll(activateSingleProduction(integer));
 		}
-	}
+		for (int j = 0; j < inputResources.get(0); j++) {
+			selectedProduction.add(Resources.COIN);
+		}
+		for (int j = 0; j < inputResources.get(1); j++) {
+			selectedProduction.add(Resources.SERVANT);
+		}
+		for (int j = 0; j < inputResources.get(2); j++) {
+			selectedProduction.add(Resources.SHIELD);
+		}
+		for (int j = 0; j < inputResources.get(3); j++) {
+			selectedProduction.add(Resources.STONE);
+		}
+		selectedProduction= selectedProduction.stream().filter(i -> i != Resources.EMPTY).collect(Collectors.toCollection(ArrayList::new));
+		myStrongbox.storeResources(selectedProduction);
+		}
+
 
 	/**
 	 * it returns the number of faith points

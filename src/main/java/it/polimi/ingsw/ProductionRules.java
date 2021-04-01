@@ -11,8 +11,6 @@ public class ProductionRules {
 	private  final ArrayList<Resources> input;
 	private  final ArrayList<Resources> output;
 	private final int faithOutput;
-	private ArrayList<Resources> selectedOutput;
-	private ArrayList<Resources> selectedInput;
 	
 	/**
 	 * constructor for development card's production rules
@@ -24,28 +22,6 @@ public class ProductionRules {
 		this.input = input;
 		this.output = output;
 		this.faithOutput = faithOutput;
-		selectedOutput = new ArrayList<>(output);
-		selectedInput = new ArrayList<>(input);
-	}
-
-	/**
-	 * setter for the attribute output when the player can select it
-	 * @param selectedResources is the output selected by the player
-	 */
-	public void addSelectedOutput( ArrayList<Resources> selectedResources) { // Exception?
-		selectedOutput.addAll(selectedResources);
-	}
-
-	public void addSelectedInput(ArrayList <Resources> selectedResources){
-		selectedInput.addAll(selectedResources);
-	}
-
-	/**
-	 * it resets output after the end of the turn (base production or leader production)
-	 */
-	public void resetProduction(){
-		selectedOutput = new ArrayList<>(output);
-		selectedInput = new ArrayList<>(input);
 	}
 
 	/**
@@ -53,7 +29,7 @@ public class ProductionRules {
 	 * @return an arraylist of resources that contains production's output.
 	 */
 	public ArrayList<Resources> produce(){
-		return new ArrayList<>(selectedOutput.stream().filter(i->i!=Resources.EMPTY).collect(Collectors.toList()));
+		return new ArrayList<>(output);
 	}
 
 	/**
