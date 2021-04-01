@@ -5,9 +5,11 @@ import java.util.ArrayList;
 public class ResourceDeck {
 
 	private ArrayList<Resources> resourceList;
-	private Resources whiteMarble1;
-	private Resources whiteMarble2;
-	int faithPoint;
+	private ArrayList<Resources> fromWhiteMarble1;
+	private ArrayList<Resources> fromWhiteMarble2;
+	private int whiteMarblesInput1;
+	private int whiteMarblesInput2;
+	private int faithPoint;
 	
 	WarehouseDepot playerDepot;
 
@@ -15,10 +17,16 @@ public class ResourceDeck {
 	 * Constructor that assigns default values to the parameters
 	 */
 	public ResourceDeck(WarehouseDepot depot) {
+
 		resourceList = new ArrayList<>();
-		whiteMarble1 = Resources.NO_RESOURCE;
-		whiteMarble2 = Resources.NO_RESOURCE;
+		fromWhiteMarble1 = new ArrayList<>();
+		fromWhiteMarble1.add(Resources.EMPTY);
+		fromWhiteMarble2 = new ArrayList<>();
+		fromWhiteMarble2.add(Resources.EMPTY);
+
 		faithPoint = 0;
+		whiteMarblesInput1 = 0;
+		whiteMarblesInput2 = 0;
 		
 		playerDepot = depot;
 	}
@@ -28,18 +36,22 @@ public class ResourceDeck {
 	 * @param marblesFromMarket array of the marbles
 	 */
 	protected void addResources(Marbles[] marblesFromMarket)  {
-		addResources(marblesFromMarket, 0, 0);
+		if(fromWhiteMarble1.get(0) == Resources.EMPTY)
+			addResources(marblesFromMarket, 0, 0);
+		else if(fromWhiteMarble2.get(0) == Resources.EMPTY)
+			addResources(marblesFromMarket, 4, 0);
 	}
 
 	/**
 	 * Handles the case of a player playing two leader cards with the white marble ability, if this player
 	 * get white marbles from the market he can choose which resource to get
 	 * @param marblesFromMarket array of the marbles
-	 * @param quantityLeader1 quantity of whiteMarble1, the resource of the first leader who has been played
-	 * @param quantityLeader2 quantity of whiteMarble2, the resource of the second leader who has been played
+	 * @param quantityLeader1 number of times the player wants to activate the power of the first leader played
+	 * @param quantityLeader2 number of times the player wants to activate the power of the second leader played
 	 */
 	protected void addResources(Marbles[] marblesFromMarket, int quantityLeader1, int quantityLeader2) {
 		faithPoint = 0;
+		int whiteMarbleCount = 0;
 		for(Marbles x: marblesFromMarket) {
 			switch (x) {
 				case YELLOW -> resourceList.add(Resources.COIN);
@@ -48,14 +60,18 @@ public class ResourceDeck {
 				case PURPLE -> resourceList.add(Resources.SERVANT);
 				case RED -> faithPoint = 1;
 				case WHITE -> {
-					if (quantityLeader1 > 0) {
-						resourceList.add(whiteMarble1);
-						quantityLeader1 --;
-					} else if (quantityLeader2 > 0) {
-						resourceList.add(whiteMarble2);
-						quantityLeader2 --;
+					whiteMarbleCount++;
+					if(fromWhiteMarble1.get(0) != Resources.EMPTY) {
+						if (quantityLeader1 > 0 && whiteMarbleCount == whiteMarblesInput1) {
+							resourceList.addAll(fromWhiteMarble1);
+							quantityLeader1--;
+							whiteMarbleCount = 0;
+						} else if (quantityLeader2 > 0 && whiteMarbleCount == whiteMarblesInput2) {
+							resourceList.addAll(fromWhiteMarble2);
+							quantityLeader2--;
+							whiteMarbleCount = 0;
+						}
 					}
-					
 				}
 			}
 		}
@@ -64,16 +80,20 @@ public class ResourceDeck {
 	}
 
 	/**
-	 * When a leader card with white marble ability is played, this set whiteMarble with the corresponding resource
+	 * When a leader card with white marble ability is played, sets the number of white marbles in input and the
+	 * resources in output
 	 * @param res resource specified by the leader played
 	 */
-	protected void setWhiteMarble(Resources res) {
-		if (whiteMarble1 == Resources.NO_RESOURCE)
-			whiteMarble1 = res;
-		else {
-			whiteMarble2 = res;
+	protected void setFromWhiteMarble(ArrayList<Resources> res, int whiteMarblesInput) {
+		if(fromWhiteMarble1.get(0) == Resources.EMPTY){
+			fromWhiteMarble1 = res;
+			whiteMarblesInput1 = whiteMarblesInput;
+		} else if(fromWhiteMarble2.get(0) == Resources.EMPTY){
+			fromWhiteMarble2 = res;
+			whiteMarblesInput2 = whiteMarblesInput;
+
 		}
-		
+
 	}
 	
 	protected ArrayList<Resources> getResourceList(){

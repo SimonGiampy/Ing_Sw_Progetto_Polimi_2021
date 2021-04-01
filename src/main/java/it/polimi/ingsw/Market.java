@@ -93,9 +93,9 @@ public class Market {
 	 */
 	protected Marbles[] shiftCol(int col) {
 		Marbles[] selected = new Marbles[3];
-		selected[0]= market[0][col];
-		selected[1]= market[1][col];
-		selected[2]= market[2][col];
+		selected[0] = market[0][col];
+		selected[1] = market[1][col];
+		selected[2] = market[2][col];
 
 		Marbles temp = extraBall;
 		extraBall = market[0][col];

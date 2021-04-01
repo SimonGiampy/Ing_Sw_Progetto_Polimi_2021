@@ -1,20 +1,28 @@
 package it.polimi.ingsw;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Scanner;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 /**
- * this class handles the warehouse and the resources in input and output
+ * This class handles the warehouse and the resources in input from the market, and output for the productions
+ * This class also handles the additional depots for a certain number of leader cards activated
  */
 public class WarehouseDepot {
 	
 	private ArrayList<Resources> incomingResources; //incoming resources from the market
 	private Resources[] depot; // array of fixed length = 6, representing the pyramid
-	private ArrayList<Integer> positionsIncomingResources;
+	private ArrayList<Integer> positionsIncomingResources; // memorizes the positions of the resources that have been moved from the deck
 	
-	private Resources[] additionalDepotResources; // array of 2 resources defining the resources and if they are enabled or not
-	private boolean[][] additionalDepotContents; // matrix containing the boolean flags indicating if the corresponding slots are occupied or not
+	
+	// list of 2 lists of resources, one for each leader. If the value of the first element in the list is NO_RES,
+	// then the corresponding leader is not activated yet. The size of the lists for the base case is 2
+	private ArrayList<ArrayList<Resources>> extraDepotResources;
+	// list of 2 lists of booleans, one for each leader. If the flag value is false, then the corresponding slot is empty,
+	// otherwise there is a resource occupying it
+	private ArrayList<ArrayList<Boolean>> extraDepotContents;
 	
 	
 	/**
@@ -25,12 +33,20 @@ public class WarehouseDepot {
 		positionsIncomingResources = new ArrayList<>();
 		depot = new Resources[6];
 		
-		for (int i = 0; i < 6; i++) depot[i] = Resources.NO_RESOURCE;
+		for (int i = 0; i < 6; i++) depot[i] = Resources.EMPTY;
 		
-		additionalDepotResources = new Resources[]{Resources.NO_RESOURCE, Resources.NO_RESOURCE};
-		additionalDepotContents = new boolean[][] {{false, false}, {false, false}}; // might be expanded in size if the special abilities are
+		//additionalDepotResources = new Resources[]{Resources.NO_RESOURCE, Resources.NO_RESOURCE};
+		//additionalDepotContents = new boolean[][] {{false, false}, {false, false}}; // might be expanded in size if the special abilities are
 		// modified
 		
+		extraDepotResources = new ArrayList<>();
+		extraDepotResources.add(new ArrayList<>());
+		extraDepotResources.get(0).add(Resources.EMPTY);
+		extraDepotResources.add(new ArrayList<>());
+		extraDepotResources.get(0).add(Resources.EMPTY);
+		extraDepotContents = new ArrayList<>();
+		extraDepotContents.add(new ArrayList<>());
+		extraDepotContents.add(new ArrayList<>());
 	}
 	
 	/**
@@ -68,7 +84,7 @@ public class WarehouseDepot {
 		// the destination is always in the depot (pyramid) where each position has a number associated (from 1 to 6)
 		
 		if (where.equals("deck")) { // resource coming from the deck
-			if (depot[destination - 1] == Resources.NO_RESOURCE) { // valid destination
+			if (depot[destination - 1] == Resources.EMPTY) { // valid destination
 				depot[destination - 1] = incomingResources.get(from - 1);
 				positionsIncomingResources.add(destination);
 				incomingResources.remove(from - 1);
@@ -77,7 +93,7 @@ public class WarehouseDepot {
 				return false;
 			}
 		} else if (where.equals("depot")) { // resource coming from the depot
-			if (depot[from - 1] == Resources.NO_RESOURCE) { // resource moved must not be empty
+			if (depot[from - 1] == Resources.EMPTY) { // resource moved must not be empty
 				System.out.println("move is not permitted");
 				return false;
 			} else { //switches the positions in the pyramid
@@ -112,13 +128,13 @@ public class WarehouseDepot {
 	 * @return true if the move is permitted and correctly executed
 	 */
 	protected boolean moveResourcesBackToDeck(int position) {
-		if (depot[position - 1] == Resources.NO_RESOURCE) { // cannot move an empty resource
+		if (depot[position - 1] == Resources.EMPTY) { // cannot move an empty resource
 			System.out.println("move is not permitted");
 			return false;
 		} else {
 			if (positionsIncomingResources.contains(position)) { // resource was in the deck before the insertion
 				incomingResources.add(depot[position - 1]);
-				depot[position - 1] = Resources.NO_RESOURCE;
+				depot[position - 1] = Resources.EMPTY;
 				positionsIncomingResources.remove((Integer) position);
 			} else { // the resource was not in the deck before the insertion
 				System.out.println("move is not permitted");
@@ -143,7 +159,8 @@ public class WarehouseDepot {
 	protected boolean processNewMove() {
 		Scanner scanner = new Scanner(System.in);
 		String read;
-		String regexGoingToWarehouse = "move\s[1-4]\sfrom\s(deck|depot)\sto\s[1-6]"; // regex pattern for reading input for moving the
+		
+		String regexGoingToWarehouse = "move\s[1-9]\sfrom\s(deck|depot)\sto\s[1-6]"; // regex pattern for reading input for moving the
 		// resources to the warehouse
 		String regexGoingToDeck = "move\s[1-6]\sto\sdeck"; //regex pattern for reading input for moving back to the deck
 		
@@ -164,8 +181,10 @@ public class WarehouseDepot {
 				} else { // send from depot
 					place = "depot";
 				}
-				if (place.equals("deck") && from > incomingResources.size()) { // invalid input
-					ok = false;
+				if (place.equals("deck") && from > incomingResources.size()) {
+					ok = false; // invalid input: position out of deck bounds (size of list)
+				} else if (place.equals("depot") && from > 6) {
+					ok = false; // invalid input: position out of depot bounds (from 1 to 6)
 				} else {
 					ok = true;
 				}
@@ -196,45 +215,70 @@ public class WarehouseDepot {
 	 * @param list of resources to add. Its length must be from 1 to 4
 	 */
 	protected void addIncomingResources(ArrayList<Resources> list) {
-		this.incomingResources = list;
+		if (incomingResources.isEmpty()) {
+			incomingResources = list;
+		}
 	}
 	
 	/**
-	 * enables the arrays containing the additional resources. The resource is empty if the ability is not enabled yet. Otherwise its value
-	 * corresponds to the chosen resource
-	 * @param res the additional resource defined for the leader
-	 * @param whichLeader is 1 for the first leader, is 2 for the second leader
+	 * removes all the elements in the incoming deck when the player finishes its turn.
+	 * All the resources in the deck are automatically discarded
+	 * @return the number of resources discarded
 	 */
-	protected void enableAdditionalDepot(Resources res, int whichLeader) {
-		additionalDepotResources[whichLeader - 1] = res;
+	protected int discardResourcesAfterUserConfirmation() {
+		int discarding = incomingResources.size();
+		incomingResources.clear();
+		positionsIncomingResources.clear();
+		return discarding;
+	}
+	
+	/**
+	 * enables the arrays containing the additional resources. The resource is empty if the ability is not enabled yet.
+	 * Otherwise its value corresponds to the chosen resource.
+	 * @param resources the additional resources defined for the leader ability
+	 */
+	protected void enableAdditionalDepot(ArrayList<Resources> resources) {
+		int size = resources.size(), whichLeader = 0;
+		if (extraDepotResources.get(0).get(0).equals(Resources.EMPTY)) { // if first leader is not activated
+			extraDepotResources.set(0, resources);
+		} else if (extraDepotResources.get(1).get(0).equals(Resources.EMPTY)) { // if second leader is not activated
+			extraDepotResources.set(1, resources);
+			whichLeader = 1;
+		}
+		//extraDepotContents.set(whichLeader, new ArrayList<>());
+		for (int i = 0; i < size; i++) {
+			extraDepotContents.get(whichLeader).add(false); //initialization of slots flags, one slot per resource
+		}
 	}
 	
 	/**
 	 * this function moves automatically the biggest number of resources from the incoming deck to the additional depots, where possible.
-	 * It works for 2 leaders, whether they are activated or not. For each leader, if enabled, it moves the resources inside, if there are any
-	 * spots available. Otherwise, it does nothing if the resources can't be inserted. This method is automatic.
+	 * It works for 2 leaders, whether they are activated or not. For each leader, if enabled, it moves the resources inside,
+	 * if there are any spots available. Otherwise, it does nothing if the resources can't be inserted. This method is automatic.
 	 */
-	protected void moveResourceToAdditionalDepot() {
-		for (int j = 0; j < 2; j++) { // iterates for the 2 leaders which may have this ability enabled
-			if (additionalDepotResources[j] != Resources.NO_RESOURCE) { //selected depot is enabled
+	protected void moveResourcesToAdditionalDepot() {
+		for (int leaderNumber = 0; leaderNumber < 2; leaderNumber++) { // iterates for the 2 leaders which may have this ability enabled
+			if (extraDepotResources.get(leaderNumber).get(0) != Resources.EMPTY) { //selected depot is enabled
 				
-				for (int i = 0; i < 2; i++) { //cycles for every position in the additional depot
-					if (incomingResources.contains(additionalDepotResources[j])) { // resource can be inserted because the resources match
+				for (int i = 0; i < incomingResources.size(); i++) { //cycles for every position in the incoming deck
+					for (int j = 0; j < extraDepotResources.get(leaderNumber).size(); j++) { //cycles for every slot in the extra depots
 						
-						if (!(additionalDepotContents[j][0] && additionalDepotContents[j][1])) { // there is at least one empty spot
-							//tries to insert the resource
-							if (additionalDepotContents[j][0]) {
-								additionalDepotContents[j][1] = true;
-							} else {
-								additionalDepotContents[j][0] = true;
-							}
-							incomingResources.remove(additionalDepotResources[j]);
+						if (incomingResources.get(i) == extraDepotResources.get(leaderNumber).get(j) &&
+								!extraDepotContents.get(leaderNumber).get(j)) {
+							extraDepotContents.get(leaderNumber).set(j, true);
+							incomingResources.set(i, Resources.EMPTY);
 						}
 						
 					}
 				}
+				
 			}
 		}
+		
+		//removes the empty spots in the incoming deck
+		incomingResources = (ArrayList<Resources>) incomingResources.stream().
+				filter((res) -> !res.equals(Resources.EMPTY)).
+				collect(Collectors.toList());
 	}
 	
 	
@@ -314,6 +358,63 @@ public class WarehouseDepot {
 		}
 		return depotConverted;
 		
+	}
+	
+	/**
+	 * returns the list of all the resources contained in the data structures
+	 * @return the list of all the resources in the warehouse depot and the additional depots for each player
+	 */
+	protected ArrayList<Resources> getAllResources() {
+		ArrayList<Resources> completeList = new ArrayList<>(Arrays.asList(depot));
+		for (int leader = 0; leader < extraDepotResources.size(); leader++) {
+			for (int i = 0; i < extraDepotResources.get(leader).size(); i++) {
+				if (extraDepotContents.get(leader).get(i)) {
+					completeList.add(extraDepotResources.get(leader).get(i));
+				}
+			}
+		}
+		return completeList;
+	}
+	
+	
+	/**
+	 * remove resources form the depots in order to pay for a new development cards
+	 * @param price the "price" to be payed is a list of resources needed for buying a new development card
+	 * @return the resources that are still not payed
+	 */
+	protected ArrayList<Resources> payResources(ArrayList<Resources> price) {
+		// first checks the pyramid to see if there are some of the required resources
+		for (int i = 0; i < 6; i++) {
+			if (price.contains(depot[i])) {
+				depot[i] = Resources.EMPTY;
+			}
+		}
+		
+		//then checks the additional depots
+		for (int leader = 0; leader < 2; leader++) { // iterates for the leader which may be enabled
+			if (extraDepotResources.get(leader).get(0) != Resources.EMPTY) { //selected depot is enabled
+				for (int i = 0; i < price.size(); i++) { // iterates for all the resources left to be payed
+					
+					//first index of the resource in the additional depot
+					int elementFound = extraDepotResources.get(leader).indexOf(price.get(i));
+					if (elementFound >= 0) {
+						//searches through every occurrence of the object
+						for (int j = elementFound; j <= extraDepotResources.get(leader).lastIndexOf(price.get(i)); j++) {
+							//if the element is sored in the depot
+							if (extraDepotContents.get(leader).get(j)) {
+								//removes the element for the input list and the list of contents
+								extraDepotContents.get(leader).set(j, false);
+								price.remove(i);
+								break; // next element in the price list
+							}
+						}
+					}
+					
+				}
+			}
+		}
+		
+		return price;
 	}
 	
 

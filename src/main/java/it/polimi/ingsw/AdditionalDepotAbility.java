@@ -9,20 +9,17 @@ import java.util.ArrayList;
 public class AdditionalDepotAbility implements AbilityEffectActivation{
 
 	private final ArrayList<Resources> abilityResource;
-	private final WarehouseDepot playerDepot;
 
 	/**
 	 * Constructor that set the attributes
 	 * @param abilityResource is the array of the resources that can be store in the additional depot
-	 * @param playerDepot the depot of the player that owns the corresponding leader card
 	 */
-	protected AdditionalDepotAbility(ArrayList<Resources> abilityResource, WarehouseDepot playerDepot) {
+	protected AdditionalDepotAbility(ArrayList<Resources> abilityResource) {
 		this.abilityResource = abilityResource;
-		this.playerDepot = playerDepot;
 	}
 
 	@Override
-	public void activateAbility() {
-
+	public void activateAbility(Player player) {
+		player.getPlayersWarehouseDepot().enableAdditionalDepot(abilityResource);
 	}
 }

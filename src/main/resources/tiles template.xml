@@ -1,0 +1,38 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+
+<!-- faith track is the root-->
+<faith_track>
+    
+    <!-- every tile is defined by his position on the track-->
+    <tile number = "0">
+        
+        <!-- number of victory points-->
+        <victory points = "1"/>
+        
+        <!-- says if the tile is a papal space-->
+        <papal_space value = "true"/>
+        
+        <!-- booleans that indicate whether the tile is inside a vatican zone or not -->
+        <inside_vatican>
+            <vatican value = "false"/>
+            <vatican value = "false"/>
+            <vatican value = "true"/>
+        </inside_vatican>
+    </tile>
+    
+    <tile number = "1">
+        
+        <!-- number of victory points-->
+        <victory points = "3"/>
+        
+        <!-- says if the tile is a papal space-->
+        <papal_space value = "false"/>
+        
+        <!-- booleans that indicates whether the tile is inside a vatican zone or not-->
+        <inside_vatican>
+            <vatican value = "false"/>
+            <vatican value = "false"/>
+            <vatican value = "true"/>
+        </inside_vatican>
+    </tile>
+</faith_track>

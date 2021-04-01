@@ -1,63 +1,38 @@
 package it.polimi.ingsw;
 
+import java.util.ArrayList;
+
 public class FaithTrack {
 	
-	private boolean[] vaticanReports;
-	private int currentPosition;
-	private final Tile[] track;
-	private int lastReportClaimed;
-	
+	private ArrayList<Boolean> vaticanReports;
+	private Integer currentPosition;
+	private ArrayList<Tile> track;
+	private ArrayList<Integer> reportPoints;
+
 	/**
-	 * constructor that initializes the faith track with the initial values. Needs to be called from the Player
+	 * Constructor that initializes all the tiles
+	 * @param insideVaticanValues array of arrays of booleans containing the values of insideVatican of each tile
+	 * @param papalSpaceValues array of the papalSpace's values
+	 * @param victoryPointsValues array of integer that indicates the victory points of every tile
+	 * @param reportPoints points assigned by every report
 	 */
-	public FaithTrack() {
-		vaticanReports = new boolean[]{false, false, false};
+	public FaithTrack(ArrayList<ArrayList<Boolean>> insideVaticanValues, ArrayList<Boolean> papalSpaceValues,
+					  ArrayList<Integer> victoryPointsValues, ArrayList<Integer> reportPoints) {
+
+		this.vaticanReports = new ArrayList<>();
 		this.currentPosition = 0;
-		this.lastReportClaimed = 0;
-		track = new Tile[25];
-		
+		this.track = new ArrayList<>();
+		this.reportPoints = reportPoints;
+
 		//Creates all the tiles with their relative parameters
-		for(int i = 0; i < 25; i++){
-			
-			int victoryPoints = 0;
-			boolean insideVatican1 = false, insideVatican2 = false, insideVatican3 = false, papalSpace = false;
-			
-			//victoryPoints values
-			if(i >= 3 && i <=5)
-				victoryPoints = 1;
-			else if(i >= 6 && i <= 8)
-				victoryPoints = 2;
-			else if(i >= 9 && i <= 11)
-				victoryPoints = 4;
-			else if(i >= 12 && i <= 14)
-				victoryPoints = 6;
-			else if(i >= 15 && i <= 17)
-				victoryPoints = 9;
-			else if(i >= 18 && i <= 20)
-				victoryPoints = 12;
-			else if(i >= 21 && i <= 23)
-				victoryPoints = 16;
-			else if(i == 24)
-				victoryPoints = 20;
-			
-			//insideVatican values, one for every Vatican zone
-			if(i >= 5)
-				insideVatican1 = true;
-			if(i >= 12)
-				insideVatican2 = true;
-			if(i >= 19)
-				insideVatican3 = true;
-			
-			//papalSpace values
-			if(i == 8 || i == 16 || i==24)
-				papalSpace = true;
-			
-			track[i] = new Tile(victoryPoints, insideVatican1, insideVatican2, insideVatican3, papalSpace);
-		}
+		for(int i = 0; i < victoryPointsValues.size(); i++)
+			track.add(new Tile(victoryPointsValues.get(i), insideVaticanValues.get(i), papalSpaceValues.get(i)));
+
 	}
+
 	
 	/**
-	 * Move the market and control if the current player triggers a Papal Report
+	 * Move the marker and control if the current player triggers a Papal Report
 	 * @param faithPoints the number of faith points to be moved
 	 * @return true if the report has been claimed
 	 */
@@ -67,7 +42,7 @@ public class FaithTrack {
 			
 			currentPosition = currentPosition + 1;
 			
-			if (track[currentPosition].isPapalSpace())
+			if (track.get(currentPosition).isPapalSpace())
 				reportClaimed = true;
 			
 			faithPoints--;
@@ -77,21 +52,13 @@ public class FaithTrack {
 	
 	
 	/**
-	 * When someone triggers one report, checks if the this player is in the right position to gain the points
+	 * When someone triggers one report, checks if this player is in the right position update the vaticaReports array
 	 */
 	public void checkVaticanReport(){
-		
-		if(lastReportClaimed == 0 && track[currentPosition].isInsideVatican1()) {
-			vaticanReports[0] = true;
-		}
-		else if(lastReportClaimed == 1 && track[currentPosition].isInsideVatican2()){
-			vaticanReports[1] = true;
-		}
-		else if(lastReportClaimed == 2 && track[currentPosition].isInsideVatican3()){
-			vaticanReports[2] = true;
-		}
-		lastReportClaimed = lastReportClaimed + 1;
-		
+		if(track.get(currentPosition).isInsideVatican(vaticanReports.size()))
+			vaticanReports.add(true);
+		else
+			vaticanReports.add(false);
 	}
 	
 	/**
@@ -102,33 +69,36 @@ public class FaithTrack {
 		int totalPoints = 0;
 		
 		//Add points of the reports
-		if(vaticanReports[0])
-			totalPoints = totalPoints + 2;
-		if(vaticanReports[1])
-			totalPoints = totalPoints + 3;
-		if(vaticanReports[2])
-			totalPoints = totalPoints + 4;
-		
+		for(int i = 0; i< vaticanReports.size(); i++){
+			if(vaticanReports.get(i)) {
+				totalPoints = totalPoints + reportPoints.get(i);
+			}
+		}
+
 		//Add points of the current position
-		totalPoints = totalPoints + track[currentPosition].tilePoints();
+		totalPoints = totalPoints + track.get(currentPosition).tilePoints();
 		
 		return totalPoints;
 	}
 	
 	//Methods that just return info. I leave them here because maybe they'll be useful in the future
 	
-	public Tile[] getTrack(){
+	public ArrayList<Tile> getTrack(){
 		return track;
 	}
-	
+
 	public int getCurrentPosition(){
 		return currentPosition;
 	}
 	
-	public boolean getVaticanReports(int num){
-		return vaticanReports[num - 1];
+	public boolean getVaticanReport(int num){
+		return vaticanReports.get(num-1);
 	}
+
+
 }
+
+
 
 /*
 NB: This is the code that will go in GameMechanics to make the reports work

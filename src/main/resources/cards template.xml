@@ -1,0 +1,101 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+
+<!-- cards is the root tag that contains everything -->
+<cards>
+	
+	<!-- development cards are defined below. each card is defined with the tag "card" and its serial number  -->
+	<development_cards>
+		
+		<card number = '1'>
+			<!--required resources is a list of the resources, contains one "res" for each resource required -->
+			<required_resources>
+				<res value = "coin"/>
+				<res value = "stone"/>
+			</required_resources>
+			
+			<!-- production input and output are a list of resources, and contain one "res" for each resource -->
+			<production_input>
+				<res value = "coin"/>
+			</production_input>
+			
+			<production_output>
+				<res value = "coin"/>
+			</production_output>
+			
+			<!-- other parameters of the development card -->
+			<faith output = '1'/>
+			<level value = '3'/>
+			<victory points = '10'/>
+			<color value = 'blue'/>
+		</card>
+		
+	</development_cards>
+	
+	
+	
+	<leader_cards>
+		<!-- the leader cars are specified with an a number attribute indicating their serial number -->
+		<card number="2">
+			
+			<victory points = "3"/>
+			
+			<!-- list of requirements. There are 2 types: resources and development cards. Each one defined with a single tag -->
+			<requirement>
+				<!-- list of resources required, one tag for each resource -->
+				<resources>
+					<res value = "coin"/>
+					<res value = "stone"/>
+				</resources>
+				<!-- list of development cards required. Each card (defined with the tag "dev") must have 2 attributes indicating color and level -->
+				<devcards>
+					<dev color = "blue" level = "2"/>
+				</devcards>
+			</requirement>
+			
+			<ability>
+				<!-- list of abilities that the card has. Each ability is defined with the tag "power" and a type attribute. The type defines the
+					kind of ability that the card can express. There is one string for every type of power present in the game. Also this way
+					different abilities can be mixed in a single leader card, allowing for the cards expandability.
+				 -->
+				<power type = "white marble">
+					<!-- this type need a list of output resources for a certain number of white marbles in input -->
+					<input number = "1"/>
+					<resources>
+						<res value = "coin"/>
+						<res value = "stone"/>
+					</resources>
+				</power>
+				
+				<power type = "depot">
+					<!-- this type need a list of resources to place in the additional depots -->
+					<slot value = "coin"/>
+					<slot value = "servant"/>
+				</power>
+				
+				<power type = "production">
+					<!-- list of input resources and the output gained, defined as the number of faith points earned and the number of free choices
+					 	of resources to gain in output -->
+					<input>
+						<res value = "coin"/>
+						<res value = "stone"/>
+					</input>
+					<faith output = "2"/>
+					<free_choice number = "2"/>
+				</power>
+				
+				<power type = "discount">
+					<!-- its a list of resources. Each one expresses a discount of value 1 when a new development card is bought -->
+					<resources>
+						<res value = "coin"/>
+						<res value = "stone"/>
+					</resources>
+				</power>
+				
+			</ability>
+		</card>
+	</leader_cards>
+	
+	
+</cards>
+		
+		

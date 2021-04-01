@@ -9,20 +9,21 @@ import java.util.ArrayList;
 public class DiscountAbility implements AbilityEffectActivation{
 
 	private ArrayList<Resources> singleDiscounts;
-	private CardManagement playerCardManagement;
 
 	/**
 	 * Constructor that sets the attributes
 	 * @param singleDiscounts array of resources that identifies what resource is discounted and how much it is
-	 * @param playerCardManagement CardManagement of the player who owns the leader card
 	 */
-	public DiscountAbility(ArrayList<Resources> singleDiscounts, CardManagement playerCardManagement) {
+	public DiscountAbility(ArrayList<Resources> singleDiscounts) {
 		this.singleDiscounts = singleDiscounts;
-		this.playerCardManagement = playerCardManagement;
 	}
 
+	/**
+	 * Set the parameters of the discounts in the Player instance
+	 * @param player the player who wants to activate the discount
+	 */
 	@Override
-	public void activateAbility() {
-
+	public void activateAbility(Player player) {
+		player.setDiscount(singleDiscounts);
 	}
 }

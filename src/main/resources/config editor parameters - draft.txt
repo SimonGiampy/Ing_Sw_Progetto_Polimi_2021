@@ -1,0 +1,13 @@
+a) production powers for the leader cards are limited to 1 ability in the first version of the game.
+        It can be expanded to 2 maximum for a good playability and correct dynamic handling
+
+b) the number of development cards must be an integer multiple of 12 (at least 36 or 48), and there must be 3 different levels and 4 different colors.
+
+c) faith track can't be too long or too short
+
+d) number of tiles per vatican zone should be limited in range
+
+e) the ratio of number of resources gained from a number of white marbles, and the number of white marbles should not be greater than 2
+
+
+TODO: add more parameter constraints for the game, for future reference

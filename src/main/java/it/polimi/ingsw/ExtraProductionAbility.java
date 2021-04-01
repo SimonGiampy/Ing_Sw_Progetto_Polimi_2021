@@ -9,25 +9,27 @@ public class ExtraProductionAbility implements AbilityEffectActivation {
 
 	private ArrayList<Resources> inputResources; // list of input resources for the production
 	private int faithPointsOutput; //number of faith points gained after the production
+	private ArrayList<Resources> outputResources;
 	private int freeChoicesResources; // number of resources to gain in output, that can be chosen by the user
-	private CardManagement cardManager; // instance of card management, needed for communication
 	
 	/**
 	 *
 	 * @param inputResources list of input resources for the production
 	 * @param faithPointsOutput number of faith points gained after the production
 	 * @param freeChoicesResources number of resources to gain in output, that can be chosen by the user
-	 * @param cardManager instance of card management, needed for communication
+	 * @param outputResources list of input resources gained from the production
 	 */
-	public ExtraProductionAbility(ArrayList<Resources> inputResources, int faithPointsOutput, int freeChoicesResources, CardManagement cardManager) {
+	public ExtraProductionAbility(ArrayList<Resources> inputResources, int faithPointsOutput, int freeChoicesResources,
+	                              ArrayList<Resources> outputResources) {
 		this.inputResources = inputResources;
 		this.faithPointsOutput = faithPointsOutput;
 		this.freeChoicesResources = freeChoicesResources;
-		this.cardManager = cardManager;
+		this.outputResources = outputResources;
 	}
 
 	@Override
-	public void activateAbility() {
-
+	public void activateAbility(Player player) {
+		player.getPlayersCardManager().
+				addLeaderCard(inputResources,outputResources,faithPointsOutput);
 	}
 }

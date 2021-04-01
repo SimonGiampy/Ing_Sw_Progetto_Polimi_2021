@@ -6,6 +6,6 @@ public enum Resources {
 	STONE,
 	SERVANT,
 	SHIELD,
-	NO_RESOURCE;
+	EMPTY; // indicates empty slot resources in the warehouse depot
 
 }

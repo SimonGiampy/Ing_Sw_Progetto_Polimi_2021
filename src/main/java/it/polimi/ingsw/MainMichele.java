@@ -1,26 +1,37 @@
 package it.polimi.ingsw;
 
-import java.util.ArrayList;
-
 public class MainMichele {
 	
 	public static void main(String[] args) {
-		ArrayList<Marbles> list;
-		list = new ArrayList<Marbles>();
+
+		XMLParserDraft parser = new XMLParserDraft();
+
+		parser.readTiles("tiles template.xml");
 		
-		ResourceDeck deck;
-		deck = new ResourceDeck();
-		ArrayList<Resources> resourceList;
-		resourceList = new ArrayList<Resources>();
-		list.add(Marbles.BLUE);
-		list.add(Marbles.YELLOW);
-		list.add(Marbles.BLUE);
-		list.add(Marbles.GREY);
-		
-		
-		deck.addResources(list);
-		resourceList = deck.getResourceList();
+
+/*
+		WarehouseDepot depot = new WarehouseDepot();
+		ResourceDeck deck = new ResourceDeck(depot);
+		Marbles[] marbles;
+		marbles = new Marbles[]{Marbles.BLUE, Marbles.YELLOW, Marbles.WHITE, Marbles.GREY, Marbles.WHITE, Marbles.WHITE};
+		ArrayList<Resources> fromWhiteMarble1 = new ArrayList<>();
+		ArrayList<Resources> fromWhiteMarble2 = new ArrayList<>();
+		fromWhiteMarble1.add(Resources.COIN);
+		fromWhiteMarble2.add(Resources.SERVANT);
+		fromWhiteMarble2.add(Resources.STONE);
+		fromWhiteMarble2.add(Resources.STONE);
+
+
+		deck.setFromWhiteMarble(fromWhiteMarble1, 2);
+		//deck.setFromWhiteMarble(fromWhiteMarble2, 2);
+
+		deck.addResources(marbles, 0,1);
+
+		ArrayList<Resources> resourceList = deck.getResourceList();
 		for(Resources r: resourceList)
-			System.out.println(r + "\n");
+			System.out.println(r);
+
+ */
 	}
+
 }

@@ -1,34 +1,31 @@
 package it.polimi.ingsw;
 
+import java.util.ArrayList;
+
 public class Tile {
 	
 	private final int victoryPoints;
 	
 	//These insideVatican attributes are true not only for the tiles that actually are in the correspondent Vatican Zone
 	//but also for all the tiles after them
-	private final boolean insideVatican1, insideVatican2, insideVatican3;
-	
-	//True only in tiles 8, 16 and 24
+	private ArrayList<Boolean> insideVatican;
+
 	private final boolean papalSpace;
-	
-	public Tile(int victoryPoints, boolean insideVatican1, boolean insideVatican2, boolean insideVatican3, boolean papalSpace) {
+
+	/**
+	 * Constructor that assigns values to the attributes
+	 * @param victoryPoints number of victory points
+	 * @param insideVatican array of boolean that indicates whether a tile is inside a vatican zone or not
+	 * @param papalSpace true if the tile is a papal space
+	 */
+	public Tile(int victoryPoints, ArrayList<Boolean> insideVatican, boolean papalSpace) {
 		this.victoryPoints = victoryPoints;
-		this.insideVatican1 = insideVatican1;
-		this.insideVatican2 = insideVatican2;
-		this.insideVatican3 = insideVatican3;
+		this.insideVatican = insideVatican;
 		this.papalSpace = papalSpace;
 	}
 	
-	public boolean isInsideVatican1() {
-		return insideVatican1;
-	}
-	
-	public boolean isInsideVatican2() {
-		return insideVatican2;
-	}
-	
-	public boolean isInsideVatican3() {
-		return insideVatican3;
+	public boolean isInsideVatican(int reportNumber) {
+		return insideVatican.get(reportNumber);
 	}
 	
 	public boolean isPapalSpace() {

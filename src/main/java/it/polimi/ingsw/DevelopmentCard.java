@@ -66,7 +66,7 @@ public class DevelopmentCard {
 	 * @return an arraylist of resources that contains production's output.
 	 */
 	public ArrayList<Resources> produce(){
-		return productionRules.getOutput();
+		return productionRules.produce();
 	}
 	
 	/**
@@ -77,15 +77,7 @@ public class DevelopmentCard {
 	public boolean isCardProductionAvailable(ArrayList<Resources> input){
 		return productionRules.isProductionAvailable(input);
 	}
-	
-	/**
-	 * it checks if card's production returns faith points.
-	 * @return true if the number of faith points is bigger than 0
-	 */
-	public boolean doesCardProductionReturnsFaithPoints(){
-		return productionRules.doesProductionReturnsFaithPoints();
-	}
-	
+
 	/**
 	 * getter for card's production faith points
 	 * @return the number of faith points
@@ -93,7 +85,21 @@ public class DevelopmentCard {
 	public int returnFaithPoints(){
 		return productionRules.getFaithOutput();
 	}
-	
-	
+
+	public void resetCardProduction(){
+		productionRules.resetProduction();
+	}
+
+	/**
+	 *
+	 * @return
+	 */
+	public ArrayList<Resources> getProductionInput(){
+		 return productionRules.getInputCopy();
+	}
+	public int numberOfOutputEmptyResources(){
+		return productionRules.numberOfOutputEmptyResources();
+	}
+
 	
 }

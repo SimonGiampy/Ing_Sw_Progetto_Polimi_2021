@@ -1,0 +1,18 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+
+<!-- expandable base production rule -->
+<base_production>
+
+    <!-- list of input resources: free_choice defines a non-fixed resource -->
+    <input>
+        <res value = "free_choice"/>
+        <res value = "stone"/>
+    </input>
+
+    <!-- list of output resources: free_choice defines a non-fixed resource -->
+    <output>
+        <res value = "coin"/>
+        <res value = "free_choice"/>
+    </output>
+
+</base_production>

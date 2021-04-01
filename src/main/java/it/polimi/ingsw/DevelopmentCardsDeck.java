@@ -29,32 +29,64 @@ public class DevelopmentCardsDeck {
 	 * checks if the card is buyable. Checks if the resources are enough to buy the card. Checks also if the level of the cards in the player's
 	 * deck is compatible with the chosen card.
 	 * @param level level of the card to choose (user input)
-	 * @param colors color of the chosen card
+	 * @param color color of the chosen card
 	 * @param playerResources the resources accumulated by the player (sum of all the resources in the warehouse and in the strongbox)
 	 * @return true if the chosen card can be bought, otherwise false if the requirements are not met
 	 */
-	protected boolean isCardBuyable(int level, Colors colors, ArrayList<Resources> playerResources) {
-		int row = level - 1, column = mapColorToColumn(colors);
+	protected boolean isCardBuyable(int level, Colors color, ArrayList<Resources> playerResources, CardManagement playersCard) {
+		int row = level - 1, column = color.getColorNumber();
 		
 		if (cardStackStructure[row][column].isEmpty()) { //must be not empty in order to get the card on the top
-			System.out.println("scemo");
 			return false;
 		}
 		
 		DevelopmentCard card = cardStackStructure[row][column].get(0);
 		ArrayList<Resources> required = card.getResourcesRequirement();
 		
-		//TODO: check if the level of the selected card is equal to at least one top card in the player's cards slots plus 1
-		
-		
-		if (playerResources.containsAll(required)) { // tha player has got all the necessary resources in order to buy the card
-			System.out.println("GG");
-			return true;
-		} else {
-			System.out.println("NOOB");
+		if (!playerResources.containsAll(required)) { // the player has got all the necessary resources in order to buy the card
 			return false;
 		}
-		// return playerResources.containsAll(required)
+		
+		// checks if the level of the selected card is equal to at least one top card in the player's cards slots plus 1
+		if (playersCard.checkStackLevel(0) == level - 1) {
+			return true;
+		} else if (playersCard.checkStackLevel(1) == level - 1) {
+			return true;
+		} else return playersCard.checkStackLevel(2) == level - 1;
+		
+		
+	}
+
+	/**
+	 * get the price of the card
+	 * @param level level of the card
+	 * @param color color of the card
+	 * @return arraylist of required resources
+	 */
+	protected ArrayList<Resources> getPriceDevCard(int level, Colors color){
+
+		int row = level - 1, column = color.getColorNumber();
+		return cardStackStructure[row][column].get(0).getResourcesRequirement();
+
+	}
+	
+	//TODO: check if exists a viable production that can be done
+	
+	/**
+	 * checks if there exists at least one dev card that can be bought from the player
+	 * @param playersResources all the resources tha player has
+	 * @param manager the card management instance containing the cards
+	 * @return true if there is at least one card buyable
+	 */
+	protected boolean canBuyDevCard(ArrayList<Resources> playersResources, CardManagement manager) {
+		for (int i = 0; i < 3; i++) {
+			for (Colors j: Colors.values()) {
+				if (isCardBuyable(i, j, playersResources, manager)) {
+					return true;
+				}
+			}
+		}
+		return false;
 	}
 	
 	/**
@@ -64,31 +96,10 @@ public class DevelopmentCardsDeck {
 	 * @return the development card that has been removed from the stack
 	 */
 	protected DevelopmentCard claimCard(int level, Colors color) {
-		int row = level - 1, column = mapColorToColumn(color);
+		int row = level - 1, column = color.getColorNumber();
 		return cardStackStructure[row][column].remove(0);
 	}
 	
-	/**
-	 * transforms the color into the corresponding column in the deck matrix
-	 * @param color the color to be mapped
-	 * @return the index of the corresponding column to the input color
-	 */
-	protected int mapColorToColumn(Colors color) {
-		switch (color) {
-			case GREEN -> {
-				return 0;
-			}
-			case BLUE -> {
-				return 1;
-			}
-			case YELLOW -> {
-				return 2;
-			}
-			case PURPLE -> {
-				return 3;
-			}
-			default -> throw new IllegalStateException("Unexpected value: " + color);
-		}
-	}
+	
 	
 }

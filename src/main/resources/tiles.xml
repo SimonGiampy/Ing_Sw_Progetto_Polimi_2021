@@ -1,0 +1,228 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<faith_track>
+    <tile number = "0">
+        <victory points = "0"/>
+        <papal_space value = "false"/>
+        <inside_vatican>
+            <vatican value = "false"/>
+            <vatican value = "false"/>
+            <vatican value = "false"/>
+        </inside_vatican>
+    </tile>
+    <tile number = "1">
+        <victory points = "0"/>
+        <papal_space value = "false"/>
+        <inside_vatican>
+            <vatican value = "false"/>
+            <vatican value = "false"/>
+            <vatican value = "false"/>
+        </inside_vatican>
+    </tile>
+    <tile number = "2">
+        <victory points = "0"/>
+        <papal_space value = "false"/>
+        <inside_vatican>
+            <vatican value = "false"/>
+            <vatican value = "false"/>
+            <vatican value = "false"/>
+        </inside_vatican>
+    </tile>
+    <tile number = "3">
+        <victory points = "1"/>
+        <papal_space value = "false"/>
+        <inside_vatican>
+            <vatican value = "false"/>
+            <vatican value = "false"/>
+            <vatican value = "false"/>
+        </inside_vatican>
+    </tile>
+    <tile number = "4">
+        <victory points = "1"/>
+        <papal_space value = "false"/>
+        <inside_vatican>
+            <vatican value = "false"/>
+            <vatican value = "false"/>
+            <vatican value = "false"/>
+        </inside_vatican>
+    </tile>
+    <tile number = "5">
+        <victory points = "1"/>
+        <papal_space value = "false"/>
+        <inside_vatican>
+            <vatican value = "true"/>
+            <vatican value = "false"/>
+            <vatican value = "false"/>
+        </inside_vatican>
+    </tile>
+    <tile number = "6">
+        <victory points = "2"/>
+        <papal_space value = "false"/>
+        <inside_vatican>
+            <vatican value = "true"/>
+            <vatican value = "false"/>
+            <vatican value = "false"/>
+        </inside_vatican>
+    </tile>
+    <tile number = "7">
+        <victory points = "2"/>
+        <papal_space value = "false"/>
+        <inside_vatican>
+            <vatican value = "true"/>
+            <vatican value = "false"/>
+            <vatican value = "false"/>
+        </inside_vatican>
+    </tile>
+    <tile number = "8">
+        <victory points = "2"/>
+        <papal_space value = "true"/>
+        <inside_vatican>
+            <vatican value = "true"/>
+            <vatican value = "false"/>
+            <vatican value = "false"/>
+        </inside_vatican>
+    </tile>
+    <tile number = "9">
+        <victory points = "4"/>
+        <papal_space value = "false"/>
+        <inside_vatican>
+            <vatican value = "true"/>
+            <vatican value = "false"/>
+            <vatican value = "false"/>
+        </inside_vatican>
+    </tile>
+    <tile number = "10">
+        <victory points = "4"/>
+        <papal_space value = "false"/>
+        <inside_vatican>
+            <vatican value = "true"/>
+            <vatican value = "false"/>
+            <vatican value = "false"/>
+        </inside_vatican>
+    </tile>
+    <tile number = "11">
+        <victory points = "4"/>
+        <papal_space value = "false"/>
+        <inside_vatican>
+            <vatican value = "true"/>
+            <vatican value = "false"/>
+            <vatican value = "false"/>
+        </inside_vatican>
+    </tile>
+    <tile number = "12">
+        <victory points = "6"/>
+        <papal_space value = "false"/>
+        <inside_vatican>
+            <vatican value = "true"/>
+            <vatican value = "true"/>
+            <vatican value = "false"/>
+        </inside_vatican>
+    </tile>
+    <tile number = "13">
+        <victory points = "6"/>
+        <papal_space value = "false"/>
+        <inside_vatican>
+            <vatican value = "true"/>
+            <vatican value = "true"/>
+            <vatican value = "false"/>
+        </inside_vatican>
+    </tile>
+    <tile number = "14">
+        <victory points = "6"/>
+        <papal_space value = "false"/>
+        <inside_vatican>
+            <vatican value = "true"/>
+            <vatican value = "true"/>
+            <vatican value = "false"/>
+        </inside_vatican>
+    </tile>
+    <tile number = "15">
+        <victory points = "9"/>
+        <papal_space value = "false"/>
+        <inside_vatican>
+            <vatican value = "true"/>
+            <vatican value = "true"/>
+            <vatican value = "false"/>
+        </inside_vatican>
+    </tile>
+    <tile number = "16">
+        <victory points = "9"/>
+        <papal_space value = "true"/>
+        <inside_vatican>
+            <vatican value = "true"/>
+            <vatican value = "true"/>
+            <vatican value = "false"/>
+        </inside_vatican>
+    </tile>
+    <tile number = "17">
+        <victory points = "9"/>
+        <papal_space value = "false"/>
+        <inside_vatican>
+            <vatican value = "true"/>
+            <vatican value = "true"/>
+            <vatican value = "false"/>
+        </inside_vatican>
+    </tile>
+    <tile number = "18">
+        <victory points = "12"/>
+        <papal_space value = "false"/>
+        <inside_vatican>
+            <vatican value = "true"/>
+            <vatican value = "true"/>
+            <vatican value = "false"/>
+        </inside_vatican>
+    </tile>
+    <tile number = "19">
+        <victory points = "12"/>
+        <papal_space value = "false"/>
+        <inside_vatican>
+            <vatican value = "true"/>
+            <vatican value = "true"/>
+            <vatican value = "true"/>
+        </inside_vatican>
+    </tile>
+    <tile number = "20">
+        <victory points = "12"/>
+        <papal_space value = "false"/>
+        <inside_vatican>
+            <vatican value = "true"/>
+            <vatican value = "true"/>
+            <vatican value = "true"/>
+        </inside_vatican>
+    </tile>
+    <tile number = "21">
+        <victory points = "16"/>
+        <papal_space value = "false"/>
+        <inside_vatican>
+            <vatican value = "true"/>
+            <vatican value = "true"/>
+            <vatican value = "true"/>
+        </inside_vatican>
+    </tile>
+    <tile number = "22">
+        <victory points = "16"/>
+        <papal_space value = "false"/>
+        <inside_vatican>
+            <vatican value = "true"/>
+            <vatican value = "true"/>
+            <vatican value = "true"/>
+        </inside_vatican>
+    </tile>
+    <tile number = "23">
+        <victory points = "16"/>
+        <papal_space value = "false"/>
+        <inside_vatican>
+            <vatican value = "true"/>
+            <vatican value = "true"/>
+            <vatican value = "true"/>
+        </inside_vatican>
+    </tile>
+    <tile number = "24">
+        <victory points = "20"/>
+        <papal_space value = "true"/>
+        <inside_vatican>
+            <vatican value = "true"/>
+            <vatican value = "true"/>
+            <vatican value = "true"/>
+        </inside_vatican>
+    </tile>
+</faith_track>
