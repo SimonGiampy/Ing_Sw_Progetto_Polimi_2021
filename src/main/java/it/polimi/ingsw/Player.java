@@ -2,7 +2,6 @@ package it.polimi.ingsw;
 
 import java.security.InvalidParameterException;
 import java.util.ArrayList;
-import java.util.Arrays;
 
 /**
  * Player class represents a unique player in the game. Handles all the instances of the classes in the game, since the player interacts with all of
@@ -19,20 +18,33 @@ public class Player {
 	private final Market commonMarket;
 	private final DevelopmentCardsDeck commonCardsDeck;
 	
-	private ArrayList<LeaderCard> leaderCards;
+	private LeaderCard[] leaderCards;
+	private boolean activeLeader1;
+	private boolean activeLeader2;
 	
 	int coinDiscount;
 	int servantDiscount;
 	int shieldDiscount;
 	int stoneDiscount;
-
+	
+	/**
+	 * constructor for the Player
+	 * @param market common market shared by all the players in the game
+	 * @param developmentCardsDeck the deck of development cards shared by all the players
+	 * @param warehouseDepot the player's Warehouse depot and the additional depots
+	 * @param strongbox the player's Strongbox
+	 * @param resourceDeck the player's resource deck instance
+	 * @param faithTrack player's personal faith track (equal to all the other players)
+	 * @param cardManagement card manager for all the cards
+	 * @param leaderCards the 4 leader cards to be assigned to the player
+	 */
 	public Player(Market market, DevelopmentCardsDeck developmentCardsDeck, WarehouseDepot warehouseDepot, Strongbox strongbox,
 	              ResourceDeck resourceDeck, FaithTrack faithTrack, CardManagement cardManagement, LeaderCard[] leaderCards) {
 		
 		commonMarket = market;
 		commonCardsDeck = developmentCardsDeck;
 
-		this.leaderCards = (ArrayList<LeaderCard>) Arrays.asList(leaderCards);
+		this.leaderCards = leaderCards;
 		
 		myWarehouseDepot = warehouseDepot;
 		myFaithTrack = faithTrack;
@@ -44,18 +56,26 @@ public class Player {
 		servantDiscount = 0;
 		shieldDiscount = 0;
 		stoneDiscount = 0;
+		
+		activeLeader1 = false;
+		activeLeader2 = false;
 
 	}
 
 
 	/**
-	 * discards two leader cards out of the 4 given at the beginning of the game
-	 * @param indexCard1 index of the first card to discard
-	 * @param indexCard2 index of the second card to discard
+	 * choose two leader cards out of the 4 given at the beginning of the game
+	 * @param indexCard1 index of the first card to choose
+	 * @param indexCard2 index of the second card to choose
 	 */
-	public void discardTwoLeaders(int indexCard1, int indexCard2){
-		leaderCards.remove(indexCard1);
-		leaderCards.remove(indexCard2);
+	public void chooseTwoLeaders(int indexCard1, int indexCard2){
+		LeaderCard[] temp = new LeaderCard[2];
+		temp[0] = leaderCards[indexCard1];
+		temp[1] = leaderCards[indexCard2];
+		leaderCards = temp;
+		
+		activeLeader1 = true;
+		activeLeader2 = false;
 	}
 
 	/**
@@ -63,8 +83,9 @@ public class Player {
 	 * @param indexCard index of the leader card to discard
 	 * @return true if the player triggers one report, gameMechanics will have to call the checks on the report
 	 */
-	public boolean discardLeaderCard(int indexCard){
-		leaderCards.remove(indexCard);
+	public boolean discardLeaderCard(int indexCard) {
+		if (indexCard == 1) activeLeader1 = false;
+		else activeLeader2 = false;
 		return myFaithTrack.moveMarker(1);
 	}
 	/**
@@ -123,14 +144,13 @@ public class Player {
 					if(!price.remove(Resources.COIN))
 						break;
 				for(int i = 0; i < servantDiscount; i++)
-					if(!price.remove(Resources.COIN))
+					if(!price.remove(Resources.SERVANT))
 						break;
 				for(int i = 0; i < stoneDiscount; i++)
-					if(!price.remove(Resources.COIN))
+					if(!price.remove(Resources.STONE))
 						break;
-
 				for(int i = 0; i < shieldDiscount; i++)
-					if(!price.remove(Resources.COIN))
+					if(!price.remove(Resources.SHIELD))
 						break;
 
 				//Pay with what there's in the depot or in the additional depots
@@ -153,8 +173,8 @@ public class Player {
 	 * @param whichLeader the index in the array corresponding to the leader to be activated
 	 */
 	public void activateLeaderCard(int whichLeader) {
-		leaderCards.get(whichLeader).activateAbility(this);
-		leaderCards.remove(whichLeader);
+		//passes this as object parameter so that the ability know to which player to refer to for the activation
+		leaderCards[whichLeader].activateAbility(this);
 	}
 
 	/**
