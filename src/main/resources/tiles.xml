@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='UTF-8' ?>
-<faith_track>
+<faith_tiles>
     <tile number = "0">
         <victory points = "0"/>
         <papal_space value = "false"/>
@@ -225,4 +225,11 @@
             <vatican value = "true"/>
         </inside_vatican>
     </tile>
-</faith_track>
+</faith_tiles>
+<report_points>
+    <report>
+        <zone points = "2"/>
+        <zone points = "3"/>
+        <zone points = "4"/>
+    </report>
+</report_points>
