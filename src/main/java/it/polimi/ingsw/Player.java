@@ -1,6 +1,8 @@
 package it.polimi.ingsw;
 
+import java.security.InvalidParameterException;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 /**
  * Player class represents a unique player in the game. Handles all the instances of the classes in the game, since the player interacts with all of
@@ -17,7 +19,7 @@ public class Player {
 	private final Market commonMarket;
 	private final DevelopmentCardsDeck commonCardsDeck;
 	
-	private LeaderCard[] leaderCards;
+	private ArrayList<LeaderCard> leaderCards;
 	
 	int coinDiscount;
 	int servantDiscount;
@@ -29,7 +31,8 @@ public class Player {
 		
 		commonMarket = market;
 		commonCardsDeck = developmentCardsDeck;
-		this.leaderCards = leaderCards;
+
+		this.leaderCards = (ArrayList<LeaderCard>) Arrays.asList(leaderCards);
 		
 		myWarehouseDepot = warehouseDepot;
 		myFaithTrack = faithTrack;
@@ -47,29 +50,38 @@ public class Player {
 
 	/**
 	 * discards two leader cards out of the 4 given at the beginning of the game
-	 * @param indexCard1 index of the first card to keep
-	 * @param indexCard2 index of the second card to keep
+	 * @param indexCard1 index of the first card to discard
+	 * @param indexCard2 index of the second card to discard
 	 */
 	public void discardTwoLeaders(int indexCard1, int indexCard2){
-		LeaderCard[] keptCards = new LeaderCard[];
-		keptCards[0] = leaderCards[indexCard1];
-		keptCards[1] = leaderCards[indexCard2];
-		leaderCards = keptCards;
+		leaderCards.remove(indexCard1);
+		leaderCards.remove(indexCard2);
+	}
+
+	/**
+	 * discards one of the two leader cards owned by the player and give him one faith point
+	 * @param indexCard index of the leader card to discard
+	 * @return true if the player triggers one report, gameMechanics will have to call the checks on the report
+	 */
+	public boolean discardLeaderCard(int indexCard){
+		leaderCards.remove(indexCard);
+		return myFaithTrack.moveMarker(1);
 	}
 	/**
 	 * prototype function that sends the command to the market
 	 *
 	 * @param which must be equal to row or col
 	 * @param where indicates the number of the row or the column to move
+	 * @return true if the player triggers one vatican report
 	 */
-	protected void interactWithMarket(String which, int where) {
+	protected boolean interactWithMarket(String which, int where) {
 		if (which.equals("col")) {
 			myResourceDeck.addResources(commonMarket.shiftCol(where));
 		} else if (which.equals("row")) {
 			myResourceDeck.addResources(commonMarket.shiftRow(where));
 		}
 
-		myFaithTrack.moveMarker(myResourceDeck.getFaithPoint());
+		return myFaithTrack.moveMarker(myResourceDeck.getFaithPoint());
 		//TODO: wait for controller and movement of resources in the warehouse
 	}
 
@@ -89,23 +101,49 @@ public class Player {
 		return total;
 	}
 
-	protected void buyNewDevCard(int level, Colors color) {
-		
+	/**
+	 * buy a dev card from the commonDeck and pay the price
+	 * @param level level of the card
+	 * @param color color fo the card
+	 * @param selectedSlot number of the slot where the player wants to put the card
+	 */
+	protected void buyNewDevCard(int level, Colors color, int selectedSlot) {
+
+		//Check if the player has enough resources and at least one eligible slot for the card
 		if (commonCardsDeck.isCardBuyable(level, color, gatherAllResources(), cardManager)) {
 
-			int selectedSlot = 0;
-
+			//Get the price
 			ArrayList <Resources> price = commonCardsDeck.getPriceDevCard(level, color);
 
-			//TODO: ask where to put the card (which slot)
-			cardManager.checkStackLevel(selectedSlot);
+			//Check that the slot is an eligible one
+			if(cardManager.checkStackLevel(selectedSlot) == level - 1) {
 
-			price = myWarehouseDepot.payResources(price);
+				//Apply the discounts of the leader cards
+				for(int i = 0; i < coinDiscount; i++)
+					if(!price.remove(Resources.COIN))
+						break;
+				for(int i = 0; i < servantDiscount; i++)
+					if(!price.remove(Resources.COIN))
+						break;
+				for(int i = 0; i < stoneDiscount; i++)
+					if(!price.remove(Resources.COIN))
+						break;
 
-			if(!(price.isEmpty()))
-				price = myStrongbox.payResources(price);
+				for(int i = 0; i < shieldDiscount; i++)
+					if(!price.remove(Resources.COIN))
+						break;
 
-			cardManager.addCard(commonCardsDeck.claimCard(level, color), selectedSlot);
+				//Pay with what there's in the depot or in the additional depots
+				price = myWarehouseDepot.payResources(price);
+				//Pay the remaining resources with the ones in the strongbox
+				if (!(price.isEmpty()))
+					myStrongbox.retrieveResources(price);
+				//Add card the slot
+				cardManager.addCard(commonCardsDeck.claimCard(level, color), selectedSlot);
+
+			} else{
+				throw new InvalidParameterException("slot not available");
+			}
 
 		}
 	}
@@ -115,7 +153,8 @@ public class Player {
 	 * @param whichLeader the index in the array corresponding to the leader to be activated
 	 */
 	public void activateLeaderCard(int whichLeader) {
-		leaderCards[whichLeader].activateAbility(this);
+		leaderCards.get(whichLeader).activateAbility(this);
+		leaderCards.remove(whichLeader);
 	}
 
 	/**
