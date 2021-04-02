@@ -1,5 +1,7 @@
 package it.polimi.ingsw;
 
+import it.polimi.ingsw.exceptions.InvalidUserRequestException;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Scanner;
@@ -245,31 +247,45 @@ public class WarehouseDepot {
 	}
 	
 	/**
-	 * this function moves automatically the biggest number of resources from the incoming deck to the additional depots, where possible.
-	 * It works for 2 leaders, whether they are activated or not. For each leader, if enabled, it moves the resources inside,
-	 * if there are any spots available. Otherwise, it does nothing if the resources can't be inserted. This method is automatic.
+	 * Moves the resources to both additional depots automatically, giving priority to the leader specified in input
+	 * @param priorityLeader the number of the leader card depot to prioritize when assigning resources (1 or 2)
 	 */
-	protected void moveResourcesToAdditionalDepot() {
-		for (int leaderNumber = 0; leaderNumber < 2; leaderNumber++) { // iterates for the 2 leaders which may have this ability enabled
-			if (isLeaderActivated(leaderNumber)) { //selected depot is enabled
-				
-				for (int i = 0; i < incomingResources.size(); i++) { //cycles for every position in the incoming deck
-					for (int j = 0; j < extraDepotResources.get(leaderNumber).size(); j++) { //cycles for every slot in the extra depots
-						
-						if (incomingResources.get(i) == extraDepotResources.get(leaderNumber).get(j) &&
-								!extraDepotContents.get(leaderNumber).get(j)) {
-							extraDepotContents.get(leaderNumber).set(j, true);
-							incomingResources.set(i, Resources.EMPTY);
-						}
-						
-					}
-				}
-				
-			}
-		}
+	protected void moveResourcesToAdditionalDepots(int priorityLeader) throws InvalidUserRequestException {
+		if (priorityLeader == 1) {
+			moveResourcesToLeaderDepot(0);
+			moveResourcesToLeaderDepot(1);
+		} else if (priorityLeader == 2) {
+			moveResourcesToLeaderDepot(1);
+			moveResourcesToLeaderDepot(0);
+		} else throw new InvalidUserRequestException("the number of the leader card to prioritize must be 1 or 2.");
 		
 		//removes the empty spots in the incoming deck
 		incomingResources = removeEmptySpaces(incomingResources);
+	}
+	
+	/**
+	 * this function moves automatically the biggest number of resources from the incoming deck to the additional depots, where possible.
+	 * It works for 2 leaders, whether they are activated or not. For each leader, if enabled, it moves the resources inside,
+	 * if there are any spots available. Otherwise, it does nothing if the resources can't be inserted. This method is automatic.
+	 * 	 This function is called exclusively from the method above
+	 * @param whichLeader the index of the leader to move the resources to (0 or 1)
+	 */
+	private void moveResourcesToLeaderDepot(int whichLeader) {
+		if (isLeaderActivated(whichLeader)) { //selected depot is enabled
+			
+			for (int i = 0; i < incomingResources.size(); i++) { //cycles for every position in the incoming deck
+				for (int j = 0; j < extraDepotResources.get(whichLeader).size(); j++) { //cycles for every slot in the extra depots
+					
+					if (incomingResources.get(i) == extraDepotResources.get(whichLeader).get(j) &&
+							!extraDepotContents.get(whichLeader).get(j)) {
+						extraDepotContents.get(whichLeader).set(j, true);
+						incomingResources.set(i, Resources.EMPTY);
+					}
+					
+				}
+			}
+			
+		}
 	}
 	
 	
@@ -353,7 +369,7 @@ public class WarehouseDepot {
 	 * returns the list of all the resources contained in the data structures
 	 * @return the list of all the resources in the warehouse depot and the additional depots for each player
 	 */
-	protected ArrayList<Resources> getAllResources() {
+	protected ArrayList<Resources> gatherAllResources() {
 		ArrayList<Resources> completeList = new ArrayList<>(Arrays.asList(depot));
 		completeList = removeEmptySpaces(completeList);
 		
@@ -396,10 +412,11 @@ public class WarehouseDepot {
 	 * @param price the "price" to be payed is a list of resources needed for buying a new development card
 	 * @return the resources that are still not payed
 	 */
-	protected ArrayList<Resources> payResources(ArrayList<Resources> price) {
+	public ArrayList<Resources> payResources(ArrayList<Resources> price) {
 		// first checks the pyramid to see if there are some of the required resources
 		for (int i = 0; i < 6; i++) {
 			if (price.contains(depot[i])) {
+				price.remove(depot[i]);
 				depot[i] = Resources.EMPTY;
 			}
 		}

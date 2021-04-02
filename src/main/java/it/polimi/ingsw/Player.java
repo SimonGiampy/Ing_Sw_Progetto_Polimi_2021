@@ -112,13 +112,13 @@ public class Player {
 	}
 
 	protected boolean isBuyMoveAvailable(){
-		myStrongbox.getContent().addAll(myWarehouseDepot.getAllResources());
+		myStrongbox.getContent().addAll(myWarehouseDepot.gatherAllResources());
 		return commonCardsDeck.canBuyDevCard(gatherAllResources(), cardManager);
 	}
 	
 	private ArrayList<Resources> gatherAllResources() {
 		ArrayList<Resources> total = myStrongbox.getContent();
-		total.addAll(myWarehouseDepot.getAllResources());
+		total.addAll(myWarehouseDepot.gatherAllResources());
 		return total;
 	}
 

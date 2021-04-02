@@ -7,6 +7,7 @@ import java.util.stream.Collectors;
 
 /**
  * this class handles player's cards management
+ * TODO: this javadoc needs more words
  */
 public class CardManagement {
 	private final ArrayList<Stack<DevelopmentCard>> cards;
@@ -161,7 +162,7 @@ public class CardManagement {
 	 */
 	public boolean isSingleProductionAvailable(int selectedStack){
 		ArrayList<Resources> playerResources= myStrongbox.getContent();
-		playerResources.addAll(myWarehouseDepot.getAllResources());
+		playerResources.addAll(myWarehouseDepot.gatherAllResources());
 		return switch (selectedStack) {
 			case 1 -> cards.get(0).peek().isCardProductionAvailable(playerResources);
 			case 2 -> cards.get(1).peek().isCardProductionAvailable(playerResources);
@@ -197,7 +198,7 @@ public class CardManagement {
 	 */
 	public boolean isSelectedProductionAvailable(ArrayList<Integer> playerInput){
 		ArrayList<Resources> playerResources= myStrongbox.getContent();
-		playerResources.addAll(myWarehouseDepot.getAllResources());
+		playerResources.addAll(myWarehouseDepot.gatherAllResources());
 		ArrayList<Resources> productionInput= new ArrayList<>();
 		for (Integer integer : playerInput) {
 			productionInput.addAll(getProductionInput(integer));
@@ -212,7 +213,7 @@ public class CardManagement {
 	 * @param inputResources is an array of number of Resources [#COIN,#SERVANT,#SHIELD,#STONE]
 	 */
 	public void takeChosenSelectedResources(ArrayList<Integer> playerInput, int[] inputResources){
-		ArrayList<Resources> playerResources= myWarehouseDepot.getAllResources();
+		ArrayList<Resources> playerResources= myWarehouseDepot.gatherAllResources();
 		playerResources.addAll(myStrongbox.getContent());
 		ArrayList<Resources> productionInput= new ArrayList<>();
 		ArrayList<Resources> remainingResources;
@@ -263,7 +264,7 @@ public class CardManagement {
 	}
 
 	/**
-	 *
+	 * TODO: forgot javadoc here
 	 * @param playerInput
 	 * @return
 	 */
