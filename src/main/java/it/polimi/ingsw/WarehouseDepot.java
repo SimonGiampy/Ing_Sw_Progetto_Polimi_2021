@@ -35,15 +35,12 @@ public class WarehouseDepot {
 		
 		for (int i = 0; i < 6; i++) depot[i] = Resources.EMPTY;
 		
-		//additionalDepotResources = new Resources[]{Resources.NO_RESOURCE, Resources.NO_RESOURCE};
-		//additionalDepotContents = new boolean[][] {{false, false}, {false, false}}; // might be expanded in size if the special abilities are
-		// modified
-		
+		//initialization of the extra depots
 		extraDepotResources = new ArrayList<>();
 		extraDepotResources.add(new ArrayList<>());
 		extraDepotResources.get(0).add(Resources.EMPTY);
 		extraDepotResources.add(new ArrayList<>());
-		extraDepotResources.get(0).add(Resources.EMPTY);
+		extraDepotResources.get(1).add(Resources.EMPTY);
 		extraDepotContents = new ArrayList<>();
 		extraDepotContents.add(new ArrayList<>());
 		extraDepotContents.add(new ArrayList<>());
@@ -70,7 +67,7 @@ public class WarehouseDepot {
 		System.out.print("\n");
 	}
 	
-	/**
+	/** TODO: modify this method so that it throws an exception when the user input is not correct
 	 * moves the resources around between the deck and the depot. It also checks the validity of the numbers in input
 	 * @param where depot or deck. Indicates the place where to move the resources from
 	 * @param from positional number in the corresponding array of the place containing the resources
@@ -122,7 +119,7 @@ public class WarehouseDepot {
 		}
 	}
 	
-	/**
+	/** TODO: modify this method so that it throws an exception when the user input is not correct
 	 * move a resource from the warehouse to the deck, only if the same resource was in the deck before
 	 * @param position the positional number of the resource in the warehouse
 	 * @return true if the move is permitted and correctly executed
@@ -151,7 +148,7 @@ public class WarehouseDepot {
 		}
 	}
 	
-	/**
+	/** TODO: move this function somewhere else in the controller part of the project
 	 * input management for moving things around in the warehouse
 	 * @return a boolean that indicates if all the resources have been moved and if the warehouse configuration is correct
 	 *         returns false if more moves are required
@@ -183,11 +180,7 @@ public class WarehouseDepot {
 				}
 				if (place.equals("deck") && from > incomingResources.size()) {
 					ok = false; // invalid input: position out of deck bounds (size of list)
-				} else if (place.equals("depot") && from > 6) {
-					ok = false; // invalid input: position out of depot bounds (from 1 to 6)
-				} else {
-					ok = true;
-				}
+				} else ok = !place.equals("depot") || from <= 6; // invalid input: position out of depot bounds (from 1 to 6)
 			} else { // sends the request
 				checkGoingToDeck = Pattern.matches(regexGoingToDeck, read);
 				ok = checkGoingToDeck;
@@ -237,15 +230,15 @@ public class WarehouseDepot {
 	 * Otherwise its value corresponds to the chosen resource.
 	 * @param resources the additional resources defined for the leader ability
 	 */
-	protected void enableAdditionalDepot(ArrayList<Resources> resources) {
+	public void enableAdditionalDepot(ArrayList<Resources> resources) {
 		int size = resources.size(), whichLeader = 0;
-		if (extraDepotResources.get(0).get(0).equals(Resources.EMPTY)) { // if first leader is not activated
+		if (!isLeaderActivated(0)) { // if first leader is not activated
 			extraDepotResources.set(0, resources);
-		} else if (extraDepotResources.get(1).get(0).equals(Resources.EMPTY)) { // if second leader is not activated
+		} else if (!isLeaderActivated(1)) { // if second leader is not activated
 			extraDepotResources.set(1, resources);
 			whichLeader = 1;
 		}
-		//extraDepotContents.set(whichLeader, new ArrayList<>());
+		
 		for (int i = 0; i < size; i++) {
 			extraDepotContents.get(whichLeader).add(false); //initialization of slots flags, one slot per resource
 		}
@@ -258,7 +251,7 @@ public class WarehouseDepot {
 	 */
 	protected void moveResourcesToAdditionalDepot() {
 		for (int leaderNumber = 0; leaderNumber < 2; leaderNumber++) { // iterates for the 2 leaders which may have this ability enabled
-			if (extraDepotResources.get(leaderNumber).get(0) != Resources.EMPTY) { //selected depot is enabled
+			if (isLeaderActivated(leaderNumber)) { //selected depot is enabled
 				
 				for (int i = 0; i < incomingResources.size(); i++) { //cycles for every position in the incoming deck
 					for (int j = 0; j < extraDepotResources.get(leaderNumber).size(); j++) { //cycles for every slot in the extra depots
@@ -276,14 +269,13 @@ public class WarehouseDepot {
 		}
 		
 		//removes the empty spots in the incoming deck
-		incomingResources = (ArrayList<Resources>) incomingResources.stream().
-				filter((res) -> !res.equals(Resources.EMPTY)).
-				collect(Collectors.toList());
+		incomingResources = removeEmptySpaces(incomingResources);
 	}
 	
 	
 	/**
 	 * helper function that shows the user how to interact with the CLI
+	 * //TODO: move this function in the controller classes for the CLI
 	 */
 	protected void helpMe() {
 		System.out.println("Syntax for moving resources from the deck or depot to the depot is: 'move <position> from <deck/depot> to " +
@@ -295,44 +287,41 @@ public class WarehouseDepot {
 	
 	/**
 	 * analyzes the integer array equivalent of a list of resources
-	 * @param depot the converted array
+	 * @param pyramid the converted array
 	 * @return true if the combination of resources is a valid one
 	 */
-	protected boolean isCombinationCorrect(int[] depot) {
-		if (depot[0] != 0) { // top shelf is not empty
+	protected boolean isCombinationCorrect(int[] pyramid) {
+		if (pyramid[0] != 0) { // top shelf is not empty
 			// top shelf has the same resource as middle shelf or top shelf
-			if (depot[0] == depot[1] || depot[0] == depot[2] || depot[0] == depot[3] || depot[0] == depot[4] || depot[0] == depot[5]) {
+			if (pyramid[0] == pyramid[1] || pyramid[0] == pyramid[2] || pyramid[0] == pyramid[3] ||
+					pyramid[0] == pyramid[4] || pyramid[0] == pyramid[5]) {
 				return false;
 			}
 		}
 		
-		if (depot[1] != 0) { //middle shelf is not empty
-			if (depot[1] != depot[2] && depot[2] != 0) { // first resource must be equal to the second one if not empty
+		if (pyramid[1] != 0) { //middle shelf is not empty
+			if (pyramid[1] != pyramid[2] && pyramid[2] != 0) { // first resource must be equal to the second one if not empty
 				return false;
-			} else if (depot[1] == depot[3] || depot[1] == depot[4] || depot[1] == depot[5]) { // resources must be different in different shelves
-				return false;
+			} else if (pyramid[1] == pyramid[3] || pyramid[1] == pyramid[4] || pyramid[1] == pyramid[5]) {
+				return false; // resources must be different in different shelves
 			}
 		} else { // middle shelf is empty
-			if (depot[2] != 0) { //if the first spot is not occupied, then also the second one should not be occupied
-				if (depot[2] == depot[3] || depot[2] == depot[4] || depot[2] == depot[5]) {
+			if (pyramid[2] != 0) { //if the first spot is not occupied, then also the second one should not be occupied
+				if (pyramid[2] == pyramid[3] || pyramid[2] == pyramid[4] || pyramid[2] == pyramid[5]) {
 					return false;
 				}
 			}
 		}
 		
-		if (depot[3] != 0) { // bottom shelf is not empty
-			if (depot[3] != depot[4] && depot[4] != 0) { // different resources in the same shelf
+		if (pyramid[3] != 0) { // bottom shelf is not empty
+			if (pyramid[3] != pyramid[4] && pyramid[4] != 0) { // different resources in the same shelf
 				return false;
-			} else if (depot[3] != depot[5] && depot[5] != 0) { // different resources in the same shelf
+			} else if (pyramid[3] != pyramid[5] && pyramid[5] != 0) { // different resources in the same shelf
 				return false;
-			} else if (depot[4] != depot[5] && depot[4] != 0 && depot[5] != 0) {
-				return false;
-			}
+			} else return pyramid[4] == pyramid[5] || pyramid[4] == 0 || pyramid[5] == 0;
 		} else { // bottom shelf is empty
-			if (depot[4] != 0) { // if first resource is empty, then also the others must be empty as well
-				if (depot[4] != depot[5] && depot[5] != 0) {
-					return false;
-				}
+			if (pyramid[4] != 0) { // if first resource is empty, then also the others must be empty as well
+				return pyramid[4] == pyramid[5] || pyramid[5] == 0;
 			}
 		}
 		
@@ -353,7 +342,7 @@ public class WarehouseDepot {
 				case STONE -> depotConverted[i] = 2;
 				case SERVANT -> depotConverted[i] = 3;
 				case SHIELD -> depotConverted[i] = 4;
-				default -> depotConverted[i] = 0;
+				default -> depotConverted[i] = 0; // EMPTY resource
 			}
 		}
 		return depotConverted;
@@ -366,14 +355,39 @@ public class WarehouseDepot {
 	 */
 	protected ArrayList<Resources> getAllResources() {
 		ArrayList<Resources> completeList = new ArrayList<>(Arrays.asList(depot));
-		for (int leader = 0; leader < extraDepotResources.size(); leader++) {
+		completeList = removeEmptySpaces(completeList);
+		
+		for (int leader = 0; leader < 2; leader++) {
 			for (int i = 0; i < extraDepotResources.get(leader).size(); i++) {
-				if (extraDepotContents.get(leader).get(i)) {
-					completeList.add(extraDepotResources.get(leader).get(i));
+				if (isLeaderActivated(leader)) {
+					if (extraDepotContents.get(leader).get(i)) {
+						completeList.add(extraDepotResources.get(leader).get(i));
+					}
 				}
 			}
 		}
 		return completeList;
+	}
+	
+	/**
+	 * removes the EMPTY resource from a list of resources
+	 * @param list input
+	 * @return the same list without the empty resources
+	 */
+	private ArrayList<Resources> removeEmptySpaces(ArrayList<Resources> list) {
+		//removes the empty spots in the incoming deck
+		return (ArrayList<Resources>) list.stream().
+				filter((res) -> !res.equals(Resources.EMPTY)).
+				collect(Collectors.toList());
+	}
+	
+	/**
+	 * check for the leader activation flag
+	 * @param whichLeader first leader is 0; second leader is 1.
+	 * @return true if the leader has been activated, false otherwise
+	 */
+	private boolean isLeaderActivated(int whichLeader) {
+		return extraDepotResources.get(whichLeader).get(0) != Resources.EMPTY;
 	}
 	
 	
@@ -392,7 +406,7 @@ public class WarehouseDepot {
 		
 		//then checks the additional depots
 		for (int leader = 0; leader < 2; leader++) { // iterates for the leader which may be enabled
-			if (extraDepotResources.get(leader).get(0) != Resources.EMPTY) { //selected depot is enabled
+			if (isLeaderActivated(leader)) { //selected depot is enabled
 				for (int i = 0; i < price.size(); i++) { // iterates for all the resources left to be payed
 					
 					//first index of the resource in the additional depot
@@ -415,5 +429,30 @@ public class WarehouseDepot {
 		}
 		
 		return price;
+	}
+	
+	
+	public ArrayList<Resources> getIncomingResources() {
+		return incomingResources;
+	}
+	
+	public Resources[] getDepot() {
+		return depot;
+	}
+	
+	public void setDepotForDebugging(Resources[] depot) {
+		this.depot = depot;
+	}
+	
+	public ArrayList<Integer> getPositionsIncomingResources() {
+		return positionsIncomingResources;
+	}
+	
+	public ArrayList<ArrayList<Resources>> getExtraDepotResources() {
+		return extraDepotResources;
+	}
+	
+	public ArrayList<ArrayList<Boolean>> getExtraDepotContents() {
+		return extraDepotContents;
 	}
 }
