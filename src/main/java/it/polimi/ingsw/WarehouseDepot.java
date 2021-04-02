@@ -416,6 +416,19 @@ public class WarehouseDepot {
 		
 		return price;
 	}
+
+	/**
+	 * counts the quantity of every resource
+	 * @return array of int, one for every resource
+	 */
+	public int[] countResources(){
+		int[] resourcesCount = new int[4];
+		resourcesCount[0] = (int) getAllResources().stream().filter(i -> i == Resources.COIN).count();
+		resourcesCount[1]= (int) getAllResources().stream().filter(i-> i == Resources.SERVANT).count();
+		resourcesCount[2]= (int) getAllResources().stream().filter(i-> i == Resources.SHIELD).count();
+		resourcesCount[3]= (int) getAllResources().stream().filter(i-> i == Resources.STONE).count();
+		return resourcesCount;
+	}
 	
 
 }
