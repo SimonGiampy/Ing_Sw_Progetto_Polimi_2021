@@ -1,4 +1,4 @@
-package it.polimi.ingsw;
+package it.polimi.ingsw.xml_parsers;
 
 import org.w3c.dom.*;
 import org.xml.sax.SAXException;
