@@ -16,17 +16,14 @@ import java.net.URL;
 import java.util.ArrayList;
 
 public class XMLParserDraft {
+	
+	//TODO: reorder code and add more clarity to the code. Also add some inline comments and javadoc
 
 	public XMLParserDraft() {
 	}
 
 	//for test
 	public FaithTrack readTiles(String fileName) {
-
-		ClassLoader classLoader = getClass().getClassLoader();
-		File file = new File(classLoader.getResource(fileName).getFile());
-		String fullPath = file.getAbsolutePath();
-		System.out.println(fullPath);
 
 		ArrayList<Tile> tileList = new ArrayList<>();
 		ArrayList<Integer> reportPoints = new ArrayList<>();
@@ -36,7 +33,7 @@ public class XMLParserDraft {
 		try {
 
 			DocumentBuilder builder = factory.newDocumentBuilder();
-			Document document = builder.parse(new File (fullPath));
+			Document document = builder.parse(new File (fileName));
 			document.getDocumentElement();
 
 			NodeList tileNodeList = document.getElementsByTagName("tile");
@@ -91,18 +88,14 @@ public class XMLParserDraft {
 
 	//for test
 	public ArrayList<DevelopmentCard> readDevCards(String fileName){
-
-		ClassLoader classLoader = getClass().getClassLoader();
-		File file = new File(classLoader.getResource(fileName).getFile());
-		String fullPath = file.getAbsolutePath();
-		System.out.println(fullPath);
+		
 
 		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
 		ArrayList<DevelopmentCard> cardsDeck = new ArrayList<>();
 
 		try {
 			DocumentBuilder builder = factory.newDocumentBuilder();
-			Document document = builder.parse(new File(fullPath));
+			Document document = builder.parse(new File(fileName));
 			document.getDocumentElement();
 
 			//list of dev cards

@@ -181,7 +181,7 @@ public class Player {
 	 * Setter for the leader card's discounts on each resource
 	 * @param resources arraylist of the single discounts got from the leader card
 	 */
-	protected void setDiscount(ArrayList<Resources> resources) {
+	public void setDiscount(ArrayList<Resources> resources) {
 		for (Resources res : resources) {
 			switch (res) {
 				case COIN -> coinDiscount++;

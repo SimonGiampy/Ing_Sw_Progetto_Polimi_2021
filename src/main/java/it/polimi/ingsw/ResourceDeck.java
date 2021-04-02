@@ -84,7 +84,7 @@ public class ResourceDeck {
 	 * resources in output
 	 * @param res resource specified by the leader played
 	 */
-	protected void setFromWhiteMarble(ArrayList<Resources> res, int whiteMarblesInput) {
+	public void setFromWhiteMarble(ArrayList<Resources> res, int whiteMarblesInput) {
 		if(fromWhiteMarble1.get(0) == Resources.EMPTY){
 			fromWhiteMarble1 = res;
 			whiteMarblesInput1 = whiteMarblesInput;

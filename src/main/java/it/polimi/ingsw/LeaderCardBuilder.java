@@ -1,5 +1,7 @@
 package it.polimi.ingsw;
 
+import it.polimi.ingsw.abilities.*;
+
 import java.util.ArrayList;
 
 public class LeaderCardBuilder {

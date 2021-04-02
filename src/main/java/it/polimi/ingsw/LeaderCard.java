@@ -1,5 +1,7 @@
 package it.polimi.ingsw;
 
+import it.polimi.ingsw.abilities.AbilityEffectActivation;
+
 import java.util.ArrayList;
 
 /**
