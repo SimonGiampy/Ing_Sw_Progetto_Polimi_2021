@@ -2,6 +2,7 @@ package it.polimi.ingsw;
 
 import org.junit.Test;
 
+import java.io.File;
 import java.net.URL;
 import java.util.ArrayList;
 
@@ -12,10 +13,11 @@ public class FaithTrackTest {
 
 	@Test
 	public void instanceOfTrack() {
+		String fileName = "game_configuration_complete.xml";
+
 		XMLParserDraft parser = new XMLParserDraft();
 
-		FaithTrack faithTrack = parser.readTiles
-				("D:\\Progetto SwEng\\ing-sw-2021-gavardi-giampa-guerrini\\src\\main\\resources\\game_configuration_complete.xml");
+		FaithTrack faithTrack = parser.readTiles(fileName);
 		ArrayList<Tile> track = faithTrack.getTrack();
 		for (int i = 0; i < track.size(); i++) {
 			System.out.println("tile: " + i);
@@ -28,6 +30,5 @@ public class FaithTrackTest {
 		}
 
 	}
-
 
 }

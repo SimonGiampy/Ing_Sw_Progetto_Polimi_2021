@@ -87,7 +87,7 @@ public class GameMechanicsMultiPlayer {
 		assert developmentCards.size() % 12 == 0; // in order to create a grid
 		int level, color;
 		for (DevelopmentCard card: developmentCards) {
-			level = card.getLevel();
+			level = card.getLevel() - 1;
 			color = card.getColor().getColorNumber();
 			matrixDeck[level][color].add(card);
 		}
