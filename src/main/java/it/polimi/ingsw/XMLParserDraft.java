@@ -22,18 +22,20 @@ public class XMLParserDraft {
 	//for test
 	public FaithTrack readTiles(String fileName) {
 
+		ClassLoader classLoader = getClass().getClassLoader();
+		File file = new File(classLoader.getResource(fileName).getFile());
+		String fullPath = file.getAbsolutePath();
+		System.out.println(fullPath);
+
 		ArrayList<Tile> tileList = new ArrayList<>();
 		ArrayList<Integer> reportPoints = new ArrayList<>();
-
-		URL resource = getClass().getClassLoader().getResource(fileName);
-		System.out.println(resource);
 
 		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
 
 		try {
 
 			DocumentBuilder builder = factory.newDocumentBuilder();
-			Document document = builder.parse(new File(String.valueOf(fileName)));
+			Document document = builder.parse(new File (fullPath));
 			document.getDocumentElement();
 
 			NodeList tileNodeList = document.getElementsByTagName("tile");
@@ -85,6 +87,105 @@ public class XMLParserDraft {
 
 		return new FaithTrack(tileList, reportPoints);
 	}
+
+	//for test
+	public ArrayList<DevelopmentCard> readDevCards(String fileName){
+
+		ClassLoader classLoader = getClass().getClassLoader();
+		File file = new File(classLoader.getResource(fileName).getFile());
+		String fullPath = file.getAbsolutePath();
+		System.out.println(fullPath);
+
+		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+		ArrayList<DevelopmentCard> cardsDeck = new ArrayList<>();
+
+		try {
+			DocumentBuilder builder = factory.newDocumentBuilder();
+			Document document = builder.parse(new File(fullPath));
+			document.getDocumentElement();
+
+			//list of dev cards
+			NodeList cardList = document.getElementsByTagName("card");
+
+			for(int i =0; i < cardList.getLength(); i++){
+				Node cardNode = cardList.item(i);
+				if(cardNode.getNodeType() == Node.ELEMENT_NODE){
+
+					//data to instantiate the card
+					ArrayList<Resources> input = new ArrayList<>();
+					ArrayList<Resources> output = new ArrayList<>();
+					ArrayList<Resources> requirements = new ArrayList<>();
+					int faithOutput, level, victoryPoints;
+					Colors color;
+
+					Element card = (Element) cardNode;
+
+					//children
+					NodeList cardDetailList = card.getChildNodes();
+
+					//get list of requirements
+					Node requirementsNode = cardDetailList.item(1);
+					NodeList requirementList = requirementsNode.getChildNodes();
+					for(int j = 0; j < requirementList.getLength(); j++){
+						Node requirementNode = requirementList.item(j);
+						if(requirementNode.getNodeType() == Node.ELEMENT_NODE){
+							Element requirementElement = (Element) requirementNode;
+							requirements.add(Resources.valueOf(String.valueOf(requirementElement.
+									getAttribute("value")).toUpperCase()));
+						}
+					}
+					//get list of input resources
+					Node inputNode = cardDetailList.item(3);
+					NodeList inputList = inputNode.getChildNodes();
+					for(int j = 0; j < inputList.getLength(); j++){
+						Node singleInputNode = inputList.item(j);
+						if(singleInputNode.getNodeType() == Node.ELEMENT_NODE){
+							Element singleInputElement = (Element) singleInputNode;
+							input.add(Resources.valueOf(String.valueOf(singleInputElement.
+									getAttribute("value")).toUpperCase()));
+						}
+					}
+					//get list of output resources
+					Node outputNode = cardDetailList.item(5);
+					NodeList outputList = outputNode.getChildNodes();
+					for(int j = 0; j < outputList.getLength(); j++){
+						Node singleOutputNode = outputList.item(j);
+						if(singleOutputNode.getNodeType() == Node.ELEMENT_NODE){
+							Element singleOutputElement = (Element) singleOutputNode;
+							output.add(Resources.valueOf(String.valueOf(singleOutputElement.
+									getAttribute("value")).toUpperCase()));
+						}
+					}
+					//get faith output
+					Node faithOutputNode = cardDetailList.item(7);
+					Element faithOutputElement = (Element) faithOutputNode;
+					faithOutput = Integer.parseInt(faithOutputElement.getAttribute("output"));
+					//get level
+					Node levelNode = cardDetailList.item(9);
+					Element levelElement = (Element) levelNode;
+					level = Integer.parseInt(levelElement.getAttribute("value"));
+					//get victory points
+					Node victoryPointsNode = cardDetailList.item(11);
+					Element victoryPointsElement = (Element) victoryPointsNode;
+					victoryPoints = Integer.parseInt(victoryPointsElement.getAttribute("points"));
+					//get color
+					Node colorNode = cardDetailList.item(13);
+					Element colorElement = (Element) colorNode;
+					color = Colors.valueOf(String.valueOf(colorElement.getAttribute("value")).toUpperCase());
+
+					//Instantiate production rule and card
+					cardsDeck.add(new DevelopmentCard(level, color, victoryPoints, requirements,
+							new ProductionRules(input, output,faithOutput)));
+				}
+			}
+
+
+		} catch (ParserConfigurationException | SAXException | IOException e) {
+			e.printStackTrace();
+		}
+		return cardsDeck;
+	}
+
 
 }
 
