@@ -1,4 +1,6 @@
-package it.polimi.ingsw;
+package it.polimi.ingsw.abilities;
+
+import it.polimi.ingsw.Player;
 
 /**
  * Strategy Pattern for the activation of the special ability of a leader card

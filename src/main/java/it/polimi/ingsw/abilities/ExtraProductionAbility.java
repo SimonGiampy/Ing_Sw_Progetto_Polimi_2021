@@ -1,4 +1,8 @@
-package it.polimi.ingsw;
+package it.polimi.ingsw.abilities;
+
+import it.polimi.ingsw.Player;
+import it.polimi.ingsw.Resources;
+import it.polimi.ingsw.abilities.AbilityEffectActivation;
 
 import java.util.ArrayList;
 

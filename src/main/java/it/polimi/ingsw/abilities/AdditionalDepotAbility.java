@@ -1,4 +1,7 @@
-package it.polimi.ingsw;
+package it.polimi.ingsw.abilities;
+
+import it.polimi.ingsw.Player;
+import it.polimi.ingsw.Resources;
 
 import java.util.ArrayList;
 
@@ -14,7 +17,7 @@ public class AdditionalDepotAbility implements AbilityEffectActivation{
 	 * Constructor that set the attributes
 	 * @param abilityResource is the array of the resources that can be store in the additional depot
 	 */
-	protected AdditionalDepotAbility(ArrayList<Resources> abilityResource) {
+	public AdditionalDepotAbility(ArrayList<Resources> abilityResource) {
 		this.abilityResource = abilityResource;
 	}
 
