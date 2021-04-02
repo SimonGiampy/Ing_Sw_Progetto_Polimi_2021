@@ -6,7 +6,7 @@
 	<!-- development cards are defined below. each card is defined with the tag "card" and its serial number  -->
 	<development_cards>
 		
-		<card number = '1'>
+		<devcard number = '1'>
 			<!--required resources is a list of the resources, contains one "res" for each resource required -->
 			<required_resources>
 				<res value = "coin"/>
@@ -27,7 +27,7 @@
 			<level value = '3'/>
 			<victory points = '10'/>
 			<color value = 'blue'/>
-		</card>
+		</devcard>
 		
 	</development_cards>
 	
@@ -35,7 +35,7 @@
 	
 	<leader_cards>
 		<!-- the leader cars are specified with an a number attribute indicating their serial number -->
-		<card number="2">
+		<leader number="2">
 			
 			<victory points = "3"/>
 			
@@ -96,7 +96,7 @@
 				</power>
 				
 			</ability>
-		</card>
+		</leader>
 	</leader_cards>
 	
 	
