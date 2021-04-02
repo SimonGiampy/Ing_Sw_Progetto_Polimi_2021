@@ -33,7 +33,7 @@ public class XMLParserDraft {
 		try {
 
 			DocumentBuilder builder = factory.newDocumentBuilder();
-			Document document = builder.parse(new File(String.valueOf(resource)));
+			Document document = builder.parse(new File(String.valueOf(fileName)));
 			document.getDocumentElement();
 
 			NodeList tileNodeList = document.getElementsByTagName("tile");
