@@ -6,14 +6,14 @@ import org.junit.Test;
 import java.io.File;
 import java.util.ArrayList;
 
-public class DevelopmentCardsDeckTest {
+public class DevelopmentCardsDeckParserTest {
 	
 	
 	/**
 	 * development cards deck instantiation with the parameters read from the XML configuration file
 	 */
 	@Test
-	public void instantiateDeck() {
+	public void devCardsDeckInstanceFromXMLData() {
 
 		String fileName = "game_configuration_complete.xml";
 		ClassLoader classLoader = getClass().getClassLoader();
@@ -24,6 +24,8 @@ public class DevelopmentCardsDeckTest {
 		XMLParserDraft parser = new XMLParserDraft();
 		ArrayList<DevelopmentCard> arrayCards = parser.readDevCards(fullPath);
 		GameMechanicsMultiPlayer mec = new GameMechanicsMultiPlayer(1);
+		
+		//TODO: check Deck instance objects disposition and order
 		DevelopmentCardsDeck deck = new DevelopmentCardsDeck(mec.createCommonCardsDeck(arrayCards));
 
 		for(int i = 0; i < arrayCards.size(); i++){
@@ -32,7 +34,6 @@ public class DevelopmentCardsDeckTest {
 					+"\ninput: " +arrayCards.get(i).getProductionInput()+"\noutput: " +arrayCards.get(i).produce() +
 					"\nfaith output: " +arrayCards.get(i).returnFaithPoints()+ "\n");
 		}
-
 
 	}
 	

@@ -6,13 +6,13 @@ import org.junit.Test;
 import java.io.File;
 import java.util.ArrayList;
 
-public class FaithTrackTest {
+public class FaithTrackParserTest {
 	
 	/**
 	 * tests the instantiation of the faith track with the parameters read from the xml configuration file
 	 */
 	@Test
-	public void instanceOfTrack() {
+	public void faithTrackInstanceFromXMLData() {
 		String fileName = "game_configuration_complete.xml";
 		ClassLoader classLoader = getClass().getClassLoader();
 		File file = new File(classLoader.getResource(fileName).getFile());
