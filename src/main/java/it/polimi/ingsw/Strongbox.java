@@ -46,4 +46,9 @@ public class Strongbox {
 	public ArrayList<Resources> getContent(){
 		return new ArrayList<>(content);
 	}
+
+	public ArrayList<Resources> getRealContent(){
+		return content;
+	}
+
 }

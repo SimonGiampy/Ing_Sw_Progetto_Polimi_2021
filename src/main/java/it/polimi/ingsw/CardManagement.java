@@ -99,27 +99,27 @@ public class CardManagement {
 			default -> throw new InvalidParameterException("invalid parameter");
 		};
 	}
-	/* TODO: if ? are equals to 0 set nput ArrayList (or Array) to [0,0,0,0] */
+	/* TODO: if ? are equals to 0 set input ArrayList (or Array) to [0,0,0,0] */
 	/**
 	 * it activates all selected production
 	 * @param playerInput is a list of selected production
 	 * @param inputResources is a list of resources selected by the player
 	 */
-	public void activateSelectedProduction(ArrayList<Integer> playerInput,ArrayList<Integer> inputResources){
+	public void activateSelectedProduction(ArrayList<Integer> playerInput,int[] inputResources){
 		ArrayList<Resources> selectedProduction= new ArrayList<>();
 		for (Integer integer : playerInput) {
 			selectedProduction.addAll(activateSingleProduction(integer));
 		}
-		for (int j = 0; j < inputResources.get(0); j++) {
+		for (int j = 0; j <inputResources[0]; j++) {
 			selectedProduction.add(Resources.COIN);
 		}
-		for (int j = 0; j < inputResources.get(1); j++) {
+		for (int j = 0; j < inputResources[1]; j++) {
 			selectedProduction.add(Resources.SERVANT);
 		}
-		for (int j = 0; j < inputResources.get(2); j++) {
+		for (int j = 0; j < inputResources[2]; j++) {
 			selectedProduction.add(Resources.SHIELD);
 		}
-		for (int j = 0; j < inputResources.get(3); j++) {
+		for (int j = 0; j < inputResources[3]; j++) {
 			selectedProduction.add(Resources.STONE);
 		}
 		selectedProduction= selectedProduction.stream().filter(i -> i != Resources.EMPTY).collect(Collectors.toCollection(ArrayList::new));
@@ -204,10 +204,44 @@ public class CardManagement {
 		}
 		ProductionRules allSelectedProduction = new ProductionRules(productionInput, new ArrayList<>(),0);
 		return allSelectedProduction.isProductionAvailable(playerResources);
-
 	}
 
-	/** TODO: handle leader production
+	/** TODO: Exception
+	 * it takes resources from Depot and Strongbox
+	 * @param playerInput is a list of selected production
+	 * @param inputResources is an array of number of Resources [#COIN,#SERVANT,#SHIELD,#STONE]
+	 */
+	public void takeChosenSelectedResources(ArrayList<Integer> playerInput, int[] inputResources){
+		ArrayList<Resources> playerResources= myWarehouseDepot.getAllResources();
+		playerResources.addAll(myStrongbox.getContent());
+		ArrayList<Resources> productionInput= new ArrayList<>();
+		ArrayList<Resources> remainingResources;
+		for (Integer integer : playerInput) {
+			productionInput.addAll(getProductionInput(integer));
+		}
+		ArrayList<Resources> filteredProduction = productionInput.stream().filter(i->i!=Resources.EMPTY)
+				.collect(Collectors.toCollection(ArrayList::new));
+		for (int i = 0; i < inputResources[i]; i++) {
+			filteredProduction.add(Resources.COIN);
+		}
+		for (int i = 0; i < inputResources[i]; i++) {
+			filteredProduction.add(Resources.SERVANT);
+		}
+		for (int i = 0; i < inputResources[i]; i++) {
+			filteredProduction.add(Resources.SHIELD);
+		}
+		for (int i = 0; i < inputResources[i]; i++) {
+			filteredProduction.add(Resources.STONE);
+		}
+		ProductionRules allSelectedProduction= new ProductionRules(filteredProduction,new ArrayList<>(),0);
+		if (allSelectedProduction.isProductionAvailable(playerResources)){
+			remainingResources = myWarehouseDepot.payResources(filteredProduction);
+			myStrongbox.retrieveResources(remainingResources);
+		}
+		//else Exception
+	}
+
+	/**
 	 * it checks if one of card's productions is available
 	 * @return true if at least one of card's production is available
 	 */
@@ -228,6 +262,11 @@ public class CardManagement {
 		return cards.get(0).size()+cards.get(1).size()+cards.get(2).size();
 	}
 
+	/**
+	 *
+	 * @param playerInput
+	 * @return
+	 */
 	public boolean checkPlayerInput(ArrayList<Integer> playerInput){
 		//return playerInput.stream().equals(playerInput.stream().distinct()) && playerInput.stream().noneMatch(i -> i>numberOfProduction);
 		for (Integer integer : playerInput) {
@@ -237,17 +276,9 @@ public class CardManagement {
 		}
 		return true;
 	}
-
-	/*public void addOutputResources(ArrayList<Resources>)
-
-	public void addSelectedOutputResources(ArrayList<Integer> playerInput){
-		for (int i = 0; i < playerInput.size(); i++) {
-			if
-		}
-	}
-
-	 */
 }
+
+
 
 
 

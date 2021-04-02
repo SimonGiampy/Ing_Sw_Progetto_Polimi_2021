@@ -3,9 +3,9 @@ package it.polimi.ingsw;
 public enum Resources {
 
 	COIN,
-	STONE,
 	SERVANT,
 	SHIELD,
+	STONE,
 	EMPTY; // indicates empty slot resources in the warehouse depot
 
 }
