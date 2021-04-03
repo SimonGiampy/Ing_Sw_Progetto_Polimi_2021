@@ -1,6 +1,8 @@
 package it.polimi.ingsw.xml_parsers;
 
 import it.polimi.ingsw.*;
+import it.polimi.ingsw.abilities.AbilityEffectActivation;
+import it.polimi.ingsw.abilities.AdditionalDepotAbility;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -193,9 +195,148 @@ public class XMLParserDraft {
 		for(int j = 1; j < inputList.getLength(); j+=2){
 			Node singleNode = inputList.item(j);
 			Element singleElement = (Element) singleNode;
-			resourcesArray.add(Resources.valueOf(String.valueOf(singleElement
-						.getAttribute("value")).toUpperCase()));
+			resourcesArray.add(Resources.valueOf(
+					String.valueOf(singleElement.getAttribute("value")).toUpperCase()));
 		}
+	}
+	
+	/**
+	 * reads the Leader cards configuration from the xml file
+	 * @param fileName full path of the xml configuration file
+	 * @return the list of leader cards
+	 */
+	public ArrayList<LeaderCard> readLeaderCards(String fileName) {
+		
+		ArrayList<LeaderCard> leaderCardArrayList = new ArrayList<>();
+		LeaderCardBuilder leaderCardBuilder = new LeaderCardBuilder();
+		
+		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+		
+		try {
+			
+			DocumentBuilder builder = factory.newDocumentBuilder();
+			Document document = builder.parse(new File (fileName));
+			document.getDocumentElement().normalize();
+			
+			//Get list of all the leader cards
+			NodeList leaderCardsNodeList = document.getElementsByTagName("leader_cards");
+			Node leaderCardsNode = leaderCardsNodeList.item(0);
+			leaderCardsNodeList = leaderCardsNode.getChildNodes();
+			
+			//Iterate through the list
+			for (int i = 1; i < leaderCardsNodeList.getLength(); i++) {
+				Node leaderCardNode = leaderCardsNodeList.item(i);
+				if (leaderCardNode.getNodeType() == Node.ELEMENT_NODE) {
+					NodeList leaderCardElements = leaderCardsNode.getChildNodes();
+					
+					Element victoryElementNode = (Element) leaderCardElements.item(1);
+					int victoryPoints = Integer.parseInt(victoryElementNode.getAttribute("points"));
+					
+					ArrayList<Resources> requirementsResourcesList = new ArrayList<>();
+					ArrayList<CardRequirement> requirementsCardsList = new ArrayList<>();
+					
+					//List of the parameters of the resources requirement of the single leader card
+					NodeList requirementsList = leaderCardElements.item(3).getChildNodes();
+					
+					// reading list of resources required
+					NodeList resourcesList = requirementsList.item(1).getChildNodes();
+					for (int res = 1; res < resourcesList.getLength(); res+=2) {
+						Element resource = (Element) resourcesList.item(res);
+						requirementsResourcesList.add(Resources.valueOf(String.valueOf(resource).toUpperCase()));
+					}
+					
+					// reading list of card requirements
+					NodeList cardRequirementsList = requirementsList.item(3).getChildNodes();
+					for (int res = 1; res < cardRequirementsList.getLength(); res+=2) {
+						Element resource = (Element) resourcesList.item(res);
+						String color = resource.getAttribute("color").toUpperCase();
+						int level = Integer.parseInt(resource.getAttribute("level"));
+						CardRequirement req = new CardRequirement(Colors.valueOf(color), level);
+						requirementsCardsList.add(req);
+					}
+					
+					//updates leader card builder with new info from the xml file
+					leaderCardBuilder.xmlData(victoryPoints, requirementsResourcesList, requirementsCardsList);
+					
+					//list of power abilities for a single leader card
+					NodeList abilitiesNodeList = leaderCardElements.item(5).getChildNodes();
+					
+					//there should be an iteration mechanism for every power element
+					NodeList powerParametersList = abilitiesNodeList.item(0).getChildNodes();
+					Element powerParameter = (Element) powerParametersList.item(0);
+					
+					switch (powerParameter.getAttribute("type")) {
+						case "depot" -> {
+							ArrayList<Resources> slotsResourcesList = new ArrayList<>();
+							NodeList slotsNodeList = powerParameter.getChildNodes();
+							
+							for (int slot = 1; slot < slotsNodeList.getLength(); slot+=2) {
+								Element slotElement = (Element) slotsNodeList.item(slot);
+								slotsResourcesList.add(Resources.valueOf(String.valueOf(slotElement).toUpperCase()));
+							}
+							
+							leaderCardBuilder.xmlData("depot", slotsResourcesList);
+						}
+						case "white marble" -> {
+							ArrayList<Resources> marblesResourcesList = new ArrayList<>();
+							
+							Node whiteMarblesCountNode = powerParameter.getChildNodes().item(1);
+							String white = ((Element) whiteMarblesCountNode).getAttribute("number");
+							int whiteMarbles = Integer.parseInt(white);
+							
+							NodeList marblesNodeList = powerParameter.getChildNodes().item(3).getChildNodes();
+							for (int marb = 1; marb < marblesNodeList.getLength(); marb+=2) {
+								Element slotElement = (Element) marblesNodeList.item(marb);
+								marblesResourcesList.add(Resources.valueOf(String.valueOf(slotElement).toUpperCase()));
+							}
+							
+							leaderCardBuilder.xmlData(marblesResourcesList, whiteMarbles);
+						}
+						case "production" -> {
+							ArrayList<Resources> inputResourcesList = new ArrayList<>();
+							ArrayList<Resources> outputResourcesList = new ArrayList<>();
+							
+							Node faithPointsOutputNode = powerParameter.getChildNodes().item(1);
+							String faithOutputString = ((Element) faithPointsOutputNode).getAttribute("output");
+							int faithOutput = Integer.parseInt(faithOutputString);
+							
+							NodeList inputNodeList = powerParameter.getChildNodes().item(3).getChildNodes();
+							for (int res = 1; res < inputNodeList.getLength(); res+=2) {
+								Element element = (Element) inputNodeList.item(res);
+								inputResourcesList.add(Resources.valueOf(String.valueOf(element).toUpperCase()));
+							}
+							
+							NodeList outputNodeList = powerParameter.getChildNodes().item(5).getChildNodes();
+							for (int res = 1; res < outputNodeList.getLength(); res+=2) {
+								Element element = (Element) inputNodeList.item(res);
+								outputResourcesList.add(Resources.valueOf(String.valueOf(element).toUpperCase()));
+							}
+							
+							leaderCardBuilder.xmlData(inputResourcesList, faithOutput, outputResourcesList);
+						}
+						case "discount" -> {
+							ArrayList<Resources> resourcesArrayList = new ArrayList<>();
+							NodeList resourcesNodeList = powerParameter.getChildNodes().item(1).getChildNodes();
+							for (int res = 1; res < resourcesNodeList.getLength(); res+=2) {
+								Element element = (Element) resourcesNodeList.item(res);
+								resourcesArrayList.add(Resources.valueOf(String.valueOf(element).toUpperCase()));
+							}
+							
+							leaderCardBuilder.xmlData("discount", resourcesArrayList);
+						}
+					}
+					
+					leaderCardArrayList.add(leaderCardBuilder.build());
+					
+				}
+				
+			}
+			
+		} catch (ParserConfigurationException | SAXException | IOException e) {
+			e.printStackTrace();
+		}
+		
+		return leaderCardArrayList;
 	}
 	
 	

@@ -88,10 +88,8 @@
 				
 				<power type = "discount">
 					<!-- its a list of resources. Each one expresses a discount of value 1 when a new development card is bought -->
-					<resources>
-						<res value = "coin"/>
-						<res value = "stone"/>
-					</resources>
+					<res value = "coin"/>
+					<res value = "stone"/>
 				</power>
 				
 			</ability>

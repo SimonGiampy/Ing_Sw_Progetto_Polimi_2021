@@ -15,7 +15,7 @@ public class LeaderCardBuilder {
 	
 	}
 	
-	protected LeaderCardBuilder xmlData(int victoryPoints, ArrayList<Resources> requirements, ArrayList<CardRequirement> cardRequirements) {
+	public LeaderCardBuilder xmlData(int victoryPoints, ArrayList<Resources> requirements, ArrayList<CardRequirement> cardRequirements) {
 		this.victoryPoints = victoryPoints;
 		this.resourceRequirements = requirements;
 		this.cardRequirements = cardRequirements;
@@ -28,7 +28,7 @@ public class LeaderCardBuilder {
 	 * @param list of resources
 	 * @return builder object
 	 */
-	protected LeaderCardBuilder xmlData(String ability, ArrayList<Resources> list) {
+	public LeaderCardBuilder xmlData(String ability, ArrayList<Resources> list) {
 		if (ability.equals("discount")) {
 			effectActivation = new DiscountAbility(list);
 		} else if (ability.equals("depot")) {
@@ -41,12 +41,11 @@ public class LeaderCardBuilder {
 	 * additional production ability constructor
 	 * @param inputList input resources
 	 * @param faithOutput number of faith points
-	 * @param freeChoices number of resources to choose
 	 * @param outputList output resources
 	 * @return builder object
 	 */
-	protected LeaderCardBuilder xmlData(ArrayList<Resources> inputList, int faithOutput, int freeChoices, ArrayList<Resources> outputList) {
-		effectActivation = new ExtraProductionAbility(inputList, faithOutput, freeChoices, outputList);
+	public LeaderCardBuilder xmlData(ArrayList<Resources> inputList, int faithOutput, ArrayList<Resources> outputList) {
+		effectActivation = new ExtraProductionAbility(inputList, faithOutput, outputList);
 		return this;
 	}
 	
@@ -56,7 +55,7 @@ public class LeaderCardBuilder {
 	 * @param whiteMarbles the number of marbles to use
 	 * @return the builder object
 	 */
-	protected LeaderCardBuilder xmlData(ArrayList<Resources> list, int whiteMarbles) {
+	public LeaderCardBuilder xmlData(ArrayList<Resources> list, int whiteMarbles) {
 		effectActivation = new WhiteMarbleAbility(list, whiteMarbles);
 		return this;
 	}
@@ -65,7 +64,7 @@ public class LeaderCardBuilder {
 	 * lazy production of the leader card with the xml data
 	 * @return the leader card
 	 */
-	protected LeaderCard build() {
+	public LeaderCard build() {
 		assert effectActivation != null;
 		return new LeaderCard(victoryPoints, resourceRequirements, cardRequirements, effectActivation);
 	}
