@@ -126,12 +126,28 @@ public class Player {
 		}
 	}
 	
-	//TODO: add endgame check function: return true when the player has completed the game
-	//      and the other players have just one more turn remaining
-	
-	//TODO: add function that calculates the total score at the end of the game and returns an integer value
+	/**
+	 * it checks if the player has reached endgame
+	 * @return true if the player owns 7 cards or has reached the end of the faith track
+	 */
+	public boolean isEndgameStarted(){
+		return (cardManager.numberOfCards()==7 || myFaithTrack.isTrackFinished());
+	}
+
+	/**
+	 * it calculates player's victory points
+	 * @return player's score
+	 */
 	public int totalScore(){
-		cardManager.totalVictoryPoints()+
+		int resourcesVictoryPoints=gatherAllResources().size()/5;
+		int cardVictoryPoints=cardManager.totalVictoryPoints();
+		int faithTrackPoints=myFaithTrack.countFaithTrackVictoryPoints();
+		int leaderVictoryPoints=0;
+		if(activeAbilityLeader1)
+			leaderVictoryPoints=leaderVictoryPoints+leaderCards[0].getVictoryPoints();
+		if(activeAbilityLeader2)
+			leaderVictoryPoints=leaderVictoryPoints+leaderCards[1].getVictoryPoints();
+		return resourcesVictoryPoints+cardVictoryPoints+faithTrackPoints+leaderVictoryPoints;
 	}
 
 	public boolean isBuyMoveAvailable() throws InvalidInputException {

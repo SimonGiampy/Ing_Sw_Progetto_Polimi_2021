@@ -14,7 +14,7 @@ public class Strongbox {
 	public Strongbox(){
 		content=new ArrayList<>();
 	}
-	
+
 	/**
 	 * it adds resources to the strongbox
 	 * @param input is a list of the resources to add
@@ -46,9 +46,4 @@ public class Strongbox {
 	public ArrayList<Resources> getContent(){
 		return new ArrayList<>(content);
 	}
-
-	public ArrayList<Resources> getRealContent(){
-		return content;
-	}
-
 }

@@ -13,7 +13,7 @@ public class ProductionRulesTest {
 	 * inputProduction = {COIN,SHIELD} outputProduction {STONE,STONE} faithOutput=1 playerResources={COIN,SHIELD,STONE} return true
 	 */
 	@Test
-	public void IsProductionAvailable() {
+	public void isProductionAvailable() {
 		ArrayList<Resources> inputProduction=new ArrayList<>();
 		ArrayList<Resources> outputProduction=new ArrayList<>();
 		ArrayList<Resources> playerResources= new ArrayList<>();
@@ -31,7 +31,7 @@ public class ProductionRulesTest {
 	 *  inputProduction = {COIN,SHIELD} outputProduction {STONE,STONE} faithOutput=1 playerResources={COIN,STONE} return false
 	 */
 	@Test
-	public void IsProductionAvailable_2() {
+	public void isProductionAvailable_2() {
 		ArrayList<Resources> inputProduction=new ArrayList<>();
 		ArrayList<Resources> outputProduction=new ArrayList<>();
 		ArrayList<Resources> playerResources= new ArrayList<>();
@@ -48,7 +48,7 @@ public class ProductionRulesTest {
 	 * inputProduction = {COIN,EMPTY} outputProduction {STONE,STONE} faithOutput=1 playerResources={COIN,STONE} return true
 	 */
 	@Test
-	public void IsProductionAvailable_3() {
+	public void isProductionAvailable_3() {
 		ArrayList<Resources> inputProduction=new ArrayList<>();
 		ArrayList<Resources> outputProduction=new ArrayList<>();
 		ArrayList<Resources> playerResources= new ArrayList<>();
@@ -65,7 +65,7 @@ public class ProductionRulesTest {
 	 * // inputProduction = {COIN,EMPTY} outputProduction {STONE,STONE} faithOutput=1 playerResources={} return false
 	 */
 	@Test
-	public void IsProductionAvailable_4() {
+	public void isProductionAvailable_4() {
 		ArrayList<Resources> inputProduction=new ArrayList<>();
 		ArrayList<Resources> outputProduction=new ArrayList<>();
 		ArrayList<Resources> playerResources= new ArrayList<>();
@@ -80,7 +80,7 @@ public class ProductionRulesTest {
 	 * inputProduction = {EMPTY,EMPTY} outputProduction {STONE,STONE} faithOutput=1 playerResources={STONE,SHIELD} return true
 	 */
 	@Test
-	public void IsProductionAvailable_5() {
+	public void isProductionAvailable_5() {
 		ArrayList<Resources> inputProduction=new ArrayList<>();
 		ArrayList<Resources> outputProduction=new ArrayList<>();
 		ArrayList<Resources> playerResources= new ArrayList<>();
@@ -97,7 +97,7 @@ public class ProductionRulesTest {
 	 * inputProduction = {EMPTY,EMPTY} outputProduction {STONE,STONE} faithOutput=1 playerResources={} return false
 	 */
 	@Test
-	public void IsProductionAvailable_6() {
+	public void isProductionAvailable_6() {
 		ArrayList<Resources> inputProduction=new ArrayList<>();
 		ArrayList<Resources> outputProduction=new ArrayList<>();
 		ArrayList<Resources> playerResources= new ArrayList<>();
@@ -105,5 +105,9 @@ public class ProductionRulesTest {
 		inputProduction.add(Resources.EMPTY);
 		ProductionRules productionRules = new ProductionRules(inputProduction,outputProduction,1);
 		assertFalse(productionRules.isProductionAvailable(playerResources));
+	}
+	@Test
+	public void numberOfInputEmptyResources(){
+
 	}
 }
