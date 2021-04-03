@@ -1,4 +1,6 @@
-package it.polimi.ingsw;
+package it.polimi.ingsw.singleplayer;
+
+import it.polimi.ingsw.Colors;
 
 public class DiscardToken implements Token{
 

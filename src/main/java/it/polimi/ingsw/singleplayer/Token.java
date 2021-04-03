@@ -1,4 +1,4 @@
-package it.polimi.ingsw;
+package it.polimi.ingsw.singleplayer;
 
 public interface Token {
 
