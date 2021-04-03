@@ -1219,15 +1219,324 @@
                 <color value = "yellow"/>
             </card>
         </development_cards>
+        <leader_cards>
+            <leader number="1">
+                <victory points = "2"/>
+                <requirement>
+                    <resources/>
+                    <devcards>
+                        <dev color = "yellow" level = "0"/>
+                        <dev color = "green" level = "0"/>
+                    </devcards>
+                </requirement>
+                <ability>
+                    <power type = "discount">
+                        <resources>
+                            <res value = "servant"/>
+                        </resources>
+                    </power>
+                </ability>
+            </leader>
+            <leader number="2">
+                <victory points = "2"/>
+                <requirement>
+                    <resources/>
+                    <devcards>
+                        <dev color = "blue" level = "0"/>
+                        <dev color = "purple" level = "0"/>
+                    </devcards>
+                </requirement>
+                <ability>
+                    <power type = "discount">
+                        <resources>
+                            <res value = "shield"/>
+                        </resources>
+                    </power>
+                </ability>
+            </leader>
+            <leader number="3">
+                <victory points = "2"/>
+                <requirement>
+                    <resources/>
+                    <devcards>
+                        <dev color = "blue" level = "0"/>
+                        <dev color = "green" level = "0"/>
+                    </devcards>
+                </requirement>
+                <ability>
+                    <power type = "discount">
+                        <resources>
+                            <res value = "stone"/>
+                        </resources>
+                    </power>
+                </ability>
+            </leader>
+            <leader number="4">
+                <victory points = "2"/>
+                <requirement>
+                    <resources/>
+                    <devcards>
+                        <dev color = "yellow" level = "0"/>
+                        <dev color = "purple" level = "0"/>
+                    </devcards>
+                </requirement>
+                <ability>
+                    <power type = "discount">
+                        <resources>
+                            <res value = "coin"/>
+                        </resources>
+                    </power>
+                </ability>
+            </leader>
+            <leader number="5">
+                <victory points = "3"/>
+                <requirement>
+                    <resources>
+                        <res value="coin"/>
+                        <res value="coin"/>
+                        <res value="coin"/>
+                        <res value="coin"/>
+                        <res value="coin"/>
+                    </resources>
+                    <devcards/>
+                </requirement>
+                <ability>
+                    <power type = "depot">
+                        <resources>
+                            <res value = "stone"/>
+                            <res value = "stone"/>
+                        </resources>
+                    </power>
+                </ability>
+            </leader>
+            <leader number="6">
+                <victory points = "3"/>
+                <requirement>
+                    <resources>
+                        <res value="stone"/>
+                        <res value="stone"/>
+                        <res value="stone"/>
+                        <res value="stone"/>
+                        <res value="stone"/>
+                    </resources>
+                    <devcards/>
+                </requirement>
+                <ability>
+                    <power type = "depot">
+                        <resources>
+                            <res value = "servant"/>
+                            <res value = "servant"/>
+                        </resources>
+                    </power>
+                </ability>
+            </leader>
+            <leader number="7">
+                <victory points = "3"/>
+                <requirement>
+                    <resources>
+                        <res value="servant"/>
+                        <res value="servant"/>
+                        <res value="servant"/>
+                        <res value="servant"/>
+                        <res value="servant"/>
+                    </resources>
+                    <devcards/>
+                </requirement>
+                <ability>
+                    <power type = "depot">
+                        <resources>
+                            <res value = "shield"/>
+                            <res value = "shield"/>
+                        </resources>
+                    </power>
+                </ability>
+            </leader>
+            <leader number="8">
+                <victory points = "3"/>
+                <requirement>
+                    <resources>
+                        <res value="shield"/>
+                        <res value="shield"/>
+                        <res value="shield"/>
+                        <res value="shield"/>
+                        <res value="shield"/>
+                    </resources>
+                    <devcards/>
+                </requirement>
+                <ability>
+                    <power type = "depot">
+                        <resources>
+                            <res value = "coin"/>
+                            <res value = "coin"/>
+                        </resources>
+                    </power>
+                </ability>
+            </leader>
+            <leader number="9">
+                <victory points = "5"/>
+                <requirement>
+                    <resources/>
+                    <devcards>
+                        <dev color = "yellow" level = "0"/>
+                        <dev color = "yellow" level = "0"/>
+                        <dev color = "blue" level = "0"/>
+                    </devcards>
+                </requirement>
+                <ability>
+                    <power type = "white marble">
+                        <input number = "1"/>
+                        <resources>
+                            <res value = "servant"/>
+                        </resources>
+                    </power>
+                </ability>
+            </leader>
+            <leader number="10">
+                <victory points = "5"/>
+                <requirement>
+                    <resources/>
+                    <devcards>
+                        <dev color = "green" level = "0"/>
+                        <dev color = "green" level = "0"/>
+                        <dev color = "purple" level = "0"/>
+                    </devcards>
+                </requirement>
+                <ability>
+                    <power type = "white marble">
+                        <input number = "1"/>
+                        <resources>
+                            <res value = "shield"/>
+                        </resources>
+                    </power>
+                </ability>
+            </leader>
+            <leader number="11">
+                <victory points = "5"/>
+                <requirement>
+                    <resources/>
+                    <devcards>
+                        <dev color = "blue" level = "0"/>
+                        <dev color = "blue" level = "0"/>
+                        <dev color = "yellow" level = "0"/>
+                    </devcards>
+                </requirement>
+                <ability>
+                    <power type = "white marble">
+                        <input number = "1"/>
+                        <resources>
+                            <res value = "stone"/>
+                        </resources>
+                    </power>
+                </ability>
+            </leader>
+            <leader number="12">
+                <victory points = "5"/>
+                <requirement>
+                    <resources/>
+                    <devcards>
+                        <dev color = "purple" level = "0"/>
+                        <dev color = "purple" level = "0"/>
+                        <dev color = "green" level = "0"/>
+                    </devcards>
+                </requirement>
+                <ability>
+                    <power type = "white marble">
+                        <input number = "1"/>
+                        <resources>
+                            <res value = "coin"/>
+                        </resources>
+                    </power>
+                </ability>
+            </leader>
+            <leader number="13">
+                <victory points = "4"/>
+                <requirement>
+                    <resources/>
+                    <devcards>
+                        <dev color = "yellow" level = "2"/>
+                    </devcards>
+                </requirement>
+                <ability>
+                    <power type = "production">
+                        <faith output = "1"/>
+                        <input>
+                            <res value = "shield"/>
+                        </input>
+                        <output>
+                            <res value = "empty"/>
+                        </output>
+                    </power>
+                </ability>
+            </leader>
+            <leader number="14">
+                <victory points = "4"/>
+                <requirement>
+                    <resources/>
+                    <devcards>
+                        <dev color = "blue" level = "2"/>
+                    </devcards>
+                </requirement>
+                <ability>
+                    <power type = "production">
+                        <faith output = "1"/>
+                        <input>
+                            <res value = "servant"/>
+                        </input>
+                        <output>
+                            <res value = "empty"/>
+                        </output>
+                    </power>
+                </ability>
+            </leader>
+            <leader number="15">
+                <victory points = "4"/>
+                <requirement>
+                    <resources/>
+                    <devcards>
+                        <dev color = "purple" level = "2"/>
+                    </devcards>
+                </requirement>
+                <ability>
+                    <power type = "production">
+                        <faith output = "1"/>
+                        <input>
+                            <res value = "stone"/>
+                        </input>
+                        <output>
+                            <res value = "empty"/>
+                        </output>
+                    </power>
+                </ability>
+            </leader>
+            <leader number="16">
+                <victory points = "4"/>
+                <requirement>
+                    <resources/>
+                    <devcards>
+                        <dev color = "green" level = "2"/>
+                    </devcards>
+                </requirement>
+                <ability>
+                    <power type = "production">
+                        <faith output = "1"/>
+                        <input>
+                            <res value = "coin"/>
+                        </input>
+                        <output>
+                            <res value = "empty"/>
+                        </output>
+                    </power>
+                </ability>
+            </leader>
+        </leader_cards>
     </cards>
     <base_production>
         <input>
-            <res value = "free_choice"/>
-            <res value = "stone"/>
+            <res value = "empty"/>
+            <res value = "empty"/>
         </input>
         <output>
-            <res value = "coin"/>
-            <res value = "free_choice"/>
+            <res value = "empty"/>
         </output>
     </base_production>
 </game_configuration>
