@@ -70,4 +70,7 @@ public class ProductionRules {
 	public int numberOfOutputEmptyResources(){
 		return (int) output.stream().filter(i -> i==Resources.EMPTY).count();
 	}
+	public int numberOfInputEmptyResources(){
+		return (int) input.stream().filter(i -> i==Resources.EMPTY).count();
+	}
 }

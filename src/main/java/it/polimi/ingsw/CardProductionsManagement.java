@@ -247,7 +247,7 @@ public class CardProductionsManagement {
 			remainingResources = myWarehouseDepot.payResources(filteredProduction);
 			myStrongbox.retrieveResources(remainingResources);
 		}
-		//else Exception
+		else throw new InvalidUserRequestException("invalid input resources");
 	}
 
 	/**
@@ -277,13 +277,50 @@ public class CardProductionsManagement {
 	 * @return
 	 */
 	public boolean checkPlayerInput(ArrayList<Integer> playerInput){
-		//return playerInput.stream().equals(playerInput.stream().distinct()) && playerInput.stream().noneMatch(i -> i>numberOfProduction);
+		if (!playerInput.stream().equals(playerInput.stream().distinct()) || playerInput.stream().anyMatch(i -> i>6 || i<1))
+			return false;
 		for (Integer integer : playerInput) {
 			int input = integer - 1;
 			if (numberOfProduction[input])
 				return false;
 		}
 		return true;
+	}
+	public int numberOfInputEmptyResources(int selectedStack) throws InvalidUserRequestException {
+		return switch (selectedStack) {
+			case 1 -> cards.get(0).peek().numberOfInputEmptyResources();
+			case 2 -> cards.get(1).peek().numberOfInputEmptyResources();
+			case 3 -> cards.get(2).peek().numberOfInputEmptyResources();
+			case 4 -> baseProductionRules.numberOfInputEmptyResources();
+			case 5 -> leaderProductionRules.get(0).numberOfInputEmptyResources();
+			case 6 -> leaderProductionRules.get(1).numberOfInputEmptyResources();
+			default -> throw new InvalidUserRequestException("invalid production number chosen");
+		};
+	}
+	public boolean isNumberOfSelectedInputEmptyResourcesEnough(ArrayList<Integer> playerInput,int[] inputResources){
+		int totalNumber=0;
+		for (int i = 0; i < playerInput.size(); i++) {
+			totalNumber=totalNumber+playerInput.get(i);
+		}
+		return totalNumber>=inputResources[0]+inputResources[1]+inputResources[2]+inputResources[3];
+	}
+	public int numberOfOutputEmptyResources(int selectedStack) throws InvalidUserRequestException {
+		return switch (selectedStack) {
+			case 1 -> cards.get(0).peek().numberOfOutputEmptyResources();
+			case 2 -> cards.get(1).peek().numberOfOutputEmptyResources();
+			case 3 -> cards.get(2).peek().numberOfOutputEmptyResources();
+			case 4 -> baseProductionRules.numberOfOutputEmptyResources();
+			case 5 -> leaderProductionRules.get(0).numberOfOutputEmptyResources();
+			case 6 -> leaderProductionRules.get(1).numberOfOutputEmptyResources();
+			default -> throw new InvalidUserRequestException("invalid production number chosen");
+		};
+	}
+	public boolean isnumberOfSelectedOutputEmptyResourcesEnough(ArrayList<Integer> playerInput,int[] outputResources){
+		int totalNumber=0;
+		for (int i = 0; i < playerInput.size(); i++) {
+			totalNumber=totalNumber+playerInput.get(i);
+		}
+		return totalNumber>= outputResources[0]+outputResources[1]+outputResources[2]+outputResources[3];
 	}
 }
 

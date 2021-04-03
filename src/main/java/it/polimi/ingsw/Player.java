@@ -24,8 +24,10 @@ public class Player {
 	private final DevelopmentCardsDeck commonCardsDeck;
 	
 	private LeaderCard[] leaderCards;
-	private boolean activeLeader1;
-	private boolean activeLeader2;
+	private boolean playableLeader1; // indicates whether the first leader card is playable or not
+	private boolean playableLeader2; // indicates whether the second leader card is playable or not
+	private boolean activeAbilityLeader1; // indicates whether the first leader card ability is activated or not
+	private boolean activeAbilityLeader2; // indicates whether the second leader card ability is activated or not
 	
 	int coinDiscount;
 	int servantDiscount;
@@ -62,9 +64,10 @@ public class Player {
 		shieldDiscount = 0;
 		stoneDiscount = 0;
 		
-		activeLeader1 = false;
-		activeLeader2 = false;
-
+		playableLeader1 = false;
+		playableLeader2 = false;
+		activeAbilityLeader1 = false;
+		activeAbilityLeader2 = false;
 	}
 
 
@@ -79,8 +82,8 @@ public class Player {
 		temp[1] = leaderCards[indexCard2];
 		leaderCards = temp;
 		
-		activeLeader1 = true;
-		activeLeader2 = false;
+		playableLeader1 = true;
+		playableLeader2 = true;
 	}
 
 	/**
@@ -89,8 +92,11 @@ public class Player {
 	 * @return true if the player triggers one report, gameMechanics will have to call the checks on the report
 	 */
 	public boolean discardLeaderCard(int indexCard) {
-		if (indexCard == 1) activeLeader1 = false;
-		else activeLeader2 = false;
+		if (indexCard == 1 && !activeAbilityLeader1) {
+			playableLeader1 = false;
+		} else if (indexCard == 2 && !activeAbilityLeader2) {
+			playableLeader2 = false;
+		}
 		return myFaithTrack.moveMarker(1);
 	}
 	
@@ -124,6 +130,9 @@ public class Player {
 	//      and the other players have just one more turn remaining
 	
 	//TODO: add function that calculates the total score at the end of the game and returns an integer value
+	public int totalScore(){
+		cardManager.totalVictoryPoints()+
+	}
 
 	public boolean isBuyMoveAvailable() throws InvalidInputException {
 		myStrongbox.getContent().addAll(myWarehouseDepot.gatherAllResources());
@@ -181,6 +190,30 @@ public class Player {
 
 		}
 	}
+
+	/**
+	 * it activates production and recall the method to move faithTrack marker
+	 * @param playerInput is a list of selected production
+	 * @param resourcesInput is an array of number of Resources [#COIN,#SERVANT,#SHIELD,#STONE].
+	 *                       When the production does not have ?, the caller set it to [0,0,0,0].
+	 * @param resourcesOutput is an array of number of Resources [#COIN,#SERVANT,#SHIELD,#STONE].
+	 *                       When the production does not have ?, the caller set it to [0,0,0,0].
+	 * @throws InvalidInputException when the production cannot be executed
+	 */
+	public void activateProduction(ArrayList<Integer> playerInput,int[] resourcesInput, int[] resourcesOutput) throws InvalidInputException{
+		if (!cardManager.checkPlayerInput(playerInput))
+			throw new InvalidInputException("Production input not correct");
+		if (!cardManager.isSelectedProductionAvailable(playerInput))
+			throw new InvalidInputException("Selected production not available");
+		if(!cardManager.isNumberOfSelectedInputEmptyResourcesEnough(playerInput,resourcesInput))
+			throw new InvalidInputException("Input Empty Resources selection not correct");
+		if (!cardManager.isnumberOfSelectedOutputEmptyResourcesEnough(playerInput,resourcesOutput))
+		 	throw new InvalidInputException("Output Empty Resources selection not correct");
+		cardManager.takeSelectedResources(playerInput,resourcesInput);
+		myFaithTrack.moveMarker(cardManager.activateSelectedProduction(playerInput,resourcesOutput));
+	}
+
+
 	
 	/**
 	 * this function tells the leader to activate its ability. Passes as value itself so that the ability knows who is the player referring to it
@@ -189,6 +222,11 @@ public class Player {
 	public void activateLeaderCard(int whichLeader) {
 		//passes this as object parameter so that the ability know to which player to refer to for the activation
 		leaderCards[whichLeader].activateAbility(this);
+		if (whichLeader == 0) {
+			activeAbilityLeader1 = true;
+		} else if (whichLeader == 1) {
+			activeAbilityLeader2 = true;
+		}
 	}
 
 	/**
