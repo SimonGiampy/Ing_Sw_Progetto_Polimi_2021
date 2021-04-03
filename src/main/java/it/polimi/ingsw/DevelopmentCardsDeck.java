@@ -101,5 +101,17 @@ public class DevelopmentCardsDeck {
 		return cardStackStructure[row][column].remove(0);
 	}
 	
+	/**
+	 * finds the card with the lowest level present in the deck, given the color
+	 * @param color chosen color
+	 * @return the lowest level available
+	 */
+	public int lowestCardLevelAvailable(Colors color) {
+		int colorN = color.getColorNumber();
+		for (int level = 1; level <= 3; level++) {
+			if (!cardStackStructure[level][colorN].isEmpty()) return level;
+		}
+		return 0; // there are no more cards of this color in the cards deck
+	}
 	
 }
