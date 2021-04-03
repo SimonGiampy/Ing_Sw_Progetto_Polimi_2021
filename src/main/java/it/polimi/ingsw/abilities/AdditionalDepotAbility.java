@@ -25,4 +25,8 @@ public class AdditionalDepotAbility implements AbilityEffectActivation{
 	public void activateAbility(Player player) {
 		player.getPlayersWarehouseDepot().enableAdditionalDepot(abilityResource);
 	}
+
+	public ArrayList<Resources> getAbilityResource() {
+		return abilityResource;
+	}
 }

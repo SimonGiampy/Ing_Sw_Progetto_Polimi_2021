@@ -32,4 +32,12 @@ public class WhiteMarbleAbility implements AbilityEffectActivation {
 	public void activateAbility(Player player) {
 		player.getPlayersResourceDeck().setFromWhiteMarble(abilityResources, whiteMarbleNumber);
 	}
+
+	public ArrayList<Resources> getAbilityResources() {
+		return abilityResources;
+	}
+
+	public int getWhiteMarbleNumber() {
+		return whiteMarbleNumber;
+	}
 }

@@ -30,4 +30,9 @@ public class DiscountAbility implements AbilityEffectActivation {
 	public void activateAbility(Player player) {
 		player.setDiscount(singleDiscounts);
 	}
+
+	public ArrayList<Resources> getSingleDiscounts() {
+		return singleDiscounts;
+	}
+
 }
