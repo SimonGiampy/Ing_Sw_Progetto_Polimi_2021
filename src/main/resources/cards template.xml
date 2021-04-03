@@ -75,12 +75,12 @@
 				<power type = "production">
 					<!-- list of input resources and the output gained, defined as the number of faith points earned and the number of free choices
 					 	of resources to gain in output -->
+					<faith output = "2"/>
+					<free_choice number = "2"/>
 					<input>
 						<res value = "coin"/>
 						<res value = "stone"/>
 					</input>
-					<faith output = "2"/>
-					<free_choice number = "2"/>
 					<output>
 						<res value = "coin"/>
 						<res value = "stone"/>
