@@ -12,7 +12,6 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.File;
 import java.io.IOException;
-import java.net.URL;
 import java.util.ArrayList;
 
 public class XMLParserDraft {
@@ -45,8 +44,6 @@ public class XMLParserDraft {
 
 					ArrayList<Boolean> insideVatican = new ArrayList<>();
 
-					//Element tileElement = (Element) tileNode;
-
 					//List of children nodes
 					NodeList tileDetailList = tileNode.getChildNodes();
 
@@ -59,28 +56,28 @@ public class XMLParserDraft {
 					NodeList vaticanList = tileDetailList.item(5).getChildNodes();
 					for(int j = 1; j < vaticanList.getLength(); j+=2) {
 						Node vaticanNode = vaticanList.item(j);
-						if(vaticanNode.getNodeType() == Node.ELEMENT_NODE) {
+						
 							Element vatican = (Element) vaticanNode;
 							insideVatican.add(Boolean.parseBoolean(vatican.getAttribute("value")));
-						}
+						
 
 					}
 					tileList.add(new Tile(victoryPoints, insideVatican, papalSpace));
 				}
 			}
 
-			//FIXME: this doesn't read correctly the report points
+			
 			NodeList reportPointsNodeList = document.getElementsByTagName("report_points");
 			Node reportPointsNode = reportPointsNodeList.item(0);
 			NodeList reportList = reportPointsNode.getChildNodes();
 			reportPointsNode = reportList.item(1);
 			reportList = reportPointsNode.getChildNodes();
-			for(int i = 1; i < reportList.getLength(); i++){
+			for(int i = 1; i < reportList.getLength(); i+=2){
 				Node reportNode = reportList.item(i);
-				if(reportNode.getNodeType() == Node.ELEMENT_NODE){
+				
 					Element report = (Element) reportNode;
 					reportPoints.add(Integer.parseInt(report.getAttribute("points")));
-				}
+				
 			}
 
 		} catch (ParserConfigurationException | SAXException | IOException e) {
@@ -91,9 +88,7 @@ public class XMLParserDraft {
 	}
 
 	//for test
-	public ArrayList<DevelopmentCard> readDevCards(String fileName){
-		
-
+	public ArrayList<DevelopmentCard> readDevCards(String fileName) {
 		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
 		ArrayList<DevelopmentCard> cardsDeck = new ArrayList<>();
 
@@ -105,7 +100,7 @@ public class XMLParserDraft {
 			//list of dev cards
 			NodeList cardList = document.getElementsByTagName("card");
 
-			for(int i =0; i < cardList.getLength(); i++){
+			for(int i = 0; i < cardList.getLength(); i++){
 				Node cardNode = cardList.item(i);
 				if(cardNode.getNodeType() == Node.ELEMENT_NODE){
 
@@ -113,47 +108,22 @@ public class XMLParserDraft {
 					ArrayList<Resources> input = new ArrayList<>();
 					ArrayList<Resources> output = new ArrayList<>();
 					ArrayList<Resources> requirements = new ArrayList<>();
+					
 					int faithOutput, level, victoryPoints;
 					Colors color;
 
-					Element card = (Element) cardNode;
-
 					//children
-					NodeList cardDetailList = card.getChildNodes();
+					NodeList cardDetailList = cardNode.getChildNodes();
 
 					//get list of requirements
 					Node requirementsNode = cardDetailList.item(1);
-					NodeList requirementList = requirementsNode.getChildNodes();
-					for(int j = 0; j < requirementList.getLength(); j++){
-						Node requirementNode = requirementList.item(j);
-						if(requirementNode.getNodeType() == Node.ELEMENT_NODE){
-							Element requirementElement = (Element) requirementNode;
-							requirements.add(Resources.valueOf(String.valueOf(requirementElement.
-									getAttribute("value")).toUpperCase()));
-						}
-					}
+					nodesExtraction(requirements, requirementsNode);
 					//get list of input resources
 					Node inputNode = cardDetailList.item(3);
-					NodeList inputList = inputNode.getChildNodes();
-					for(int j = 0; j < inputList.getLength(); j++){
-						Node singleInputNode = inputList.item(j);
-						if(singleInputNode.getNodeType() == Node.ELEMENT_NODE){
-							Element singleInputElement = (Element) singleInputNode;
-							input.add(Resources.valueOf(String.valueOf(singleInputElement.
-									getAttribute("value")).toUpperCase()));
-						}
-					}
+					nodesExtraction(input, inputNode);
 					//get list of output resources
 					Node outputNode = cardDetailList.item(5);
-					NodeList outputList = outputNode.getChildNodes();
-					for(int j = 0; j < outputList.getLength(); j++){
-						Node singleOutputNode = outputList.item(j);
-						if(singleOutputNode.getNodeType() == Node.ELEMENT_NODE){
-							Element singleOutputElement = (Element) singleOutputNode;
-							output.add(Resources.valueOf(String.valueOf(singleOutputElement.
-									getAttribute("value")).toUpperCase()));
-						}
-					}
+					nodesExtraction(output, outputNode);
 					//get faith output
 					Node faithOutputNode = cardDetailList.item(7);
 					Element faithOutputElement = (Element) faithOutputNode;
@@ -183,8 +153,25 @@ public class XMLParserDraft {
 		}
 		return cardsDeck;
 	}
-
-
+	
+	/**
+	 *
+	 * @param input
+	 * @param inputNode
+	 */
+	private void nodesExtraction(ArrayList<Resources> input, Node inputNode) {
+		NodeList inputList = inputNode.getChildNodes();
+		for(int j = 0; j < inputList.getLength(); j++){
+			Node singleInputNode = inputList.item(j);
+			if(singleInputNode.getNodeType() == Node.ELEMENT_NODE){
+				Element singleInputElement = (Element) singleInputNode;
+				input.add(Resources.valueOf(String.valueOf(singleInputElement.
+						getAttribute("value")).toUpperCase()));
+			}
+		}
+	}
+	
+	
 }
 
 
