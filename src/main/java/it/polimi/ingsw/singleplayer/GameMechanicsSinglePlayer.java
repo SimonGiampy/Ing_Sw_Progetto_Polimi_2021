@@ -29,24 +29,24 @@ public class GameMechanicsSinglePlayer extends GameMechanicsMultiPlayer {
 	@Override
 	public void instantiateGame(ArrayList<DevelopmentCard> allDevelopmentCards, ArrayList<LeaderCard> allLeaderCards, ProductionRules rules,
 								ArrayList<Tile> xmlTiles, ArrayList<Integer> reportPoints) {
-
-		tokenList = new ArrayList<>();
-		//Two BlackCrossToken +2
-		tokenList.add(new BlackCrossToken(2));
-		tokenList.add(new BlackCrossToken(2));
-		//One BlackCrossToken +1
-		tokenList.add(new BlackCrossToken(1));
-		//One DiscardToken for each color
-		tokenList.add(new DiscardToken(2, Colors.BLUE));
-		tokenList.add(new DiscardToken(2, Colors.GREEN));
-		tokenList.add(new DiscardToken(2, Colors.PURPLE));
-		tokenList.add(new DiscardToken(2, Colors.YELLOW));
-
-		Collections.shuffle(tokenList);
 		
 		lorenzoFaithTrack = new FaithTrack(xmlTiles, reportPoints);
 		
 		super.instantiateGame(allDevelopmentCards, allLeaderCards, rules, xmlTiles, reportPoints);
+
+		tokenList = new ArrayList<>();
+		//Two BlackCrossToken +2
+		tokenList.add(new BlackCrossToken(2, lorenzoFaithTrack));
+		tokenList.add(new BlackCrossToken(2, lorenzoFaithTrack));
+		//One BlackCrossToken +1
+		tokenList.add(new BlackCrossShuffleToken(1, lorenzoFaithTrack));
+		//One DiscardToken for each color
+		tokenList.add(new DiscardToken(2, Colors.BLUE, super.getGameDevCardsDeck()));
+		tokenList.add(new DiscardToken(2, Colors.GREEN, super.getGameDevCardsDeck()));
+		tokenList.add(new DiscardToken(2, Colors.PURPLE, super.getGameDevCardsDeck()));
+		tokenList.add(new DiscardToken(2, Colors.YELLOW, super.getGameDevCardsDeck()));
+
+		Collections.shuffle(tokenList);
 
 	}
 	
@@ -68,5 +68,12 @@ public class GameMechanicsSinglePlayer extends GameMechanicsMultiPlayer {
 	 */
 	public Player getPlayer() {
 		return super.getPlayers()[0];
+	}
+
+	/**
+	 * Shuffles the token deck
+	 */
+	public void shuffleTokenDeck(){
+		Collections.shuffle(tokenList);
 	}
 }
