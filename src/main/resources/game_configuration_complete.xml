@@ -1231,9 +1231,7 @@
                 </requirement>
                 <ability>
                     <power type = "discount">
-                        <resources>
-                            <res value = "servant"/>
-                        </resources>
+                        <res value = "servant"/>
                     </power>
                 </ability>
             </leader>
@@ -1248,9 +1246,7 @@
                 </requirement>
                 <ability>
                     <power type = "discount">
-                        <resources>
-                            <res value = "shield"/>
-                        </resources>
+                        <res value = "shield"/>
                     </power>
                 </ability>
             </leader>
@@ -1265,9 +1261,7 @@
                 </requirement>
                 <ability>
                     <power type = "discount">
-                        <resources>
-                            <res value = "stone"/>
-                        </resources>
+                        <res value = "stone"/>
                     </power>
                 </ability>
             </leader>
@@ -1282,9 +1276,7 @@
                 </requirement>
                 <ability>
                     <power type = "discount">
-                        <resources>
-                            <res value = "coin"/>
-                        </resources>
+                        <res value = "coin"/>
                     </power>
                 </ability>
             </leader>
@@ -1302,10 +1294,8 @@
                 </requirement>
                 <ability>
                     <power type = "depot">
-                        <resources>
-                            <res value = "stone"/>
-                            <res value = "stone"/>
-                        </resources>
+                        <res value = "stone"/>
+                        <res value = "stone"/>
                     </power>
                 </ability>
             </leader>
@@ -1323,10 +1313,8 @@
                 </requirement>
                 <ability>
                     <power type = "depot">
-                        <resources>
-                            <res value = "servant"/>
-                            <res value = "servant"/>
-                        </resources>
+                        <res value = "servant"/>
+                        <res value = "servant"/>
                     </power>
                 </ability>
             </leader>
@@ -1344,10 +1332,8 @@
                 </requirement>
                 <ability>
                     <power type = "depot">
-                        <resources>
-                            <res value = "shield"/>
-                            <res value = "shield"/>
-                        </resources>
+                        <res value = "shield"/>
+                        <res value = "shield"/>
                     </power>
                 </ability>
             </leader>
@@ -1365,10 +1351,8 @@
                 </requirement>
                 <ability>
                     <power type = "depot">
-                        <resources>
-                            <res value = "coin"/>
-                            <res value = "coin"/>
-                        </resources>
+                        <res value = "coin"/>
+                        <res value = "coin"/>
                     </power>
                 </ability>
             </leader>
