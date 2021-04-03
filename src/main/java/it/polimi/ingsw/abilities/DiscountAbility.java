@@ -2,7 +2,6 @@ package it.polimi.ingsw.abilities;
 
 import it.polimi.ingsw.Player;
 import it.polimi.ingsw.Resources;
-import it.polimi.ingsw.abilities.AbilityEffectActivation;
 
 import java.util.ArrayList;
 
@@ -12,7 +11,7 @@ import java.util.ArrayList;
  */
 public class DiscountAbility implements AbilityEffectActivation {
 
-	private ArrayList<Resources> singleDiscounts;
+	private final ArrayList<Resources> singleDiscounts;
 
 	/**
 	 * Constructor that sets the attributes
@@ -34,5 +33,13 @@ public class DiscountAbility implements AbilityEffectActivation {
 	public ArrayList<Resources> getSingleDiscounts() {
 		return singleDiscounts;
 	}
-
+	
+	/**
+	 * description of the discounts applied
+	 * @return a list of resources representing single discounts
+	 */
+	@Override
+	public String toString() {
+		return "Discount Ability: discounts = " + singleDiscounts.toString();
+	}
 }

@@ -11,6 +11,8 @@ public class LeaderCardBuilder {
 	private ArrayList<CardRequirement> cardRequirements;
 	private AbilityEffectActivation effectActivation;
 	
+	//TODO: add support for multiple abilities effects for a single Leader card
+	
 	public LeaderCardBuilder() {
 	
 	}
@@ -34,7 +36,7 @@ public class LeaderCardBuilder {
 		} else if (ability.equals("depot")) {
 			effectActivation = new AdditionalDepotAbility(list);
 		} else throw new IllegalArgumentException("ability is not correctly defined");
-		return null;
+		return this;
 	}
 	
 	/**

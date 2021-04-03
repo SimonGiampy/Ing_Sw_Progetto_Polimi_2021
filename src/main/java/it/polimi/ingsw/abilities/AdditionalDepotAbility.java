@@ -29,4 +29,13 @@ public class AdditionalDepotAbility implements AbilityEffectActivation{
 	public ArrayList<Resources> getAbilityResource() {
 		return abilityResource;
 	}
+	
+	/**
+	 * description of ability properties and contents
+	 * @return the contents of the arraylist with the resources
+	 */
+	@Override
+	public String toString() {
+		return "Additional Depot: resources = " + abilityResource.toString();
+	}
 }

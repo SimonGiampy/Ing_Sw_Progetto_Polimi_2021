@@ -15,8 +15,9 @@ public class LeaderCard {
 	private ArrayList<CardRequirement> cardRequirements;
 	private AbilityEffectActivation effectActivation;
 	private boolean abilityActivated;
-
-
+	
+	//TODO: transform abilities into an arraylist of abilities effects, so that a single leader card can have multiple abilities
+	
 	/**
 	 * Constructor that sets the attributes to their values based on the parsed information
 	 * @param victoryPoints number of victory points of the card
@@ -94,5 +95,17 @@ public class LeaderCard {
 	protected int getVictoryPoints() {
 		if (abilityActivated) return victoryPoints;
 		else return 0;
+	}
+	
+	public ArrayList<Resources> getResourceRequirements() {
+		return resourceRequirements;
+	}
+	
+	public ArrayList<CardRequirement> getCardRequirements() {
+		return cardRequirements;
+	}
+	
+	public AbilityEffectActivation getEffectActivation() {
+		return effectActivation;
 	}
 }

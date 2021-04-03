@@ -2,7 +2,6 @@ package it.polimi.ingsw.abilities;
 
 import it.polimi.ingsw.Player;
 import it.polimi.ingsw.Resources;
-import it.polimi.ingsw.abilities.AbilityEffectActivation;
 
 import java.util.ArrayList;
 
@@ -11,8 +10,8 @@ import java.util.ArrayList;
  */
 public class WhiteMarbleAbility implements AbilityEffectActivation {
 
-	private ArrayList<Resources> abilityResources;
-	private int whiteMarbleNumber;
+	private final ArrayList<Resources> abilityResources;
+	private final int whiteMarbleNumber;
 	
 	/**
 	 * Constructor that takes the resources to gain from the white marbles
@@ -39,5 +38,15 @@ public class WhiteMarbleAbility implements AbilityEffectActivation {
 
 	public int getWhiteMarbleNumber() {
 		return whiteMarbleNumber;
+	}
+	
+	/**
+	 * description of the ability with input white marbles, and output = list of resources
+	 * @return description of the input and output
+	 */
+	@Override
+	public String toString() {
+		return "WhiteMarble Ability { " + "resources transformed = " + abilityResources.toString() +
+				", white marbles number = " + whiteMarbleNumber + '}';
 	}
 }

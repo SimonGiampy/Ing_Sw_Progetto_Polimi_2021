@@ -25,4 +25,13 @@ public class CardRequirement {
 	protected Colors getColor(){
 		return color;
 	}
+	
+	/**
+	 * override of toString method for debugging purposes
+	 * @return a string representing the contents of this object
+	 */
+	@Override
+	public String toString() {
+		return "CardRequirement { " + "color = " + color + ", level = " + level +	'}';
+	}
 }

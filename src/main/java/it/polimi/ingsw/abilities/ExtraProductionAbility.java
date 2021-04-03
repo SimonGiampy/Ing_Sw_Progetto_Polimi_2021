@@ -2,7 +2,6 @@ package it.polimi.ingsw.abilities;
 
 import it.polimi.ingsw.Player;
 import it.polimi.ingsw.Resources;
-import it.polimi.ingsw.abilities.AbilityEffectActivation;
 
 import java.util.ArrayList;
 
@@ -11,9 +10,9 @@ import java.util.ArrayList;
  */
 public class ExtraProductionAbility implements AbilityEffectActivation {
 
-	private ArrayList<Resources> inputResources; // list of input resources for the production
-	private int faithPointsOutput; //number of faith points gained after the production
-	private ArrayList<Resources> outputResources;
+	private final ArrayList<Resources> inputResources; // list of input resources for the production
+	private final int faithPointsOutput; //number of faith points gained after the production
+	private final ArrayList<Resources> outputResources;
 	
 	/**
 	 *
@@ -44,5 +43,16 @@ public class ExtraProductionAbility implements AbilityEffectActivation {
 
 	public ArrayList<Resources> getOutputResources() {
 		return outputResources;
+	}
+	
+	/**
+	 * description of the input and output parameters of the extra production ability
+	 * @return a list of input and output resources, and the faith points
+	 */
+	@Override
+	public String toString() {
+		return "Extra Production Ability : {" +	"inputResources = " + inputResources.toString() +
+				", faith Points in output = " + faithPointsOutput +
+				", outputResources = " + outputResources.toString() + '}';
 	}
 }
