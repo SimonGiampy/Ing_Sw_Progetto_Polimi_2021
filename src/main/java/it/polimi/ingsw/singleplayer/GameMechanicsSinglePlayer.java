@@ -5,7 +5,11 @@ import it.polimi.ingsw.*;
 import java.util.ArrayList;
 import java.util.Collections;
 
-public class GameMechanicsSinglePlayer extends GameMechanicsMultiPlayer{
+/**
+ * This class represents the implementation of the single player mode for the game. Extends the multiplayer one since
+ * most of the methods and attributes are shared and common.
+ */
+public class GameMechanicsSinglePlayer extends GameMechanicsMultiPlayer {
 
 	private ArrayList<Token> tokenList;
 	private FaithTrack lorenzoFaithTrack;
@@ -13,7 +17,15 @@ public class GameMechanicsSinglePlayer extends GameMechanicsMultiPlayer{
 	public GameMechanicsSinglePlayer(){
 		super(1);
 	}
-
+	
+	/**
+	 * constructor for creating the single player instances and Lorenzo's personal Faith track
+	 * @param allDevelopmentCards the list of all the development cards read from the xml file. Will be shuffled
+	 * @param allLeaderCards a list of all the leader cards present in the XML. Will be shuffled
+	 * @param rules the base production rule
+	 * @param xmlTiles the list of tiles for the creation of the faith tracks
+	 * @param reportPoints points to earn from each report zone
+	 */
 	@Override
 	public void instantiateGame(ArrayList<DevelopmentCard> allDevelopmentCards, ArrayList<LeaderCard> allLeaderCards, ProductionRules rules,
 								ArrayList<Tile> xmlTiles, ArrayList<Integer> reportPoints) {
@@ -31,38 +43,30 @@ public class GameMechanicsSinglePlayer extends GameMechanicsMultiPlayer{
 		tokenList.add(new DiscardToken(2, Colors.YELLOW));
 
 		Collections.shuffle(tokenList);
-
-
-		gameDevCardsDeck = new DevelopmentCardsDeck(super.createCommonCardsDeck(allDevelopmentCards));
-		market = new Market();
-
-		Collections.shuffle(allLeaderCards);
-		// matrix of 4 columns (one per leader card) and a number of rows
-		LeaderCard[][] gameLeaders = new LeaderCard[numberOfPlayers][4];
-		FaithTrack[] playersTracks = new FaithTrack[numberOfPlayers];
-
-		for (int i = 0; i < numberOfPlayers * 4; i++) {
-			gameLeaders[i / 4][i % 4] = allLeaderCards.get(i);
-			playersTracks[i / 4] = new FaithTrack(xmlTiles, reportPoints);
-		}
-
-		for (int i = 0; i < numberOfPlayers; i++) {
-			players[i] = instantiatePlayer(gameLeaders[i], playersTracks[i], rules);
-		}
-
+		
+		lorenzoFaithTrack = new FaithTrack(xmlTiles, reportPoints);
+		
+		super.instantiateGame(allDevelopmentCards, allLeaderCards, rules, xmlTiles, reportPoints);
 
 	}
+	
 	/**
 	 * Reveals the top token of the deck, removes it, appends it and returns it
 	 * @return the first token of the deck
 	 */
-	public Token revealTop(){
-
+	public Token revealTop() {
 		Token topToken;
 		topToken = tokenList.get(0);
 		tokenList.remove(0);
 		tokenList.add(topToken);
 		return topToken;
-
+	}
+	
+	/**
+	 * getter for the Player object
+	 * @return single instance of player
+	 */
+	public Player getPlayer() {
+		return super.getPlayers()[0];
 	}
 }

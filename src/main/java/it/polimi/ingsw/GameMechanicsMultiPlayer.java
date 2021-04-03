@@ -21,6 +21,7 @@ public class GameMechanicsMultiPlayer {
 	/**
 	 * create common instances shared by every player. Then instantiate all the players in the game (from 2 to 4).
 	 * All the data in input is received from the XML parser, since they represent the base components of the game data.
+	 * @param allDevelopmentCards the list of all the development cards read from the xml file. Will be shuffled
 	 * @param allLeaderCards a list of all the leader cards present in the XML. Will be shuffled
 	 * @param rules the base production rule
 	 * @param xmlTiles the list of tiles for the creation of the faith tracks
@@ -72,12 +73,11 @@ public class GameMechanicsMultiPlayer {
 	 * @return the matrix representing the piles of development cards
 	 */
 	public ArrayList<DevelopmentCard>[][] createCommonCardsDeck(ArrayList<DevelopmentCard> developmentCards) {
-		//TODO: create cards with parameters read from the XML configuration file and instantiate all the DevCards
 		ArrayList<DevelopmentCard>[][] matrixDeck = new ArrayList[3][4]; //fixed matrix size
 		//NOTE: the warning above cannot be fixed in any way but the code is absolutely correct
 		for (int i = 0; i < 3; i++) {
 			for (int j = 0; j < 4; j++) {
-				matrixDeck[i][j] = new ArrayList<DevelopmentCard>();
+				matrixDeck[i][j] = new ArrayList<>();
 			}
 		}
 		
@@ -92,6 +92,15 @@ public class GameMechanicsMultiPlayer {
 		return matrixDeck;
 	}
 	
+	public Market getMarket() {
+		return market;
+	}
 	
+	public DevelopmentCardsDeck getGameDevCardsDeck() {
+		return gameDevCardsDeck;
+	}
 	
+	public Player[] getPlayers() {
+		return players;
+	}
 }
