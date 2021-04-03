@@ -17,7 +17,7 @@ public class Player {
 	private final Strongbox myStrongbox;
 	private final ResourceDeck myResourceDeck;
 	private final FaithTrack myFaithTrack;
-	private final CardManagement cardManager;
+	private final CardProductionsManagement cardManager;
 	
 	private final Market commonMarket;
 	private final DevelopmentCardsDeck commonCardsDeck;
@@ -39,11 +39,11 @@ public class Player {
 	 * @param strongbox the player's Strongbox
 	 * @param resourceDeck the player's resource deck instance
 	 * @param faithTrack player's personal faith track (equal to all the other players)
-	 * @param cardManagement card manager for all the cards
+	 * @param cardProductionsManagement card manager for all the cards
 	 * @param leaderCards the 4 leader cards to be assigned to the player
 	 */
 	public Player(Market market, DevelopmentCardsDeck developmentCardsDeck, WarehouseDepot warehouseDepot, Strongbox strongbox,
-	              ResourceDeck resourceDeck, FaithTrack faithTrack, CardManagement cardManagement, LeaderCard[] leaderCards) {
+	              ResourceDeck resourceDeck, FaithTrack faithTrack, CardProductionsManagement cardProductionsManagement, LeaderCard[] leaderCards) {
 		
 		commonMarket = market;
 		commonCardsDeck = developmentCardsDeck;
@@ -54,7 +54,7 @@ public class Player {
 		myFaithTrack = faithTrack;
 		myResourceDeck = resourceDeck;
 		myStrongbox = strongbox;
-		cardManager = cardManagement;
+		cardManager = cardProductionsManagement;
 		
 		coinDiscount = 0;
 		servantDiscount = 0;
@@ -92,9 +92,9 @@ public class Player {
 		else activeLeader2 = false;
 		return myFaithTrack.moveMarker(1);
 	}
+	
 	/**
 	 * prototype function that sends the command to the market
-	 *
 	 * @param which must be equal to row or col
 	 * @param where indicates the number of the row or the column to move
 	 * @return true if the player triggers one vatican report
@@ -118,6 +118,11 @@ public class Player {
 			e.printStackTrace();
 		}
 	}
+	
+	//TODO: add endgame check function: return true when the player has completed the game
+	//      and the other players have just one more turn remaining
+	
+	//TODO: add function that calculates the total score at the end of the game and returns an integer value
 
 	protected boolean isBuyMoveAvailable(){
 		myStrongbox.getContent().addAll(myWarehouseDepot.gatherAllResources());
@@ -210,7 +215,7 @@ public class Player {
 		return myResourceDeck;
 	}
 	
-	public CardManagement getPlayersCardManager() {
+	public CardProductionsManagement getPlayersCardManager() {
 		return cardManager;
 	}
 	

@@ -60,9 +60,9 @@ public class GameMechanicsMultiPlayer {
 		WarehouseDepot depot = new WarehouseDepot();
 		ResourceDeck resourceDeck = new ResourceDeck(depot);
 		Strongbox strongbox = new Strongbox();
-		CardManagement cardManagement = new CardManagement(strongbox, depot, rules);
+		CardProductionsManagement cardProductionsManagement = new CardProductionsManagement(strongbox, depot, rules);
 		
-		return new Player(market, gameDevCardsDeck, depot, strongbox, resourceDeck, track, cardManagement, playersLeaders);
+		return new Player(market, gameDevCardsDeck, depot, strongbox, resourceDeck, track, cardProductionsManagement, playersLeaders);
 	}
 
 	

@@ -1,6 +1,9 @@
 package it.polimi.ingsw;
 
-import java.security.InvalidParameterException;
+import it.polimi.ingsw.exceptions.InvalidDevCardSlotException;
+import it.polimi.ingsw.exceptions.InvalidInputException;
+import it.polimi.ingsw.exceptions.InvalidUserRequestException;
+
 import java.util.ArrayList;
 import java.util.Stack;
 import java.util.stream.Collectors;
@@ -9,7 +12,7 @@ import java.util.stream.Collectors;
  * this class handles player's cards management
  * TODO: this javadoc needs more words
  */
-public class CardManagement {
+public class CardProductionsManagement {
 	private final ArrayList<Stack<DevelopmentCard>> cards;
 	private final ProductionRules baseProductionRules;
 	private final ArrayList<ProductionRules> leaderProductionRules;
@@ -20,16 +23,16 @@ public class CardManagement {
 	/**
 	 * default constructor
 	 */
-	public CardManagement(Strongbox playerStrongbox, WarehouseDepot playerWarehouseDepot,ProductionRules baseProductionRules){
+	public CardProductionsManagement(Strongbox playerStrongbox, WarehouseDepot playerWarehouseDepot, ProductionRules baseProductionRules){
 		cards=new ArrayList<>();
 		cards.add(new Stack<>());
 		cards.add(new Stack<>());
 		cards.add(new Stack<>());
-		this.baseProductionRules= baseProductionRules;
-		leaderProductionRules= new ArrayList<>();
-		myStrongbox=playerStrongbox;
-		myWarehouseDepot=playerWarehouseDepot;
-		numberOfProduction=new boolean[]{false,false,false,true,false,false};
+		this.baseProductionRules = baseProductionRules;
+		leaderProductionRules = new ArrayList<>();
+		myStrongbox = playerStrongbox;
+		myWarehouseDepot = playerWarehouseDepot;
+		numberOfProduction = new boolean[]{false,false,false,true,false,false};
 	}
 
 	/**
@@ -39,8 +42,9 @@ public class CardManagement {
 	 */
 	public void addLeaderCard(ArrayList<Resources> input, ArrayList<Resources> output, int faithOutput){
 		if (leaderProductionRules.size()==0)
-				numberOfProduction[4]=true;
-		else numberOfProduction[5]=true;
+			numberOfProduction[4] = true;
+		else
+			numberOfProduction[5] = true;
 		leaderProductionRules.add(new ProductionRules(input,output,faithOutput));
 	}
 
@@ -50,7 +54,7 @@ public class CardManagement {
 	 * @param newCard is the card to insert
 	 * @param selectedStack is the number of the selected stack
 	 */
-	public void addCard(DevelopmentCard newCard,int selectedStack){
+	public void addCard(DevelopmentCard newCard,int selectedStack) throws InvalidDevCardSlotException {
 		switch (selectedStack){
 			case 1 -> {
 				if(cards.get(0).size()==0)
@@ -67,7 +71,7 @@ public class CardManagement {
 					numberOfProduction[2]=true;
 				cards.get(2).push(newCard);
 			}
-			default ->  throw new InvalidParameterException("invalid parameter");
+			default ->  throw new InvalidDevCardSlotException("invalid slot number for card insertion");
 		}
 	}
 
@@ -76,12 +80,12 @@ public class CardManagement {
 	 * @param selectedStack is the number of the selected stack
 	 * @return top card's level of the selected stack
 	 */
-	public int checkStackLevel(int selectedStack){
+	public int checkStackLevel(int selectedStack) throws InvalidInputException {
 		return switch (selectedStack) {
 			case 1 ->   cards.get(0).size();
 			case 2 ->   cards.get(1).size();
 			case 3 ->   cards.get(2).size();
-			default ->  throw new InvalidParameterException("invalid parameter");
+			default ->  throw new InvalidInputException("invalid input parameter (selected stack)");
 		};
 	}
 
@@ -89,7 +93,7 @@ public class CardManagement {
 	 * it activates production
 	 * @param selectedProduction is the number of the selected stack
 	 */
-	public ArrayList<Resources> activateSingleProduction(int selectedProduction) {
+	public ArrayList<Resources> activateSingleProduction(int selectedProduction) throws InvalidUserRequestException {
 		return switch (selectedProduction) {
 			case 1 -> cards.get(0).peek().produce();
 			case 2 -> cards.get(1).peek().produce();
@@ -97,7 +101,7 @@ public class CardManagement {
 			case 4 -> baseProductionRules.produce();
 			case 5 -> leaderProductionRules.get(0).produce();
 			case 6 -> leaderProductionRules.get(1).produce();
-			default -> throw new InvalidParameterException("invalid parameter");
+			default -> throw new InvalidUserRequestException("invalid production number chosen");
 		};
 	}
 	/* TODO: if ? are equals to 0 set input ArrayList (or Array) to [0,0,0,0] */
@@ -106,7 +110,7 @@ public class CardManagement {
 	 * @param playerInput is a list of selected production
 	 * @param inputResources is a list of resources selected by the player
 	 */
-	public void activateSelectedProduction(ArrayList<Integer> playerInput,int[] inputResources){
+	public void activateSelectedProduction(ArrayList<Integer> playerInput,int[] inputResources) {
 		ArrayList<Resources> selectedProduction= new ArrayList<>();
 		for (Integer integer : playerInput) {
 			selectedProduction.addAll(activateSingleProduction(integer));
@@ -123,9 +127,9 @@ public class CardManagement {
 		for (int j = 0; j < inputResources[3]; j++) {
 			selectedProduction.add(Resources.STONE);
 		}
-		selectedProduction= selectedProduction.stream().filter(i -> i != Resources.EMPTY).collect(Collectors.toCollection(ArrayList::new));
+		selectedProduction = selectedProduction.stream().filter(i -> i != Resources.EMPTY).collect(Collectors.toCollection(ArrayList::new));
 		myStrongbox.storeResources(selectedProduction);
-		}
+	}
 
 
 	/**
@@ -133,7 +137,7 @@ public class CardManagement {
 	 * @param selectedStack is the number of the selected stack
 	 * @return the number of faith points
 	 */
-	public int returnFaithPoints(int selectedStack) {
+	public int returnFaithPoints(int selectedStack) throws InvalidUserRequestException {
 		return switch (selectedStack) {
 			case 1 -> cards.get(0).peek().returnFaithPoints();
 			case 2 -> cards.get(1).peek().returnFaithPoints();
@@ -141,7 +145,7 @@ public class CardManagement {
 			case 4 -> baseProductionRules.getFaithOutput();
 			case 5 -> leaderProductionRules.get(0).getFaithOutput();
 			case 6 -> leaderProductionRules.get(1).getFaithOutput();
-			default -> throw new InvalidParameterException("invalid parameter");
+			default -> throw new InvalidUserRequestException("invalid production number chosen");
 		};
 	}
 
@@ -160,7 +164,7 @@ public class CardManagement {
 	 * @param selectedStack is the number of the selected stack
 	 * @return true if the card's production is available
 	 */
-	public boolean isSingleProductionAvailable(int selectedStack){
+	public boolean isSingleProductionAvailable(int selectedStack) throws InvalidUserRequestException {
 		ArrayList<Resources> playerResources= myStrongbox.getContent();
 		playerResources.addAll(myWarehouseDepot.gatherAllResources());
 		return switch (selectedStack) {
@@ -170,7 +174,7 @@ public class CardManagement {
 			case 4 -> baseProductionRules.isProductionAvailable(playerResources);
 			case 5 -> leaderProductionRules.get(0).isProductionAvailable(playerResources);
 			case 6 -> leaderProductionRules.get(1).isProductionAvailable(playerResources);
-			default -> throw new InvalidParameterException("invalid parameter");
+			default -> throw new InvalidUserRequestException("invalid production number chosen");
 		};
 	}
 
@@ -179,7 +183,7 @@ public class CardManagement {
 	 * @param selectedStack is the number of the selected stack
 	 * @return an Arraylist of production's input
 	 */
-	public ArrayList<Resources> getProductionInput(int selectedStack){
+	public ArrayList<Resources> getProductionInput(int selectedStack) throws InvalidUserRequestException {
 		return switch (selectedStack) {
 			case 1 -> cards.get(0).peek().getProductionInput();
 			case 2 -> cards.get(1).peek().getProductionInput();
@@ -187,7 +191,7 @@ public class CardManagement {
 			case 4 -> baseProductionRules.getInputCopy();
 			case 5 -> leaderProductionRules.get(0).getInputCopy();
 			case 6 -> leaderProductionRules.get(1).getInputCopy();
-			default -> throw new InvalidParameterException("invalid parameter");
+			default -> throw new InvalidUserRequestException("invalid production number chosen");
 		};
 	}
 
@@ -246,7 +250,7 @@ public class CardManagement {
 	 * it checks if one of card's productions is available
 	 * @return true if at least one of card's production is available
 	 */
-	public boolean isAtLeastOneProductionAvailable(){
+	public boolean isAtLeastOneProductionAvailable() throws InvalidInputException {
 		return  (checkStackLevel(1)>0 && isSingleProductionAvailable(1)) ||
 				(checkStackLevel(2)>0 && isSingleProductionAvailable(2)) ||
 				(checkStackLevel(3)>0 && isSingleProductionAvailable(3)) ||
