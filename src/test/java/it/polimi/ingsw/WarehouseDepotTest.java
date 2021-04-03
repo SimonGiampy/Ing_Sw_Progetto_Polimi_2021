@@ -91,14 +91,6 @@ public class WarehouseDepotTest {
 		
 	}
 	
-	@Test
-	public void moveResources() {
-	}
-	
-	@Test
-	public void moveResourcesBackToDeck() {
-	}
-	
 	/**
 	 * this method is called after the user confirms that he can't or doesn't want to move any more
 	 * resources to the warehouse depot. Test Successful.

@@ -6,16 +6,6 @@ import java.util.Scanner;
 public class MainSimon {
 	
 	public static void main(String[] args) {
-		/*
-		Market market = new Market();
-		market.showMarket();
-		market.shiftRow(2);
-		market.showMarket();
-		market.shiftCol(3);
-		market.showMarket();
-		
-		System.out.println(ANSI_RESET);
-		*/
 		
 		System.out.println("\uD83D\uDE8C"); // bus emoji test
 		
@@ -25,10 +15,13 @@ public class MainSimon {
 		list.add(Resources.COIN);
 		depot.addIncomingResources(list);
 		
+		//Player player = new Player(depot);
+		
+		/*
 		Scanner scanner = new Scanner(System.in);
 		String in = "no";
 		do {
-			if (depot.processNewMove()) {
+			if (player.processNewMove()) {
 				depot.showIncomingDeck();
 				depot.showDepot();
 				System.out.println("Do you want to confirm (yes / no)? Resources in the deck will be automatically discarded");
@@ -37,9 +30,7 @@ public class MainSimon {
 				System.out.println("write new move");
 			}
 		} while (!in.equals("yes") && !in.equals("y"));
+		*/
 		
-		
-		//depot.insertResource("stone"); // servants move up and 3 stones on the bottom
-		//depot.showWarehouse();
 	}
 }

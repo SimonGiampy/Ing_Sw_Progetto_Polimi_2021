@@ -34,33 +34,34 @@ public class XMLParserDraft {
 
 			DocumentBuilder builder = factory.newDocumentBuilder();
 			Document document = builder.parse(new File (fileName));
-			document.getDocumentElement();
+			document.getDocumentElement().normalize();
 
 			NodeList tileNodeList = document.getElementsByTagName("tile");
 
-			for(int i = 0; i < tileNodeList.getLength(); i++){
+			for(int i = 1; i < tileNodeList.getLength(); i++){
 				Node tileNode = tileNodeList.item(i);
+				
 				if(tileNode.getNodeType() == Node.ELEMENT_NODE) {
 
 					ArrayList<Boolean> insideVatican = new ArrayList<>();
 
-					Element tileElement = (Element) tileNode;
+					//Element tileElement = (Element) tileNode;
 
 					//List of children nodes
-					NodeList tileDetailList = tileElement.getChildNodes();
+					NodeList tileDetailList = tileNode.getChildNodes();
 
-					Element victory = (Element)tileDetailList.item(1);
+					Element victory = (Element) tileDetailList.item(1);
 					int victoryPoints = Integer.parseInt(victory.getAttribute("points"));
 					Element papal = (Element) tileDetailList.item(3);
 					boolean papalSpace = Boolean.parseBoolean(papal.getAttribute("value"));
 
 					//List of boolean for the inside vatican attribute
 					NodeList vaticanList = tileDetailList.item(5).getChildNodes();
-					for(int j = 0; j < vaticanList.getLength(); j++) {
+					for(int j = 1; j < vaticanList.getLength(); j+=2) {
 						Node vaticanNode = vaticanList.item(j);
 						if(vaticanNode.getNodeType() == Node.ELEMENT_NODE) {
 							Element vatican = (Element) vaticanNode;
-							insideVatican.add(Boolean.valueOf(vatican.getAttribute("value")));
+							insideVatican.add(Boolean.parseBoolean(vatican.getAttribute("value")));
 						}
 
 					}
@@ -68,14 +69,17 @@ public class XMLParserDraft {
 				}
 			}
 
-			NodeList reportPointsList = document.getElementsByTagName("report");
-			Node reportPointsNode = reportPointsList.item(0);
+			//FIXME: this doesn't read correctly the report points
+			NodeList reportPointsNodeList = document.getElementsByTagName("report_points");
+			Node reportPointsNode = reportPointsNodeList.item(0);
 			NodeList reportList = reportPointsNode.getChildNodes();
-			for(int i = 0; i < reportPointsList.getLength(); i++){
+			reportPointsNode = reportList.item(1);
+			reportList = reportPointsNode.getChildNodes();
+			for(int i = 1; i < reportList.getLength(); i++){
 				Node reportNode = reportList.item(i);
 				if(reportNode.getNodeType() == Node.ELEMENT_NODE){
 					Element report = (Element) reportNode;
-					reportPoints.add(Integer.parseInt(report.getAttribute("value")));
+					reportPoints.add(Integer.parseInt(report.getAttribute("points")));
 				}
 			}
 

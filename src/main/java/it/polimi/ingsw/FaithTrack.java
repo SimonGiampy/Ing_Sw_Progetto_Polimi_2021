@@ -7,7 +7,7 @@ public class FaithTrack {
 	private ArrayList<Boolean> vaticanReports;
 	private Integer currentPosition;
 	private ArrayList<Tile> track;
-	private ArrayList<Integer> reportPoints;
+	private final ArrayList<Integer> reportPoints;
 	private int lastReportClaimed;
 	
 	
@@ -91,7 +91,13 @@ public class FaithTrack {
 		return vaticanReports.get(num-1);
 	}
 
-
+	public ArrayList<Integer> getReportPoints() {
+		return reportPoints;
+	}
+	
+	public ArrayList<Boolean> getVaticanReports() {
+		return vaticanReports;
+	}
 }
 
 

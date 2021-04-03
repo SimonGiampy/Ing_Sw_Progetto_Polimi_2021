@@ -1,7 +1,11 @@
 package it.polimi.ingsw;
 
-import java.security.InvalidParameterException;
+import it.polimi.ingsw.exceptions.InvalidDevCardSlotException;
+import it.polimi.ingsw.exceptions.InvalidUserRequestException;
+
 import java.util.ArrayList;
+import java.util.Scanner;
+import java.util.regex.Pattern;
 
 /**
  * Player class represents a unique player in the game. Handles all the instances of the classes in the game, since the player interacts with all of
@@ -108,7 +112,11 @@ public class Player {
 
 	protected void interactWithWarehouse() {
 		//TODO: user interaction for moving the resources from the deck to the warehouse
-		myWarehouseDepot.processNewMove();
+		try {
+			boolean ok = processNewMove();
+		} catch (InvalidUserRequestException e) {
+			e.printStackTrace();
+		}
 	}
 
 	protected boolean isBuyMoveAvailable(){
@@ -128,7 +136,7 @@ public class Player {
 	 * @param color color fo the card
 	 * @param selectedSlot number of the slot where the player wants to put the card
 	 */
-	protected void buyNewDevCard(int level, Colors color, int selectedSlot) {
+	protected void buyNewDevCard(int level, Colors color, int selectedSlot) throws InvalidDevCardSlotException {
 
 		//Check if the player has enough resources and at least one eligible slot for the card
 		if (commonCardsDeck.isCardBuyable(level, color, gatherAllResources(), cardManager)) {
@@ -162,7 +170,7 @@ public class Player {
 				cardManager.addCard(commonCardsDeck.claimCard(level, color), selectedSlot);
 
 			} else{
-				throw new InvalidParameterException("slot not available");
+				throw new InvalidDevCardSlotException("selected slot is not available");
 			}
 
 		}
@@ -170,7 +178,7 @@ public class Player {
 	
 	/**
 	 * this function tells the leader to activate its ability. Passes as value itself so that the ability knows who is the player referring to it
-	 * @param whichLeader the index in the array corresponding to the leader to be activated
+	 * @param whichLeader the index in the array corresponding to the leader to be activated (0 or 1)
 	 */
 	public void activateLeaderCard(int whichLeader) {
 		//passes this as object parameter so that the ability know to which player to refer to for the activation
@@ -205,4 +213,61 @@ public class Player {
 	public CardManagement getPlayersCardManager() {
 		return cardManager;
 	}
+	
+	
+	/** TODO: move this function somewhere else in the controller part of the project
+	 * input management for moving things around in the warehouse
+	 * @return a boolean that indicates if all the resources have been moved and if the warehouse configuration is correct
+	 *         returns false if more moves are required
+	 */
+	protected boolean processNewMove() throws InvalidUserRequestException {
+		Scanner scanner = new Scanner(System.in);
+		String read;
+		
+		String regexGoingToWarehouse = "move\s[1-9]\sfrom\s(deck|depot)\sto\s[1-6]"; // regex pattern for reading input for moving the
+		// resources to the warehouse
+		String regexGoingToDeck = "move\s[1-6]\sto\sdeck"; //regex pattern for reading input for moving back to the deck
+		
+		myWarehouseDepot.showIncomingDeck();
+		myWarehouseDepot.showDepot();
+		System.out.println("write new move command");
+		boolean checkGoingToWarehouse, checkGoingToDeck, ok ;
+		int from = 0;
+		String place = "";
+		do {
+			read = scanner.nextLine(); // user input
+			
+			checkGoingToWarehouse = Pattern.matches(regexGoingToWarehouse, read);
+			if (checkGoingToWarehouse) { // process request for moving resource from the deck to the warehouse
+				from = Character.getNumericValue(read.charAt(5));
+				if (read.charAt(14) == 'c') { //send from deck
+					place = "deck";
+				} else { // send from depot
+					place = "depot";
+				}
+				if (place.equals("deck") && from > myWarehouseDepot.getResourceDeckSize()) {
+					ok = false; // invalid input: position out of deck bounds (size of list)
+				} else ok = !place.equals("depot") || from <= 6; // invalid input: position out of depot bounds (from 1 to 6)
+			} else { // sends the request
+				checkGoingToDeck = Pattern.matches(regexGoingToDeck, read);
+				ok = checkGoingToDeck;
+			}
+			
+			if (!ok) { // user input does not match with the defined pattern
+				System.out.println("input request invalid, write again");
+			}
+		} while (!ok); // while the input is not valid
+		
+		if (checkGoingToWarehouse) { // process request for moving to the warehouse
+			if (place.equals("deck")) {
+				return myWarehouseDepot.moveResources(place, from, Character.getNumericValue(read.charAt(20)));
+			} else {
+				return myWarehouseDepot.moveResources(place, from, Character.getNumericValue(read.charAt(21)));
+			}
+		} else { // process request for moving from the warehouse to the deck
+			return myWarehouseDepot.moveResourcesBackToDeck(Character.getNumericValue(read.charAt(5)));
+		}
+		
+	}
+	
 }

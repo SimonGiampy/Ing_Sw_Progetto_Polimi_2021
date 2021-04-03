@@ -77,7 +77,7 @@ public class WarehouseDepot {
 	 * @return true if the present configuration of the warehouse is correct
 	 *         false if more moves are required
 	 */
-	protected boolean moveResources(String where, int from, int destination) {
+	protected boolean moveResources(String where, int from, int destination) throws InvalidUserRequestException {
 		//syntax: move <from> from <deck/depot> to <destination>
 		// moves a resource coming from the deck (input) or the same depot. The resource has a related positional number for input and output
 		// the destination is always in the depot (pyramid) where each position has a number associated (from 1 to 6)
@@ -88,13 +88,11 @@ public class WarehouseDepot {
 				positionsIncomingResources.add(destination);
 				incomingResources.remove(from - 1);
 			} else { // destination is occupied by another resource
-				System.out.println("move is not permitted");
-				return false;
+				throw new InvalidUserRequestException("move is not permitted");
 			}
 		} else if (where.equals("depot")) { // resource coming from the depot
 			if (depot[from - 1] == Resources.EMPTY) { // resource moved must not be empty
-				System.out.println("move is not permitted");
-				return false;
+				throw new InvalidUserRequestException("move is not permitted");
 			} else { //switches the positions in the pyramid
 				if (!(positionsIncomingResources.contains(from) && positionsIncomingResources.contains(destination))) {
 					if (positionsIncomingResources.contains(from)) { // updates the list with the new position
@@ -121,15 +119,14 @@ public class WarehouseDepot {
 		}
 	}
 	
-	/** TODO: modify this method so that it throws an exception when the user input is not correct
+	/**
 	 * move a resource from the warehouse to the deck, only if the same resource was in the deck before
 	 * @param position the positional number of the resource in the warehouse
 	 * @return true if the move is permitted and correctly executed
 	 */
-	protected boolean moveResourcesBackToDeck(int position) {
+	protected boolean moveResourcesBackToDeck(int position) throws InvalidUserRequestException {
 		if (depot[position - 1] == Resources.EMPTY) { // cannot move an empty resource
-			System.out.println("move is not permitted");
-			return false;
+	        throw new InvalidUserRequestException("move is not permitted");
 		} else {
 			if (positionsIncomingResources.contains(position)) { // resource was in the deck before the insertion
 				incomingResources.add(depot[position - 1]);
@@ -150,60 +147,7 @@ public class WarehouseDepot {
 		}
 	}
 	
-	/** TODO: move this function somewhere else in the controller part of the project
-	 * input management for moving things around in the warehouse
-	 * @return a boolean that indicates if all the resources have been moved and if the warehouse configuration is correct
-	 *         returns false if more moves are required
-	 */
-	protected boolean processNewMove() {
-		Scanner scanner = new Scanner(System.in);
-		String read;
-		
-		String regexGoingToWarehouse = "move\s[1-9]\sfrom\s(deck|depot)\sto\s[1-6]"; // regex pattern for reading input for moving the
-		// resources to the warehouse
-		String regexGoingToDeck = "move\s[1-6]\sto\sdeck"; //regex pattern for reading input for moving back to the deck
-		
-		showIncomingDeck();
-		showDepot();
-		System.out.println("write new move command");
-		boolean checkGoingToWarehouse, checkGoingToDeck, ok ;
-		int from = 0;
-		String place = "";
-		do {
-			read = scanner.nextLine(); // user input
-			
-			checkGoingToWarehouse = Pattern.matches(regexGoingToWarehouse, read);
-			if (checkGoingToWarehouse) { // process request for moving resource from the deck to the warehouse
-				from = Character.getNumericValue(read.charAt(5));
-				if (read.charAt(14) == 'c') { //send from deck
-					place = "deck";
-				} else { // send from depot
-					place = "depot";
-				}
-				if (place.equals("deck") && from > incomingResources.size()) {
-					ok = false; // invalid input: position out of deck bounds (size of list)
-				} else ok = !place.equals("depot") || from <= 6; // invalid input: position out of depot bounds (from 1 to 6)
-			} else { // sends the request
-				checkGoingToDeck = Pattern.matches(regexGoingToDeck, read);
-				ok = checkGoingToDeck;
-			}
-			
-			if (!ok) { // user input does not match with the defined pattern
-				System.out.println("input request invalid, write again");
-			}
-		} while (!ok); // while the input is not valid
-		
-		if (checkGoingToWarehouse) { // process request for moving to the warehouse
-			if (place.equals("deck")) {
-				return moveResources(place, from, Character.getNumericValue(read.charAt(20)));
-			} else {
-				return moveResources(place, from, Character.getNumericValue(read.charAt(21)));
-			}
-		} else { // process request for moving from the warehouse to the deck
-			return moveResourcesBackToDeck(Character.getNumericValue(read.charAt(5)));
-		}
-		
-	}
+	
 	
 	/**
 	 * adds new resources to the deck, from the market
@@ -449,8 +393,8 @@ public class WarehouseDepot {
 	}
 	
 	
-	public ArrayList<Resources> getIncomingResources() {
-		return incomingResources;
+	public int getResourceDeckSize() {
+		return incomingResources.size();
 	}
 	
 	public Resources[] getDepot() {
@@ -463,10 +407,6 @@ public class WarehouseDepot {
 	
 	public ArrayList<Integer> getPositionsIncomingResources() {
 		return positionsIncomingResources;
-	}
-	
-	public ArrayList<ArrayList<Resources>> getExtraDepotResources() {
-		return extraDepotResources;
 	}
 	
 	public ArrayList<ArrayList<Boolean>> getExtraDepotContents() {
