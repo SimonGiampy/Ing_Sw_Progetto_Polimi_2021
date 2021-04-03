@@ -52,9 +52,7 @@ public class LeaderCard {
 	protected boolean checkCards(ArrayList<CardRequirement> totalCardOwned) {
 		if(cardRequirements.isEmpty())
 			return true;
-		else{
-			//da fare
-		}
+		return false;
 	}
 	
 	
@@ -74,5 +72,21 @@ public class LeaderCard {
 	protected int getVictoryPoints() {
 		if (abilityActivated) return victoryPoints;
 		else return 0;
+	}
+
+	public ArrayList<Resources> getResourceRequirements() {
+		return resourceRequirements;
+	}
+
+	public ArrayList<CardRequirement> getCardRequirements() {
+		return cardRequirements;
+	}
+
+	public AbilityEffectActivation getEffectActivation() {
+		return effectActivation;
+	}
+
+	public boolean isAbilityActivated() {
+		return abilityActivated;
 	}
 }
