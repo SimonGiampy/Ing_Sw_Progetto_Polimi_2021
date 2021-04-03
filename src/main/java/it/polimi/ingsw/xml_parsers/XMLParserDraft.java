@@ -15,17 +15,19 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 public class XMLParserDraft {
-	
-	//TODO: reorder code and add more clarity to the code. Also add some inline comments and javadoc
+
 
 	public XMLParserDraft() {
 	}
 
-	//for test
-	public FaithTrack readTiles(String fileName) {
+	/**
+	 * Opens the xml configuration file and read all the tiles of the faithTrack
+	 * @param fileName path of the xml file
+	 * @return the arraylist of tiles
+	 */
+	public ArrayList<Tile> readTiles(String fileName) {
 
 		ArrayList<Tile> tileList = new ArrayList<>();
-		ArrayList<Integer> reportPoints = new ArrayList<>();
 
 		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
 
@@ -35,38 +37,60 @@ public class XMLParserDraft {
 			Document document = builder.parse(new File (fileName));
 			document.getDocumentElement().normalize();
 
+			//Get list of all the tiles
 			NodeList tileNodeList = document.getElementsByTagName("tile");
 
-			for(int i = 1; i < tileNodeList.getLength(); i++){
+			//Iterate through the list
+			for(int i = 1; i < tileNodeList.getLength(); i++) {
 				Node tileNode = tileNodeList.item(i);
-				
-				if(tileNode.getNodeType() == Node.ELEMENT_NODE) {
 
-					ArrayList<Boolean> insideVatican = new ArrayList<>();
+				ArrayList<Boolean> insideVatican = new ArrayList<>();
 
-					//List of children nodes
-					NodeList tileDetailList = tileNode.getChildNodes();
+				//List of details of the single tile
+				NodeList tileDetailList = tileNode.getChildNodes();
 
-					Element victory = (Element) tileDetailList.item(1);
-					int victoryPoints = Integer.parseInt(victory.getAttribute("points"));
-					Element papal = (Element) tileDetailList.item(3);
-					boolean papalSpace = Boolean.parseBoolean(papal.getAttribute("value"));
+				//Get victory points
+				Element victory = (Element) tileDetailList.item(1);
+				int victoryPoints = Integer.parseInt(victory.getAttribute("points"));
 
-					//List of boolean for the inside vatican attribute
-					NodeList vaticanList = tileDetailList.item(5).getChildNodes();
-					for(int j = 1; j < vaticanList.getLength(); j+=2) {
-						Node vaticanNode = vaticanList.item(j);
-						
-							Element vatican = (Element) vaticanNode;
-							insideVatican.add(Boolean.parseBoolean(vatican.getAttribute("value")));
-						
+				//Get value of papalSpace
+				Element papal = (Element) tileDetailList.item(3);
+				boolean papalSpace = Boolean.parseBoolean(papal.getAttribute("value"));
 
-					}
-					tileList.add(new Tile(victoryPoints, insideVatican, papalSpace));
+				//List of boolean for the inside vatican attribute
+				NodeList vaticanList = tileDetailList.item(5).getChildNodes();
+				for (int j = 1; j < vaticanList.getLength(); j += 2) {
+					Node vaticanNode = vaticanList.item(j);
+					Element vatican = (Element) vaticanNode;
+					insideVatican.add(Boolean.parseBoolean(vatican.getAttribute("value")));
 				}
+				tileList.add(new Tile(victoryPoints, insideVatican, papalSpace));
 			}
 
-			
+		} catch (ParserConfigurationException | SAXException | IOException e) {
+			e.printStackTrace();
+		}
+
+		return tileList;
+	}
+
+	/**
+	 * Reads the value in victory points of every vatican report
+	 * @param fileName path of the xml file
+	 * @return arrayList of integer containing the victory points for every report
+	 */
+	public ArrayList<Integer> readReportPoints(String fileName){
+
+		ArrayList<Integer> reportPoints = new ArrayList<>();
+
+		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+
+		try {
+			DocumentBuilder builder = factory.newDocumentBuilder();
+			Document document = builder.parse(new File (fileName));
+			document.getDocumentElement().normalize();
+
+			//Get list of points for every vatican report
 			NodeList reportPointsNodeList = document.getElementsByTagName("report_points");
 			Node reportPointsNode = reportPointsNodeList.item(0);
 			NodeList reportList = reportPointsNode.getChildNodes();
@@ -74,20 +98,21 @@ public class XMLParserDraft {
 			reportList = reportPointsNode.getChildNodes();
 			for(int i = 1; i < reportList.getLength(); i+=2){
 				Node reportNode = reportList.item(i);
-				
-					Element report = (Element) reportNode;
-					reportPoints.add(Integer.parseInt(report.getAttribute("points")));
-				
+				Element report = (Element) reportNode;
+				reportPoints.add(Integer.parseInt(report.getAttribute("points")));
 			}
 
 		} catch (ParserConfigurationException | SAXException | IOException e) {
 			e.printStackTrace();
 		}
-
-		return new FaithTrack(tileList, reportPoints);
+		return reportPoints;
 	}
 
-	//for test
+	/**
+	 * Reads all the development cards from the xml file
+	 * @param fileName name of the xml file
+	 * @return the development card deck
+	 */
 	public ArrayList<DevelopmentCard> readDevCards(String fileName) {
 		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
 		ArrayList<DevelopmentCard> cardsDeck = new ArrayList<>();
@@ -97,14 +122,15 @@ public class XMLParserDraft {
 			Document document = builder.parse(new File(fileName));
 			document.getDocumentElement();
 
-			//list of dev cards
+			//Get the list of dev cards
 			NodeList cardList = document.getElementsByTagName("card");
 
+			//Iterate through all the cards
 			for(int i = 0; i < cardList.getLength(); i++){
 				Node cardNode = cardList.item(i);
 				if(cardNode.getNodeType() == Node.ELEMENT_NODE){
 
-					//data to instantiate the card
+					//Data required to instantiate the card
 					ArrayList<Resources> input = new ArrayList<>();
 					ArrayList<Resources> output = new ArrayList<>();
 					ArrayList<Resources> requirements = new ArrayList<>();
@@ -112,33 +138,35 @@ public class XMLParserDraft {
 					int faithOutput, level, victoryPoints;
 					Colors color;
 
-					//children
+					//Get list of all the different data
 					NodeList cardDetailList = cardNode.getChildNodes();
 
-					//get list of requirements
+					//Get the requirements
 					Node requirementsNode = cardDetailList.item(1);
 					nodesExtraction(requirements, requirementsNode);
-					//get list of input resources
+
+					//Get the list of input resources
 					Node inputNode = cardDetailList.item(3);
 					nodesExtraction(input, inputNode);
-					//get list of output resources
+
+					//Get the list of output resources
 					Node outputNode = cardDetailList.item(5);
 					nodesExtraction(output, outputNode);
-					//get faith output
-					Node faithOutputNode = cardDetailList.item(7);
-					Element faithOutputElement = (Element) faithOutputNode;
+
+					//Get faith output
+					Element faithOutputElement = (Element) cardDetailList.item(7);
 					faithOutput = Integer.parseInt(faithOutputElement.getAttribute("output"));
-					//get level
-					Node levelNode = cardDetailList.item(9);
-					Element levelElement = (Element) levelNode;
+
+					//Get level
+					Element levelElement = (Element) cardDetailList.item(9);
 					level = Integer.parseInt(levelElement.getAttribute("value"));
-					//get victory points
-					Node victoryPointsNode = cardDetailList.item(11);
-					Element victoryPointsElement = (Element) victoryPointsNode;
+
+					//Get victory points
+					Element victoryPointsElement = (Element) cardDetailList.item(11);
 					victoryPoints = Integer.parseInt(victoryPointsElement.getAttribute("points"));
-					//get color
-					Node colorNode = cardDetailList.item(13);
-					Element colorElement = (Element) colorNode;
+
+					//Get color
+					Element colorElement = (Element) cardDetailList.item(13);
 					color = Colors.valueOf(String.valueOf(colorElement.getAttribute("value")).toUpperCase());
 
 					//Instantiate production rule and card
@@ -155,19 +183,18 @@ public class XMLParserDraft {
 	}
 	
 	/**
-	 *
-	 * @param input
-	 * @param inputNode
+	 * Reads the list of resources and add those in the specified arrayList
+	 * @param resourcesArray array that will contain the read resources
+	 * @param specifiedNode parent node of the chosen list of resources (requirements, input or output)
 	 */
-	private void nodesExtraction(ArrayList<Resources> input, Node inputNode) {
-		NodeList inputList = inputNode.getChildNodes();
-		for(int j = 0; j < inputList.getLength(); j++){
-			Node singleInputNode = inputList.item(j);
-			if(singleInputNode.getNodeType() == Node.ELEMENT_NODE){
-				Element singleInputElement = (Element) singleInputNode;
-				input.add(Resources.valueOf(String.valueOf(singleInputElement.
-						getAttribute("value")).toUpperCase()));
-			}
+	private void nodesExtraction(ArrayList<Resources> resourcesArray, Node specifiedNode) {
+
+		NodeList inputList = specifiedNode.getChildNodes();
+		for(int j = 1; j < inputList.getLength(); j+=2){
+			Node singleNode = inputList.item(j);
+			Element singleElement = (Element) singleNode;
+			resourcesArray.add(Resources.valueOf(String.valueOf(singleElement
+						.getAttribute("value")).toUpperCase()));
 		}
 	}
 	

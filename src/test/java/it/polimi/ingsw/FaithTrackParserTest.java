@@ -20,8 +20,9 @@ public class FaithTrackParserTest {
 		//System.out.println(fullPath);
 		
 		XMLParserDraft parser = new XMLParserDraft();
-		FaithTrack faithTrack = parser.readTiles(fullPath);
-		
+		ArrayList<Tile> tilesTrack = parser.readTiles(fullPath);
+		ArrayList<Integer> reportPoints = parser.readReportPoints(fullPath);
+		FaithTrack faithTrack = new FaithTrack(tilesTrack, reportPoints);
 		ArrayList<Tile> track = faithTrack.getTrack();
 		ArrayList<Boolean> vaticanReports = faithTrack.getVaticanReports();
 		
