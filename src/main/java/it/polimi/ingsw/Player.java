@@ -111,7 +111,7 @@ public class Player {
 		//TODO: wait for controller and movement of resources in the warehouse
 	}
 
-	protected void interactWithWarehouse() {
+	public void interactWithWarehouse() {
 		//TODO: user interaction for moving the resources from the deck to the warehouse
 		try {
 			boolean ok = processNewMove();
@@ -125,7 +125,7 @@ public class Player {
 	
 	//TODO: add function that calculates the total score at the end of the game and returns an integer value
 
-	protected boolean isBuyMoveAvailable() throws InvalidInputException {
+	public boolean isBuyMoveAvailable() throws InvalidInputException {
 		myStrongbox.getContent().addAll(myWarehouseDepot.gatherAllResources());
 		return commonCardsDeck.canBuyDevCard(gatherAllResources(), cardManager);
 	}
@@ -142,7 +142,7 @@ public class Player {
 	 * @param color color fo the card
 	 * @param selectedSlot number of the slot where the player wants to put the card
 	 */
-	protected void buyNewDevCard(int level, Colors color, int selectedSlot) throws InvalidInputException {
+	public void buyNewDevCard(int level, Colors color, int selectedSlot) throws InvalidInputException {
 
 		//Check if the player has enough resources and at least one eligible slot for the card
 		if (commonCardsDeck.isCardBuyable(level, color, gatherAllResources(), cardManager)) {
@@ -226,7 +226,7 @@ public class Player {
 	 * @return a boolean that indicates if all the resources have been moved and if the warehouse configuration is correct
 	 *         returns false if more moves are required
 	 */
-	protected boolean processNewMove() throws InvalidUserRequestException {
+	public boolean processNewMove() throws InvalidUserRequestException {
 		Scanner scanner = new Scanner(System.in);
 		String read;
 		
