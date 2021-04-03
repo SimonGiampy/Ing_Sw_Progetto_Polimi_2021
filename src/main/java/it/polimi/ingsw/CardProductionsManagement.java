@@ -110,7 +110,7 @@ public class CardProductionsManagement {
 	 * @param playerInput is a list of selected production
 	 * @param inputResources is a list of resources selected by the player
 	 */
-	public void activateSelectedProduction(ArrayList<Integer> playerInput,int[] inputResources) {
+	public void activateSelectedProduction(ArrayList<Integer> playerInput,int[] inputResources) throws InvalidUserRequestException {
 		ArrayList<Resources> selectedProduction= new ArrayList<>();
 		for (Integer integer : playerInput) {
 			selectedProduction.addAll(activateSingleProduction(integer));
@@ -200,7 +200,7 @@ public class CardProductionsManagement {
 	 * @param playerInput is a list of selected production
 	 * @return true if all productions can be started at the same time
 	 */
-	public boolean isSelectedProductionAvailable(ArrayList<Integer> playerInput){
+	public boolean isSelectedProductionAvailable(ArrayList<Integer> playerInput) throws InvalidUserRequestException {
 		ArrayList<Resources> playerResources= myStrongbox.getContent();
 		playerResources.addAll(myWarehouseDepot.gatherAllResources());
 		ArrayList<Resources> productionInput= new ArrayList<>();
@@ -216,7 +216,7 @@ public class CardProductionsManagement {
 	 * @param playerInput is a list of selected production
 	 * @param inputResources is an array of number of Resources [#COIN,#SERVANT,#SHIELD,#STONE]
 	 */
-	public void takeChosenSelectedResources(ArrayList<Integer> playerInput, int[] inputResources){
+	public void takeChosenSelectedResources(ArrayList<Integer> playerInput, int[] inputResources) throws InvalidUserRequestException {
 		ArrayList<Resources> playerResources= myWarehouseDepot.gatherAllResources();
 		playerResources.addAll(myStrongbox.getContent());
 		ArrayList<Resources> productionInput= new ArrayList<>();

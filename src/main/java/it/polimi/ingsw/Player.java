@@ -1,6 +1,7 @@
 package it.polimi.ingsw;
 
 import it.polimi.ingsw.exceptions.InvalidDevCardSlotException;
+import it.polimi.ingsw.exceptions.InvalidInputException;
 import it.polimi.ingsw.exceptions.InvalidUserRequestException;
 
 import java.util.ArrayList;
@@ -99,11 +100,11 @@ public class Player {
 	 * @param where indicates the number of the row or the column to move
 	 * @return true if the player triggers one vatican report
 	 */
-	protected boolean interactWithMarket(String which, int where) {
+	protected boolean interactWithMarket(String which, int where) throws InvalidUserRequestException {
 		if (which.equals("col")) {
-			myResourceDeck.addResources(commonMarket.shiftCol(where));
+			myResourceDeck.addResources(commonMarket.shiftCol(where), 0, 0);
 		} else if (which.equals("row")) {
-			myResourceDeck.addResources(commonMarket.shiftRow(where));
+			myResourceDeck.addResources(commonMarket.shiftRow(where), 0 ,0);
 		}
 
 		return myFaithTrack.moveMarker(myResourceDeck.getFaithPoint());
@@ -124,7 +125,7 @@ public class Player {
 	
 	//TODO: add function that calculates the total score at the end of the game and returns an integer value
 
-	protected boolean isBuyMoveAvailable(){
+	protected boolean isBuyMoveAvailable() throws InvalidInputException {
 		myStrongbox.getContent().addAll(myWarehouseDepot.gatherAllResources());
 		return commonCardsDeck.canBuyDevCard(gatherAllResources(), cardManager);
 	}
@@ -141,7 +142,7 @@ public class Player {
 	 * @param color color fo the card
 	 * @param selectedSlot number of the slot where the player wants to put the card
 	 */
-	protected void buyNewDevCard(int level, Colors color, int selectedSlot) throws InvalidDevCardSlotException {
+	protected void buyNewDevCard(int level, Colors color, int selectedSlot) throws InvalidInputException {
 
 		//Check if the player has enough resources and at least one eligible slot for the card
 		if (commonCardsDeck.isCardBuyable(level, color, gatherAllResources(), cardManager)) {

@@ -1,5 +1,7 @@
 package it.polimi.ingsw;
 
+import it.polimi.ingsw.exceptions.InvalidUserRequestException;
+
 import java.util.ArrayList;
 
 public class ResourceDeck {
@@ -35,12 +37,15 @@ public class ResourceDeck {
 	 * Add resources to the list based on the colors of the marbles taken in the market
 	 * @param marblesFromMarket array of the marbles
 	 */
-	protected void addResources(Marbles[] marblesFromMarket)  {
+	/*
+	protected void addResources(Marbles[] marblesFromMarket) throws InvalidUserRequestException {
 		if(fromWhiteMarble1.get(0) == Resources.EMPTY)
 			addResources(marblesFromMarket, 0, 0);
 		else if(fromWhiteMarble2.get(0) == Resources.EMPTY)
 			addResources(marblesFromMarket, 4, 0);
 	}
+
+	 */
 
 	/**
 	 * Handles the case of a player playing two leader cards with the white marble ability, if this player
@@ -49,7 +54,14 @@ public class ResourceDeck {
 	 * @param quantityLeader1 number of times the player wants to activate the power of the first leader played
 	 * @param quantityLeader2 number of times the player wants to activate the power of the second leader played
 	 */
-	protected void addResources(Marbles[] marblesFromMarket, int quantityLeader1, int quantityLeader2) {
+	protected void addResources(Marbles[] marblesFromMarket, int quantityLeader1, int quantityLeader2)
+			throws InvalidUserRequestException {
+
+		//Throws exception if the total of the white marbles required to activate the leaders ability is greater than 4
+		if((quantityLeader1 * whiteMarblesInput1 + quantityLeader2 * whiteMarblesInput2) > 4) {
+			throw new InvalidUserRequestException("Invalid number of activations of leaders ability");
+		}
+		//Convert marble into resources based on their color
 		faithPoint = 0;
 		int whiteMarbleCount = 0;
 		for(Marbles x: marblesFromMarket) {
@@ -75,7 +87,7 @@ public class ResourceDeck {
 				}
 			}
 		}
-		
+
 		playerDepot.addIncomingResources(getResourceList()); // sends the resources list from the market to the player warehouse depot
 	}
 
