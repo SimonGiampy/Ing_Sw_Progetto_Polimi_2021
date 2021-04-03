@@ -30,19 +30,7 @@ public class TokenDeck{
 		Collections.shuffle(tokenList);
 	}
 
-	/**
-	 * Reveals the top token of the deck, removes it, appends it and returns it
-	 * @return the first token of the deck
-	 */
-	protected Token revealTop(){
 
-		Token topToken;
-		topToken = tokenList.get(0);
-		tokenList.remove(0);
-		tokenList.add(topToken);
-		return topToken;
-
-	}
 
 	/**
 	 * Shuffles the deck

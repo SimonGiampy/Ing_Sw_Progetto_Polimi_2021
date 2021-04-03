@@ -35,8 +35,9 @@ public class FaithTrack {
 	public boolean moveMarker(int faithPoints) {
 		boolean reportClaimed = false;
 		while(faithPoints > 0) {
-			
-			currentPosition = currentPosition + 1;
+
+			if(currentPosition + 1 < track.size())
+				currentPosition = currentPosition + 1;
 			
 			if (track.get(currentPosition).isPapalSpace())
 				reportClaimed = true;
@@ -75,6 +76,14 @@ public class FaithTrack {
 		totalPoints = totalPoints + track.get(currentPosition).tilePoints();
 		
 		return totalPoints;
+	}
+
+	/**
+	 * Checks if the player is in the last tile of the track
+	 * @return true if the player have finished the track
+	 */
+	public boolean isTrackFinished(){
+		return lastReportClaimed == reportPoints.size();
 	}
 	
 	//Methods that just return info. I leave them here because maybe they'll be useful in the future
