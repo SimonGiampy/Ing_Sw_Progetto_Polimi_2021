@@ -3,6 +3,7 @@ package it.polimi.ingsw;
 import it.polimi.ingsw.abilities.AbilityEffectActivation;
 
 import java.util.ArrayList;
+import java.util.stream.Collectors;
 
 /**
  * Represents all the Leader cards with their requirements and use a strategy pattern for the activation of the ability
@@ -50,9 +51,30 @@ public class LeaderCard {
 	 * @return true if requirements are satisfied, false otherwise
 	 */
 	protected boolean checkCards(ArrayList<CardRequirement> totalCardOwned) {
+		ArrayList<Colors> cardColors = new ArrayList<>();
+		ArrayList<CardRequirement> support1= new ArrayList<>();
+		ArrayList<CardRequirement> support2= new ArrayList<>();
+		ArrayList<Colors> support3= new ArrayList<>();
+		ArrayList<Colors> colorsRequirements;
 		if(cardRequirements.isEmpty())
 			return true;
-		return false;
+		else if (cardRequirements.stream().noneMatch(i->i.getLevel()==0))
+			return totalCardOwned.containsAll(cardRequirements);
+		else if (cardRequirements.stream().noneMatch(i->i.getLevel()>0)){
+			cardColors=totalCardOwned.stream().map(CardRequirement::getColor).collect(Collectors.toCollection(ArrayList::new));
+			colorsRequirements=cardRequirements.stream().map(CardRequirement::getColor).collect(Collectors.toCollection(ArrayList::new));
+			return cardColors.containsAll(colorsRequirements);
+		}
+		else{
+			support1=cardRequirements.stream().filter(i->i.getLevel()>0).collect(Collectors.toCollection(ArrayList::new));
+			support2=totalCardOwned;
+			if (!support2.containsAll(support1))
+				return false;
+			support2.removeAll(support1);
+			cardColors=cardRequirements.stream().filter(i->i.getLevel()==0).map(CardRequirement::getColor).collect(Collectors.toCollection(ArrayList::new));
+			support3=support2.stream().map(CardRequirement::getColor).collect(Collectors.toCollection(ArrayList::new));
+			return support3.containsAll(cardColors);
+		}
 	}
 	
 	
@@ -72,21 +94,5 @@ public class LeaderCard {
 	protected int getVictoryPoints() {
 		if (abilityActivated) return victoryPoints;
 		else return 0;
-	}
-
-	public ArrayList<Resources> getResourceRequirements() {
-		return resourceRequirements;
-	}
-
-	public ArrayList<CardRequirement> getCardRequirements() {
-		return cardRequirements;
-	}
-
-	public AbilityEffectActivation getEffectActivation() {
-		return effectActivation;
-	}
-
-	public boolean isAbilityActivated() {
-		return abilityActivated;
 	}
 }

@@ -106,8 +106,26 @@ public class ProductionRulesTest {
 		ProductionRules productionRules = new ProductionRules(inputProduction,outputProduction,1);
 		assertFalse(productionRules.isProductionAvailable(playerResources));
 	}
+
+	/**
+	 *
+	 */
 	@Test
 	public void numberOfInputEmptyResources(){
-
+		ArrayList<Resources> inputProduction= new ArrayList<>();
+		ArrayList<Resources> outputProduction= new ArrayList<>();
+		ArrayList<Resources> playerResources= new ArrayList<>();
+		inputProduction.add(Resources.EMPTY);
+		inputProduction.add(Resources.STONE);
+		ProductionRules productionRules = new ProductionRules(inputProduction,outputProduction,1);
+		assertEquals(1,productionRules.numberOfInputEmptyResources());
+	}
+	@Test
+	public void numberOfInputEmptyResources_2(){
+		ArrayList<Resources> inputProduction= new ArrayList<>();
+		ArrayList<Resources> outputProduction= new ArrayList<>();
+		ArrayList<Resources> playerResources= new ArrayList<>();
+		ProductionRules productionRules = new ProductionRules(inputProduction,outputProduction,1);
+		assertEquals(0,productionRules.numberOfInputEmptyResources());
 	}
 }

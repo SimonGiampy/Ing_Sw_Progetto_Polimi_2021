@@ -125,7 +125,7 @@ public class Player {
 			e.printStackTrace();
 		}
 	}
-	
+
 	/**
 	 * it checks if the player has reached endgame
 	 * @return true if the player owns 7 cards or has reached the end of the faith track
