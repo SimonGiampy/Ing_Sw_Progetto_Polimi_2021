@@ -52,8 +52,9 @@ public class LeaderCard {
 	protected boolean checkCards(ArrayList<CardRequirement> totalCardOwned) {
 		if(cardRequirements.isEmpty())
 			return true;
-		else
-			return totalCardOwned.containsAll(cardRequirements);
+		else{
+			//da fare
+		}
 	}
 	
 	
