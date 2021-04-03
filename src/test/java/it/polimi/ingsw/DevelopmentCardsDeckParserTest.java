@@ -1,6 +1,6 @@
 package it.polimi.ingsw;
 
-import it.polimi.ingsw.xml_parsers.XMLParserDraft;
+import it.polimi.ingsw.xml_parsers.XMLParser;
 import org.junit.Test;
 
 import java.io.File;
@@ -21,7 +21,7 @@ public class DevelopmentCardsDeckParserTest {
 		String fullPath = file.getAbsolutePath();
 		//System.out.println(fullPath);
 		
-		XMLParserDraft parser = new XMLParserDraft();
+		XMLParser parser = new XMLParser();
 		ArrayList<DevelopmentCard> arrayCards = parser.readDevCards(fullPath);
 		GameMechanicsMultiPlayer mec = new GameMechanicsMultiPlayer(1);
 		

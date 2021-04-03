@@ -14,10 +14,10 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 
-public class XMLParserDraft {
+public class XMLParser {
 
 
-	public XMLParserDraft() {
+	public XMLParser() {
 	}
 
 	/**
@@ -143,15 +143,15 @@ public class XMLParserDraft {
 
 					//Get the requirements
 					Node requirementsNode = cardDetailList.item(1);
-					nodesExtraction(requirements, requirementsNode);
+					extractResourcesListFromNode(requirements, requirementsNode);
 
 					//Get the list of input resources
 					Node inputNode = cardDetailList.item(3);
-					nodesExtraction(input, inputNode);
+					extractResourcesListFromNode(input, inputNode);
 
 					//Get the list of output resources
 					Node outputNode = cardDetailList.item(5);
-					nodesExtraction(output, outputNode);
+					extractResourcesListFromNode(output, outputNode);
 
 					//Get faith output
 					Element faithOutputElement = (Element) cardDetailList.item(7);
@@ -187,8 +187,7 @@ public class XMLParserDraft {
 	 * @param resourcesArray array that will contain the read resources
 	 * @param specifiedNode parent node of the chosen list of resources (requirements, input or output)
 	 */
-	private void nodesExtraction(ArrayList<Resources> resourcesArray, Node specifiedNode) {
-
+	private void extractResourcesListFromNode(ArrayList<Resources> resourcesArray, Node specifiedNode) {
 		NodeList inputList = specifiedNode.getChildNodes();
 		for(int j = 1; j < inputList.getLength(); j+=2){
 			Node singleNode = inputList.item(j);
@@ -239,12 +238,8 @@ public class XMLParserDraft {
 					NodeList requirementsList = leaderCardElements.item(3).getChildNodes();
 					
 					// reading list of resources required
-					NodeList resourcesList = requirementsList.item(1).getChildNodes();
-					for (int res = 1; res < resourcesList.getLength(); res+=2) {
-						Element resource = (Element) resourcesList.item(res);
-						String resourceString = String.valueOf(resource.getAttribute("value")).toUpperCase();
-						requirementsResourcesList.add(Resources.valueOf(resourceString));
-					}
+					Node resourcesList = requirementsList.item(1);
+					extractResourcesListFromNode(requirementsResourcesList, resourcesList);
 					
 					// reading list of card requirements
 					NodeList cardRequirementsList = requirementsList.item(3).getChildNodes();
@@ -265,35 +260,25 @@ public class XMLParserDraft {
 					//TODO: parse multiple power abilities for a single leader card
 					
 					//there should be an iteration mechanism for every power element
-					Node powerParametersList = abilitiesNodeList.item(1);
-					Element powerParameter = (Element) powerParametersList;
+					Node powerParametersNode = abilitiesNodeList.item(1);
+					String powerType = ((Element) powerParametersNode).getAttribute("type");
 					
-					switch (powerParameter.getAttribute("type")) {
+					switch (powerType) {
 						case "depot" -> {
 							ArrayList<Resources> slotsResourcesList = new ArrayList<>();
-							NodeList slotsNodeList = powerParameter.getChildNodes();
-							
-							for (int slot = 1; slot < slotsNodeList.getLength(); slot+=2) {
-								Element slotElement = (Element) slotsNodeList.item(slot);
-								String slotString = String.valueOf(slotElement.getAttribute("value")).toUpperCase();
-								slotsResourcesList.add(Resources.valueOf(slotString));
-							}
+							extractResourcesListFromNode(slotsResourcesList, powerParametersNode);
 							
 							leaderCardBuilder = leaderCardBuilder.xmlData("depot", slotsResourcesList);
 						}
 						case "white marble" -> {
 							ArrayList<Resources> marblesResourcesList = new ArrayList<>();
 							
-							Node whiteMarblesCountNode = powerParameter.getChildNodes().item(1);
+							Node whiteMarblesCountNode = powerParametersNode.getChildNodes().item(1);
 							String white = ((Element) whiteMarblesCountNode).getAttribute("number");
 							int whiteMarbles = Integer.parseInt(white);
 							
-							NodeList marblesNodeList = powerParameter.getChildNodes().item(3).getChildNodes();
-							for (int marble = 1; marble < marblesNodeList.getLength(); marble+=2) {
-								Element marbleElement = (Element) marblesNodeList.item(marble);
-								String marbleString = String.valueOf(marbleElement.getAttribute("value")).toUpperCase();
-								marblesResourcesList.add(Resources.valueOf(marbleString));
-							}
+							Node marblesNodeList = powerParametersNode.getChildNodes().item(3);
+							extractResourcesListFromNode(marblesResourcesList, marblesNodeList);
 							
 							leaderCardBuilder = leaderCardBuilder.xmlData(marblesResourcesList, whiteMarbles);
 						}
@@ -301,34 +286,21 @@ public class XMLParserDraft {
 							ArrayList<Resources> inputResourcesList = new ArrayList<>();
 							ArrayList<Resources> outputResourcesList = new ArrayList<>();
 							
-							Node faithPointsOutputNode = powerParameter.getChildNodes().item(1);
+							Node faithPointsOutputNode = powerParametersNode.getChildNodes().item(1);
 							String faithOutputString = ((Element) faithPointsOutputNode).getAttribute("output");
 							int faithOutput = Integer.parseInt(faithOutputString);
 							
-							NodeList inputNodeList = powerParameter.getChildNodes().item(3).getChildNodes();
-							for (int res = 1; res < inputNodeList.getLength(); res+=2) {
-								Element element = (Element) inputNodeList.item(res);
-								String resString = String.valueOf(element.getAttribute("value")).toUpperCase();
-								inputResourcesList.add(Resources.valueOf(resString));
-							}
+							Node inputNodeList = powerParametersNode.getChildNodes().item(3);
+							extractResourcesListFromNode(inputResourcesList, inputNodeList);
 							
-							NodeList outputNodeList = powerParameter.getChildNodes().item(5).getChildNodes();
-							for (int res = 1; res < outputNodeList.getLength(); res+=2) {
-								Element element = (Element) inputNodeList.item(res);
-								String resString = String.valueOf(element.getAttribute("value")).toUpperCase();
-								outputResourcesList.add(Resources.valueOf(resString));
-							}
+							Node outputNodeList = powerParametersNode.getChildNodes().item(5);
+							extractResourcesListFromNode(outputResourcesList, outputNodeList);
 							
 							leaderCardBuilder = leaderCardBuilder.xmlData(inputResourcesList, faithOutput, outputResourcesList);
 						}
 						case "discount" -> {
 							ArrayList<Resources> resourcesArrayList = new ArrayList<>();
-							NodeList resourcesNodeList = powerParameter.getChildNodes();
-							for (int res = 1; res < resourcesNodeList.getLength(); res+=2) {
-								Element element = (Element) resourcesNodeList.item(res);
-								String resourceString = String.valueOf(element.getAttribute("value")).toUpperCase();
-								resourcesArrayList.add(Resources.valueOf(resourceString));
-							}
+							extractResourcesListFromNode(resourcesArrayList, powerParametersNode);
 							
 							leaderCardBuilder = leaderCardBuilder.xmlData("discount", resourcesArrayList);
 						}
@@ -337,7 +309,6 @@ public class XMLParserDraft {
 					leaderCardArrayList.add(leaderCardBuilder.build());
 					
 				}
-				
 			}
 			
 		} catch (ParserConfigurationException | SAXException | IOException e) {
@@ -347,16 +318,39 @@ public class XMLParserDraft {
 		return leaderCardArrayList;
 	}
 	
-	
-	public void parseBaseProductionFromXML(String fileName) {
+	/**
+	 * parse base production configuration from the xml configuration file
+	 * @param fileName the full path of the xml file
+	 * @return the base production instance
+	 */
+	public ProductionRules parseBaseProductionFromXML(String fileName) {
 		ArrayList<Resources> inputResources = new ArrayList<>();
 		ArrayList<Resources> outputResources = new ArrayList<>();
-		int faithOutput;
 		
-		//TODO: parse base production parameters from xml
+		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
 		
-		//return new ProductionRules(inputResources, outputResources, faithOutput);
+		try {
+			
+			DocumentBuilder builder = factory.newDocumentBuilder();
+			Document document = builder.parse(new File(fileName));
+			document.getDocumentElement().normalize();
+			
+			//Get list of the 2 nodes contained in the base production
+			NodeList baseNodeList = document.getElementsByTagName("base_production");
+			NodeList productionNodeList = baseNodeList.item(0).getChildNodes();
+			
+			// reads input resources
+			Node inputNodeList = productionNodeList.item(1);
+			extractResourcesListFromNode(inputResources, inputNodeList);
+			// reads output resources
+			Node outputNodeList = productionNodeList.item(3);
+			extractResourcesListFromNode(outputResources, outputNodeList);
+			
+		} catch (ParserConfigurationException | IOException | SAXException e) {
+			e.printStackTrace();
+		}
 		
+		return new ProductionRules(inputResources, outputResources, 0);
 	}
 	
 	

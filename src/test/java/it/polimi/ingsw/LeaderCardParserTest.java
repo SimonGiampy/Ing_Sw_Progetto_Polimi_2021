@@ -1,6 +1,6 @@
 package it.polimi.ingsw;
 
-import it.polimi.ingsw.xml_parsers.XMLParserDraft;
+import it.polimi.ingsw.xml_parsers.XMLParser;
 import org.junit.Test;
 
 import java.io.File;
@@ -19,8 +19,8 @@ public class LeaderCardParserTest {
 		ClassLoader classLoader = getClass().getClassLoader();
 		File file = new File(classLoader.getResource(fileName).getFile());
 		String fullPath = file.getAbsolutePath();
-		XMLParserDraft parser = new XMLParserDraft();
-		int x = 0;
+		XMLParser parser = new XMLParser();
+		
 		ArrayList<LeaderCard> leaderCards = parser.readLeaderCards(fullPath);
 	
 		for(int i = 0; i < leaderCards.size(); i++ ){
@@ -32,6 +32,22 @@ public class LeaderCardParserTest {
 			
 		}
 
+	}
+	
+	
+	@Test
+	public void parseBaseProductionFromXML() {
+		String fileName = "game_configuration_complete.xml";
+		ClassLoader classLoader = getClass().getClassLoader();
+		File file = new File(classLoader.getResource(fileName).getFile());
+		String fullPath = file.getAbsolutePath();
+		XMLParser parser = new XMLParser();
+		
+		ProductionRules baseProduction = parser.parseBaseProductionFromXML(fullPath);
+		
+		System.out.println("base production:\ninput resources = " +
+				baseProduction.getInputCopy().toString() + "\noutput resources = " + baseProduction.getOutputCopy().toString()
+		);
 	}
 
 }

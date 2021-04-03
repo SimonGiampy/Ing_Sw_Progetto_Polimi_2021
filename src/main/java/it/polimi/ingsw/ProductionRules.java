@@ -49,6 +49,14 @@ public class ProductionRules {
 	}
 	
 	/**
+	 * getter for the attribute output (it creates a copy)
+	 * @return an Arraylist of production output
+	 */
+	public ArrayList<Resources> getOutputCopy(){
+		return new ArrayList<>(output);
+	}
+	
+	/**
 	 * it checks if production is available
 	 * @param input is a list of all the resources the player owns
 	 * @return true if the list needed for production is contained in the player's boxes. this version handles also the case when production input contains ? values
@@ -65,7 +73,7 @@ public class ProductionRules {
 
 	/**
 	 *
-	 * @return the number of ? production values
+	 * @return the number of ? production values (indicated with EMPTY flag)
 	 */
 	public int numberOfOutputEmptyResources(){
 		return (int) output.stream().filter(i -> i==Resources.EMPTY).count();

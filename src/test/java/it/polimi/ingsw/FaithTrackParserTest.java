@@ -1,6 +1,6 @@
 package it.polimi.ingsw;
 
-import it.polimi.ingsw.xml_parsers.XMLParserDraft;
+import it.polimi.ingsw.xml_parsers.XMLParser;
 import org.junit.Test;
 
 import java.io.File;
@@ -19,7 +19,7 @@ public class FaithTrackParserTest {
 		String fullPath = file.getAbsolutePath();
 		//System.out.println(fullPath);
 		
-		XMLParserDraft parser = new XMLParserDraft();
+		XMLParser parser = new XMLParser();
 		ArrayList<Tile> tilesTrack = parser.readTiles(fullPath);
 		ArrayList<Integer> reportPoints = parser.readReportPoints(fullPath);
 		FaithTrack faithTrack = new FaithTrack(tilesTrack, reportPoints);
