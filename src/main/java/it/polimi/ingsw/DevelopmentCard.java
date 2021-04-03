@@ -97,6 +97,8 @@ public class DevelopmentCard {
 	public int numberOfOutputEmptyResources(){
 		return productionRules.numberOfOutputEmptyResources();
 	}
-
+	public int numberOfInputEmptyResources(){
+		return productionRules.numberOfInputEmptyResources();
+	}
 	
 }

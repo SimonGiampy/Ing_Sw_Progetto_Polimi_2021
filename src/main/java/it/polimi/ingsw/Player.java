@@ -124,6 +124,9 @@ public class Player {
 	//      and the other players have just one more turn remaining
 	
 	//TODO: add function that calculates the total score at the end of the game and returns an integer value
+	public int totalScore(){
+		cardManager.totalVictoryPoints()+
+	}
 
 	public boolean isBuyMoveAvailable() throws InvalidInputException {
 		myStrongbox.getContent().addAll(myWarehouseDepot.gatherAllResources());
@@ -181,6 +184,28 @@ public class Player {
 
 		}
 	}
+
+	/**
+	 * it activates production and recall the method to move faithTrack marker
+	 * @param playerInput is a list of selected production
+	 * @param resourcesInput is an array of number of Resources [#COIN,#SERVANT,#SHIELD,#STONE]. When the production does not have ?, the caller set it to [0,0,0,0].
+	 * @param resourcesOutput is an array of number of Resources [#COIN,#SERVANT,#SHIELD,#STONE]. When the production does not have ?, the caller set it to [0,0,0,0].
+	 * @throws InvalidInputException
+	 */
+	public void activateProduction(ArrayList<Integer> playerInput,int[] resourcesInput, int[] resourcesOutput) throws InvalidInputException{
+		if (!cardManager.checkPlayerInput(playerInput))
+			throw new InvalidInputException("Production input not correct");
+		if (!cardManager.isSelectedProductionAvailable(playerInput))
+			throw new InvalidInputException("Selected production not available");
+		if(!cardManager.isNumberOfSelectedInputEmptyResourcesEnough(playerInput,resourcesInput))
+			throw new InvalidInputException("Input Empty Resources selection not correct");
+		if (!cardManager.isnumberOfSelectedOutputEmptyResourcesEnough(playerInput,resourcesOutput))
+		 	throw new InvalidInputException("Output Empty Resources selection not correct");
+		cardManager.takeSelectedResources(playerInput,resourcesInput);
+		myFaithTrack.moveMarker(cardManager.activateSelectedProduction(playerInput,resourcesOutput));
+	}
+
+
 	
 	/**
 	 * this function tells the leader to activate its ability. Passes as value itself so that the ability knows who is the player referring to it
