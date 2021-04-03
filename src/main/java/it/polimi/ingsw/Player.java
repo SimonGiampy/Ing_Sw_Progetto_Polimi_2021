@@ -138,16 +138,16 @@ public class Player {
 	 * it calculates player's victory points
 	 * @return player's score
 	 */
-	public int totalScore(){
-		int resourcesVictoryPoints=gatherAllResources().size()/5;
-		int cardVictoryPoints=cardManager.totalVictoryPoints();
-		int faithTrackPoints=myFaithTrack.countFaithTrackVictoryPoints();
-		int leaderVictoryPoints=0;
+	public int totalScore() {
+		int resourcesVictoryPoints = gatherAllResources().size() / 5;
+		int cardVictoryPoints = cardManager.totalVictoryPoints();
+		int faithTrackPoints = myFaithTrack.countFaithTrackVictoryPoints();
+		int leaderVictoryPoints = 0;
 		if(activeAbilityLeader1)
-			leaderVictoryPoints=leaderVictoryPoints+leaderCards[0].getVictoryPoints();
+			leaderVictoryPoints = leaderVictoryPoints + leaderCards[0].getVictoryPoints();
 		if(activeAbilityLeader2)
-			leaderVictoryPoints=leaderVictoryPoints+leaderCards[1].getVictoryPoints();
-		return resourcesVictoryPoints+cardVictoryPoints+faithTrackPoints+leaderVictoryPoints;
+			leaderVictoryPoints = leaderVictoryPoints + leaderCards[1].getVictoryPoints();
+		return resourcesVictoryPoints + cardVictoryPoints + faithTrackPoints + leaderVictoryPoints;
 	}
 
 	public boolean isBuyMoveAvailable() throws InvalidInputException {

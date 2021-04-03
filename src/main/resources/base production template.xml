@@ -5,14 +5,14 @@
 
     <!-- list of input resources: free_choice defines a non-fixed resource -->
     <input>
-        <res value = "free_choice"/>
+        <res value = "empty"/>
         <res value = "stone"/>
     </input>
 
     <!-- list of output resources: free_choice defines a non-fixed resource -->
     <output>
         <res value = "coin"/>
-        <res value = "free_choice"/>
+        <res value = "empty"/>
     </output>
 
 </base_production>
