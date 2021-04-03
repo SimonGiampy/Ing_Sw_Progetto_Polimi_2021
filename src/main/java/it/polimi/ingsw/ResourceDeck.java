@@ -1,8 +1,10 @@
 package it.polimi.ingsw;
 
+import it.polimi.ingsw.exceptions.InvalidInputException;
 import it.polimi.ingsw.exceptions.InvalidUserRequestException;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class ResourceDeck {
 
@@ -32,20 +34,7 @@ public class ResourceDeck {
 		
 		playerDepot = depot;
 	}
-
-	/**
-	 * Add resources to the list based on the colors of the marbles taken in the market
-	 * @param marblesFromMarket array of the marbles
-	 */
-	/*
-	protected void addResources(Marbles[] marblesFromMarket) throws InvalidUserRequestException {
-		if(fromWhiteMarble1.get(0) == Resources.EMPTY)
-			addResources(marblesFromMarket, 0, 0);
-		else if(fromWhiteMarble2.get(0) == Resources.EMPTY)
-			addResources(marblesFromMarket, 4, 0);
-	}
-
-	 */
+	
 
 	/**
 	 * Handles the case of a player playing two leader cards with the white marble ability, if this player
@@ -56,9 +45,11 @@ public class ResourceDeck {
 	 */
 	protected void addResources(Marbles[] marblesFromMarket, int quantityLeader1, int quantityLeader2)
 			throws InvalidUserRequestException {
-
-		//Throws exception if the total of the white marbles required to activate the leaders ability is greater than 4
-		if((quantityLeader1 * whiteMarblesInput1 + quantityLeader2 * whiteMarblesInput2) > 4) {
+		int whiteMarblesFromMarket = (int) Arrays.stream(marblesFromMarket).filter(m -> m == Marbles.WHITE).count();
+		
+		//Throws exception if the total of the white marbles required to activate the leaders ability is different from
+		//      the number of white marbles to be processed with the leader card abilities
+		if ((quantityLeader1 * whiteMarblesInput1 + quantityLeader2 * whiteMarblesInput2) != whiteMarblesFromMarket) {
 			throw new InvalidUserRequestException("Invalid number of activations of leaders ability");
 		}
 		//Convert marble into resources based on their color
@@ -103,9 +94,8 @@ public class ResourceDeck {
 		} else if(fromWhiteMarble2.get(0) == Resources.EMPTY){
 			fromWhiteMarble2 = res;
 			whiteMarblesInput2 = whiteMarblesInput;
-
 		}
-
+		//else throw new InvalidInputException("two white marbles abilities already activated by the player");
 	}
 	
 	protected ArrayList<Resources> getResourceList(){
