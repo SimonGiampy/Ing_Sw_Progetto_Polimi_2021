@@ -17,7 +17,7 @@ import java.util.ArrayList;
 public class XMLParser {
 	
 	public XMLParser() {
-	
+		//TODO: move document initialization and file descriptor here. Add global variable containing the document
 	}
 
 	/**

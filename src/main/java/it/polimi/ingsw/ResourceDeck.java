@@ -122,7 +122,12 @@ public class ResourceDeck {
 		return whiteMarblesInput2;
 	}
 	
-	public boolean areBothWhiteMarblesActivated() {
-		return getWhiteMarblesInput1() > 0 || getWhiteMarblesInput2() > 0;
+	public boolean isWhiteAbility1Activated() {
+		return getWhiteMarblesInput1() > 0;
 	}
+	
+	public boolean isWhiteAbility2Activated() {
+		return getWhiteMarblesInput2() > 0;
+	}
+	
 }

@@ -5,6 +5,7 @@ import java.util.Collections;
 
 public class GameMechanicsMultiPlayer {
 	
+	GameController gameController;
 	
 	private Market market;
 	private DevelopmentCardsDeck gameDevCardsDeck;
@@ -13,8 +14,11 @@ public class GameMechanicsMultiPlayer {
 	private final int numberOfPlayers;
 	int lastReportClaimed;
 	
-	public GameMechanicsMultiPlayer(int players) {
+	int startingPlayer; //index of starting player: from 0 to 3 maximum
+	
+	public GameMechanicsMultiPlayer(GameController controller, int players) {
 		numberOfPlayers = players;
+		this.gameController = controller;
 	}
 	
 	
@@ -48,8 +52,10 @@ public class GameMechanicsMultiPlayer {
 			players[i] = instantiatePlayer(gameLeaders[i], playersTracks[i], rules);
 		}
 		
-		//TODO: choose the starting player randomly
-		//TODO: add starting resources and faith points to the players
+		startingPlayer = (int) Math.floor(Math.random() * numberOfPlayers);
+		
+		assignInitialAdvantage();
+		
 	}
 	
 	
@@ -95,6 +101,31 @@ public class GameMechanicsMultiPlayer {
 		return matrixDeck;
 	}
 	
+	public void assignInitialAdvantage() {
+		// add starting resources and faith points to the players
+		int round = (startingPlayer + 1) % numberOfPlayers;
+		if (numberOfPlayers >= 2) {
+			String resources = gameController.requestInitialResource(1);
+			//transform string to 2 resources
+			players[round].getPlayersWarehouseDepot().assignInitialResources(Resources.COIN); //needs to be changed into the chosen resource
+		}
+		round = (round + 1) % numberOfPlayers;
+		if (numberOfPlayers >= 3) {
+			String resources = gameController.requestInitialResource(1);
+			//transform string to 2 resources
+			players[round].getPlayersWarehouseDepot().assignInitialResources(Resources.COIN); //needs to be changed into the chosen resource
+			players[round].getPlayerFaithTrack().moveMarker(1);
+		}
+		round = (round + 1) % numberOfPlayers;
+		if (numberOfPlayers == 4) {
+			String resources = gameController.requestInitialResource(2);
+			//transform string to 2 resources
+			players[round].getPlayersWarehouseDepot().assignInitialResources(Resources.COIN, Resources.SHIELD); //needs to be changed into the chosen resource
+			players[round].getPlayerFaithTrack().moveMarker(1);
+		}
+	}
+	
+	
 	public Market getMarket() {
 		return market;
 	}
@@ -105,5 +136,21 @@ public class GameMechanicsMultiPlayer {
 	
 	public Player[] getPlayers() {
 		return players;
+	}
+	
+	public Player getPlayer(int which) {
+		return players[which];
+	}
+	
+	public int getNumberOfPlayers() {
+		return numberOfPlayers;
+	}
+	
+	public int getLastReportClaimed() {
+		return lastReportClaimed;
+	}
+	
+	public int getStartingPlayer() {
+		return startingPlayer;
 	}
 }

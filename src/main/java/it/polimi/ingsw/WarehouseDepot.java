@@ -4,8 +4,6 @@ import it.polimi.ingsw.exceptions.InvalidUserRequestException;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Scanner;
-import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 /**
@@ -16,15 +14,15 @@ public class WarehouseDepot {
 	
 	private ArrayList<Resources> incomingResources; //incoming resources from the market
 	private Resources[] depot; // array of fixed length = 6, representing the pyramid
-	private ArrayList<Integer> positionsIncomingResources; // memorizes the positions of the resources that have been moved from the deck
+	private final ArrayList<Integer> positionsIncomingResources; // memorizes the positions of the resources that have been moved from the deck
 	
 	
 	// list of 2 lists of resources, one for each leader. If the value of the first element in the list is NO_RES,
 	// then the corresponding leader is not activated yet. The size of the lists for the base case is 2
-	private ArrayList<ArrayList<Resources>> extraDepotResources;
+	private final ArrayList<ArrayList<Resources>> extraDepotResources;
 	// list of 2 lists of booleans, one for each leader. If the flag value is false, then the corresponding slot is empty,
 	// otherwise there is a resource occupying it
-	private ArrayList<ArrayList<Boolean>> extraDepotContents;
+	private final ArrayList<ArrayList<Boolean>> extraDepotContents;
 	
 	
 	/**
@@ -156,6 +154,29 @@ public class WarehouseDepot {
 	protected void addIncomingResources(ArrayList<Resources> list) {
 		if (incomingResources.isEmpty()) {
 			incomingResources = list;
+		}
+	}
+	
+	/**
+	 * assigns a single resource according to the game rules, at the start of the game
+	 * @param res a single resource to start with
+	 */
+	protected void assignInitialResources(Resources res) {
+		depot[0] = res;
+	}
+	
+	/**
+	 * assigns two resources according to the game rules, at the start of the game
+	 * @param res1 first resource
+	 * @param res2 second resource
+	 */
+	protected void assignInitialResources(Resources res1, Resources res2) {
+		if (res1 == res2) {
+			depot[1] = res1;
+			depot[2] = res2;
+		} else {
+			depot[0] = res1;
+			depot[1] = res2;
 		}
 	}
 	

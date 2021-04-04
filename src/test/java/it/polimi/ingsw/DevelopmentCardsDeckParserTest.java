@@ -23,7 +23,7 @@ public class DevelopmentCardsDeckParserTest {
 		
 		XMLParser parser = new XMLParser();
 		ArrayList<DevelopmentCard> arrayCards = parser.readDevCards(fullPath);
-		GameMechanicsMultiPlayer mec = new GameMechanicsMultiPlayer(1);
+		GameMechanicsMultiPlayer mec = new GameMechanicsMultiPlayer(null, 1);
 		
 
 		DevelopmentCardsDeck deckCards = new DevelopmentCardsDeck(mec.createCommonCardsDeck(arrayCards));
