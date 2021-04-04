@@ -45,7 +45,7 @@ public class DevelopmentCardsDeck {
 		DevelopmentCard card = cardStackStructure[row][column].get(0);
 		ArrayList<Resources> required = card.getResourcesRequirement();
 		
-		if (!ListSet.subset(required,playerResources)) { // the player has got all the necessary resources in order to buy the card
+		if (!ListSet.subset(playerResources, required)) { // the player has got all the necessary resources in order to buy the card
 			return false;
 		}
 		

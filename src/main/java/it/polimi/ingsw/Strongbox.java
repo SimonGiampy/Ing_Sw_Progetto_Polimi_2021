@@ -36,7 +36,7 @@ public class Strongbox {
 	 * @param input is a list of resources
 	 */
 	public void retrieveResources(ArrayList<Resources> input){
-		content.removeAll(input);
+		content = ListSet.removeSubSet(content, input);
 	}
 	
 	/**

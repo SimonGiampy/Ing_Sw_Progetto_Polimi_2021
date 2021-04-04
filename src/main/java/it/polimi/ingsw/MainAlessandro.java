@@ -37,14 +37,7 @@ public class MainAlessandro {
 		LeaderCard leaderCard = new LeaderCard(0,new ArrayList<>(), leaderInput, effectActivations);
 		System.out.println(leaderCard.checkCards(playerCards));
 
-		ArrayList<Integer> prova1= new ArrayList<>();
-		ArrayList<Integer> prova2= new ArrayList<>();
-		prova1.add(2);
-		prova1.add(1);
-		prova1.add(1);
-		prova2.add(1);
-		prova1.removeAll(prova2);
-		System.out.println(prova1);
+		
 
 
 	}
