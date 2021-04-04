@@ -5,6 +5,7 @@ import it.polimi.ingsw.exceptions.InvalidInputException;
 import it.polimi.ingsw.exceptions.InvalidUserRequestException;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Scanner;
 import java.util.regex.Pattern;
 
@@ -107,14 +108,30 @@ public class Player {
 	 * @return true if the player triggers one vatican report
 	 */
 	protected boolean interactWithMarket(String which, int where) throws InvalidUserRequestException {
+		Marbles[] output;
 		if (which.equals("col")) {
-			myResourceDeck.addResources(commonMarket.shiftCol(where), 0, 0);
+			output = commonMarket.shiftCol(where);
 		} else if (which.equals("row")) {
-			myResourceDeck.addResources(commonMarket.shiftRow(where), 0 ,0);
+			output = commonMarket.shiftRow(where);
+		} else throw new InvalidUserRequestException("command for using market is not correct");
+		
+		if (Arrays.asList(output).contains(Marbles.WHITE)) {
+			if (myResourceDeck.getWhiteMarblesInput2() > 0) {
+				Scanner scanner = new Scanner(System.in);
+				System.out.println("how many times do you want to use the first leader? ");
+				int quantity1 = scanner.nextInt();
+				System.out.println("how many times do you want to use the second leader? ");
+				int quantity2 = scanner.nextInt();
+				myResourceDeck.addResources(output, quantity1, quantity2);
+			} else if (myResourceDeck.getWhiteMarblesInput1() > 0) {
+				Scanner scanner = new Scanner(System.in);
+				System.out.println("how many times do you want to use the leader? ");
+				int quantity1 = scanner.nextInt();
+				myResourceDeck.addResources(output, quantity1, 0);
+			}
 		}
-
+		
 		return myFaithTrack.moveMarker(myResourceDeck.getFaithPoint());
-		//TODO: wait for controller and movement of resources in the warehouse
 	}
 
 	public void interactWithWarehouse() {
@@ -130,8 +147,8 @@ public class Player {
 	 * it checks if the player has reached endgame
 	 * @return true if the player owns 7 cards or has reached the end of the faith track
 	 */
-	public boolean isEndgameStarted(){
-		return (cardManager.numberOfCards()==7 || myFaithTrack.isTrackFinished());
+	public boolean isEndgameStarted() {
+		return (cardManager.numberOfCards() == 7 || myFaithTrack.isTrackFinished());
 	}
 
 	/**
@@ -139,7 +156,7 @@ public class Player {
 	 * @return player's score
 	 */
 	public int totalScore() {
-		int resourcesVictoryPoints = gatherAllResources().size() / 5;
+		int resourcesVictoryPoints = gatherAllPlayersResources().size() / 5;
 		int cardVictoryPoints = cardManager.totalVictoryPoints();
 		int faithTrackPoints = myFaithTrack.countFaithTrackVictoryPoints();
 		int leaderVictoryPoints = 0;
@@ -149,13 +166,20 @@ public class Player {
 			leaderVictoryPoints = leaderVictoryPoints + leaderCards[1].getVictoryPoints();
 		return resourcesVictoryPoints + cardVictoryPoints + faithTrackPoints + leaderVictoryPoints;
 	}
-
-	public boolean isBuyMoveAvailable() throws InvalidInputException {
-		myStrongbox.getContent().addAll(myWarehouseDepot.gatherAllResources());
-		return commonCardsDeck.canBuyDevCard(gatherAllResources(), cardManager);
+	
+	/**
+	 * checks whether the player can buy a new dev card
+	 * @return true if a new dev card can be bought, false otherwise
+	 */
+	public boolean isBuyMoveAvailable() {
+		return commonCardsDeck.canBuyDevCard(gatherAllPlayersResources(), cardManager);
 	}
 	
-	private ArrayList<Resources> gatherAllResources() {
+	/**
+	 * gathers all player's resources
+	 * @return a list of all the resources of the player, from warehouse depot and the strongbox
+	 */
+	private ArrayList<Resources> gatherAllPlayersResources() {
 		ArrayList<Resources> total = myStrongbox.getContent();
 		total.addAll(myWarehouseDepot.gatherAllResources());
 		return total;
@@ -168,11 +192,9 @@ public class Player {
 	 * @param selectedSlot number of the slot where the player wants to put the card
 	 */
 	public void buyNewDevCard(int level, Colors color, int selectedSlot) throws InvalidInputException {
-
 		//Check if the player has enough resources and at least one eligible slot for the card
-		if (commonCardsDeck.isCardBuyable(level, color, gatherAllResources(), cardManager)) {
-
-			//Get the price
+		if (commonCardsDeck.isCardBuyable(level, color, gatherAllPlayersResources(), cardManager)) {
+			//Get the price, which is the sum of all the resources needed for buying the dev card
 			ArrayList <Resources> price = commonCardsDeck.getPriceDevCard(level, color);
 
 			//Check that the slot is an eligible one
@@ -328,6 +350,17 @@ public class Player {
 			return myWarehouseDepot.moveResourcesBackToDeck(Character.getNumericValue(read.charAt(5)));
 		}
 		
+	}
+	
+	/**
+	 * helper function that shows the user how to interact with the CLI
+	 * //TODO: move this function in the controller classes for the CLI
+	 */
+	protected void helpMe() {
+		System.out.println("Syntax for moving resources from the deck or depot to the depot is: 'move <position> from <deck/depot> to " +
+				"<destination>'");
+		System.out.println("Syntax for moving a resource from the warehouse to the deck is : 'move <position> to deck'");
+		System.out.println("The positional number in the warehouse is between 1 and 6: from top to bottom, and from left to right");
 	}
 	
 }
