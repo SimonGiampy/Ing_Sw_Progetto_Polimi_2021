@@ -10,7 +10,7 @@ public class ProductionRulesTest {
 
 	/**
 	 * it tests if a production with real input (not ?) and enough resources in player's boxes is available
-	 * inputProduction = {COIN,SHIELD} outputProduction {STONE,STONE} faithOutput=1 playerResources={COIN,SHIELD,STONE} return true
+	 * inputProduction = {COIN,COIN} outputProduction {STONE,STONE} faithOutput=1 playerResources={COIN,COIN,STONE} return true
 	 */
 	@Test
 	public void isProductionAvailable() {
@@ -18,9 +18,9 @@ public class ProductionRulesTest {
 		ArrayList<Resources> outputProduction=new ArrayList<>();
 		ArrayList<Resources> playerResources= new ArrayList<>();
 		inputProduction.add(Resources.COIN);
-		inputProduction.add(Resources.SHIELD);
+		inputProduction.add(Resources.COIN);
 		playerResources.add(Resources.COIN);
-		playerResources.add(Resources.SHIELD);
+		playerResources.add(Resources.COIN);
 		playerResources.add(Resources.STONE);
 		ProductionRules productionRules = new ProductionRules(inputProduction,outputProduction,1);
 		assertTrue(productionRules.isProductionAvailable(playerResources));

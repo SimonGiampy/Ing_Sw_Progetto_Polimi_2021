@@ -43,7 +43,7 @@ public class LeaderCard {
 		if(resourceRequirements.isEmpty())
 			return true;
 		else
-			return totalPlayerResources.containsAll(resourceRequirements);
+			return ListSet.subset(resourceRequirements,totalPlayerResources);
 	}
 
 	/**
@@ -57,25 +57,25 @@ public class LeaderCard {
 		ArrayList<CardRequirement> support2= new ArrayList<>();
 		ArrayList<Colors> support3= new ArrayList<>();
 		ArrayList<Colors> colorsRequirements;
-		if(cardRequirements.isEmpty())
+		/*if(cardRequirements.isEmpty())
 			return true;
 		else if (cardRequirements.stream().noneMatch(i->i.getLevel()==0))
-			return totalCardOwned.containsAll(cardRequirements);
+			return ListSet.subset(cardRequirements,totalCardOwned);
 		else if (cardRequirements.stream().noneMatch(i->i.getLevel()>0)){
 			cardColors=totalCardOwned.stream().map(CardRequirement::getColor).collect(Collectors.toCollection(ArrayList::new));
 			colorsRequirements=cardRequirements.stream().map(CardRequirement::getColor).collect(Collectors.toCollection(ArrayList::new));
-			return cardColors.containsAll(colorsRequirements);
+			return ListSet.subset(colorsRequirements,cardColors);
 		}
-		else{
+		else{*/
 			support1=cardRequirements.stream().filter(i->i.getLevel()>0).collect(Collectors.toCollection(ArrayList::new));
 			support2=totalCardOwned;
-			if (!support2.containsAll(support1))
+			if (!ListSet.subset(support1,support2))
 				return false;
 			support2.removeAll(support1);
 			cardColors=cardRequirements.stream().filter(i->i.getLevel()==0).map(CardRequirement::getColor).collect(Collectors.toCollection(ArrayList::new));
 			support3=support2.stream().map(CardRequirement::getColor).collect(Collectors.toCollection(ArrayList::new));
-			return support3.containsAll(cardColors);
-		}
+			return ListSet.subset(cardColors,support3);
+
 	}
 	
 	
