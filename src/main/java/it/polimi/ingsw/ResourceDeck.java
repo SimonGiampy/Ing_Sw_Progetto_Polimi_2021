@@ -98,12 +98,27 @@ public class ResourceDeck {
 		//else throw new InvalidInputException("two white marbles abilities already activated by the player");
 	}
 	
-	protected ArrayList<Resources> getResourceList(){
+	public ArrayList<Resources> getResourceList(){
 		return resourceList;
 	}
 
-	protected int getFaithPoint() {
+	public int getFaithPoint() {
 		return faithPoint;
 	}
 
+	public ArrayList<Resources> getFromWhiteMarble1() {
+		return fromWhiteMarble1;
+	}
+
+	public ArrayList<Resources> getFromWhiteMarble2() {
+		return fromWhiteMarble2;
+	}
+
+	public int getWhiteMarblesInput1() {
+		return whiteMarblesInput1;
+	}
+
+	public int getWhiteMarblesInput2() {
+		return whiteMarblesInput2;
+	}
 }

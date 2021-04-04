@@ -1,9 +1,12 @@
 package it.polimi.ingsw;
 
 import it.polimi.ingsw.exceptions.InvalidInputException;
+import it.polimi.ingsw.exceptions.InvalidUserRequestException;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
+
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 
 public class ResourceDeckTest {
@@ -104,9 +107,57 @@ public class ResourceDeckTest {
 	
 	@Test
 	public void testAddResources() {
+		WarehouseDepot depot = new WarehouseDepot();
+		ResourceDeck deck = new ResourceDeck(depot);
+		Marbles[] marbles = new Marbles[] {Marbles.YELLOW, Marbles.YELLOW, Marbles.WHITE, Marbles.PURPLE};
+
+		ArrayList<Resources> fromWhiteMarble1 = new ArrayList<>();
+		fromWhiteMarble1.add(Resources.SHIELD);
+		ArrayList<Resources> fromWhiteMarble2 = new ArrayList<>();
+		fromWhiteMarble2.add(Resources.COIN);
+		fromWhiteMarble2.add(Resources.SERVANT);
+
+		deck.setFromWhiteMarble(fromWhiteMarble1, 1);
+		deck.setFromWhiteMarble(fromWhiteMarble2, 2);
+
+		Exception exception = assertThrows(InvalidUserRequestException.class,
+				() -> deck.addResources(marbles,1,2));
+		String message = exception.getMessage();
+		assert message.equals("Invalid number of activations of leaders ability");
+
+		try {
+			deck.addResources(marbles,1,0);
+			ArrayList<Resources> resourceList = deck.getResourceList();
+			ArrayList<Resources> expectedList = new ArrayList<>();
+			expectedList.add(Resources.COIN);
+			expectedList.add(Resources.COIN);
+			expectedList.add(Resources.SHIELD);
+			expectedList.add(Resources.SERVANT);
+			assert ListSet.subset(expectedList, resourceList);
+		} catch (InvalidUserRequestException e) {
+			e.printStackTrace();
+		}
+
+
 	}
 	
 	@Test
 	public void setFromWhiteMarble() {
+		WarehouseDepot depot = new WarehouseDepot();
+		ResourceDeck deck = new ResourceDeck(depot);
+
+		ArrayList<Resources> fromWhiteMarble1 = new ArrayList<>();
+		fromWhiteMarble1.add(Resources.SERVANT);
+		fromWhiteMarble1.add(Resources.COIN);
+		ArrayList<Resources> fromWhiteMarble2 = new ArrayList<>();
+		fromWhiteMarble2.add(Resources.SHIELD);
+
+		deck.setFromWhiteMarble(fromWhiteMarble1, 2);
+		deck.setFromWhiteMarble(fromWhiteMarble2, 1);
+
+		assert deck.getFromWhiteMarble1() == fromWhiteMarble1;
+		assert deck.getFromWhiteMarble2() == fromWhiteMarble2;
+		assert deck.getWhiteMarblesInput1() == 2;
+		assert deck.getWhiteMarblesInput2() == 1;
 	}
 }
