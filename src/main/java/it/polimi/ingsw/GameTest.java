@@ -2,15 +2,18 @@ package it.polimi.ingsw;
 
 import it.polimi.ingsw.exceptions.InvalidUserRequestException;
 import it.polimi.ingsw.xml_parsers.XMLParser;
-import org.junit.jupiter.api.Test;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Scanner;
 
 public class GameTest {
-	
-	@Test
+
+	public static void main(String[] args) {
+		GameTest test = new GameTest();
+		test.gameTest();
+	}
 	public void gameTest() {
 		
 		GameMechanicsMultiPlayer mech = new GameMechanicsMultiPlayer(2);
@@ -25,7 +28,7 @@ public class GameTest {
 		ArrayList<Integer> report = parser.readReportPoints(fullPath);
 		ArrayList<DevelopmentCard> devcards = parser.readDevCards(fullPath);
 		ArrayList<LeaderCard> leaderCards = parser.readLeaderCards(fullPath);
-		ProductionRules baseProdu = parser.parseBaseProductionFromXML(fileName);
+		ProductionRules baseProdu = parser.parseBaseProductionFromXML(fullPath);
 		mech.instantiateGame(devcards, leaderCards, baseProdu, tiles, report);
 		
 		for (Player p: mech.getPlayers()) {
@@ -38,25 +41,34 @@ public class GameTest {
 		String which;
 		int where;
 		if (input == 1) {
+			mech.getMarket().showMarket();
 			System.out.println("where do you want to shift the marbles (row / col)?");
 			which = scanner.nextLine();
 			System.out.println("where do you want to shift the marbles (1-3) / (1-4)?");
-			where = Integer.parseInt(scanner.nextLine());
+			where = Integer.parseInt(scanner.nextLine()) - 1;
 			
 			try {
 				Player player0 = mech.getPlayers()[0];
 				player0.interactWithMarket(which, where);
-				
-				for (Player p: mech.getPlayers()) {
-					boolean check = p.getMyFaithTrack().checkVaticanReport(mech.lastReportClaimed);
-					if (check) {
-						mech.lastReportClaimed ++;
-					}
+				ArrayList<Boolean> check = new ArrayList<>();
+				for (int i = 0; i < mech.getPlayers().length; i++ ) {
+					check.add(mech.getPlayers()[i].getMyFaithTrack().checkVaticanReport(mech.lastReportClaimed));
+				}
+				if(check.contains(true)) {
+					mech.lastReportClaimed++;
 				}
 				
 			} catch (InvalidUserRequestException e) {
 				e.printStackTrace();
 			}
+			for(Player p: mech.getPlayers()){
+				System.out.println(p.getMyFaithTrack().getCurrentPosition()+" "+
+						p.getMyFaithTrack().countFaithTrackVictoryPoints() +" "+p.getMyFaithTrack()
+						.getVaticanReports().toString());
+			}
+
+			mech.getMarket().showMarket();
+			System.out.println(mech.getPlayers()[0].getPlayersResourceDeck().getResourceList().toString());
 		}
 		
 	}

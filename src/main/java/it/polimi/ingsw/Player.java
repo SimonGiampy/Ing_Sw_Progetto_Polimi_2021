@@ -131,6 +131,12 @@ public class Player {
 				int quantity1 = scanner.nextInt();
 				myResourceDeck.addResources(output, quantity1, 0);
 			}
+			else{
+				myResourceDeck.addResources(output,0,0);
+			}
+		}
+		else{
+			myResourceDeck.addResources(output,0,0);
 		}
 		
 		myFaithTrack.moveMarker(myResourceDeck.getFaithPoint());
