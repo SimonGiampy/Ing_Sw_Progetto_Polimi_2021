@@ -69,7 +69,7 @@ public class WarehouseDepot {
 		System.out.print("\n");
 	}
 	
-	/** TODO: modify this method so that it throws an exception when the user input is not correct
+	/**
 	 * moves the resources around between the deck and the depot. It also checks the validity of the numbers in input
 	 * @param where depot or deck. Indicates the place where to move the resources from
 	 * @param from positional number in the corresponding array of the place containing the resources
@@ -232,17 +232,6 @@ public class WarehouseDepot {
 		}
 	}
 	
-	
-	/**
-	 * helper function that shows the user how to interact with the CLI
-	 * //TODO: move this function in the controller classes for the CLI
-	 */
-	protected void helpMe() {
-		System.out.println("Syntax for moving resources from the deck or depot to the depot is: 'move <position> from <deck/depot> to " +
-				"<destination>'");
-		System.out.println("Syntax for moving a resource from the warehouse to the deck is : 'move <position> to deck'");
-		System.out.println("The positional number in the warehouse is between 1 and 6: from top to bottom, and from left to right");
-	}
 	
 	
 	/**

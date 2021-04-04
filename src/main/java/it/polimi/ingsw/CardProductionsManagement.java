@@ -80,12 +80,12 @@ public class CardProductionsManagement {
 	 * @param selectedStack is the number of the selected stack
 	 * @return top card's level of the selected stack
 	 */
-	public int checkStackLevel(int selectedStack) throws InvalidInputException {
+	public int checkStackLevel(int selectedStack) {
 		return switch (selectedStack) {
 			case 1 ->   cards.get(0).size();
 			case 2 ->   cards.get(1).size();
 			case 3 ->   cards.get(2).size();
-			default ->  throw new InvalidInputException("invalid input parameter (selected stack)");
+			default ->  0;
 		};
 	}
 
