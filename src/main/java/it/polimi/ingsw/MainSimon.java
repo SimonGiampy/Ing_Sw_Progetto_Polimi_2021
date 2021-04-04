@@ -1,7 +1,6 @@
 package it.polimi.ingsw;
 
 import java.util.ArrayList;
-import java.util.Scanner;
 
 public class MainSimon {
 	
@@ -26,8 +25,8 @@ public class MainSimon {
 		set.add(Resources.STONE);
 		set.add(Resources.STONE);
 		
-		System.out.println("check: = " + ListSet.subset(subList, set));
-		set = ListSet.removeSubSet(set, subList);
+		System.out.println("check: = " + ListSet.subset(set, subList));
+		set = ListSet.removeSubSet(subList, set);
 		System.out.println("remainder = " + set.toString());
 		
 		

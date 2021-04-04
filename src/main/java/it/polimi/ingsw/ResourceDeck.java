@@ -45,7 +45,7 @@ public class ResourceDeck {
 	 */
 	protected void addResources(Marbles[] marblesFromMarket, int quantityLeader1, int quantityLeader2)
 			throws InvalidUserRequestException {
-		int whiteMarblesFromMarket = (int) Arrays.stream(marblesFromMarket).filter(m -> m == Marbles.WHITE).count();
+		int whiteMarblesFromMarket = ListSet.count(new ArrayList<>(Arrays.asList(marblesFromMarket)), Marbles.WHITE);
 		
 		//Throws exception if the total of the white marbles required to activate the leaders ability is different from
 		//      the number of white marbles to be processed with the leader card abilities
@@ -120,5 +120,9 @@ public class ResourceDeck {
 
 	public int getWhiteMarblesInput2() {
 		return whiteMarblesInput2;
+	}
+	
+	public boolean areBothWhiteMarblesActivated() {
+		return getWhiteMarblesInput1() > 0 || getWhiteMarblesInput2() > 0;
 	}
 }

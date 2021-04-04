@@ -35,7 +35,7 @@ public class DevelopmentCardsDeck {
 	 * @param playerResources the resources accumulated by the player (sum of all the resources in the warehouse and in the strongbox)
 	 * @return true if the chosen card can be bought, otherwise false if the requirements are not met
 	 */
-	public boolean isCardBuyable(int level, Colors color, ArrayList<Resources> playerResources, CardProductionsManagement playersCard) throws InvalidInputException {
+	public boolean isCardBuyable(int level, Colors color, ArrayList<Resources> playerResources, CardProductionsManagement playersCard)  {
 		int row = level - 1, column = color.getColorNumber();
 		
 		if (cardStackStructure[row][column].isEmpty()) { //must be not empty in order to get the card on the top
@@ -45,7 +45,7 @@ public class DevelopmentCardsDeck {
 		DevelopmentCard card = cardStackStructure[row][column].get(0);
 		ArrayList<Resources> required = card.getResourcesRequirement();
 		
-		if (!ListSet.subset(required,playerResources)) { // the player has got all the necessary resources in order to buy the card
+		if (!ListSet.subset(playerResources, required)) { // the player has got all the necessary resources in order to buy the card
 			return false;
 		}
 		
@@ -79,7 +79,7 @@ public class DevelopmentCardsDeck {
 	 * @param manager the card management instance containing the cards
 	 * @return true if there is at least one card buyable
 	 */
-	public boolean canBuyDevCard(ArrayList<Resources> playersResources, CardProductionsManagement manager) throws InvalidInputException {
+	public boolean canBuyDevCard(ArrayList<Resources> playersResources, CardProductionsManagement manager) {
 		for (int i = 0; i < 3; i++) {
 			for (Colors j: Colors.values()) {
 				if (isCardBuyable(i, j, playersResources, manager)) {

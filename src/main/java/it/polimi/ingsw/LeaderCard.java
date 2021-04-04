@@ -10,13 +10,12 @@ import java.util.stream.Collectors;
  */
 public class LeaderCard {
 
-	private int victoryPoints;
-	private ArrayList<Resources> resourceRequirements; // list of resources required for the activation
-	private ArrayList<CardRequirement> cardRequirements; // list of development card requirements
-	private ArrayList<AbilityEffectActivation> effectsActivation; // a single leader card supports multiple abilities
+	private final int victoryPoints;
+	private final ArrayList<Resources> resourceRequirements; // list of resources required for the activation
+	private final ArrayList<CardRequirement> cardRequirements; // list of development card requirements
+	private final ArrayList<AbilityEffectActivation> effectsActivation; // a single leader card supports multiple abilities
 	private boolean abilitiesActivated;
 	
-	//TODO: transform abilities into an arraylist of abilities effects, so that a single leader card can have multiple abilities
 	
 	/**
 	 * Constructor that sets the attributes to their values based on the parsed information
@@ -43,7 +42,7 @@ public class LeaderCard {
 		if(resourceRequirements.isEmpty())
 			return true;
 		else
-			return ListSet.subset(resourceRequirements,totalPlayerResources);
+			return ListSet.subset(totalPlayerResources, resourceRequirements);
 	}
 
 	/**
@@ -52,30 +51,17 @@ public class LeaderCard {
 	 * @return true if requirements are satisfied, false otherwise
 	 */
 	protected boolean checkCards(ArrayList<CardRequirement> totalCardOwned) {
-		ArrayList<Colors> cardColors = new ArrayList<>();
-		ArrayList<CardRequirement> support1= new ArrayList<>();
-		ArrayList<CardRequirement> support2= new ArrayList<>();
-		ArrayList<Colors> support3= new ArrayList<>();
-		ArrayList<Colors> colorsRequirements;
-		/*if(cardRequirements.isEmpty())
-			return true;
-		else if (cardRequirements.stream().noneMatch(i->i.getLevel()==0))
-			return ListSet.subset(cardRequirements,totalCardOwned);
-		else if (cardRequirements.stream().noneMatch(i->i.getLevel()>0)){
-			cardColors=totalCardOwned.stream().map(CardRequirement::getColor).collect(Collectors.toCollection(ArrayList::new));
-			colorsRequirements=cardRequirements.stream().map(CardRequirement::getColor).collect(Collectors.toCollection(ArrayList::new));
-			return ListSet.subset(colorsRequirements,cardColors);
-		}
-		else{*/
-			support1=cardRequirements.stream().filter(i->i.getLevel()>0).collect(Collectors.toCollection(ArrayList::new));
-			support2=totalCardOwned;
-			if (!ListSet.subset(support1,support2))
-				return false;
-			support2.removeAll(support1);
-			cardColors=cardRequirements.stream().filter(i->i.getLevel()==0).map(CardRequirement::getColor).collect(Collectors.toCollection(ArrayList::new));
-			support3=support2.stream().map(CardRequirement::getColor).collect(Collectors.toCollection(ArrayList::new));
-			return ListSet.subset(cardColors,support3);
-
+		ArrayList<Colors> leaderCardColorsRequirement;
+		ArrayList<CardRequirement> leaderCardRequirements;
+		ArrayList<CardRequirement> remainingCards;
+		ArrayList<Colors> remainingCardsColor;
+		leaderCardRequirements=cardRequirements.stream().filter(i->i.getLevel()>0).collect(Collectors.toCollection(ArrayList::new));
+		if (!ListSet.subset(totalCardOwned,leaderCardRequirements))
+			return false;
+		remainingCards = ListSet.removeSubSet(totalCardOwned,leaderCardRequirements);
+		leaderCardColorsRequirement=cardRequirements.stream().filter(i->i.getLevel()==0).map(CardRequirement::getColor).collect(Collectors.toCollection(ArrayList::new));
+		remainingCardsColor=remainingCards.stream().map(CardRequirement::getColor).collect(Collectors.toCollection(ArrayList::new));
+		return ListSet.subset(remainingCardsColor, leaderCardColorsRequirement);
 	}
 	
 	

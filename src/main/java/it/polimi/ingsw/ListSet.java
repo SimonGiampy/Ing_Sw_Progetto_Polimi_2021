@@ -10,11 +10,11 @@ public class ListSet {
 	
 	/**
 	 * check if subList is strictly contained in set. Duplicate elements are allowed and treated as distinct objects
-	 * @param subList the list of T elements representing the subset of set
-	 * @param set the list of T elements representing the greater set, in which subList may be contained in
 	 * @param <T> generic type: this function supports generic arraylists as parameters
+	 * @param set the list of T elements representing the greater set, in which subList may be contained in
+	 * @param subList the list of T elements representing the subset of set
 	 */
-	public static <T> boolean subset(ArrayList<T> subList, ArrayList<T> set) {
+	public static <T> boolean subset(ArrayList<T> set, ArrayList<T> subList) {
 		// hashmap for subset, maps every object to its multiplicity
 		HashMap<T, Integer> subSetMap = new HashMap<>(10);
 		for (T obj: subList) {
@@ -55,11 +55,11 @@ public class ListSet {
 	
 	/**
 	 * takes a set of generic elements in input, and removes the subset from it, while making distinction among duplicates
-	 * @param subsetToBeRemoved the list of generic elements to be removed from the set
-	 * @param set the set of generic input elements
 	 * @param <T> the generic type of elements in the lists
+	 * @param set the set of generic input elements
+	 * @param subsetToBeRemoved the list of generic elements to be removed from the set
 	 */
-	public static <T> ArrayList<T> removeSubSet(ArrayList<T> subsetToBeRemoved, ArrayList<T> set) {
+	public static <T> ArrayList<T> removeSubSet(ArrayList<T> set, ArrayList<T> subsetToBeRemoved) {
 		// hashmap for set, maps every object to its multiplicity
 		HashMap<T, Integer> setMap = new HashMap<>(10);
 		for (T obj: set) {
