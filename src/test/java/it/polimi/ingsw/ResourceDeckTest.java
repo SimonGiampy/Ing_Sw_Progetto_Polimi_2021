@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 
 
 public class ResourceDeckTest {
@@ -123,7 +123,7 @@ public class ResourceDeckTest {
 		Exception exception = assertThrows(InvalidUserRequestException.class,
 				() -> deck.addResources(marbles,1,2));
 		String message = exception.getMessage();
-		assert message.equals("Invalid number of activations of leaders ability");
+		assertTrue(message.equals("Invalid number of activations of leaders ability"));
 
 		try {
 			deck.addResources(marbles,1,0);
@@ -133,7 +133,7 @@ public class ResourceDeckTest {
 			expectedList.add(Resources.COIN);
 			expectedList.add(Resources.SHIELD);
 			expectedList.add(Resources.SERVANT);
-			assert ListSet.subset(expectedList, resourceList);
+			assertTrue(ListSet.subset(expectedList, resourceList));
 		} catch (InvalidUserRequestException e) {
 			e.printStackTrace();
 		}
@@ -155,9 +155,9 @@ public class ResourceDeckTest {
 		deck.setFromWhiteMarble(fromWhiteMarble1, 2);
 		deck.setFromWhiteMarble(fromWhiteMarble2, 1);
 
-		assert deck.getFromWhiteMarble1() == fromWhiteMarble1;
-		assert deck.getFromWhiteMarble2() == fromWhiteMarble2;
-		assert deck.getWhiteMarblesInput1() == 2;
-		assert deck.getWhiteMarblesInput2() == 1;
+		assertSame(deck.getFromWhiteMarble1(), fromWhiteMarble1);
+		assertSame(deck.getFromWhiteMarble2(), fromWhiteMarble2);
+		assertEquals(deck.getWhiteMarblesInput1(), 2);
+		assertEquals(deck.getWhiteMarblesInput2(), 1);
 	}
 }

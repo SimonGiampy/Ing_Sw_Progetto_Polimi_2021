@@ -24,7 +24,7 @@ class FaithTrackTest {
 		ArrayList<Tile> track = faithTrack.getTrack();
 
 		faithTrack.moveMarker(3);
-		assert faithTrack.getCurrentPosition() == 3;
+		assertTrue(faithTrack.getCurrentPosition() == 3);
 		
 		//TODO: change assert type in junit type
 
@@ -50,20 +50,20 @@ class FaithTrackTest {
 		while(!track.get(i).isPapalSpace())
 			i++;
 		//Move player 1 to the first report
-		//assert faithTrack.moveMarker(i);
+		faithTrack.moveMarker(i);
 		//Activate report, player 1 must have true, player 2 must have false
 		if(faithTrack.checkVaticanReport(lastReportClaimed) || faithTrack2.checkVaticanReport(lastReportClaimed))
 			lastReportClaimed++;
-		assert faithTrack.getVaticanReport(lastReportClaimed);
-		assert !(faithTrack2.getVaticanReport(lastReportClaimed));
+		assertTrue(faithTrack.getVaticanReport(lastReportClaimed));
+		assertFalse(faithTrack2.getVaticanReport(lastReportClaimed));
 		//Move player 2 to the tile of the first report but it was already activated so he must have false again
 		
 		//assert faithTrack2.moveMarker(i);
 		
 		if(faithTrack.checkVaticanReport(lastReportClaimed) || faithTrack2.checkVaticanReport(lastReportClaimed))
 			lastReportClaimed++;
-		assert faithTrack.getVaticanReport(lastReportClaimed);
-		assert !(faithTrack2.getVaticanReport(lastReportClaimed));
+		assertTrue(faithTrack.getVaticanReport(lastReportClaimed));
+		assertFalse(faithTrack2.getVaticanReport(lastReportClaimed));
 	}
 
 	@Test
@@ -83,15 +83,15 @@ class FaithTrackTest {
 		int i = 0;
 		while(!track.get(i).isPapalSpace())
 			i++;
+
 		//Move player 1 to the first report
-		
-		//assert faithTrack.moveMarker(i);
+		faithTrack.moveMarker(i);
 		
 		if(faithTrack.checkVaticanReport(lastReportClaimed))
 			lastReportClaimed++;
-		assert faithTrack.getVaticanReport(lastReportClaimed);
+		assertTrue(faithTrack.getVaticanReport(lastReportClaimed));
 
-		assert faithTrack.countFaithTrackVictoryPoints() == 2+track.get(i).tilePoints();
+		assertTrue(faithTrack.countFaithTrackVictoryPoints() == 2+track.get(i).tilePoints());
 
 
 	}
@@ -109,13 +109,12 @@ class FaithTrackTest {
 		ArrayList<Integer> reportPoints = parser.readReportPoints(fullPath);
 		FaithTrack faithTrack = new FaithTrack(tilesTrack, reportPoints);
 
-		for(int i = 0; i < faithTrack.getTrack().size(); i++){
-			faithTrack.moveMarker(i);
+		while(faithTrack.getCurrentPosition() < faithTrack.getTrack().size()){
+			faithTrack.moveMarker(1);
+			System.out.println(faithTrack.getCurrentPosition());
 			if(faithTrack.checkVaticanReport(lastReportClaimed))
 				lastReportClaimed++;
 		}
-		assert faithTrack.isTrackFinished();
-
-
+		assertTrue(faithTrack.isTrackFinished());
 	}
 }

@@ -33,18 +33,11 @@ public class FaithTrack {
 	 * //@return true if the report has been claimed
 	 */
 	public void moveMarker(int faithPoints) {
-		boolean reportClaimed = false;
 		while(faithPoints > 0) {
-
-			if(currentPosition + 1 < track.size())
+			if(!isTrackFinished())
 				currentPosition = currentPosition + 1;
-			
-			if (track.get(currentPosition).isPapalSpace())
-				reportClaimed = true;
-			
 			faithPoints--;
 		}
-		//return reportClaimed;
 	}
 	
 	
@@ -52,7 +45,7 @@ public class FaithTrack {
 	 * When someone triggers one report, checks if this player is in the right position update the vaticanReports array
 	 */
 	public boolean checkVaticanReport(int reportNumber){
-		if (track.get(currentPosition).isInsideVatican(reportNumber) && lastReportClaimed < vaticanReports.size()-1) {
+		if (reportNumber < reportPoints.size() && track.get(currentPosition).isInsideVatican(reportNumber)) {
 			vaticanReports.set(reportNumber, true);
 			return true;
 		}
@@ -84,7 +77,7 @@ public class FaithTrack {
 	 * @return true if the player have finished the track
 	 */
 	public boolean isTrackFinished(){
-		return lastReportClaimed == reportPoints.size();
+		return currentPosition == track.size();
 	}
 	
 	//Methods that just return info. I leave them here because maybe they'll be useful in the future
