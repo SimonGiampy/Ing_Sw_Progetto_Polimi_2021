@@ -15,9 +15,9 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 public class XMLParser {
-
-
+	
 	public XMLParser() {
+	
 	}
 
 	/**
@@ -94,8 +94,10 @@ public class XMLParser {
 			NodeList reportPointsNodeList = document.getElementsByTagName("report_points");
 			Node reportPointsNode = reportPointsNodeList.item(0);
 			NodeList reportList = reportPointsNode.getChildNodes();
-			reportPointsNode = reportList.item(1);
+			reportPointsNode = reportList.item(1); // report tag
 			reportList = reportPointsNode.getChildNodes();
+			
+			//reads the zone tags with their values
 			for(int i = 1; i < reportList.getLength(); i+=2){
 				Node reportNode = reportList.item(i);
 				Element report = (Element) reportNode;
@@ -171,7 +173,7 @@ public class XMLParser {
 
 					//Instantiate production rule and card
 					cardsDeck.add(new DevelopmentCard(level, color, victoryPoints, requirements,
-							new ProductionRules(input, output,faithOutput)));
+							new ProductionRules(input, output, faithOutput)));
 				}
 			}
 
@@ -257,55 +259,60 @@ public class XMLParser {
 					//list of power abilities for a single leader card
 					NodeList abilitiesNodeList = leaderCardElements.item(5).getChildNodes();
 					
-					//TODO: parse multiple power abilities for a single leader card
-					
-					//there should be an iteration mechanism for every power element
-					Node powerParametersNode = abilitiesNodeList.item(1);
-					String powerType = ((Element) powerParametersNode).getAttribute("type");
-					
-					switch (powerType) {
-						case "depot" -> {
-							ArrayList<Resources> slotsResourcesList = new ArrayList<>();
-							extractResourcesListFromNode(slotsResourcesList, powerParametersNode);
-							
-							leaderCardBuilder = leaderCardBuilder.xmlData("depot", slotsResourcesList);
-						}
-						case "white marble" -> {
-							ArrayList<Resources> marblesResourcesList = new ArrayList<>();
-							
-							Node whiteMarblesCountNode = powerParametersNode.getChildNodes().item(1);
-							String white = ((Element) whiteMarblesCountNode).getAttribute("number");
-							int whiteMarbles = Integer.parseInt(white);
-							
-							Node marblesNodeList = powerParametersNode.getChildNodes().item(3);
-							extractResourcesListFromNode(marblesResourcesList, marblesNodeList);
-							
-							leaderCardBuilder = leaderCardBuilder.xmlData(marblesResourcesList, whiteMarbles);
-						}
-						case "production" -> {
-							ArrayList<Resources> inputResourcesList = new ArrayList<>();
-							ArrayList<Resources> outputResourcesList = new ArrayList<>();
-							
-							Node faithPointsOutputNode = powerParametersNode.getChildNodes().item(1);
-							String faithOutputString = ((Element) faithPointsOutputNode).getAttribute("output");
-							int faithOutput = Integer.parseInt(faithOutputString);
-							
-							Node inputNodeList = powerParametersNode.getChildNodes().item(3);
-							extractResourcesListFromNode(inputResourcesList, inputNodeList);
-							
-							Node outputNodeList = powerParametersNode.getChildNodes().item(5);
-							extractResourcesListFromNode(outputResourcesList, outputNodeList);
-							
-							leaderCardBuilder = leaderCardBuilder.xmlData(inputResourcesList, faithOutput, outputResourcesList);
-						}
-						case "discount" -> {
-							ArrayList<Resources> resourcesArrayList = new ArrayList<>();
-							extractResourcesListFromNode(resourcesArrayList, powerParametersNode);
-							
-							leaderCardBuilder = leaderCardBuilder.xmlData("discount", resourcesArrayList);
+					for (int pow = 1; pow < abilitiesNodeList.getLength(); pow+=2) {
+						// iteration for every power element in the list of the abilities for the leader card
+						Node powerParametersNode = abilitiesNodeList.item(pow);
+						String powerType = ((Element) powerParametersNode).getAttribute("type");
+						
+						switch (powerType) {
+							case "depot" -> {
+								// this ability is described with a list of resources
+								ArrayList<Resources> slotsResourcesList = new ArrayList<>();
+								extractResourcesListFromNode(slotsResourcesList, powerParametersNode);
+								
+								leaderCardBuilder = leaderCardBuilder.xmlData("depot", slotsResourcesList);
+							}
+							case "white marble" -> {
+								// this ability is described with a list of resources and an integer number
+								ArrayList<Resources> marblesResourcesList = new ArrayList<>();
+								
+								Node whiteMarblesCountNode = powerParametersNode.getChildNodes().item(1);
+								String white = ((Element) whiteMarblesCountNode).getAttribute("number");
+								int whiteMarbles = Integer.parseInt(white);
+								
+								Node marblesNodeList = powerParametersNode.getChildNodes().item(3);
+								extractResourcesListFromNode(marblesResourcesList, marblesNodeList);
+								
+								leaderCardBuilder = leaderCardBuilder.xmlData(marblesResourcesList, whiteMarbles);
+							}
+							case "production" -> {
+								// this ability is defined with 2 lists of resources and an integer number
+								ArrayList<Resources> inputResourcesList = new ArrayList<>();
+								ArrayList<Resources> outputResourcesList = new ArrayList<>();
+								
+								Node faithPointsOutputNode = powerParametersNode.getChildNodes().item(1);
+								String faithOutputString = ((Element) faithPointsOutputNode).getAttribute("output");
+								int faithOutput = Integer.parseInt(faithOutputString);
+								
+								Node inputNodeList = powerParametersNode.getChildNodes().item(3);
+								extractResourcesListFromNode(inputResourcesList, inputNodeList);
+								
+								Node outputNodeList = powerParametersNode.getChildNodes().item(5);
+								extractResourcesListFromNode(outputResourcesList, outputNodeList);
+								
+								leaderCardBuilder = leaderCardBuilder.xmlData(inputResourcesList, faithOutput, outputResourcesList);
+							}
+							case "discount" -> {
+								//this ability is defined with a list of resources
+								ArrayList<Resources> resourcesArrayList = new ArrayList<>();
+								extractResourcesListFromNode(resourcesArrayList, powerParametersNode);
+								
+								leaderCardBuilder = leaderCardBuilder.xmlData("discount", resourcesArrayList);
+							}
 						}
 					}
 					
+					// creates a new Leader Card and adds it to the list
 					leaderCardArrayList.add(leaderCardBuilder.build());
 					
 				}
@@ -315,7 +322,7 @@ public class XMLParser {
 			e.printStackTrace();
 		}
 		
-		return leaderCardArrayList;
+		return leaderCardArrayList; // return the list of leader cards created
 	}
 	
 	/**

@@ -1,5 +1,6 @@
 package it.polimi.ingsw;
 
+import it.polimi.ingsw.abilities.AbilityEffectActivation;
 import it.polimi.ingsw.abilities.DiscountAbility;
 
 import java.util.ArrayList;
@@ -22,8 +23,11 @@ public class MainAlessandro {
 		leaderInput.add(cardRequirement7);
 		playerCards.add(cardRequirement5);
 		playerCards.add(cardRequirement7);
-		DiscountAbility disc = new DiscountAbility(new ArrayList<Resources>());
-		LeaderCard leaderCard = new LeaderCard(0,new ArrayList<Resources>(),leaderInput,disc);
+		
+		DiscountAbility disc = new DiscountAbility(new ArrayList<>());
+		ArrayList<AbilityEffectActivation> effectActivations = new ArrayList<>();
+		effectActivations.add(disc);
+		LeaderCard leaderCard = new LeaderCard(0,new ArrayList<>(), leaderInput, effectActivations);
 		System.out.println(leaderCard.checkCards(playerCards));
 
 		ArrayList<Integer> prova1=new ArrayList<>();

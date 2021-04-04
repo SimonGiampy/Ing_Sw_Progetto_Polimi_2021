@@ -11,10 +11,10 @@ import java.util.stream.Collectors;
 public class LeaderCard {
 
 	private int victoryPoints;
-	private ArrayList<Resources> resourceRequirements;
-	private ArrayList<CardRequirement> cardRequirements;
-	private AbilityEffectActivation effectActivation;
-	private boolean abilityActivated;
+	private ArrayList<Resources> resourceRequirements; // list of resources required for the activation
+	private ArrayList<CardRequirement> cardRequirements; // list of development card requirements
+	private ArrayList<AbilityEffectActivation> effectsActivation; // a single leader card supports multiple abilities
+	private boolean abilitiesActivated;
 	
 	//TODO: transform abilities into an arraylist of abilities effects, so that a single leader card can have multiple abilities
 	
@@ -23,15 +23,15 @@ public class LeaderCard {
 	 * @param victoryPoints number of victory points of the card
 	 * @param requirements arrayList of the resources needed to play the card
 	 * @param cardRequirements arrayList of the dev card required
-	 * @param effectActivation instance of the ability
+	 * @param effectsActivation instance of the ability
 	 */
 	public LeaderCard(int victoryPoints, ArrayList<Resources> requirements, ArrayList<CardRequirement> cardRequirements,
-					  AbilityEffectActivation effectActivation) {
+	                  ArrayList<AbilityEffectActivation> effectsActivation) {
 		this.victoryPoints = victoryPoints;
 		this.resourceRequirements = requirements;
 		this.cardRequirements = cardRequirements;
-		this.effectActivation = effectActivation;
-		abilityActivated = false;
+		this.effectsActivation = effectsActivation;
+		abilitiesActivated = false;
 	}
 
 	/**
@@ -84,8 +84,10 @@ public class LeaderCard {
 	 * @param player the player who is asking to activate its ability
 	 */
 	protected void activateAbility(Player player) {
-		effectActivation.activateAbility(player);
-		abilityActivated = true;
+		for (AbilityEffectActivation effect: effectsActivation) {
+			effect.activateAbility(player);
+		}
+		abilitiesActivated = true;
 	}
 	
 	/**
@@ -93,7 +95,7 @@ public class LeaderCard {
 	 * @return the value when the game is finished
 	 */
 	protected int getVictoryPoints() {
-		if (abilityActivated) return victoryPoints;
+		if (abilitiesActivated) return victoryPoints;
 		else return 0;
 	}
 	
@@ -105,7 +107,11 @@ public class LeaderCard {
 		return cardRequirements;
 	}
 	
-	public AbilityEffectActivation getEffectActivation() {
-		return effectActivation;
+	public AbilityEffectActivation getEffectActivation(int whichAbility) {
+		return effectsActivation.get(whichAbility);
+	}
+	
+	public ArrayList<AbilityEffectActivation> getEffectsActivation() {
+		return effectsActivation;
 	}
 }

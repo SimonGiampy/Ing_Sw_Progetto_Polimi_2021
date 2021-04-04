@@ -26,8 +26,10 @@ public class LeaderCardParserTest {
 		for(int i = 0; i < leaderCards.size(); i++ ){
 			System.out.println("\nleader " +(i+1)+": "+"\nvictory points: " + leaderCards.get(i).getVictoryPoints() +
 					"\nresources requirements: " + leaderCards.get(i).getResourceRequirements() + "\ndev cards requirements: "+
-					leaderCards.get(i).getCardRequirements() + "\n" +
-					leaderCards.get(i).getEffectActivation().toString());
+					leaderCards.get(i).getCardRequirements() );
+			for (int j = 0; j < leaderCards.get(i).getEffectsActivation().size(); j++) {
+				System.out.println("ability " + j + ": " + leaderCards.get(i).getEffectActivation(j).toString());
+			}
 
 			
 		}

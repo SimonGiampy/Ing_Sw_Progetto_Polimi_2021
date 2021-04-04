@@ -1,22 +1,34 @@
 package it.polimi.ingsw;
 
 import it.polimi.ingsw.abilities.*;
+import it.polimi.ingsw.exceptions.InvalidInputException;
 
 import java.util.ArrayList;
 
+/**
+ * Builder Design pattern for the construction of the Leader Card object, with the parameters read from the XML config file
+ */
 public class LeaderCardBuilder {
 	
 	private int victoryPoints;
 	private ArrayList<Resources> resourceRequirements;
 	private ArrayList<CardRequirement> cardRequirements;
-	private AbilityEffectActivation effectActivation;
+	private ArrayList<AbilityEffectActivation> effects;
 	
-	//TODO: add support for multiple abilities effects for a single Leader card
-	
+	/**
+	 * basic constructor
+	 */
 	public LeaderCardBuilder() {
-	
+		effects = new ArrayList<>();
 	}
 	
+	/**
+	 * first function to be called when building the Leader Card. Assigns the standard objects that are common for every leader card
+	 * @param victoryPoints number of victory points
+	 * @param requirements list of resources requirements
+	 * @param cardRequirements list of dev card requirements
+	 * @return the instance of this Builder
+	 */
 	public LeaderCardBuilder xmlData(int victoryPoints, ArrayList<Resources> requirements, ArrayList<CardRequirement> cardRequirements) {
 		this.victoryPoints = victoryPoints;
 		this.resourceRequirements = requirements;
@@ -32,10 +44,10 @@ public class LeaderCardBuilder {
 	 */
 	public LeaderCardBuilder xmlData(String ability, ArrayList<Resources> list) {
 		if (ability.equals("discount")) {
-			effectActivation = new DiscountAbility(list);
+			effects.add(new DiscountAbility(list));
 		} else if (ability.equals("depot")) {
-			effectActivation = new AdditionalDepotAbility(list);
-		} else throw new IllegalArgumentException("ability is not correctly defined");
+			effects.add(new AdditionalDepotAbility(list));
+		}
 		return this;
 	}
 	
@@ -47,7 +59,7 @@ public class LeaderCardBuilder {
 	 * @return builder object
 	 */
 	public LeaderCardBuilder xmlData(ArrayList<Resources> inputList, int faithOutput, ArrayList<Resources> outputList) {
-		effectActivation = new ExtraProductionAbility(inputList, faithOutput, outputList);
+		effects.add(new ExtraProductionAbility(inputList, faithOutput, outputList));
 		return this;
 	}
 	
@@ -58,17 +70,17 @@ public class LeaderCardBuilder {
 	 * @return the builder object
 	 */
 	public LeaderCardBuilder xmlData(ArrayList<Resources> list, int whiteMarbles) {
-		effectActivation = new WhiteMarbleAbility(list, whiteMarbles);
+		effects.add(new WhiteMarbleAbility(list, whiteMarbles));
 		return this;
 	}
 	
 	/**
-	 * lazy production of the leader card with the xml data
+	 * lazy production of the leader card with the xml data. Also checks whether the leader card has at least one ability defined
 	 * @return the leader card
 	 */
 	public LeaderCard build() {
-		assert effectActivation != null;
-		return new LeaderCard(victoryPoints, resourceRequirements, cardRequirements, effectActivation);
+		assert !effects.isEmpty();
+		return new LeaderCard(victoryPoints, resourceRequirements, cardRequirements, effects);
 	}
 	
 }
