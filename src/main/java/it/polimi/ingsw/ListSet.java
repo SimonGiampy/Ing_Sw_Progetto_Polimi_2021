@@ -2,8 +2,6 @@ package it.polimi.ingsw;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.function.BiConsumer;
-import java.util.function.Consumer;
 
 /**
  * This class contains static methods used to operate with set operations
@@ -56,7 +54,13 @@ public class ListSet {
 	}
 	
 	/**
-	public static <T> void removeSubSet(ArrayList<T> set, ArrayList<T> subsetToBeRemoved) {
+	 * takes a set of generic elements in input, and removes the subset from it, while making distinction among duplicates
+	 * @param subsetToBeRemoved the list of generic elements to be removed from the set
+	 * @param set the set of generic input elements
+	 * @param <T> the generic type of elements in the lists
+	 */
+	public static <T> ArrayList<T> removeSubSet(ArrayList<T> subsetToBeRemoved, ArrayList<T> set) {
+		// hashmap for set, maps every object to its multiplicity
 		HashMap<T, Integer> setMap = new HashMap<>(10);
 		for (T obj: set) {
 			setMap.put(obj, setMap.getOrDefault(obj, 0) + 1);
@@ -67,8 +71,17 @@ public class ListSet {
 			removalSet.put(obj, removalSet.getOrDefault(obj, 0) + 1);
 		}
 		
+		// calculates the difference of the elements and their values between the set and the subset
+		setMap.forEach((t, x) -> setMap.replace(t, x - removalSet.getOrDefault(t, 0)));
 		
-		
+		// creates a new set with the difference between the two sets
+		ArrayList<T> finalSet = new ArrayList<>();
+		setMap.forEach((t, x) -> {
+			for (int i = 0; i < x; i++) {
+				finalSet.add(t);
+			}
+		});
+		return finalSet;
 	}
-	*/
+	
 }

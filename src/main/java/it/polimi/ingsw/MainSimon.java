@@ -27,6 +27,8 @@ public class MainSimon {
 		set.add(Resources.STONE);
 		
 		System.out.println("check: = " + ListSet.subset(subList, set));
+		set = ListSet.removeSubSet(set, subList);
+		System.out.println("remainder = " + set.toString());
 		
 		
 		//Player player = new Player(depot);
