@@ -12,6 +12,7 @@ public class GameMechanicsMultiPlayer {
 	private Player[] players;
 	
 	private final int numberOfPlayers;
+	int lastReportClaimed;
 	
 	public GameMechanicsMultiPlayer(int players) {
 		numberOfPlayers = players;
@@ -32,6 +33,7 @@ public class GameMechanicsMultiPlayer {
 		gameDevCardsDeck = new DevelopmentCardsDeck(createCommonCardsDeck(allDevelopmentCards));
 		market = new Market();
 		players = new Player[numberOfPlayers];
+		lastReportClaimed = 0;
 		
 		Collections.shuffle(allLeaderCards);
 		// matrix of 4 columns (one per leader card) and a number of rows
