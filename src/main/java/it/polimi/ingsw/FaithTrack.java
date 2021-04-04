@@ -30,9 +30,9 @@ public class FaithTrack {
 	/**
 	 * Move the marker and control if the current player triggers a Papal Report
 	 * @param faithPoints the number of faith points to be moved
-	 * @return true if the report has been claimed
+	 * //@return true if the report has been claimed
 	 */
-	public boolean moveMarker(int faithPoints) {
+	public void moveMarker(int faithPoints) {
 		boolean reportClaimed = false;
 		while(faithPoints > 0) {
 
@@ -44,7 +44,7 @@ public class FaithTrack {
 			
 			faithPoints--;
 		}
-		return reportClaimed;
+		//return reportClaimed;
 	}
 	
 	

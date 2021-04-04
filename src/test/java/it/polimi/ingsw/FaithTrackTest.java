@@ -25,8 +25,8 @@ class FaithTrackTest {
 
 		faithTrack.moveMarker(3);
 		assert faithTrack.getCurrentPosition() == 3;
-
-
+		
+		//TODO: change assert type in junit type
 
 	}
 
@@ -50,14 +50,16 @@ class FaithTrackTest {
 		while(!track.get(i).isPapalSpace())
 			i++;
 		//Move player 1 to the first report
-		assert faithTrack.moveMarker(i);
+		//assert faithTrack.moveMarker(i);
 		//Activate report, player 1 must have true, player 2 must have false
 		if(faithTrack.checkVaticanReport(lastReportClaimed) || faithTrack2.checkVaticanReport(lastReportClaimed))
 			lastReportClaimed++;
 		assert faithTrack.getVaticanReport(lastReportClaimed);
 		assert !(faithTrack2.getVaticanReport(lastReportClaimed));
 		//Move player 2 to the tile of the first report but it was already activated so he must have false again
-		assert faithTrack2.moveMarker(i);
+		
+		//assert faithTrack2.moveMarker(i);
+		
 		if(faithTrack.checkVaticanReport(lastReportClaimed) || faithTrack2.checkVaticanReport(lastReportClaimed))
 			lastReportClaimed++;
 		assert faithTrack.getVaticanReport(lastReportClaimed);
@@ -82,7 +84,9 @@ class FaithTrackTest {
 		while(!track.get(i).isPapalSpace())
 			i++;
 		//Move player 1 to the first report
-		assert faithTrack.moveMarker(i);
+		
+		//assert faithTrack.moveMarker(i);
+		
 		if(faithTrack.checkVaticanReport(lastReportClaimed))
 			lastReportClaimed++;
 		assert faithTrack.getVaticanReport(lastReportClaimed);

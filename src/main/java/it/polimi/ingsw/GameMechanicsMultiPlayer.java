@@ -5,7 +5,6 @@ import java.util.Collections;
 
 public class GameMechanicsMultiPlayer {
 	
-	//TODO: integrate this class with the XML parser classes, and pass the data to this class
 	
 	private Market market;
 	private DevelopmentCardsDeck gameDevCardsDeck;
@@ -49,6 +48,8 @@ public class GameMechanicsMultiPlayer {
 			players[i] = instantiatePlayer(gameLeaders[i], playersTracks[i], rules);
 		}
 		
+		//TODO: choose the starting player randomly
+		//TODO: add starting resources and faith points to the players
 	}
 	
 	

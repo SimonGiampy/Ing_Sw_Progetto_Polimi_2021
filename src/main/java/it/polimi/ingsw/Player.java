@@ -79,35 +79,37 @@ public class Player {
 	 */
 	public void chooseTwoLeaders(int indexCard1, int indexCard2){
 		LeaderCard[] temp = new LeaderCard[2];
-		temp[0] = leaderCards[indexCard1];
-		temp[1] = leaderCards[indexCard2];
+		temp[0] = leaderCards[indexCard1 - 1];
+		temp[1] = leaderCards[indexCard2 - 1];
 		leaderCards = temp;
 		
 		playableLeader1 = true;
 		playableLeader2 = true;
 	}
-
+	
+	public FaithTrack getMyFaithTrack() {
+		return myFaithTrack;
+	}
+	
 	/**
 	 * discards one of the two leader cards owned by the player and give him one faith point
 	 * @param indexCard index of the leader card to discard
-	 * @return true if the player triggers one report, gameMechanics will have to call the checks on the report
 	 */
-	public boolean discardLeaderCard(int indexCard) {
+	public void discardLeaderCard(int indexCard) {
 		if (indexCard == 1 && !activeAbilityLeader1) {
 			playableLeader1 = false;
 		} else if (indexCard == 2 && !activeAbilityLeader2) {
 			playableLeader2 = false;
 		}
-		return myFaithTrack.moveMarker(1);
+		myFaithTrack.moveMarker(1);
 	}
 	
 	/**
 	 * prototype function that sends the command to the market
 	 * @param which must be equal to row or col
 	 * @param where indicates the number of the row or the column to move
-	 * @return true if the player triggers one vatican report
 	 */
-	protected boolean interactWithMarket(String which, int where) throws InvalidUserRequestException {
+	protected void interactWithMarket(String which, int where) throws InvalidUserRequestException {
 		Marbles[] output;
 		if (which.equals("col")) {
 			output = commonMarket.shiftCol(where);
@@ -131,7 +133,7 @@ public class Player {
 			}
 		}
 		
-		return myFaithTrack.moveMarker(myResourceDeck.getFaithPoint());
+		myFaithTrack.moveMarker(myResourceDeck.getFaithPoint());
 	}
 
 	public void interactWithWarehouse() {
@@ -143,6 +145,8 @@ public class Player {
 		}
 	}
 
+	//TODO: check what the Player can do in the current turn
+	
 	/**
 	 * it checks if the player has reached endgame
 	 * @return true if the player owns 7 cards or has reached the end of the faith track
