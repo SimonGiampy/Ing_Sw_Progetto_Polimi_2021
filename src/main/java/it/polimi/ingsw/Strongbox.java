@@ -22,15 +22,7 @@ public class Strongbox {
 	public void storeResources(ArrayList<Resources> input){
 		content.addAll(input);
 	}
-	
-	/**
-	 * counts number of resources when the game ends
-	 * @return number of resources in the strongbox
-	 */
-	public int numberOfResources(){
-		return content.size();
-	}
-	
+
 	/**
 	 * it remove the selected resources from the strongbox
 	 * @param input is a list of resources

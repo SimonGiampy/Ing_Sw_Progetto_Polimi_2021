@@ -27,10 +27,10 @@ public class MainAlessandro {
 		CardRequirement blue3= new CardRequirement(Colors.BLUE,3);
 		ArrayList<CardRequirement> leaderInput=new ArrayList<>();
 		ArrayList<CardRequirement> playerCards= new ArrayList<>();
-		leaderInput.add(green2);
+		leaderInput.add(blue3);
 		playerCards.add(green1);
-		playerCards.add(green3);
-		playerCards.add(purple2);
+		playerCards.add(green2);
+		playerCards.add(blue3);
 		DiscountAbility disc = new DiscountAbility(new ArrayList<>());
 		ArrayList<AbilityEffectActivation> effectActivations = new ArrayList<>();
 		effectActivations.add(disc);
