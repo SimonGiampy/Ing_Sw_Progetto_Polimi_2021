@@ -89,6 +89,16 @@ public class CardProductionsManagement {
 		};
 	}
 
+	public ArrayList<CardRequirement> getPlayerCardsRequirements(){
+		ArrayList<CardRequirement> cardRequirements= new ArrayList<>();
+		for (int i = 0; i < 3; i++) {
+			for (int j = 0; j < cards.get(i).size(); j++) {
+				cardRequirements.add(new CardRequirement(cards.get(i).get(j).getColor(),cards.get(i).get(j).getLevel()));
+			}
+		}
+		return cardRequirements;
+	}
+
 	/**
 	 * it activates production
 	 * @param selectedProduction is the number of the selected stack

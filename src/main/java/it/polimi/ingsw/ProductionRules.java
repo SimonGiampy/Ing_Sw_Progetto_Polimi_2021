@@ -65,8 +65,8 @@ public class ProductionRules {
 		if (this.input.stream().noneMatch(i -> i != Resources.EMPTY))
 			return this.input.size() <= input.size();
 		else
-			return input.containsAll(
-					this.input.stream().filter(i -> i != Resources.EMPTY).collect(Collectors.toList()))
+			return ListSet.subset(
+					this.input.stream().filter(i -> i != Resources.EMPTY).collect(Collectors.toCollection(ArrayList::new)),input)
 					&& this.input.stream().filter((i -> i == Resources.EMPTY)).count() <=
 					input.size() - this.input.stream().filter((i-> i != Resources.EMPTY)).count();
 	}
