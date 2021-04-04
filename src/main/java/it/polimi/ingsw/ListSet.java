@@ -38,8 +38,37 @@ public class ListSet {
 		return setMap.values().stream().noneMatch(x -> x < 0);
 	}
 	
-	//TODO: create function to calculate the number of times a certain element appears in a single list
-	public static <T> void count(ArrayList<T> set, T element) {
-	
+	/**
+	 * create function to calculate the number of times a certain element appears in a single list
+	 * @param set the list of generic elements
+	 * @param element the generic element to find in the list
+	 * @param <T> generic type for the list of elements
+	 * @return the number of occurrences of a certain element in the list
+	 */
+	public static <T> int count(ArrayList<T> set, T element) {
+		int count = 0;
+		for (T t: set) {
+			if (element.equals(t)) {
+				count++;
+			}
+		}
+		return count;
 	}
+	
+	/**
+	public static <T> void removeSubSet(ArrayList<T> set, ArrayList<T> subsetToBeRemoved) {
+		HashMap<T, Integer> setMap = new HashMap<>(10);
+		for (T obj: set) {
+			setMap.put(obj, setMap.getOrDefault(obj, 0) + 1);
+		}
+		// hashmap for set, maps every object to its multiplicity
+		HashMap<T, Integer> removalSet = new HashMap<>(10);
+		for (T obj: subsetToBeRemoved) {
+			removalSet.put(obj, removalSet.getOrDefault(obj, 0) + 1);
+		}
+		
+		
+		
+	}
+	*/
 }

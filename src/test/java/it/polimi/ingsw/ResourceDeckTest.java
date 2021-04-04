@@ -1,12 +1,10 @@
 package it.polimi.ingsw;
 
 import it.polimi.ingsw.exceptions.InvalidInputException;
-import it.polimi.ingsw.exceptions.InvalidUserRequestException;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 
-import static org.junit.Assert.*;
 
 public class ResourceDeckTest {
 	
