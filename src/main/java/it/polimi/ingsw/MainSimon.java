@@ -9,11 +9,25 @@ public class MainSimon {
 		
 		System.out.println("\uD83D\uDE8C"); // bus emoji test
 		
-		WarehouseDepot depot = new WarehouseDepot();
-		ArrayList<Resources> list = new ArrayList<>();
-		list.add(Resources.STONE);
-		list.add(Resources.COIN);
-		depot.addIncomingResources(list);
+		
+		ArrayList<Resources> subList = new ArrayList<>();
+		subList.add(Resources.STONE);
+		subList.add(Resources.COIN);
+		subList.add(Resources.STONE);
+		subList.add(Resources.COIN);
+		subList.add(Resources.SERVANT);
+		
+		ArrayList<Resources> set = new ArrayList<>();
+		set.add(Resources.STONE);
+		set.add(Resources.COIN);
+		set.add(Resources.SHIELD);
+		set.add(Resources.SERVANT);
+		set.add(Resources.COIN);
+		set.add(Resources.STONE);
+		set.add(Resources.STONE);
+		
+		System.out.println("check: = " + ListSet.subset(subList, set));
+		
 		
 		//Player player = new Player(depot);
 		
