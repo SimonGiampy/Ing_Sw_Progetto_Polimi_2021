@@ -113,5 +113,8 @@ public class DevelopmentCardsDeck {
 		}
 		return 0; // there are no more cards of this color in the cards deck
 	}
-	
+
+	public ArrayList<DevelopmentCard>[][] getCardStackStructure() {
+		return cardStackStructure;
+	}
 }
