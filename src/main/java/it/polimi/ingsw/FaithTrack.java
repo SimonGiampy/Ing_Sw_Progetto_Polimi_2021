@@ -20,7 +20,7 @@ public class FaithTrack {
 		track = tiles;
 		currentPosition = 0;
 		vaticanReports = new ArrayList<>();
-		for(Integer i: reportPoints)
+		for(Integer ignored : reportPoints)
 			vaticanReports.add(false);
 		this.reportPoints = reportPoints;
 		lastReportClaimed = 0;
@@ -51,11 +51,12 @@ public class FaithTrack {
 	/**
 	 * When someone triggers one report, checks if this player is in the right position update the vaticanReports array
 	 */
-	public void checkVaticanReport(){
-		if (track.get(currentPosition).isInsideVatican(lastReportClaimed) && lastReportClaimed < vaticanReports.size()) {
-			vaticanReports.set(lastReportClaimed, true);
-			lastReportClaimed++;
+	public boolean checkVaticanReport(int reportNumber){
+		if (track.get(currentPosition).isInsideVatican(reportNumber) && lastReportClaimed < vaticanReports.size()-1) {
+			vaticanReports.set(reportNumber, true);
+			return true;
 		}
+		return false;
 	}
 	
 	/**
@@ -107,6 +108,7 @@ public class FaithTrack {
 	public ArrayList<Boolean> getVaticanReports() {
 		return vaticanReports;
 	}
+
 }
 
 
