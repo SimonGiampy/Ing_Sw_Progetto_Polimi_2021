@@ -24,9 +24,8 @@ class FaithTrackTest {
 		ArrayList<Tile> track = faithTrack.getTrack();
 
 		faithTrack.moveMarker(3);
-		assertTrue(faithTrack.getCurrentPosition() == 3);
-		
-		//TODO: change assert type in junit type
+		assertEquals(faithTrack.getCurrentPosition(), 3);
+
 
 	}
 
@@ -91,7 +90,7 @@ class FaithTrackTest {
 			lastReportClaimed++;
 		assertTrue(faithTrack.getVaticanReport(lastReportClaimed));
 
-		assertTrue(faithTrack.countFaithTrackVictoryPoints() == 2+track.get(i).tilePoints());
+		assertEquals(2 + track.get(i).tilePoints(), faithTrack.countFaithTrackVictoryPoints());
 
 
 	}
