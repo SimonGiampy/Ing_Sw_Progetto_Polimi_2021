@@ -81,4 +81,10 @@ public class ProductionRules {
 	public int numberOfInputEmptyResources(){
 		return (int) input.stream().filter(i -> i==Resources.EMPTY).count();
 	}
+
+	public void showProductionRulesInformation(){
+		ListSet.showHashMap(ListSet.multiplicityList(input));
+		ListSet.showHashMap(ListSet.multiplicityList(output));
+		System.out.println("Faith points output: "+getFaithOutput());
+	}
 }

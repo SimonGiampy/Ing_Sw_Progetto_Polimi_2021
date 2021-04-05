@@ -82,11 +82,7 @@ public class DevelopmentCard {
 	}
 
 	private void printCardLists(ArrayList<Resources> list){
-		IntStream.range(0, 5).filter(i -> ListSet.count(list, Resources.values()[i]) > 0).forEach(i -> {
-			System.out.print(ListSet.count(list, Resources.values()[i]) + " ");
-			System.out.print(Resources.values()[i] + " ");
-		});
-
+		ListSet.showHashMap(ListSet.multiplicityList(list));
 	}
 	
 	/**

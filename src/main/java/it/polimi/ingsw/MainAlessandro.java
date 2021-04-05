@@ -35,26 +35,12 @@ public class MainAlessandro {
 		ArrayList<AbilityEffectActivation> effectActivations = new ArrayList<>();
 		effectActivations.add(disc);
 		LeaderCard leaderCard = new LeaderCard(0, new ArrayList<>(), leaderInput, effectActivations);
-		System.out.println(leaderCard.checkCards(playerCards));
 
-		String chain = "1,2,3,4,5";  //This is your String
-		ArrayList<Integer> list = new ArrayList<Integer>();  //This is the ArrayList where you want      to put the String
-		String[] array = chain.split(",");  //Split the previous String for separate by commas
-		for (String s : array) {  //Iterate over the previous array for put each element on the ArrayList like Integers
-			list.add(Integer.parseInt(s));
-		}
-		list.remove(1);
-		System.out.println(list);
-
-		int[] inputResources = new int[]{1, 1, 1, 1};
-		ArrayList<Resources> selectedProduction = new ArrayList<>();
-
-		for (int i = 0; i < 4; i++) {
-			for (int j = 0; j < inputResources[j]; j++) {
-				selectedProduction.add(Resources.values()[i]);
-			}
-
-		}
-		System.out.println(selectedProduction);
+		Strongbox box = new Strongbox();
+		ArrayList<Resources> prova = new ArrayList<>();
+		prova.add(Resources.COIN);
+		prova.add(Resources.SHIELD);
+		box.storeResources(prova);
+		box.showStrongbox();
 	}
 }
