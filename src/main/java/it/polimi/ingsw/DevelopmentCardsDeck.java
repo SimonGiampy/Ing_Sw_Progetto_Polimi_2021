@@ -1,7 +1,5 @@
 package it.polimi.ingsw;
 
-import it.polimi.ingsw.exceptions.InvalidInputException;
-
 import java.util.ArrayList;
 import java.util.Collections;
 
@@ -35,7 +33,7 @@ public class DevelopmentCardsDeck {
 	 * @param playerResources the resources accumulated by the player (sum of all the resources in the warehouse and in the strongbox)
 	 * @return true if the chosen card can be bought, otherwise false if the requirements are not met
 	 */
-	public boolean isCardBuyable(int level, Colors color, ArrayList<Resources> playerResources, CardProductionsManagement playersCard)  {
+	public boolean isSelectedDevCardBuyable(int level, Colors color, ArrayList<Resources> playerResources, CardProductionsManagement playersCard)  {
 		int row = level - 1, column = color.getColorNumber();
 		
 		if (cardStackStructure[row][column].isEmpty()) { //must be not empty in order to get the card on the top
@@ -79,10 +77,10 @@ public class DevelopmentCardsDeck {
 	 * @param manager the card management instance containing the cards
 	 * @return true if there is at least one card buyable
 	 */
-	public boolean canBuyDevCard(ArrayList<Resources> playersResources, CardProductionsManagement manager) {
-		for (int i = 0; i < 3; i++) {
+	public boolean canBuyAnyDevCard(ArrayList<Resources> playersResources, CardProductionsManagement manager) {
+		for (int i = 1; i <= 3; i++) {
 			for (Colors j: Colors.values()) {
-				if (isCardBuyable(i, j, playersResources, manager)) {
+				if (isSelectedDevCardBuyable(i, j, playersResources, manager)) {
 					return true;
 				}
 			}

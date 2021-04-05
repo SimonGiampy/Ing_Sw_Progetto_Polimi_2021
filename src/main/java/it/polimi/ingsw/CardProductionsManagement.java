@@ -73,6 +73,14 @@ public class CardProductionsManagement {
 			default ->  throw new InvalidDevCardSlotException("invalid slot number for card insertion");
 		}
 	}
+	
+	public void showCards(){
+		for (int i = 0; i < 3; i++) {
+			if(cards.get(i).size()>0)
+				cards.get(i).peek().showCard();
+			else System.out.println("Empty");
+		}
+	}
 
 	/**
 	 * it checks top card's level
@@ -227,7 +235,7 @@ public class CardProductionsManagement {
 		return allSelectedProduction.isProductionAvailable(playerResources);
 	}
 
-	/** TODO: Exception
+	/**
 	 * it takes resources from Depot and Strongbox
 	 * @param playerInput is a list of selected production
 	 * @param inputResources is an array of number of Resources [#COIN,#SERVANT,#SHIELD,#STONE]

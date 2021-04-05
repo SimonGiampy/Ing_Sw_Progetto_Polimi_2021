@@ -16,7 +16,7 @@ public class ResourceDeck {
 	private int faithPoint;
 	
 	WarehouseDepot playerDepot;
-
+	
 	/**
 	 * Constructor that assigns default values to the parameters
 	 */
@@ -48,9 +48,12 @@ public class ResourceDeck {
 		
 		//Throws exception if the total of the white marbles required to activate the leaders ability is different from
 		//      the number of white marbles to be processed with the leader card abilities
-		if ((quantityLeader1 * whiteMarblesInput1 + quantityLeader2 * whiteMarblesInput2) != whiteMarblesFromMarket) {
-			throw new InvalidUserRequestException("Invalid number of activations of leaders ability");
+		if (isWhiteAbility1Activated() || isWhiteAbility2Activated()) {
+			if ((quantityLeader1 * whiteMarblesInput1 + quantityLeader2 * whiteMarblesInput2) > whiteMarblesFromMarket) {
+				throw new InvalidUserRequestException("Invalid number of activations of leaders ability");
+			}
 		}
+		
 		//Convert marble into resources based on their color
 		faithPoint = 0;
 		int whiteMarbleCount = 0;

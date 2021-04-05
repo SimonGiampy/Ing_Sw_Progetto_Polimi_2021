@@ -7,7 +7,6 @@ import it.polimi.ingsw.exceptions.InvalidUserRequestException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Scanner;
-import java.util.regex.Pattern;
 
 /**
  * Player class represents a unique player in the game. Handles all the instances of the classes in the game, since the player interacts with all of
@@ -109,9 +108,9 @@ public class Player {
 	protected void interactWithMarket(String which, int where) throws InvalidUserRequestException {
 		Marbles[] output;
 		if (which.equals("col")) {
-			output = commonMarket.shiftCol(where);
+			output = commonMarket.shiftCol(where - 1);
 		} else if (which.equals("row")) {
-			output = commonMarket.shiftRow(where);
+			output = commonMarket.shiftRow(where - 1);
 		} else throw new InvalidUserRequestException("command for using market is not correct");
 		
 		if (Arrays.asList(output).contains(Marbles.WHITE)) { //needs to ask how to transform the white marbles
@@ -205,7 +204,7 @@ public class Player {
 	 * @return true if a new dev card can be bought, false otherwise
 	 */
 	public boolean isBuyMoveAvailable() {
-		return commonCardsDeck.canBuyDevCard(gatherAllPlayersResources(), cardManager);
+		return commonCardsDeck.canBuyAnyDevCard(gatherAllPlayersResources(), cardManager);
 	}
 	
 	/**
@@ -226,7 +225,7 @@ public class Player {
 	 */
 	public void buyNewDevCard(int level, Colors color, int selectedSlot) throws InvalidInputException {
 		//Check if the player has enough resources and at least one eligible slot for the card
-		if (commonCardsDeck.isCardBuyable(level, color, gatherAllPlayersResources(), cardManager)) {
+		if (commonCardsDeck.isSelectedDevCardBuyable(level, color, gatherAllPlayersResources(), cardManager)) {
 			//Get the price, which is the sum of all the resources needed for buying the dev card
 			ArrayList <Resources> price = commonCardsDeck.getPriceDevCard(level, color);
 
@@ -336,8 +335,8 @@ public class Player {
 	public Strongbox getMyStrongbox() {
 		return myStrongbox;
 	}
-
-	public CardProductionsManagement getCardManager() {
-		return cardManager;
+	
+	public DevelopmentCardsDeck getCommonCardsDeck() {
+		return commonCardsDeck;
 	}
 }

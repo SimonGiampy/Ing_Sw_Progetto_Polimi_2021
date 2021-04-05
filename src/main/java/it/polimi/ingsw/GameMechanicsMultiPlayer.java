@@ -105,22 +105,22 @@ public class GameMechanicsMultiPlayer {
 		// add starting resources and faith points to the players
 		int round = (startingPlayer + 1) % numberOfPlayers;
 		if (numberOfPlayers >= 2) {
-			String resources = gameController.requestInitialResource(1);
-			//transform string to 2 resources
-			players[round].getPlayersWarehouseDepot().assignInitialResources(Resources.COIN); //needs to be changed into the chosen resource
+			Resources[] resources = gameController.requestInitialResource(1);
+			
+			players[round].getPlayersWarehouseDepot().assignInitialResources(resources[0]); //needs to be changed into the chosen resource
 		}
 		round = (round + 1) % numberOfPlayers;
 		if (numberOfPlayers >= 3) {
-			String resources = gameController.requestInitialResource(1);
-			//transform string to 2 resources
-			players[round].getPlayersWarehouseDepot().assignInitialResources(Resources.COIN); //needs to be changed into the chosen resource
+			Resources[] resources = gameController.requestInitialResource(1);
+			
+			players[round].getPlayersWarehouseDepot().assignInitialResources(resources[0]); //needs to be changed into the chosen resource
 			players[round].getPlayerFaithTrack().moveMarker(1);
 		}
 		round = (round + 1) % numberOfPlayers;
 		if (numberOfPlayers == 4) {
-			String resources = gameController.requestInitialResource(2);
-			//transform string to 2 resources
-			players[round].getPlayersWarehouseDepot().assignInitialResources(Resources.COIN, Resources.SHIELD); //needs to be changed into the chosen resource
+			Resources[] resources = gameController.requestInitialResource(2);
+			players[round].getPlayersWarehouseDepot().assignInitialResources(resources[0], resources[1]); //needs to be changed into the chosen
+			// resource
 			players[round].getPlayerFaithTrack().moveMarker(1);
 		}
 	}

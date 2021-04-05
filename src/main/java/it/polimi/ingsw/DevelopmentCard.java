@@ -68,6 +68,14 @@ public class DevelopmentCard {
 	public ArrayList<Resources> produce(){
 		return productionRules.produce();
 	}
+
+	public void showCard(){
+		System.out.println("Resources requirements: "+ getResourcesRequirement());
+		System.out.println("Card: level " + getLevel() + " and color " + getColor());
+		System.out.println("Card input resources: "+ getProductionInput());
+		System.out.println("Card output resources: "+ produce());
+		System.out.println("Card victory points: "+ getVictoryPoints() + "\n");
+	}
 	
 	/**
 	 * it checks if card's production is available
@@ -88,8 +96,8 @@ public class DevelopmentCard {
 
 
 	/**
-	 *
-	 * @return
+	 * retrieves a copy of the production input resources
+	 * @return a copy of the production
 	 */
 	public ArrayList<Resources> getProductionInput(){
 		 return productionRules.getInputCopy();
@@ -101,12 +109,6 @@ public class DevelopmentCard {
 		return productionRules.numberOfInputEmptyResources();
 	}
 
-	public void showCard(){
-		System.out.println("Resources requirements:"+ getResourcesRequirement());
-		System.out.println("Card level and color:"+ getLevel() + "" + getColor());
-		System.out.println("Card input resources:"+ getProductionInput());
-		System.out.println("Card output resources:"+ produce());
-		System.out.println("Card victory points:"+ getVictoryPoints());
-	}
+
 
 }

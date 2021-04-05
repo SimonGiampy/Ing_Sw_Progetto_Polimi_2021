@@ -84,4 +84,19 @@ public class ListSet {
 		return finalSet;
 	}
 	
+	public static <T> HashMap<T, Integer> multiplicityList(ArrayList<T> list) {
+		HashMap<T, Integer> setMap = new HashMap<>(10);
+		for (T obj: list) {
+			setMap.put(obj, setMap.getOrDefault(obj, 0) + 1);
+		}
+		return setMap;
+	}
+	
+	public static <T> void showHashMap(HashMap<T, Integer> map) {
+		map.forEach((t, x) -> {
+			System.out.print(x + "x" + t.toString() + "\t");
+		});
+		System.out.print("\n");
+	}
+	
 }
