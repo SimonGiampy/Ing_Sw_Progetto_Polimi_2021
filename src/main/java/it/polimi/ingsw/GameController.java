@@ -1,5 +1,6 @@
 package it.polimi.ingsw;
 
+import it.polimi.ingsw.exceptions.InvalidInputException;
 import it.polimi.ingsw.exceptions.InvalidUserRequestException;
 import it.polimi.ingsw.xml_parsers.XMLParser;
 
@@ -42,8 +43,12 @@ public class GameController {
 		
 		System.out.println("what do you want to do?\nOptions: 1 (Market), 2 (Dev Card), 3 (Production)");
 		int input = Integer.parseInt(scanner.nextLine());
-		String which;
-		int where;
+		ArrayList<Integer> playerProductionInput = new ArrayList<Integer>();  //This is the ArrayList where you want      to put the String
+		int[] selectedResourcesInput= new int[]{0,0,0,0};
+		int[] selectedResourcesOutput= new int[]{0,0,0,0};
+		String which; // row/column for market (input)
+		String listOfInt; // list of production (input)
+		int where; //selected row/selected column (input)
 		if (input == 1) {
 			mechanics.getMarket().showMarket();
 			System.out.println("where do you want to shift the marbles (row / col)?");
@@ -98,8 +103,30 @@ public class GameController {
 			} while (!in.equals("yes") && !in.equals("y"));
 			
 			depot.discardResourcesAfterUserConfirmation();
-		} else {
-			// input is != 1
+		}
+		else if (input==3){
+			System.out.println("Player Strongbox:"+mechanics.getPlayers()[0].getMyStrongbox().getContent());
+			mechanics.getPlayers()[0].getPlayersWarehouseDepot().showDepot();
+			System.out.println("which production do you want to activate?");
+			listOfInt=scanner.nextLine();
+			playerProductionInput=playerInputToArraylist(listOfInt);
+			if (mechanics.getPlayers()[0].getCardManager().numberOfInputEmptySelectedProduction(playerProductionInput)>0) {
+				System.out.println("which resources do you want to put in input?");
+				listOfInt = scanner.nextLine();
+				selectedResourcesInput=playerInputToArray(listOfInt);
+			}
+			if (mechanics.getPlayers()[0].getCardManager().numberOfOutputEmptySelectedProduction(playerProductionInput)>0){
+				System.out.println("which resources do you want to put in output?");
+				listOfInt = scanner.nextLine();
+				selectedResourcesOutput=playerInputToArray(listOfInt);
+			}
+			try {
+				mechanics.getPlayers()[0].activateProduction(playerProductionInput,selectedResourcesInput,selectedResourcesOutput);
+			} catch (InvalidInputException e) {
+				e.printStackTrace();
+			}
+			System.out.println(mechanics.getPlayers()[0].getMyStrongbox().getContent());
+
 		}
 		
 	}
@@ -180,6 +207,24 @@ public class GameController {
 			userResponse = scanner.nextLine();
 		}
 		return userResponse;
+	}
+
+	public ArrayList<Integer> playerInputToArraylist(String playerInput){
+		ArrayList<Integer> playerProductionInput = new ArrayList<>();
+		String[] array = playerInput.split(",");  //Split the previous String for separate by commas
+		for(String s:array){  //Iterate over the previous array for put each element on the ArrayList like Integers
+			playerProductionInput.add(Integer.parseInt(s));
+		}
+		return playerProductionInput;
+	}
+	public int[] playerInputToArray(String playerInput){
+		int[] selectedResourcesInput= new int[4];
+		String[] array = playerInput.split(",");  //Split the previous String for separate by commas
+		for (int i = 0; i < array.length; i++) {
+			selectedResourcesInput[i]=Integer.parseInt(array[i]);
+
+		}
+		return selectedResourcesInput;
 	}
 	
 }

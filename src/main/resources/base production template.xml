@@ -6,12 +6,13 @@
     <!-- list of input resources: free_choice defines a non-fixed resource -->
     <input>
         <res value = "empty"/>
-        <res value = "stone"/>
+        <res value = "empty"/>
     </input>
 
     <!-- list of output resources: free_choice defines a non-fixed resource -->
     <output>
         <res value = "coin"/>
+        <res value = "empty"/>
         <res value = "empty"/>
     </output>
 

@@ -242,22 +242,25 @@ public class CardProductionsManagement {
 		}
 		ArrayList<Resources> filteredProduction = productionInput.stream().filter(i->i!=Resources.EMPTY)
 				.collect(Collectors.toCollection(ArrayList::new));
-		for (int i = 0; i < inputResources[i]; i++) {
+		System.out.println(filteredProduction);
+		for (int i = 0; i < inputResources[0]; i++) {
 			filteredProduction.add(Resources.COIN);
 		}
-		for (int i = 0; i < inputResources[i]; i++) {
+		for (int i = 0; i < inputResources[1]; i++) {
 			filteredProduction.add(Resources.SERVANT);
 		}
-		for (int i = 0; i < inputResources[i]; i++) {
+		for (int i = 0; i < inputResources[2]; i++) {
 			filteredProduction.add(Resources.SHIELD);
 		}
-		for (int i = 0; i < inputResources[i]; i++) {
+		for (int i = 0; i < inputResources[3]; i++) {
 			filteredProduction.add(Resources.STONE);
 		}
 		ProductionRules allSelectedProduction= new ProductionRules(filteredProduction,new ArrayList<>(),0);
+		System.out.println(filteredProduction);
 		if (allSelectedProduction.isProductionAvailable(playerResources)){
 			remainingResources = myWarehouseDepot.payResources(filteredProduction);
 			myStrongbox.retrieveResources(remainingResources);
+			System.out.println(myStrongbox.getContent());
 		}
 		else throw new InvalidUserRequestException("invalid input resources");
 	}
@@ -289,11 +292,11 @@ public class CardProductionsManagement {
 	 * @return true if the input is correct and the productions available
 	 */
 	public boolean checkPlayerInput(ArrayList<Integer> playerInput){
-		if (!playerInput.stream().equals(playerInput.stream().distinct()) || playerInput.stream().anyMatch(i -> i>6 || i<1))
-			return false;
+		//if (!playerInput.stream().equals(playerInput.stream().distinct()) || playerInput.stream().anyMatch(i -> i>6 || i<1))
+			//return false;
 		for (Integer integer : playerInput) {
 			int input = integer - 1;
-			if (numberOfProduction[input])
+			if (!numberOfProduction[input])
 				return false;
 		}
 		return true;
@@ -309,11 +312,15 @@ public class CardProductionsManagement {
 			default ->0;
 		};
 	}
-	public boolean isNumberOfSelectedInputEmptyResourcesEnough(ArrayList<Integer> playerInput,int[] inputResources){
+	public int numberOfInputEmptySelectedProduction(ArrayList<Integer> playerInput){
 		int totalNumber=0;
 		for (Integer integer : playerInput) {
 			totalNumber = totalNumber + numberOfInputEmptyResources(integer);
 		}
+		return totalNumber;
+	}
+	public boolean isNumberOfSelectedInputEmptyResourcesEnough(ArrayList<Integer> playerInput,int[] inputResources){
+		int totalNumber= numberOfInputEmptySelectedProduction(playerInput);
 		return totalNumber>=inputResources[0]+inputResources[1]+inputResources[2]+inputResources[3];
 	}
 	public int numberOfOutputEmptyResources(int selectedStack) {
@@ -327,11 +334,16 @@ public class CardProductionsManagement {
 			default -> 0;
 		};
 	}
-	public boolean isnumberOfSelectedOutputEmptyResourcesEnough(ArrayList<Integer> playerInput,int[] outputResources){
+	public int numberOfOutputEmptySelectedProduction(ArrayList<Integer> playerInput){
 		int totalNumber=0;
 		for (Integer integer : playerInput) {
 			totalNumber = totalNumber + numberOfOutputEmptyResources(integer);
 		}
+		return totalNumber;
+	}
+
+	public boolean isNumberOfSelectedOutputEmptyResourcesEnough(ArrayList<Integer> playerInput,int[] outputResources){
+		int totalNumber=numberOfOutputEmptySelectedProduction(playerInput);
 		return totalNumber>= outputResources[0]+outputResources[1]+outputResources[2]+outputResources[3];
 	}
 }

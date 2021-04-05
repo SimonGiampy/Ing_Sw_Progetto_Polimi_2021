@@ -14,10 +14,14 @@ public class GameMechanicsSinglePlayer extends GameMechanicsMultiPlayer {
 	private ArrayList<Token> tokenList;
 	private FaithTrack lorenzoFaithTrack;
 
+	public GameMechanicsSinglePlayer(GameController controller, int players) {
+		super(controller, players);
+	}
+/*
 	public GameMechanicsSinglePlayer(){
 		super(1);
 	}
-	
+*/
 	/**
 	 * constructor for creating the single player instances and Lorenzo's personal Faith track
 	 * @param allDevelopmentCards the list of all the development cards read from the xml file. Will be shuffled
