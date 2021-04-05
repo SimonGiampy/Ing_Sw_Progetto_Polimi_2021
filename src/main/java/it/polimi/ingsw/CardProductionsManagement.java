@@ -9,8 +9,7 @@ import java.util.Stack;
 import java.util.stream.Collectors;
 
 /**
- * this class handles player's cards management
- * TODO: this javadoc needs more words
+ * this class handles player's cards and productions management
  */
 public class CardProductionsManagement {
 	private final ArrayList<Stack<DevelopmentCard>> cards;

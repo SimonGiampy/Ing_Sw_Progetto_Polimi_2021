@@ -34,7 +34,6 @@ public class ResourceDeck {
 		
 		playerDepot = depot;
 	}
-	
 
 	/**
 	 * Handles the case of a player playing two leader cards with the white marble ability, if this player

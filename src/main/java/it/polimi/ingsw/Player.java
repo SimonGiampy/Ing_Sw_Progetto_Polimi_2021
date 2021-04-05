@@ -25,8 +25,8 @@ public class Player {
 	private final DevelopmentCardsDeck commonCardsDeck;
 	
 	private LeaderCard[] leaderCards;
-	private boolean playableLeader1; // indicates whether the first leader card is playable or not
-	private boolean playableLeader2; // indicates whether the second leader card is playable or not
+	private boolean playableLeader1; // indicates whether the player has the first leader card in his hand
+	private boolean playableLeader2; // indicates whether the player has the second leader card in his hand
 	private boolean activeAbilityLeader1; // indicates whether the first leader card ability is activated or not
 	private boolean activeAbilityLeader2; // indicates whether the second leader card ability is activated or not
 	
@@ -140,10 +140,12 @@ public class Player {
 		//moves the player's marker based on the faith points gained
 		myFaithTrack.moveMarker(myResourceDeck.getFaithPoint());
 	}
-	
-	
 
-	//TODO: check what the Player can do in the current turn
+
+	/**
+	 * Checks which actions the player can do in the current turn
+	 * @return a string that contains the keywords that identifies the actions available
+	 */
 	public String checkWhatThisPlayerCanDo() {
 		StringBuilder moves = new StringBuilder("market;");
 		if (isBuyMoveAvailable()) {
@@ -151,13 +153,25 @@ public class Player {
 		}
 		try {
 			if (cardManager.isAtLeastOneProductionAvailable()) {
-				moves.append("production");
+				moves.append("production;");
 			}
 		} catch (InvalidInputException e) {
 			e.printStackTrace();
 		}
-		
-		//TODO: add function to check whether a leader card can be activated
+		if(playableLeader1 && leaderCards[0].checkCards(cardManager.getPlayerCardsRequirements()) &&
+				leaderCards[0].checkResources(gatherAllPlayersResources())) {
+			moves.append("activate1;");
+		}
+		if(playableLeader2 && leaderCards[1].checkCards(cardManager.getPlayerCardsRequirements()) &&
+				leaderCards[1].checkResources(gatherAllPlayersResources())) {
+			moves.append("activate2;");
+		}
+		if(playableLeader1){
+			moves.append("discard1;");
+		}
+		if(playableLeader2){
+			moves.append("discard2;");
+		}
 		
 		return moves.toString();
 	}
