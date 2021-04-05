@@ -27,12 +27,12 @@ public class GameController {
 		File file = new File(classLoader.getResource(fileName).getFile());
 		String fullPath = file.getAbsolutePath();
 		
-		XMLParser parser = new XMLParser();
-		ArrayList<Tile> tiles = parser.readTiles(fullPath);
-		ArrayList<Integer> report = parser.readReportPoints(fullPath);
-		ArrayList<DevelopmentCard> devcards = parser.readDevCards(fullPath);
-		ArrayList<LeaderCard> leaderCards = parser.readLeaderCards(fullPath);
-		ProductionRules baseProdu = parser.parseBaseProductionFromXML(fullPath);
+		XMLParser parser = new XMLParser(fullPath);
+		ArrayList<Tile> tiles = parser.readTiles();
+		ArrayList<Integer> report = parser.readReportPoints();
+		ArrayList<DevelopmentCard> devcards = parser.readDevCards();
+		ArrayList<LeaderCard> leaderCards = parser.readLeaderCards();
+		ProductionRules baseProdu = parser.parseBaseProductionFromXML();
 		mechanics.instantiateGame(devcards, leaderCards, baseProdu, tiles, report);
 		
 		for (Player p: mechanics.getPlayers()) {
