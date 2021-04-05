@@ -57,7 +57,7 @@ public class Market {
 			}
 			System.out.print("\n");
 		}
-		System.out.print("\n");
+		System.out.print("\033[0m\n");
 	}
 	
 	/**

@@ -12,6 +12,7 @@ import java.util.regex.Pattern;
 public class GameController {
 	
 	private static Scanner scanner;
+	private static GameMechanicsMultiPlayer mechanics;
 
 	public static void main(String[] args) {
 		scanner = new Scanner(System.in);
@@ -21,7 +22,7 @@ public class GameController {
 	}
 	public void startGame() {
 		
-		GameMechanicsMultiPlayer mechanics = new GameMechanicsMultiPlayer(this, 3);
+		mechanics = new GameMechanicsMultiPlayer(this, 3);
 		
 		String fileName = "game_configuration_complete.xml";
 		ClassLoader classLoader = getClass().getClassLoader();
@@ -31,154 +32,34 @@ public class GameController {
 		XMLParser parser = new XMLParser(fullPath);
 		ArrayList<Tile> tiles = parser.readTiles();
 		ArrayList<Integer> report = parser.readReportPoints();
-		ArrayList<DevelopmentCard> devcards = parser.readDevCards();
+		ArrayList<DevelopmentCard> devCards = parser.readDevCards();
 		ArrayList<LeaderCard> leaderCards = parser.readLeaderCards();
-		ProductionRules baseProdu = parser.parseBaseProductionFromXML();
-		mechanics.instantiateGame(devcards, leaderCards, baseProdu, tiles, report);
+		ProductionRules baseProduction = parser.parseBaseProductionFromXML();
+		mechanics.instantiateGame(devCards, leaderCards, baseProduction, tiles, report);
 		
 		for (Player p: mechanics.getPlayers()) {
 			p.chooseTwoLeaders(1, 4); // chooses 1 and 4 leader
 		}
-		
-		
-		System.out.println("what do you want to do?\nOptions: 1 (Market), 2 (Dev Card), 3 (Production)");
-		int input = Integer.parseInt(scanner.nextLine());
-		ArrayList<Integer> playerProductionInput = new ArrayList<Integer>();  //This is the ArrayList where you want      to put the String
-		int[] selectedResourcesInput= new int[]{0,0,0,0};
-		int[] selectedResourcesOutput= new int[]{0,0,0,0};
-		String which; // row/column for market (input)
-		String listOfInt; // list of production (input)
-		int where; //selected row/selected column (input)
-		
-		Player currentPlayer = mechanics.getPlayer(mechanics.getStartingPlayer()); //first test with just one player
-		
-		if (input == 1) {
-			mechanics.getMarket().showMarket();
-			System.out.println("where do you want to shift the marbles (row / col)?");
-			which = scanner.nextLine();
-			System.out.println("where do you want to shift the marbles (1-3) / (1-4)?");
-			where = Integer.parseInt(scanner.nextLine());
-			
-			try {
-				
-				currentPlayer.interactWithMarket(which, where);
-				ArrayList<Boolean> check = new ArrayList<>();
-				for (int i = 0; i < mechanics.getPlayers().length; i++ ) {
-					check.add(mechanics.getPlayers()[i].getPlayerFaithTrack().checkVaticanReport(mechanics.lastReportClaimed));
-				}
-				if(check.contains(true)) {
-					mechanics.lastReportClaimed++;
-				}
-				
-			} catch (InvalidUserRequestException e) {
-				e.printStackTrace();
-			}
-			
-			//for debugging purposes
-			/*
-			for(Player p: mechanics.getPlayers()){
-				System.out.println(p.getPlayerFaithTrack().getCurrentPosition()+" "+
-						p.getPlayerFaithTrack().countFaithTrackVictoryPoints() +" "+p.getPlayerFaithTrack()
-						.getVaticanReports().toString());
-			}
-			 */
+		int indexCurrentPlayer = mechanics.getStartingPlayer();
 
-			mechanics.getMarket().showMarket();
-			System.out.println(currentPlayer.getPlayersResourceDeck().getResourceList().toString());
-			
-			
-			//-----------------------------------------------------------------------------
-			
-			String in = "no";
-			WarehouseDepot depot = currentPlayer.getPlayersWarehouseDepot();
-			do {
-				try {
-					if (processNewMove(depot)) {
-						depot.showIncomingDeck();
-						depot.showDepot();
-						System.out.println("Do you want to confirm (yes / no)? Resources in the deck will be automatically discarded");
-						in = scanner.next();
-					} else {
-						System.out.println("write new move");
-					}
-				} catch (InvalidUserRequestException e) {
-					e.printStackTrace();
-				}
-			} while (!in.equals("yes") && !in.equals("y"));
-			
-			int faithPoints = depot.discardResourcesAfterUserConfirmation();
-			
-			if (faithPoints > 0) {
-				for (Player p: mechanics.getPlayers()) {
-					if (!p.equals(currentPlayer)) {
-						p.getPlayerFaithTrack().moveMarker(faithPoints);
-					}
-				}
-			}
-			
-		} else if (input == 2) { // dev card buy
-			
-			Resources[] resources = new Resources[] {Resources.STONE, Resources.COIN, Resources.COIN,
-					Resources.SHIELD, Resources.SHIELD, Resources.SHIELD};
-			currentPlayer.getPlayersWarehouseDepot().setDepotForDebugging(resources);
-			
-			ArrayList<Resources> resourcesArrayList = new ArrayList<>();
-			resourcesArrayList.add(Resources.SERVANT);
-			resourcesArrayList.add(Resources.SERVANT);
-			resourcesArrayList.add(Resources.SERVANT);
-			resourcesArrayList.add(Resources.STONE);
-			resourcesArrayList.add(Resources.STONE);
-			currentPlayer.getMyStrongbox().storeResources(resourcesArrayList);
-			
-			System.out.println("check what this player can do: " + currentPlayer.checkWhatThisPlayerCanDo() + "\n");
-			
-			if (currentPlayer.isBuyMoveAvailable()) {
-				mechanics.getGameDevCardsDeck().showDevelopmentCardsDeck();
-			}
-			
-			currentPlayer.getPlayersWarehouseDepot().showDepot();
-			System.out.println("strongbox contains: " + currentPlayer.getMyStrongbox().getContent().toString());
-			
-			System.out.println("which card do you want to buy?");
-			System.out.print("input level: ");
-			int level = Integer.parseInt(scanner.nextLine());
-			System.out.print("input color: ");
-			String color = scanner.nextLine();
-			System.out.print("input card slot: ");
-			int slot = Integer.parseInt(scanner.nextLine());
-			
-			try {
-				currentPlayer.buyNewDevCard(level, Colors.valueOf(color.toUpperCase()), slot);
-				currentPlayer.getPlayersCardManager().showCards();
-			} catch (InvalidInputException e) {
-				System.out.println("idiota");
-			}
-			
-			
-		} else if (input==3) { // production
-			
-			System.out.println("Player Strongbox:"+mechanics.getPlayers()[0].getMyStrongbox().getContent());
-			mechanics.getPlayers()[0].getPlayersWarehouseDepot().showDepot();
-			System.out.println("which production do you want to activate?");
-			listOfInt=scanner.nextLine();
-			playerProductionInput=playerInputToArraylist(listOfInt);
-			if (mechanics.getPlayers()[0].getPlayersCardManager().numberOfInputEmptySelectedProduction(playerProductionInput)>0) {
-				System.out.println("which resources do you want to put in input?");
-				listOfInt = scanner.nextLine();
-				selectedResourcesInput=playerInputToArray(listOfInt);
-			}
-			if (mechanics.getPlayers()[0].getPlayersCardManager().numberOfOutputEmptySelectedProduction(playerProductionInput)>0){
-				System.out.println("which resources do you want to put in output?");
-				listOfInt = scanner.nextLine();
-				selectedResourcesOutput=playerInputToArray(listOfInt);
-			}
-			try {
-				mechanics.getPlayers()[0].activateProduction(playerProductionInput,selectedResourcesInput,selectedResourcesOutput);
-			} catch (InvalidInputException e) {
-				e.printStackTrace();
-			}
-			System.out.println(mechanics.getPlayers()[0].getMyStrongbox().getContent());
+		for(int round = 0; round < 6; round++) {
+			scanner.nextLine();
+			Player currentPlayer = mechanics.getPlayer(indexCurrentPlayer); //first test with just one player
+			System.out.println("Player " + (indexCurrentPlayer + 1) +" is playing");
+			System.out.println("What do you want to do?\nOptions: 1 (Market), 2 (Dev Card), 3 (Production)");
+			int input = Integer.parseInt(scanner.nextLine());
 
+
+			if (input == 1) {
+				processMarketInteraction(currentPlayer);
+
+			} else if (input == 2) {
+				processBuyDevCard(currentPlayer);
+			}
+			else if (input == 3) {
+				processProduction(currentPlayer);
+			}
+			indexCurrentPlayer = (indexCurrentPlayer+1) % mechanics.getNumberOfPlayers();
 		}
 		
 	}
@@ -249,17 +130,17 @@ public class GameController {
 		System.out.println("The positional number in the warehouse is between 1 and 6: from top to bottom, and from left to right");
 	}
 	
-	public Resources[] requestInitialResource(int howMany) {
+	public Resources[] requestInitialResource(int playerIndex, int howMany) {
 		String userResponse = "";
 		Resources[] out = new Resources[0];
 		if (howMany == 1) {
 			out = new Resources[1];
-			System.out.println("you get to choose one resource: which one do you want?");
+			System.out.println("Player " + (playerIndex+1) + " gets to choose one resource: which one do you want?");
 			userResponse = scanner.nextLine().toUpperCase();
 			out[0] = Resources.valueOf(userResponse);
 		} else if (howMany == 2) {
 			out = new Resources[2];
-			System.out.println("you get to choose two resources: which ones do you want?");
+			System.out.println("Player "+ (playerIndex+1) + " gets to choose two resources: which ones do you want?");
 			userResponse = scanner.nextLine().toUpperCase();
 			out[0] = Resources.valueOf(userResponse);
 			userResponse = scanner.nextLine().toUpperCase();
@@ -285,5 +166,140 @@ public class GameController {
 		}
 		return selectedResourcesInput;
 	}
-	
+
+	public void processMarketInteraction(Player currentPlayer){
+		String which; // row/column for market (input)
+		int where; //selected row/selected column (input)
+		mechanics.getMarket().showMarket();
+		System.out.println("where do you want to shift the marbles (row / col)?");
+		which = scanner.nextLine();
+		System.out.println("where do you want to shift the marbles (1-3) / (1-4)?");
+		where = Integer.parseInt(scanner.nextLine());
+
+		try {
+
+			currentPlayer.interactWithMarket(which, where);
+			ArrayList<Boolean> check = new ArrayList<>();
+			for (int i = 0; i < mechanics.getPlayers().length; i++) {
+				check.add(mechanics.getPlayers()[i].getPlayerFaithTrack().checkVaticanReport(mechanics.lastReportClaimed));
+			}
+			if (check.contains(true)) {
+				mechanics.lastReportClaimed++;
+			}
+
+		} catch (InvalidUserRequestException e) {
+			e.printStackTrace();
+		}
+
+		//for debugging purposes
+			/*
+			for(Player p: mechanics.getPlayers()){
+				System.out.println(p.getPlayerFaithTrack().getCurrentPosition()+" "+
+						p.getPlayerFaithTrack().countFaithTrackVictoryPoints() +" "+p.getPlayerFaithTrack()
+						.getVaticanReports().toString());
+			}
+			 */
+
+		mechanics.getMarket().showMarket();
+		System.out.println(currentPlayer.getPlayersResourceDeck().getResourceList().toString());
+
+
+		//-----------------------------------------------------------------------------
+
+		String in = "no";
+		WarehouseDepot depot = currentPlayer.getPlayersWarehouseDepot();
+		do {
+			try {
+				if (processNewMove(depot)) {
+					depot.showIncomingDeck();
+					depot.showDepot();
+					System.out.println("Do you want to confirm (yes / no)? Resources in the deck will be automatically discarded");
+					in = scanner.next();
+				} else {
+					System.out.println("write new move");
+				}
+			} catch (InvalidUserRequestException e) {
+				e.printStackTrace();
+			}
+		} while (!in.equals("yes") && !in.equals("y"));
+
+		int faithPoints = depot.discardResourcesAfterUserConfirmation();
+
+		if (faithPoints > 0) {
+			for (Player p : mechanics.getPlayers()) {
+				if (!p.equals(currentPlayer)) {
+					p.getPlayerFaithTrack().moveMarker(faithPoints);
+				}
+			}
+		}
+
+	}
+	public void processBuyDevCard(Player currentPlayer){
+		// dev card buy
+
+		Resources[] resources = new Resources[]{Resources.STONE, Resources.COIN, Resources.COIN,
+				Resources.SHIELD, Resources.SHIELD, Resources.SHIELD};
+		currentPlayer.getPlayersWarehouseDepot().setDepotForDebugging(resources);
+
+		ArrayList<Resources> resourcesArrayList = new ArrayList<>();
+		resourcesArrayList.add(Resources.SERVANT);
+		resourcesArrayList.add(Resources.SERVANT);
+		resourcesArrayList.add(Resources.SERVANT);
+		resourcesArrayList.add(Resources.STONE);
+		resourcesArrayList.add(Resources.STONE);
+		currentPlayer.getMyStrongbox().storeResources(resourcesArrayList);
+
+		System.out.println("check what this player can do: " + currentPlayer.checkWhatThisPlayerCanDo() + "\n");
+
+		if (currentPlayer.isBuyMoveAvailable()) {
+			mechanics.getGameDevCardsDeck().showDevelopmentCardsDeck();
+		}
+
+		currentPlayer.getPlayersWarehouseDepot().showDepot();
+		System.out.println("strongbox contains: " + currentPlayer.getMyStrongbox().getContent().toString());
+
+		System.out.println("which card do you want to buy?");
+		System.out.print("input level: ");
+		int level = Integer.parseInt(scanner.nextLine());
+		System.out.print("input color: ");
+		String color = scanner.nextLine();
+		System.out.print("input card slot: ");
+		int slot = Integer.parseInt(scanner.nextLine());
+
+		try {
+			currentPlayer.buyNewDevCard(level, Colors.valueOf(color.toUpperCase()), slot);
+			currentPlayer.getPlayersCardManager().showCards();
+		} catch (InvalidInputException e) {
+			System.out.println("idiota");
+		}
+	}
+	public void processProduction(Player currentPlayer){
+
+		ArrayList<Integer> playerProductionInput = new ArrayList<Integer>();  //This is the ArrayList where you want to put the String
+		String listOfInt; // list of production (input)
+		int[] selectedResourcesInput = new int[]{0, 0, 0, 0};
+		int[] selectedResourcesOutput = new int[]{0, 0, 0, 0};
+		System.out.println("Player Strongbox:" + mechanics.getPlayers()[0].getMyStrongbox().getContent());
+		mechanics.getPlayers()[0].getPlayersWarehouseDepot().showDepot();
+		System.out.println("which production do you want to activate?");
+		listOfInt = scanner.nextLine();
+		playerProductionInput = playerInputToArraylist(listOfInt);
+		if (mechanics.getPlayers()[0].getPlayersCardManager().numberOfInputEmptySelectedProduction(playerProductionInput) > 0) {
+			System.out.println("which resources do you want to put in input?");
+			listOfInt = scanner.nextLine();
+			selectedResourcesInput = playerInputToArray(listOfInt);
+		}
+		if (mechanics.getPlayers()[0].getPlayersCardManager().numberOfOutputEmptySelectedProduction(playerProductionInput) > 0) {
+			System.out.println("which resources do you want to put in output?");
+			listOfInt = scanner.nextLine();
+			selectedResourcesOutput = playerInputToArray(listOfInt);
+		}
+		try {
+			mechanics.getPlayers()[0].activateProduction(playerProductionInput, selectedResourcesInput, selectedResourcesOutput);
+		} catch (InvalidInputException e) {
+			e.printStackTrace();
+		}
+		System.out.println(mechanics.getPlayers()[0].getMyStrongbox().getContent());
+
+	}
 }
