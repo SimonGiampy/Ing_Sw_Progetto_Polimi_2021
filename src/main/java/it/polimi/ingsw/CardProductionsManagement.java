@@ -124,12 +124,12 @@ public class CardProductionsManagement {
 			default -> throw new InvalidUserRequestException("invalid production number chosen");
 		};
 	}
-	/* TODO: if ? are equals to 0 set input ArrayList (or Array) to [0,0,0,0] */
+
 	/**
 	 * it activates all selected production
 	 * @param playerInput is a list of selected production
 	 * @param inputResources is a list of resources selected by the player
-	 * @return the number of faith points of the selected production
+	 * @return the number of faith points of the selected productions
 	 */
 	public int activateSelectedProduction(ArrayList<Integer> playerInput,int[] inputResources) throws InvalidUserRequestException {
 		ArrayList<Resources> selectedProduction= new ArrayList<>();
@@ -138,17 +138,10 @@ public class CardProductionsManagement {
 			selectedProduction.addAll(activateSingleProduction(integer));
 			totalFaithPoints=returnFaithPoints(integer);
 		}
-		for (int j = 0; j <inputResources[0]; j++) {
-			selectedProduction.add(Resources.COIN);
-		}
-		for (int j = 0; j < inputResources[1]; j++) {
-			selectedProduction.add(Resources.SERVANT);
-		}
-		for (int j = 0; j < inputResources[2]; j++) {
-			selectedProduction.add(Resources.SHIELD);
-		}
-		for (int j = 0; j < inputResources[3]; j++) {
-			selectedProduction.add(Resources.STONE);
+		for (int i = 0; i < 4; i++) {
+			for (int j = 0; j < inputResources[j]; j++) {
+				selectedProduction.add(Resources.values()[i]);
+			}
 		}
 		selectedProduction = selectedProduction.stream().filter(i -> i != Resources.EMPTY).collect(Collectors.toCollection(ArrayList::new));
 		myStrongbox.storeResources(selectedProduction);
@@ -250,21 +243,12 @@ public class CardProductionsManagement {
 		}
 		ArrayList<Resources> filteredProduction = productionInput.stream().filter(i->i!=Resources.EMPTY)
 				.collect(Collectors.toCollection(ArrayList::new));
-		System.out.println(filteredProduction);
-		for (int i = 0; i < inputResources[0]; i++) {
-			filteredProduction.add(Resources.COIN);
-		}
-		for (int i = 0; i < inputResources[1]; i++) {
-			filteredProduction.add(Resources.SERVANT);
-		}
-		for (int i = 0; i < inputResources[2]; i++) {
-			filteredProduction.add(Resources.SHIELD);
-		}
-		for (int i = 0; i < inputResources[3]; i++) {
-			filteredProduction.add(Resources.STONE);
+		for (int i = 0; i < 4; i++) {
+			for (int j = 0; j < inputResources[j]; j++) {
+				filteredProduction.add(Resources.values()[i]);
+			}
 		}
 		ProductionRules allSelectedProduction= new ProductionRules(filteredProduction,new ArrayList<>(),0);
-		System.out.println(filteredProduction);
 		if (allSelectedProduction.isProductionAvailable(playerResources)){
 			remainingResources = myWarehouseDepot.payResources(filteredProduction);
 			myStrongbox.retrieveResources(remainingResources);
@@ -295,13 +279,13 @@ public class CardProductionsManagement {
 	}
 
 	/**
-	 * Checks if the input is correct (no values out of 1-6 and no duplicates)
+	 * Checks if the input is correct (no values out of 1-6 and no duplicates) and selected production are activated
 	 * @param playerInput number of the selected productions
 	 * @return true if the input is correct and the productions available
 	 */
 	public boolean checkPlayerInput(ArrayList<Integer> playerInput){
-		//if (!playerInput.stream().equals(playerInput.stream().distinct()) || playerInput.stream().anyMatch(i -> i>6 || i<1))
-			//return false;
+		if (!playerInput.stream().equals(playerInput.stream().distinct()) || playerInput.stream().anyMatch(i -> i>6 || i<1))
+			return false;
 		for (Integer integer : playerInput) {
 			int input = integer - 1;
 			if (!numberOfProduction[input])

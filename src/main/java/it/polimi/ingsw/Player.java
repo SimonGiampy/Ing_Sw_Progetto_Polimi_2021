@@ -331,7 +331,6 @@ public class Player {
 	public FaithTrack getPlayerFaithTrack() {
 		return myFaithTrack;
 	}
-
 	public Strongbox getMyStrongbox() {
 		return myStrongbox;
 	}

@@ -1,6 +1,7 @@
 package it.polimi.ingsw;
 
 import java.util.ArrayList;
+import java.util.stream.IntStream;
 
 /**
  * this class handles single card management
@@ -70,11 +71,22 @@ public class DevelopmentCard {
 	}
 
 	public void showCard(){
-		System.out.println("Resources requirements: "+ getResourcesRequirement());
-		System.out.println("Card: level " + getLevel() + " and color " + getColor());
-		System.out.println("Card input resources: "+ getProductionInput());
-		System.out.println("Card output resources: "+ produce());
-		System.out.println("Card victory points: "+ getVictoryPoints() + "\n");
+		System.out.print("Resources requirements: ");
+		printCardLists(getResourcesRequirement());
+		System.out.println("\nCard: level " + getLevel() + " and color " + getColor());
+		System.out.print("Card input resources: ");
+		printCardLists(getProductionInput());
+		System.out.print("\nCard output resources: ");
+		printCardLists(produce());
+		System.out.println("\nCard victory points: "+ getVictoryPoints() + "\n");
+	}
+
+	private void printCardLists(ArrayList<Resources> list){
+		IntStream.range(0, 5).filter(i -> ListSet.count(list, Resources.values()[i]) > 0).forEach(i -> {
+			System.out.print(ListSet.count(list, Resources.values()[i]) + " ");
+			System.out.print(Resources.values()[i] + " ");
+		});
+
 	}
 	
 	/**
