@@ -284,9 +284,9 @@ public class CardProductionsManagement {
 	}
 
 	/**
-	 * TODO: forgot javadoc here
-	 * @param playerInput
-	 * @return
+	 * Checks if the input is correct (no values out of 1-6 and no duplicates)
+	 * @param playerInput number of the selected productions
+	 * @return true if the input is correct and the productions available
 	 */
 	public boolean checkPlayerInput(ArrayList<Integer> playerInput){
 		if (!playerInput.stream().equals(playerInput.stream().distinct()) || playerInput.stream().anyMatch(i -> i>6 || i<1))
