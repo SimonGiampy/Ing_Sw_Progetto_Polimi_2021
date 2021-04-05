@@ -37,7 +37,14 @@ public class MainAlessandro {
 		LeaderCard leaderCard = new LeaderCard(0,new ArrayList<>(), leaderInput, effectActivations);
 		System.out.println(leaderCard.checkCards(playerCards));
 
-		
+		String chain = "1,2,3,4,5";  //This is your String
+		ArrayList<Integer> list = new ArrayList<Integer>();  //This is the ArrayList where you want      to put the String
+		String[] array = chain.split(",");  //Split the previous String for separate by commas
+		for(String s:array){  //Iterate over the previous array for put each element on the ArrayList like Integers
+			list.add(Integer.parseInt(s));
+		}
+		list.remove(1);
+		System.out.println(list);
 
 
 	}

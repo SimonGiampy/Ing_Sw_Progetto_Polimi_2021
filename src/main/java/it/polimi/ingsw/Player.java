@@ -278,7 +278,7 @@ public class Player {
 			throw new InvalidInputException("Selected production not available");
 		if(!cardManager.isNumberOfSelectedInputEmptyResourcesEnough(playerInput,resourcesInput))
 			throw new InvalidInputException("Input Empty Resources selection not correct");
-		if (!cardManager.isnumberOfSelectedOutputEmptyResourcesEnough(playerInput,resourcesOutput))
+		if (!cardManager.isNumberOfSelectedOutputEmptyResourcesEnough(playerInput,resourcesOutput))
 		 	throw new InvalidInputException("Output Empty Resources selection not correct");
 		cardManager.takeSelectedResources(playerInput,resourcesInput);
 		myFaithTrack.moveMarker(cardManager.activateSelectedProduction(playerInput,resourcesOutput));
@@ -332,5 +332,12 @@ public class Player {
 	public FaithTrack getPlayerFaithTrack() {
 		return myFaithTrack;
 	}
-	
+
+	public Strongbox getMyStrongbox() {
+		return myStrongbox;
+	}
+
+	public CardProductionsManagement getCardManager() {
+		return cardManager;
+	}
 }
