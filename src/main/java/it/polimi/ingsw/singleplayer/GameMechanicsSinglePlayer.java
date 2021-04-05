@@ -18,8 +18,8 @@ public class GameMechanicsSinglePlayer extends GameMechanicsMultiPlayer {
 		super(controller, players);
 	}
 /*
-	public GameMechanicsSinglePlayer(){
-		super(1);
+	public GameMechanicsSinglePlayer(GameController controller){
+		super(controller,1);
 	}
 */
 	/**

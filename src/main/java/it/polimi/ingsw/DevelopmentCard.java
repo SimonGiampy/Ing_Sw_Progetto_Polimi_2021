@@ -100,5 +100,13 @@ public class DevelopmentCard {
 	public int numberOfInputEmptyResources(){
 		return productionRules.numberOfInputEmptyResources();
 	}
-	
+
+	public void showCard(){
+		System.out.println("Resources requirements:"+ getResourcesRequirement());
+		System.out.println("Card level and color:"+ getLevel() + "" + getColor());
+		System.out.println("Card input resources:"+ getProductionInput());
+		System.out.println("Card output resources:"+ produce());
+		System.out.println("Card victory points:"+ getVictoryPoints());
+	}
+
 }
