@@ -19,9 +19,9 @@ public class LeaderCardParserTest {
 		ClassLoader classLoader = getClass().getClassLoader();
 		File file = new File(classLoader.getResource(fileName).getFile());
 		String fullPath = file.getAbsolutePath();
-		XMLParser parser = new XMLParser();
+		XMLParser parser = new XMLParser(fullPath);
 		
-		ArrayList<LeaderCard> leaderCards = parser.readLeaderCards(fullPath);
+		ArrayList<LeaderCard> leaderCards = parser.readLeaderCards();
 	
 		for(int i = 0; i < leaderCards.size(); i++ ){
 			System.out.println("\nleader " +(i+1)+": "+"\nvictory points: " + leaderCards.get(i).getVictoryPoints() +
@@ -43,9 +43,9 @@ public class LeaderCardParserTest {
 		ClassLoader classLoader = getClass().getClassLoader();
 		File file = new File(classLoader.getResource(fileName).getFile());
 		String fullPath = file.getAbsolutePath();
-		XMLParser parser = new XMLParser();
+		XMLParser parser = new XMLParser(fullPath);
 		
-		ProductionRules baseProduction = parser.parseBaseProductionFromXML(fullPath);
+		ProductionRules baseProduction = parser.parseBaseProductionFromXML();
 		
 		System.out.println("base production:\ninput resources = " +
 				baseProduction.getInputCopy().toString() + "\noutput resources = " + baseProduction.getOutputCopy().toString()

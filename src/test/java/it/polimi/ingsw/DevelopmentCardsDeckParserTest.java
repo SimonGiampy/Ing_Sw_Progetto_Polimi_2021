@@ -21,8 +21,8 @@ public class DevelopmentCardsDeckParserTest {
 		String fullPath = file.getAbsolutePath();
 		//System.out.println(fullPath);
 		
-		XMLParser parser = new XMLParser();
-		ArrayList<DevelopmentCard> arrayCards = parser.readDevCards(fullPath);
+		XMLParser parser = new XMLParser(fullPath);
+		ArrayList<DevelopmentCard> arrayCards = parser.readDevCards();
 		GameMechanicsMultiPlayer mec = new GameMechanicsMultiPlayer(null, 1);
 		
 

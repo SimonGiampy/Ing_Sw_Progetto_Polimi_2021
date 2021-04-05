@@ -17,9 +17,9 @@ class FaithTrackTest {
 		File file = new File(classLoader.getResource(fileName).getFile());
 		String fullPath = file.getAbsolutePath();
 
-		XMLParser parser = new XMLParser();
-		ArrayList<Tile> tilesTrack = parser.readTiles(fullPath);
-		ArrayList<Integer> reportPoints = parser.readReportPoints(fullPath);
+		XMLParser parser = new XMLParser(fullPath);
+		ArrayList<Tile> tilesTrack = parser.readTiles();
+		ArrayList<Integer> reportPoints = parser.readReportPoints();
 		FaithTrack faithTrack = new FaithTrack(tilesTrack, reportPoints);
 		ArrayList<Tile> track = faithTrack.getTrack();
 
@@ -37,9 +37,9 @@ class FaithTrackTest {
 		File file = new File(classLoader.getResource(fileName).getFile());
 		String fullPath = file.getAbsolutePath();
 
-		XMLParser parser = new XMLParser();
-		ArrayList<Tile> tilesTrack = parser.readTiles(fullPath);
-		ArrayList<Integer> reportPoints = parser.readReportPoints(fullPath);
+		XMLParser parser = new XMLParser(fullPath);
+		ArrayList<Tile> tilesTrack = parser.readTiles();
+		ArrayList<Integer> reportPoints = parser.readReportPoints();
 		FaithTrack faithTrack = new FaithTrack(tilesTrack, reportPoints);
 		ArrayList<Tile> track = faithTrack.getTrack();
 		FaithTrack faithTrack2 = new FaithTrack(tilesTrack, reportPoints);
@@ -73,9 +73,9 @@ class FaithTrackTest {
 		File file = new File(classLoader.getResource(fileName).getFile());
 		String fullPath = file.getAbsolutePath();
 
-		XMLParser parser = new XMLParser();
-		ArrayList<Tile> tilesTrack = parser.readTiles(fullPath);
-		ArrayList<Integer> reportPoints = parser.readReportPoints(fullPath);
+		XMLParser parser = new XMLParser(fullPath);
+		ArrayList<Tile> tilesTrack = parser.readTiles();
+		ArrayList<Integer> reportPoints = parser.readReportPoints();
 		FaithTrack faithTrack = new FaithTrack(tilesTrack, reportPoints);
 		ArrayList<Tile> track = faithTrack.getTrack();
 
@@ -103,9 +103,9 @@ class FaithTrackTest {
 		File file = new File(classLoader.getResource(fileName).getFile());
 		String fullPath = file.getAbsolutePath();
 
-		XMLParser parser = new XMLParser();
-		ArrayList<Tile> tilesTrack = parser.readTiles(fullPath);
-		ArrayList<Integer> reportPoints = parser.readReportPoints(fullPath);
+		XMLParser parser = new XMLParser(fullPath);
+		ArrayList<Tile> tilesTrack = parser.readTiles();
+		ArrayList<Integer> reportPoints = parser.readReportPoints();
 		FaithTrack faithTrack = new FaithTrack(tilesTrack, reportPoints);
 
 		while(faithTrack.getCurrentPosition() < faithTrack.getTrack().size()){

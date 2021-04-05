@@ -12,6 +12,9 @@ class ListSetTest {
 	ArrayList<Resources> subList;
 	ArrayList<Resources> set;
 	
+	/**
+	 * instantiation of the list of resources to check the 2 functions
+	 */
 	@BeforeEach
 	void setUp() {
 		subList = new ArrayList<>();
@@ -31,17 +34,18 @@ class ListSetTest {
 		set.add(Resources.STONE);
 	}
 	
+	
 	@Test
 	void subset() {
-		//TODO: add asserts and javadoc here
+		assertTrue(ListSet.subset(set, subList));
 		System.out.println("check: = " + ListSet.subset(set, subList));
 		
 	}
 	
 	@Test
 	void removeSubSet() {
-		//TODO: add asserts and javadoc here
 		set = ListSet.removeSubSet(subList, set);
 		System.out.println("remainder = " + set.toString());
+		assertTrue(set.isEmpty());
 	}
 }
