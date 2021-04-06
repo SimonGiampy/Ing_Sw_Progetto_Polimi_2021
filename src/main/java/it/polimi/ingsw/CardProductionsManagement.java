@@ -1,6 +1,5 @@
 package it.polimi.ingsw;
 
-import it.polimi.ingsw.exceptions.InvalidDevCardSlotException;
 import it.polimi.ingsw.exceptions.InvalidInputException;
 import it.polimi.ingsw.exceptions.InvalidUserRequestException;
 
@@ -34,7 +33,7 @@ public class CardProductionsManagement {
 		numberOfProduction = new boolean[]{false,false,false,true,false,false};
 	}
 
-	/**
+	/** TODO: Testing?
 	 * it adds a new leader card to available productions
 	 * @param input is a list of required resources to activate production
 	 * @param faithOutput is the number of faith points
@@ -53,7 +52,7 @@ public class CardProductionsManagement {
 	 * @param newCard is the card to insert
 	 * @param selectedStack is the number of the selected stack
 	 */
-	public void addCard(DevelopmentCard newCard,int selectedStack) throws InvalidDevCardSlotException {
+	public void addCard(DevelopmentCard newCard,int selectedStack) {
 		switch (selectedStack){
 			case 1 -> {
 				if(cards.get(0).size()==0)
@@ -70,10 +69,13 @@ public class CardProductionsManagement {
 					numberOfProduction[2]=true;
 				cards.get(2).push(newCard);
 			}
-			default ->  throw new InvalidDevCardSlotException("invalid slot number for card insertion");
+			default ->{}
 		}
 	}
-	
+
+	/**
+	 * TODO : Javadoc
+ 	 */
 	public void showCards(){
 		for (int i = 0; i < 3; i++) {
 			if(cards.get(i).size()>0)
@@ -82,7 +84,7 @@ public class CardProductionsManagement {
 		}
 	}
 
-	/**
+	/** *
 	 * it checks top card's level
 	 * @param selectedStack is the number of the selected stack
 	 * @return top card's level of the selected stack
@@ -125,7 +127,7 @@ public class CardProductionsManagement {
 		};
 	}
 
-	/**
+	/** TODO: Testing
 	 * it activates all selected production
 	 * @param playerInput is a list of selected production
 	 * @param inputResources is a list of resources selected by the player
@@ -228,7 +230,7 @@ public class CardProductionsManagement {
 		return allSelectedProduction.isProductionAvailable(playerResources);
 	}
 
-	/**
+	/** TODO: Testing
 	 * it takes resources from Depot and Strongbox
 	 * @param playerInput is a list of selected production
 	 * @param inputResources is an array of number of Resources [#COIN,#SERVANT,#SHIELD,#STONE]
@@ -256,7 +258,7 @@ public class CardProductionsManagement {
 		else throw new InvalidUserRequestException("invalid input resources");
 	}
 
-	/**
+	/** TODO: Testing
 	 * it checks if one of card's productions is available
 	 * @return true if at least one of card's production is available
 	 */
@@ -283,8 +285,8 @@ public class CardProductionsManagement {
 	 * @return true if the input is correct and the productions available
 	 */
 	public boolean checkPlayerInput(ArrayList<Integer> playerInput){
-		//if (!playerInput.stream().equals(playerInput.stream().distinct()) || playerInput.stream().anyMatch(i -> i>6 || i<1))
-			//return false;
+		if (playerInput.size() != playerInput.stream().distinct().count() || playerInput.stream().anyMatch(i -> i>6 || i<1))
+			return false;
 		for (Integer integer : playerInput) {
 			int input = integer - 1;
 			if (!numberOfProduction[input])
@@ -292,6 +294,12 @@ public class CardProductionsManagement {
 		}
 		return true;
 	}
+
+	/**
+	 * it calculates the number of input ? selected production
+	 * @param selectedStack is the number of the selected production
+	 * @return the number of ? in input
+	 */
 	public int numberOfInputEmptyResources(int selectedStack){
 		return switch (selectedStack) {
 			case 1 -> cards.get(0).peek().numberOfInputEmptyResources();
@@ -303,6 +311,12 @@ public class CardProductionsManagement {
 			default ->0;
 		};
 	}
+
+	/**
+	 *  it calculates the number of input ? selected (by the player) productions
+	 * @param playerInput is a list of production selected by the player
+	 * @return the number of all ? in input
+	 */
 	public int numberOfInputEmptySelectedProduction(ArrayList<Integer> playerInput){
 		int totalNumber=0;
 		for (Integer integer : playerInput) {
@@ -310,10 +324,23 @@ public class CardProductionsManagement {
 		}
 		return totalNumber;
 	}
+
+	/**
+	 * it checks if the resources selected by the player to put in input are correct
+	 * @param playerInput is a list of production selected by the player
+	 * @param inputResources is an array of multiplicity of each resource selected by the player
+	 * @return true if the sum of all resources selected by the player is equal to production's number of ? in input
+	 */
 	public boolean isNumberOfSelectedInputEmptyResourcesEnough(ArrayList<Integer> playerInput,int[] inputResources){
 		int totalNumber= numberOfInputEmptySelectedProduction(playerInput);
-		return totalNumber>=inputResources[0]+inputResources[1]+inputResources[2]+inputResources[3];
+		return totalNumber==inputResources[0]+inputResources[1]+inputResources[2]+inputResources[3];
 	}
+
+	/**
+	 * it calculates the number of output ? selected production
+	 * @param selectedStack is the number of the selected production
+	 * @return the number of ? in output
+	 */
 	public int numberOfOutputEmptyResources(int selectedStack) {
 		return switch (selectedStack) {
 			case 1 -> cards.get(0).peek().numberOfOutputEmptyResources();
@@ -325,6 +352,12 @@ public class CardProductionsManagement {
 			default -> 0;
 		};
 	}
+
+	/**
+	 * it calculates the number of input ? selected (by the player) productions
+	 * @param playerInput is a list of production selected by the player
+	 * @return
+	 */
 	public int numberOfOutputEmptySelectedProduction(ArrayList<Integer> playerInput){
 		int totalNumber=0;
 		for (Integer integer : playerInput) {
@@ -333,10 +366,21 @@ public class CardProductionsManagement {
 		return totalNumber;
 	}
 
+	/**
+	 * it checks if the resources selected by the player to put in output are correct
+	 * @param playerInput is a list of production selected by the player
+	 * @param outputResources is an array of multiplicity of each resource selected by the player
+	 * @return true if the sum of all resources selected by the player is equal to production's number of ? in output
+	 */
 	public boolean isNumberOfSelectedOutputEmptyResourcesEnough(ArrayList<Integer> playerInput,int[] outputResources){
 		int totalNumber=numberOfOutputEmptySelectedProduction(playerInput);
-		return totalNumber>= outputResources[0]+outputResources[1]+outputResources[2]+outputResources[3];
+		return totalNumber == outputResources[0]+outputResources[1]+outputResources[2]+outputResources[3];
 	}
+
+	/**
+	 * it shows selected production's information
+	 * @param selectedStack is the number of selected production
+	 */
 	public void showSingleProduction(int selectedStack){
 		switch (selectedStack) {
 			case 1 -> cards.get(0).peek().showProductionRulesInformation();
@@ -347,9 +391,12 @@ public class CardProductionsManagement {
 			case 6 -> leaderProductionRules.get(1).showProductionRulesInformation();
 			default -> {
 			}
-		};
+		}
 	}
 
+	/**
+	 *  it shows available productions
+	 */
 	public void showAvailableProductions(){
 		System.out.println("Production Available:");
 		for (int i = 0; i < 6; i++) {
@@ -361,6 +408,7 @@ public class CardProductionsManagement {
 		}
 	}
 }
+
 
 
 

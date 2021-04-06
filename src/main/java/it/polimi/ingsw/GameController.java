@@ -347,13 +347,6 @@ public class GameController {
 
 		ArrayList<Integer> playerProductionInput;  //This is the ArrayList where you want to put the String
 		String listOfInt; // list of production (input)
-		ArrayList<Resources> resourcesArrayList = new ArrayList<>();
-		resourcesArrayList.add(Resources.SERVANT);
-		resourcesArrayList.add(Resources.SERVANT);
-		resourcesArrayList.add(Resources.SERVANT);
-		resourcesArrayList.add(Resources.STONE);
-		resourcesArrayList.add(Resources.STONE);
-		currentPlayer.getMyStrongbox().storeResources(resourcesArrayList);
 		int[] selectedResourcesInput = new int[]{0, 0, 0, 0};
 		int[] selectedResourcesOutput = new int[]{0, 0, 0, 0};
 		System.out.print("Player Strongbox: ");
@@ -379,6 +372,7 @@ public class GameController {
 		} catch (InvalidInputException e) {
 			e.printStackTrace();
 		}
+		currentPlayer.getPlayersWarehouseDepot().showDepot();
 		System.out.print("Player Strongbox after production(s): ");
 		currentPlayer.getMyStrongbox().showStrongbox();
 

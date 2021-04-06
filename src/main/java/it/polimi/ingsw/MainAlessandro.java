@@ -42,5 +42,9 @@ public class MainAlessandro {
 		prova.add(Resources.SHIELD);
 		box.storeResources(prova);
 		box.showStrongbox();
+		System.out.println(prova.stream().distinct());
+		System.out.println(prova.stream().equals(prova.stream().distinct()));
+		System.out.println(prova);
+		System.out.println(prova.size() == prova.stream().distinct().count());
 	}
 }

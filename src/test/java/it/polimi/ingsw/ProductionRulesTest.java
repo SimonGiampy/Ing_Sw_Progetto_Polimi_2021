@@ -127,5 +127,6 @@ public class ProductionRulesTest {
 		ArrayList<Resources> playerResources= new ArrayList<>();
 		ProductionRules productionRules = new ProductionRules(inputProduction,outputProduction,1);
 		assertEquals(0,productionRules.numberOfInputEmptyResources());
+
 	}
 }

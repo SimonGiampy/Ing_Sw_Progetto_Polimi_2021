@@ -86,10 +86,7 @@ public class DevelopmentCard {
 		System.out.print("Resources requirements: ");
 		ListSet.showListMultiplicityOnConsole(getResourcesRequirement());
 		System.out.println("Card: level " + getLevel() + " and color " + getColor());
-		System.out.print("Card input resources: ");
-		ListSet.showListMultiplicityOnConsole(getProductionInput());
-		System.out.print("Card output resources: ");
-		ListSet.showListMultiplicityOnConsole(produce());
+		showProductionRulesInformation();
 		System.out.println("Card victory points: "+ getVictoryPoints() + "\n");
 	}
 	// "\033[0m"; white
@@ -99,7 +96,7 @@ public class DevelopmentCard {
 	YELLOW("\u001B[33m"); //yellow color
 	GREEN("\U001B[32M");
 	 */
-	
+
 	/**
 	 * it checks if card's production is available
 	 * @param input is a list of all the resources the player owns
