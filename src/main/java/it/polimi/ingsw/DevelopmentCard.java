@@ -82,7 +82,7 @@ public class DevelopmentCard {
 	}
 
 	private void printCardLists(ArrayList<Resources> list){
-		ListSet.showHashMap(ListSet.multiplicityList(list));
+		ListSet.showListMultiplicityOnConsole(list);
 	}
 	
 	/**

@@ -50,10 +50,10 @@ public class Market {
 	 * debugging function that shows the content of the market
 	 */
 	protected void showMarket() {
-		System.out.println("\033[0m" + "extra ball = " + extraBall.colorCode + "o");
+		System.out.println("\033[0m" + "extra ball = " + extraBall.colorCode + "Ø");
 		for (int i = 0; i < 3; i++) { // rows
 			for (int j = 0; j < 4; j++) { // columns
-				System.out.print(market[i][j].colorCode + "o\t");
+				System.out.print(market[i][j].colorCode + "Ø\t");
 			}
 			System.out.print("\n");
 		}

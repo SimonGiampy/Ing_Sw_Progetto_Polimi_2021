@@ -12,7 +12,7 @@ import java.util.regex.Pattern;
 public class GameController {
 	
 	private static Scanner scanner;
-	private static GameMechanicsMultiPlayer mechanics;
+	private GameMechanicsMultiPlayer mechanics;
 
 	public static void main(String[] args) {
 		scanner = new Scanner(System.in);
@@ -20,6 +20,7 @@ public class GameController {
 		GameController test = new GameController();
 		test.startGame();
 	}
+	
 	public void startGame() {
 		
 		mechanics = new GameMechanicsMultiPlayer(this, 3);
@@ -43,7 +44,7 @@ public class GameController {
 		int indexCurrentPlayer = mechanics.getStartingPlayer();
 
 		for(int round = 0; round < 6; round++) {
-			scanner.nextLine();
+			//scanner.nextLine();
 			Player currentPlayer = mechanics.getPlayer(indexCurrentPlayer); //first test with just one player
 			System.out.println("Player " + (indexCurrentPlayer + 1) +" is playing");
 			System.out.println("What do you want to do?\nOptions: 1 (Market), 2 (Dev Card), 3 (Production)");
@@ -64,88 +65,24 @@ public class GameController {
 		
 	}
 	
-	/** TODO: move this function somewhere else in the controller part of the project
-	 * input management for moving things around in the warehouse
-	 * @return a boolean that indicates if all the resources have been moved and if the warehouse configuration is correct
-	 *         returns false if more moves are required
-	 */
-	public boolean processNewMove(WarehouseDepot depot) throws InvalidUserRequestException {
-		Scanner scanner = new Scanner(System.in);
-		String read;
-		
-		String regexGoingToWarehouse = "move\s[1-9]\sfrom\s(deck|depot)\sto\s[1-6]"; // regex pattern for reading input for moving the
-		// resources to the warehouse
-		String regexGoingToDeck = "move\s[1-6]\sto\sdeck"; //regex pattern for reading input for moving back to the deck
-		
-		depot.showIncomingDeck();
-		depot.showDepot();
-		System.out.println("write new move command");
-		boolean checkGoingToWarehouse, checkGoingToDeck, ok ;
-		int from = 0;
-		String place = "";
-		do {
-			read = scanner.nextLine(); // user input
-			
-			checkGoingToWarehouse = Pattern.matches(regexGoingToWarehouse, read);
-			if (checkGoingToWarehouse) { // process request for moving resource from the deck to the warehouse
-				from = Character.getNumericValue(read.charAt(5));
-				if (read.charAt(14) == 'c') { //send from deck
-					place = "deck";
-				} else { // send from depot
-					place = "depot";
-				}
-				if (place.equals("deck") && from > depot.getResourceDeckSize()) {
-					ok = false; // invalid input: position out of deck bounds (size of list)
-				} else ok = !place.equals("depot") || from <= 6; // invalid input: position out of depot bounds (from 1 to 6)
-			} else { // sends the request
-				checkGoingToDeck = Pattern.matches(regexGoingToDeck, read);
-				ok = checkGoingToDeck;
-			}
-			
-			if (!ok) { // user input does not match with the defined pattern
-				System.out.println("input request invalid, write again");
-			}
-		} while (!ok); // while the input is not valid
-		
-		if (checkGoingToWarehouse) { // process request for moving to the warehouse
-			if (place.equals("deck")) {
-				return depot.moveResources(place, from, Character.getNumericValue(read.charAt(20)));
-			} else {
-				return depot.moveResources(place, from, Character.getNumericValue(read.charAt(21)));
-			}
-		} else { // process request for moving from the warehouse to the deck
-			return depot.moveResourcesBackToDeck(Character.getNumericValue(read.charAt(5)));
-		}
-		
-	}
-	
-	/**
-	 * helper function that shows the user how to interact with the CLI
-	 * //TODO: move this function in the controller classes for the CLI
-	 */
-	protected void helpMe() {
-		System.out.println("Syntax for moving resources from the deck or depot to the depot is: 'move <position> from <deck/depot> to " +
-				"<destination>'");
-		System.out.println("Syntax for moving a resource from the warehouse to the deck is : 'move <position> to deck'");
-		System.out.println("The positional number in the warehouse is between 1 and 6: from top to bottom, and from left to right");
-	}
-	
 	public Resources[] requestInitialResource(int playerIndex, int howMany) {
-		String userResponse = "";
+		String userResponse;
 		Resources[] out = new Resources[0];
-		if (howMany == 1) {
+		if (howMany == 1) { //one free choice
 			out = new Resources[1];
 			System.out.println("Player " + (playerIndex+1) + " gets to choose one resource: which one do you want?");
 			userResponse = scanner.nextLine().toUpperCase();
 			out[0] = Resources.valueOf(userResponse);
-		} else if (howMany == 2) {
+			
+		} else if (howMany == 2) { // 2 free choices
 			out = new Resources[2];
-			System.out.println("Player "+ (playerIndex+1) + " gets to choose two resources: which ones do you want?");
+			System.out.println("Player "+ (playerIndex+1) + " gets to choose two resources: which ones do you want [resA,resB]?");
 			userResponse = scanner.nextLine().toUpperCase();
-			out[0] = Resources.valueOf(userResponse);
-			userResponse = scanner.nextLine().toUpperCase();
-			out[1] = Resources.valueOf(userResponse);
+			String[] ress = userResponse.split(",");
+			out[0] = Resources.valueOf(ress[0]);
+			out[1] = Resources.valueOf(ress[1]);
 		}
+		
 		return out;
 	}
 
@@ -210,16 +147,17 @@ public class GameController {
 		WarehouseDepot depot = currentPlayer.getPlayersWarehouseDepot();
 		do {
 			try {
-				if (processNewMove(depot)) {
+				if (processNewWarehouseMove(depot)) {
 					depot.showIncomingDeck();
 					depot.showDepot();
 					System.out.println("Do you want to confirm (yes / no)? Resources in the deck will be automatically discarded");
-					in = scanner.next();
+					in = scanner.nextLine();
 				} else {
 					System.out.println("write new move");
 				}
 			} catch (InvalidUserRequestException e) {
-				e.printStackTrace();
+				System.out.println("invalid user input");
+				in = "no";
 			}
 		} while (!in.equals("yes") && !in.equals("y"));
 
@@ -234,9 +172,86 @@ public class GameController {
 		}
 
 	}
+	
+	
+	/**
+	 * input management for moving things around in the warehouse
+	 * @return a boolean that indicates if all the resources have been moved and if the warehouse configuration is correct
+	 *         returns false if more moves are required
+	 */
+	public boolean processNewWarehouseMove(WarehouseDepot depot) throws InvalidUserRequestException {
+		Scanner scanner = new Scanner(System.in);
+		String read;
+		
+		String regexGoingToWarehouse = "move\s[1-9]\sfrom\s(deck|depot)\sto\s[1-6]"; // regex pattern for reading input for moving the
+		// resources to the warehouse
+		String regexGoingToDeck = "move\s[1-6]\sto\sdeck"; //regex pattern for reading input for moving back to the deck
+		
+		depot.showIncomingDeck();
+		depot.showDepot();
+		System.out.print("write new move command (write help for a tutorial, write confirm for confirmation): ");
+		boolean checkGoingToWarehouse = false, checkGoingToDeck, ok ;
+		int from = 0;
+		String place = "";
+		do {
+			read = scanner.nextLine(); // user input
+			if (read.equals("confirm") && depot.isCombinationCorrect(depot.getConvertedList(depot.getDepot()))) {
+				return true;
+			}
+			
+			if (read.equals("help")) {
+				helpMe();
+				ok = false;
+			} else {
+				checkGoingToWarehouse = Pattern.matches(regexGoingToWarehouse, read);
+				if (checkGoingToWarehouse) { // process request for moving resource from the deck to the warehouse
+					from = Character.getNumericValue(read.charAt(5));
+					if (read.charAt(14) == 'c') { //send from deck
+						place = "deck";
+					} else { // send from depot
+						place = "depot";
+					}
+					if (place.equals("deck") && from > depot.getResourceDeckSize()) {
+						ok = false; // invalid input: position out of deck bounds (size of list)
+					} else ok = !place.equals("depot") || from <= 6; // invalid input: position out of depot bounds (from 1 to 6)
+				} else { // sends the request
+					checkGoingToDeck = Pattern.matches(regexGoingToDeck, read);
+					ok = checkGoingToDeck;
+				}
+				
+				if (!ok) { // user input does not match with the defined pattern
+					System.out.println("input request invalid, write again");
+				}
+			}
+			
+		} while (!ok); // while the input is not valid
+		
+		if (checkGoingToWarehouse) { // process request for moving to the warehouse
+			if (place.equals("deck")) {
+				return depot.moveResources(place, from, Character.getNumericValue(read.charAt(20)));
+			} else {
+				return depot.moveResources(place, from, Character.getNumericValue(read.charAt(21)));
+			}
+		} else { // process request for moving from the warehouse to the deck
+			return depot.moveResourcesBackToDeck(Character.getNumericValue(read.charAt(5)));
+		}
+		
+	}
+	
+	/**
+	 * helper function that shows the user how to interact with the CLI
+	 */
+	protected void helpMe() {
+		System.out.println("Syntax for moving resources from the deck or depot to the depot is: 'move <position> from <deck/depot> to " +
+				"<destination>'");
+		System.out.println("Syntax for moving a resource from the warehouse to the deck is : 'move <position> to deck'");
+		System.out.println("The positional number in the warehouse is between 1 and 6: from top to bottom, and from left to right");
+	}
+	
+	
 	public void processBuyDevCard(Player currentPlayer){
-		// dev card buy
-
+		// buys new dev card
+		
 		Resources[] resources = new Resources[]{Resources.STONE, Resources.COIN, Resources.COIN,
 				Resources.SHIELD, Resources.SHIELD, Resources.SHIELD};
 		currentPlayer.getPlayersWarehouseDepot().setDepotForDebugging(resources);
@@ -259,19 +274,36 @@ public class GameController {
 		System.out.println("strongbox contains: " + currentPlayer.getMyStrongbox().getContent().toString());
 
 		System.out.println("which card do you want to buy?");
-		System.out.print("input level: ");
-		int level = Integer.parseInt(scanner.nextLine());
-		System.out.print("input color: ");
-		String color = scanner.nextLine();
-		System.out.print("input card slot: ");
-		int slot = Integer.parseInt(scanner.nextLine());
-
-		try {
-			currentPlayer.buyNewDevCard(level, Colors.valueOf(color.toUpperCase()), slot);
-			currentPlayer.getPlayersCardManager().showCards();
-		} catch (InvalidInputException e) {
-			System.out.println("idiota");
-		}
+		//CHANGE: we can take the user input in a single line instead of asking for multiple input
+		boolean ok = false;
+		do {
+			System.out.print("input level: ");
+			String lvl = scanner.nextLine();
+			if (Pattern.matches("[1-3]", lvl)) {
+				int level = Integer.parseInt(lvl);
+				System.out.print("input color: ");
+				String color = scanner.nextLine();
+				if (Pattern.matches("(green|blue|purple|yellow)", color)) {
+					System.out.print("input card slot: ");
+					String slot = scanner.nextLine();
+					if (Pattern.matches("[1-3]", slot)) {
+						try {
+							currentPlayer.buyNewDevCard(level, Colors.valueOf(color.toUpperCase()), Integer.parseInt(slot));
+							currentPlayer.getPlayersCardManager().showCards();
+							ok = true;
+						} catch (InvalidInputException ignored) {
+						
+						}
+					}
+				}
+			}
+			
+			if (!ok) {
+				System.out.println("invalid input");
+			}
+			
+		} while (!ok);
+		
 	}
 	public void processProduction(Player currentPlayer){
 

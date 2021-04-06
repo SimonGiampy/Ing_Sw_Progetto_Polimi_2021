@@ -9,6 +9,8 @@ public enum Colors {
 	
 	public final int colorNumber; // for each color it is associated a number, used in the common cards deck
 	
+	public static final String resetColor = "\033[0m";
+	
 	Colors(int colorNumber) {
 		this.colorNumber = colorNumber;
 	}

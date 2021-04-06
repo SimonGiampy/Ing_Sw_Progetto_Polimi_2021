@@ -11,7 +11,7 @@ public enum Marbles {
 	
 	public final String colorCode;
 	
-	private String resetColor = "\033[0m";
+	
 	
 	Marbles(String colorCode) {
 		this.colorCode = colorCode;
