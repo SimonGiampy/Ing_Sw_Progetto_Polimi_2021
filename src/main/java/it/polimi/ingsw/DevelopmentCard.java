@@ -72,17 +72,13 @@ public class DevelopmentCard {
 
 	public void showCard(){
 		System.out.print("Resources requirements: ");
-		printCardLists(getResourcesRequirement());
+		ListSet.showListMultiplicityOnConsole(getResourcesRequirement());
 		System.out.println("Card: level " + getLevel() + " and color " + getColor());
 		System.out.print("Card input resources: ");
-		printCardLists(getProductionInput());
+		ListSet.showListMultiplicityOnConsole(getProductionInput());
 		System.out.print("Card output resources: ");
-		printCardLists(produce());
+		ListSet.showListMultiplicityOnConsole(produce());
 		System.out.println("Card victory points: "+ getVictoryPoints() + "\n");
-	}
-
-	private void printCardLists(ArrayList<Resources> list){
-		ListSet.showListMultiplicityOnConsole(list);
 	}
 	
 	/**

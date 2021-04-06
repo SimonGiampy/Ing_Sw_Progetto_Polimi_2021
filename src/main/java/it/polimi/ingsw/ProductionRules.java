@@ -83,8 +83,8 @@ public class ProductionRules {
 	}
 
 	public void showProductionRulesInformation(){
-		ListSet.showHashMap(ListSet.multiplicityList(input));
-		ListSet.showHashMap(ListSet.multiplicityList(output));
+		ListSet.showListMultiplicityOnConsole(input);
+		ListSet.showListMultiplicityOnConsole(output);
 		System.out.println("Faith points output: "+getFaithOutput());
 	}
 }

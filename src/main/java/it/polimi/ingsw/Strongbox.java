@@ -39,8 +39,7 @@ public class Strongbox {
 		return new ArrayList<>(content);
 	}
 
-	public void showStrongbox(){
-		ListSet.showHashMap(ListSet.multiplicityList(content));
+	public void showStrongbox() {
+		ListSet.showListMultiplicityOnConsole(content);
 	}
-
 }
