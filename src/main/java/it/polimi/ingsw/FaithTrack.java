@@ -86,7 +86,9 @@ public class FaithTrack {
 	 * and the number that identifies the tiles
 	 */
 	public void showFaithTrack(){
+
 		StringBuilder string = new StringBuilder();
+
 		//Row for vatican reports
 		int count = 0;
 		for(int i = 0; i < reportPoints.size(); i++) {
@@ -112,7 +114,6 @@ public class FaithTrack {
 
 		//First row of "-"
 		appendFrame(string);
-		string.append("-\n").append(Colors.RESET);
 
 		//Second row of "|", spaces and marker
 		int k = 0;
@@ -172,7 +173,7 @@ public class FaithTrack {
 		appendFrame(string);
 
 		//Number of the tiles
-		string.append("-\n");
+
 		string.append(Colors.RESET);
 		for(int i = 0; i < track.size(); i++){
 			string.append("   ").append(i);
@@ -208,8 +209,12 @@ public class FaithTrack {
 				string.append("------");
 			}
 		}
+		string.append("-\n").append(Colors.RESET);
 	}
 
+	/**
+	 * Shows a legend to help the understanding of the graphic representation of the track
+	 */
 	public void helpMe(){
 		System.out.println("HELP:");
 		System.out.println(Colors.RED_BOLD + "+" + Colors.RESET + " is your marker");
@@ -224,8 +229,6 @@ public class FaithTrack {
 				" Num] shows if you are currently getting Victory Points from that Vatican Report" +
 				" and the amount of Victory Points");
 	}
-	
-	//Methods that just return info. I leave them here because maybe they'll be useful in the future
 	
 	public ArrayList<Tile> getTrack(){
 		return track;
