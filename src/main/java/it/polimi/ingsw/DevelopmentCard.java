@@ -102,6 +102,9 @@ public class DevelopmentCard {
 		return productionRules.getFaithOutput();
 	}
 
+	public void showProductionRulesInformation(){
+		productionRules.showProductionRulesInformation();
+	}
 
 	/**
 	 * retrieves a copy of the production input resources

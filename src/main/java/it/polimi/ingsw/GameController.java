@@ -275,31 +275,42 @@ public class GameController {
 	}
 	public void processProduction(Player currentPlayer){
 
-		ArrayList<Integer> playerProductionInput = new ArrayList<Integer>();  //This is the ArrayList where you want to put the String
+		ArrayList<Integer> playerProductionInput;  //This is the ArrayList where you want to put the String
 		String listOfInt; // list of production (input)
+		ArrayList<Resources> resourcesArrayList = new ArrayList<>();
+		resourcesArrayList.add(Resources.SERVANT);
+		resourcesArrayList.add(Resources.SERVANT);
+		resourcesArrayList.add(Resources.SERVANT);
+		resourcesArrayList.add(Resources.STONE);
+		resourcesArrayList.add(Resources.STONE);
+		currentPlayer.getMyStrongbox().storeResources(resourcesArrayList);
 		int[] selectedResourcesInput = new int[]{0, 0, 0, 0};
 		int[] selectedResourcesOutput = new int[]{0, 0, 0, 0};
-		System.out.println("Player Strongbox:" + mechanics.getPlayers()[0].getMyStrongbox().getContent());
-		mechanics.getPlayers()[0].getPlayersWarehouseDepot().showDepot();
+		System.out.print("Player Strongbox: ");
+		currentPlayer.getMyStrongbox().showStrongbox();
+		currentPlayer.getPlayersWarehouseDepot().showDepot();
+		currentPlayer.getPlayersCardManager().showAvailableProductions();
 		System.out.println("which production do you want to activate?");
 		listOfInt = scanner.nextLine();
 		playerProductionInput = playerInputToArraylist(listOfInt);
-		if (mechanics.getPlayers()[0].getPlayersCardManager().numberOfInputEmptySelectedProduction(playerProductionInput) > 0) {
-			System.out.println("which resources do you want to put in input?");
+
+		if (currentPlayer.getPlayersCardManager().numberOfInputEmptySelectedProduction(playerProductionInput) > 0) {
+			System.out.println("which resources do you want to put in input? #COIN,#SERVANT,#SHIELD,#STONE");
 			listOfInt = scanner.nextLine();
 			selectedResourcesInput = playerInputToArray(listOfInt);
 		}
-		if (mechanics.getPlayers()[0].getPlayersCardManager().numberOfOutputEmptySelectedProduction(playerProductionInput) > 0) {
-			System.out.println("which resources do you want to put in output?");
+		if (currentPlayer.getPlayersCardManager().numberOfOutputEmptySelectedProduction(playerProductionInput) > 0) {
+			System.out.println("which resources do you want to put in output? #COIN,#SERVANT,#SHIELD,#STONE");
 			listOfInt = scanner.nextLine();
 			selectedResourcesOutput = playerInputToArray(listOfInt);
 		}
 		try {
-			mechanics.getPlayers()[0].activateProduction(playerProductionInput, selectedResourcesInput, selectedResourcesOutput);
+			currentPlayer.activateProduction(playerProductionInput, selectedResourcesInput, selectedResourcesOutput);
 		} catch (InvalidInputException e) {
 			e.printStackTrace();
 		}
-		System.out.println(mechanics.getPlayers()[0].getMyStrongbox().getContent());
+		System.out.print("Player Strongbox after production(s): ");
+		currentPlayer.getMyStrongbox().showStrongbox();
 
 	}
 }

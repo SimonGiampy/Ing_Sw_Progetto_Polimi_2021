@@ -139,7 +139,7 @@ public class CardProductionsManagement {
 			totalFaithPoints=returnFaithPoints(integer);
 		}
 		for (int i = 0; i < 4; i++) {
-			for (int j = 0; j < inputResources[j]; j++) {
+			for (int j = 0; j < inputResources[i]; j++) {
 				selectedProduction.add(Resources.values()[i]);
 			}
 		}
@@ -181,7 +181,7 @@ public class CardProductionsManagement {
 	 * @param selectedStack is the number of the selected stack
 	 * @return true if the card's production is available
 	 */
-	public boolean isSingleProductionAvailable(int selectedStack) throws InvalidUserRequestException {
+	public boolean isSingleProductionAvailable(int selectedStack) {
 		ArrayList<Resources> playerResources= myStrongbox.getContent();
 		playerResources.addAll(myWarehouseDepot.gatherAllResources());
 		return switch (selectedStack) {
@@ -191,7 +191,7 @@ public class CardProductionsManagement {
 			case 4 -> baseProductionRules.isProductionAvailable(playerResources);
 			case 5 -> leaderProductionRules.get(0).isProductionAvailable(playerResources);
 			case 6 -> leaderProductionRules.get(1).isProductionAvailable(playerResources);
-			default -> throw new InvalidUserRequestException("invalid production number chosen");
+			default -> false;
 		};
 	}
 
@@ -244,7 +244,7 @@ public class CardProductionsManagement {
 		ArrayList<Resources> filteredProduction = productionInput.stream().filter(i->i!=Resources.EMPTY)
 				.collect(Collectors.toCollection(ArrayList::new));
 		for (int i = 0; i < 4; i++) {
-			for (int j = 0; j < inputResources[j]; j++) {
+			for (int j = 0; j < inputResources[i]; j++) {
 				filteredProduction.add(Resources.values()[i]);
 			}
 		}
@@ -252,7 +252,6 @@ public class CardProductionsManagement {
 		if (allSelectedProduction.isProductionAvailable(playerResources)){
 			remainingResources = myWarehouseDepot.payResources(filteredProduction);
 			myStrongbox.retrieveResources(remainingResources);
-			System.out.println(myStrongbox.getContent());
 		}
 		else throw new InvalidUserRequestException("invalid input resources");
 	}
@@ -284,8 +283,8 @@ public class CardProductionsManagement {
 	 * @return true if the input is correct and the productions available
 	 */
 	public boolean checkPlayerInput(ArrayList<Integer> playerInput){
-		if (!playerInput.stream().equals(playerInput.stream().distinct()) || playerInput.stream().anyMatch(i -> i>6 || i<1))
-			return false;
+		//if (!playerInput.stream().equals(playerInput.stream().distinct()) || playerInput.stream().anyMatch(i -> i>6 || i<1))
+			//return false;
 		for (Integer integer : playerInput) {
 			int input = integer - 1;
 			if (!numberOfProduction[input])
@@ -338,7 +337,32 @@ public class CardProductionsManagement {
 		int totalNumber=numberOfOutputEmptySelectedProduction(playerInput);
 		return totalNumber>= outputResources[0]+outputResources[1]+outputResources[2]+outputResources[3];
 	}
+	public void showSingleProduction(int selectedStack){
+		switch (selectedStack) {
+			case 1 -> cards.get(0).peek().showProductionRulesInformation();
+			case 2 -> cards.get(1).peek().showProductionRulesInformation();
+			case 3 -> cards.get(2).peek().showProductionRulesInformation();
+			case 4 -> baseProductionRules.showProductionRulesInformation();
+			case 5 -> leaderProductionRules.get(0).showProductionRulesInformation();
+			case 6 -> leaderProductionRules.get(1).showProductionRulesInformation();
+			default -> {
+			}
+		};
+	}
+
+	public void showAvailableProductions(){
+		System.out.println("Production Available:");
+		for (int i = 0; i < 6; i++) {
+			if(numberOfProduction[i] && isSingleProductionAvailable(i+1)){
+				System.out.print(i+1+": ");
+				System.out.println(Productions.values()[i]);
+				showSingleProduction(i+1);
+			}
+		}
+	}
 }
+
+
 
 
 
