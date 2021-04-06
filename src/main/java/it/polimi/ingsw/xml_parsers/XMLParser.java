@@ -43,7 +43,7 @@ public class XMLParser {
 		NodeList tileNodeList = document.getElementsByTagName("tile");
 		
 		//Iterate through the list
-		for(int i = 1; i < tileNodeList.getLength(); i++) {
+		for(int i = 0; i < tileNodeList.getLength(); i++) {
 			Node tileNode = tileNodeList.item(i);
 			
 			ArrayList<Boolean> insideVatican = new ArrayList<>();
