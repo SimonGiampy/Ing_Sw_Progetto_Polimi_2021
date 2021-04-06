@@ -11,7 +11,7 @@ public enum Colors {
 	
 	// Reset
 	public static final String RESET = "\033[0m";  // Text Reset
-
+	
 	// Regular Colors
 	public static final String ANSI_BLACK = "\033[0;30m";   // BLACK
 	public static final String ANSI_RED = "\033[0;31m";     // RED

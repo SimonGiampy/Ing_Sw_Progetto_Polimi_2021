@@ -46,20 +46,56 @@ public class GameController {
 		for(int round = 0; round < 6; round++) {
 			//scanner.nextLine();
 			Player currentPlayer = mechanics.getPlayer(indexCurrentPlayer); //first test with just one player
-			System.out.println("Player " + (indexCurrentPlayer + 1) +" is playing");
-			System.out.println("What do you want to do?\nOptions: 1 (Market), 2 (Dev Card), 3 (Production)");
-			int input = Integer.parseInt(scanner.nextLine());
-
-
-			if (input == 1) {
-				processMarketInteraction(currentPlayer);
-
-			} else if (input == 2) {
-				processBuyDevCard(currentPlayer);
+			System.out.println("Player " + (indexCurrentPlayer + 1) +" is playing. You can do:");
+			
+			ArrayList<String> playerActions = currentPlayer.checkWhatThisPlayerCanDo();
+			int x = 1;
+			for (String s: playerActions) {
+				System.out.println(x + ": " + s);
+				x++;
 			}
-			else if (input == 3) {
-				processProduction(currentPlayer);
+			x--;
+			
+			System.out.println("What do you want to do?");
+			String playerInput = scanner.nextLine();
+			String playerActionRegex = "[1-" + x + "]"; //stupid warning: DO NOT TOUCH
+			boolean check = Pattern.matches(playerActionRegex, playerInput);
+			if (!check) {
+				try {
+					throw new InvalidUserRequestException("player action is not correct");
+				} catch (InvalidUserRequestException e) {
+					e.printStackTrace();
+				}
 			}
+			int input = Integer.parseInt(playerInput);
+			
+			
+			switch (playerActions.get(input - 1)) {
+				case "Market":
+					processMarketInteraction(currentPlayer);
+					break;
+				case "Buy Development Card":
+					processBuyDevCard(currentPlayer);
+					break;
+				case "Productions":
+					processProduction(currentPlayer);
+					break;
+				case "Activate Leader 1":
+					//TODO: write code for leader activation
+					break;
+				case "Activate Leader 2":
+					//TODO: write code for leader activation
+					break;
+				case "Discard Leader 1":
+					currentPlayer.discardLeaderCard(0);
+					break;
+				case "Discard Leader 2":
+					currentPlayer.discardLeaderCard(1);
+					break;
+			}
+			
+			
+			
 			indexCurrentPlayer = (indexCurrentPlayer+1) % mechanics.getNumberOfPlayers();
 		}
 		
@@ -242,8 +278,8 @@ public class GameController {
 	 * helper function that shows the user how to interact with the CLI
 	 */
 	protected void helpMe() {
-		System.out.println("Syntax for moving resources from the deck or depot to the depot is: 'move <position> from <deck/depot> to " +
-				"<destination>'");
+		System.out.println("Syntax for moving resources from the deck or depot to the depot is: " +
+						"'move <position> from <deck/depot> to <destination>'");
 		System.out.println("Syntax for moving a resource from the warehouse to the deck is : 'move <position> to deck'");
 		System.out.println("The positional number in the warehouse is between 1 and 6: from top to bottom, and from left to right");
 	}
@@ -263,8 +299,7 @@ public class GameController {
 		resourcesArrayList.add(Resources.STONE);
 		resourcesArrayList.add(Resources.STONE);
 		currentPlayer.getMyStrongbox().storeResources(resourcesArrayList);
-
-		System.out.println("check what this player can do: " + currentPlayer.checkWhatThisPlayerCanDo() + "\n");
+		
 
 		if (currentPlayer.isBuyMoveAvailable()) {
 			mechanics.getGameDevCardsDeck().showDevelopmentCardsDeck();
