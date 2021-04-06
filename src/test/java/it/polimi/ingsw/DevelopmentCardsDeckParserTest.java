@@ -35,7 +35,6 @@ public class DevelopmentCardsDeckParserTest {
 					+"\ninput: " +arrayCards.get(i).getProductionInput()+"\noutput: " +arrayCards.get(i).produce() +
 					"\nfaith output: " +arrayCards.get(i).returnFaithPoints()+ "\n");
 		}
-		 */
 
 		for (int i = 0; i < 3; i++) {
 			for (int j = 0; j < 4; j++) {
@@ -49,6 +48,9 @@ public class DevelopmentCardsDeckParserTest {
 				}
 			}
 		}
+
+		 */
+		deckCards.showDevelopmentCardsDeck();
 
 	}
 	

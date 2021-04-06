@@ -71,6 +71,18 @@ public class DevelopmentCard {
 	}
 
 	public void showCard(){
+		/*
+		String colorCode;
+		String resetWhite = "\033[0m";
+		switch(this.color){
+			case GREEN -> colorCode = "\u001B[32m";
+			case BLUE -> colorCode = "\u001B[34m";
+			case YELLOW -> colorCode = "\u001B[33m";
+			case PURPLE -> colorCode = "\u001B[35m";
+			default -> throw new IllegalStateException("Unexpected value: " + this.color);
+		}
+
+		 */
 		System.out.print("Resources requirements: ");
 		ListSet.showListMultiplicityOnConsole(getResourcesRequirement());
 		System.out.println("Card: level " + getLevel() + " and color " + getColor());
@@ -80,6 +92,13 @@ public class DevelopmentCard {
 		ListSet.showListMultiplicityOnConsole(produce());
 		System.out.println("Card victory points: "+ getVictoryPoints() + "\n");
 	}
+	// "\033[0m"; white
+	/*
+	PURPLE("\u001B[35m"), //purple color
+	BLUE("\u001B[34m"), //blue color
+	YELLOW("\u001B[33m"); //yellow color
+	GREEN("\U001B[32M");
+	 */
 	
 	/**
 	 * it checks if card's production is available
@@ -89,6 +108,7 @@ public class DevelopmentCard {
 	public boolean isCardProductionAvailable(ArrayList<Resources> input){
 		return productionRules.isProductionAvailable(input);
 	}
+
 
 	/**
 	 * getter for card's production faith points
