@@ -7,7 +7,7 @@ public class MainSimon {
 	
 	public static void main(String[] args) {
 		
-		System.out.print("\u001B[35m" + "something there\n"); // purple bus emoji test
+		System.out.print(Colors.YELLOW_BACKGROUND + Colors.GREEN_BOLD + "something there\n"); // purple bus emoji test
 		System.out.print("\u001B[35m" + "something there\n"); // purple bus emoji test
 		System.out.print("\u001B[35m" + "something there"); // purple bus emoji test
 		try {
