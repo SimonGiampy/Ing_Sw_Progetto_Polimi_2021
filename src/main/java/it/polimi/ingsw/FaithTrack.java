@@ -23,7 +23,7 @@ public class FaithTrack {
 		for(Integer ignored : reportPoints)
 			vaticanReports.add(false);
 		this.reportPoints = reportPoints;
-		lastReportClaimed = 0;
+		lastReportClaimed = -1;
 	}
 
 	
@@ -80,6 +80,150 @@ public class FaithTrack {
 	public boolean isTrackFinished(){
 		return currentPosition == track.size();
 	}
+
+	/**
+	 * Show all the track with the current position, the activated reports, the victory points for every tile
+	 * and the number that identifies the tiles
+	 */
+	public void showFaithTrack(){
+		StringBuilder string = new StringBuilder();
+		//Row for vatican reports
+		int count = 0;
+		for(int i = 0; i < reportPoints.size(); i++) {
+			while (!track.get(count).isPapalSpace()) {
+				string.append("      ");
+				count++;
+			}
+			/*if(i > lastReportClaimed){
+				string.append(Colors.BLUE_BOLD).append("   ?  ");
+
+			 */
+			if(vaticanReports.get(i)){
+				string.append(Colors.GREEN_BOLD).append("  ✓ ").append(Colors.RESET)
+						.append(reportPoints.get(i)).append(" ");
+			}else{
+				string.append(Colors.RED_BOLD).append("  X ").append(Colors.RESET)
+						.append(reportPoints.get(i)).append(" ");
+			}
+			//✖ ✕ ✔ ✓
+			count++;
+		}
+		string.append("\n").append(Colors.RESET);
+
+		//First row of "-"
+		appendFrame(string);
+		string.append("-\n").append(Colors.RESET);
+
+		//Second row of "|", spaces and marker
+		int k = 0;
+		for(int i = 0; i < track.size(); i++){
+			if (k < reportPoints.size() && track.get(i).isInsideVatican(k)) {
+				string.append(Colors.ANSI_YELLOW);
+				k++;
+			}
+			if(track.get(i).isPapalSpace()){
+				string.append(Colors.ANSI_RED);
+			}
+			if(i > 1 && track.get(i-2).isPapalSpace()){
+				string.append(Colors.RESET);
+			}
+			string.append("|  ");
+			if(i == currentPosition){
+				string.append(Colors.RED_BOLD + "+  " + Colors.RESET);
+			}
+			else{
+				string.append("   ");
+			}
+		}
+		string.append("|\n").append(Colors.RESET);
+		//Third row of "|", spaces and victory points (printed only in the tile there they change)
+		int currentVictoryPoints = -1;
+		int l = 0;
+		String currentColor = Colors.RESET;
+		for(int i = 0; i < track.size(); i++){
+			if (l < reportPoints.size() && track.get(i).isInsideVatican(l)) {
+				currentColor = Colors.ANSI_YELLOW;
+				l++;
+			}
+			if(track.get(i).isPapalSpace()){
+				currentColor = Colors.ANSI_RED;
+			}
+			if(i > 1 && track.get(i-2).isPapalSpace()){
+				currentColor = Colors.RESET;
+			}
+			string.append(currentColor).append("|  ");
+			if(track.get(i).tilePoints() != currentVictoryPoints){
+				string.append(Colors.RESET).append(track.get(i).tilePoints()).append(currentColor);
+				if(track.get(i).tilePoints() < 10){
+					string.append("  ");
+				}
+				else{
+					string.append(" ");
+				}
+				currentVictoryPoints = track.get(i).tilePoints();
+			}else{
+				string.append("   ");
+			}
+		}
+		string.append("|\n");
+		string.append(Colors.RESET);
+
+		//Last row of "-"
+		appendFrame(string);
+
+		//Number of the tiles
+		string.append("-\n");
+		string.append(Colors.RESET);
+		for(int i = 0; i < track.size(); i++){
+			string.append("   ").append(i);
+			if(i < 10){
+				string.append("  ");
+			}
+			else{
+				string.append(" ");
+			}
+		}
+		System.out.println(string);
+
+	}
+
+	/**
+	 * Support method for showFaithTrack, appends to the string builder the "-" lines that form the top and the bottom
+	 * of the track
+	 * @param string string builder containing all the representation of the track
+	 */
+	private void appendFrame(StringBuilder string) {
+		int j = 0;
+		for(int i = 0; i < track.size(); i++){
+			if (j < reportPoints.size() && track.get(i).isInsideVatican(j)) {
+				string.append(Colors.ANSI_YELLOW);
+				j++;
+			}
+			if(track.get(i).isPapalSpace()){
+				string.append(Colors.ANSI_RED);
+			}
+			if(i > 0 && track.get(i-1).isPapalSpace()){
+				string.append("-").append(Colors.RESET).append("-----");
+			}else {
+				string.append("------");
+			}
+		}
+	}
+
+	public void helpMe(){
+		System.out.println("HELP:");
+		System.out.println(Colors.RED_BOLD + "+" + Colors.RESET + " is your marker");
+		System.out.println("The number " + Colors.UNDERLINE+ "underneath" + Colors.RESET +
+				" the tile indicate its position in the track");
+		System.out.println("The number "+ Colors.UNDERLINE + "inside" + Colors.RESET +" the tile is the amount of " +
+				"Victory Points you get if you are on it or after it at the end of the game");
+		System.out.println(Colors.ANSI_YELLOW + "Yellow" + Colors.RESET + " frame indicates that this tile is " +
+				"part of a Vatican Zone");
+		System.out.println(Colors.ANSI_RED + "Red" + Colors.RESET + " frame indicates that this tile is a Papal Space");
+		System.out.println("[" + Colors.GREEN_BOLD+ "✓"+ Colors.RESET + "/" + Colors.RED_BOLD+"X"+Colors.RESET +
+				" Num] shows if you are currently getting Victory Points from that Vatican Report" +
+				" and the amount of Victory Points");
+	}
 	
 	//Methods that just return info. I leave them here because maybe they'll be useful in the future
 	
@@ -103,121 +247,6 @@ public class FaithTrack {
 		return vaticanReports;
 	}
 
-	public void showFaithTrack(){
-		StringBuilder string = new StringBuilder();
-		//Row for vatican reports
-		int count = 0;
-		for(int i = 0; i < reportPoints.size(); i++) {
-			while (!track.get(count).isPapalSpace()) {
-				string.append("    ");
-				count++;
-			}
-			string.append("  ");
-			if(track.get(count).getInsideVatican().indexOf(true) > lastReportClaimed){
-				string.append(Colors.ANSI_BLUE).append("? ");
-			}
-			//if(vaticanReports.get())
-
-				//✖ ✕ ✔ ✓
-		}
-		string.append("\n");
-		//First row of "-"
-		int j = 0;
-		for(int i = 0; i < track.size(); i++){
-			if (j < reportPoints.size() && track.get(i).isInsideVatican(j)) {
-				string.append(Colors.ANSI_YELLOW);
-				j++;
-			}
-			if(track.get(i).isPapalSpace()){
-				string.append(Colors.ANSI_RED);
-			}
-			if(i > 0 && track.get(i-1).isPapalSpace()){
-				string.append("-").append(Colors.RESET).append("---");
-			}else {
-				string.append("----");
-			}
-		}
-		string.append("-\n");
-		string.append(Colors.RESET);
-		//Second row of "|", spaces and marker
-		int k = 0;
-		for(int i = 0; i < track.size(); i++){
-			if (k < reportPoints.size() && track.get(i).isInsideVatican(k)) {
-				string.append(Colors.ANSI_YELLOW);
-				k++;
-			}
-			if(track.get(i).isPapalSpace()){
-				string.append(Colors.ANSI_RED);
-			}
-			if(i > 1 && track.get(i-2).isPapalSpace()){
-				string.append(Colors.RESET);
-			}
-			string.append("| ");
-			if(i == currentPosition){
-				string.append(Colors.ANSI_RED + "+ " + Colors.RESET);
-			}
-			else{
-				string.append("  ");
-			}
-		}
-		string.append("|\n");
-		string.append(Colors.RESET);
-		//Third row of "|", spaces and victory points (printed only in the tile there they change)
-		int currentVictoryPoints = -1;
-		int l = 0;
-		String currentColor = Colors.RESET;
-		for(int i = 0; i < track.size(); i++){
-			if (l < reportPoints.size() && track.get(i).isInsideVatican(l)) {
-				currentColor = Colors.ANSI_YELLOW;
-				l++;
-			}
-			if(track.get(i).isPapalSpace()){
-				currentColor = Colors.ANSI_RED;
-			}
-			if(i > 1 && track.get(i-2).isPapalSpace()){
-				currentColor = Colors.RESET;
-			}
-			string.append(currentColor).append("| ");
-			if(track.get(i).tilePoints() != currentVictoryPoints){
-				string.append(Colors.RESET).append(track.get(i).tilePoints()).append(currentColor);
-				if(track.get(i).tilePoints() < 10){
-					string.append(" ");
-				}
-				currentVictoryPoints = track.get(i).tilePoints();
-			}else{
-				string.append("  ");
-			}
-		}
-		string.append("|\n");
-		string.append(Colors.RESET);
-		//Last row of "-"
-		int m = 0;
-		for(int i = 0; i < track.size(); i++){
-			if (m < reportPoints.size() && track.get(i).isInsideVatican(m)) {
-				string.append(Colors.ANSI_YELLOW);
-				m++;
-			}
-			if(track.get(i).isPapalSpace()){
-				string.append(Colors.ANSI_RED);
-			}
-			if(i > 0 && track.get(i-1).isPapalSpace()){
-				string.append("-").append(Colors.RESET).append("---");
-			}else {
-				string.append("----");
-			}
-		}
-		//Number of the tiles
-		string.append("-\n");
-		string.append(Colors.RESET);
-		for(int i = 0; i < track.size(); i++){
-			string.append("  ").append(i);
-			if(i < 10){
-				string.append(" ");
-			}
-		}
-		System.out.print(string);
-
-	}
 
 }
 
