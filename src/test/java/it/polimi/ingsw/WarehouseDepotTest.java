@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -316,4 +317,49 @@ public class WarehouseDepotTest {
 		assertEquals(expected, input);
 	}
 	
+	@Test
+	void moveResources() {
+		WarehouseDepot depot = new WarehouseDepot();
+		Resources[] res = new Resources[] {Resources.COIN, Resources.SHIELD, Resources.SHIELD,
+				Resources.EMPTY, Resources.SERVANT, Resources.EMPTY};
+		depot.setDepotForDebugging(res);
+		try {
+			depot.moveResources("depot", 1, 6);
+		} catch (InvalidUserRequestException e) {
+			e.printStackTrace();
+		}
+		List<Resources> expected = new ArrayList<>();
+		expected.add(Resources.EMPTY);
+		expected.add(Resources.SHIELD);
+		expected.add(Resources.SHIELD);
+		expected.add(Resources.EMPTY);
+		expected.add(Resources.SERVANT);
+		expected.add(Resources.COIN);
+		assertEquals(expected, Arrays.asList(depot.getDepot()));
+	}
+	
+	@Test
+	void moveResourcesBackToDeck() {
+		ArrayList<Resources> list = new ArrayList<>();
+		list.add(Resources.SHIELD);
+		list.add(Resources.SHIELD);
+		list.add(Resources.COIN);
+		
+		WarehouseDepot depot = new WarehouseDepot();
+		depot.addIncomingResources(list);
+		
+		try {
+			depot.moveResources("deck", 2, 1);
+			depot.moveResourcesBackToDeck(1);
+		} catch (InvalidUserRequestException e) {
+			e.printStackTrace();
+		}
+		ArrayList<Resources> list2 = new ArrayList<>();
+		list2.add(Resources.SHIELD);
+		list2.add(Resources.COIN);
+		list2.add(Resources.SHIELD);
+		
+		assertEquals(list2, depot.getIncomingResources());
+		
+	}
 }

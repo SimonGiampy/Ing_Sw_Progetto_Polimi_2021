@@ -418,6 +418,9 @@ public class WarehouseDepot {
 	public ArrayList<Integer> getPositionsIncomingResources() {
 		return positionsIncomingResources;
 	}
+	public ArrayList<Resources> getIncomingResources() {
+		return incomingResources;
+	}
 	
 	public ArrayList<ArrayList<Boolean>> getExtraDepotContents() {
 		return extraDepotContents;

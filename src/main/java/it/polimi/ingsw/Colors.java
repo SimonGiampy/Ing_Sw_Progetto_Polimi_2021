@@ -9,6 +9,9 @@ public enum Colors {
 	
 	public final int colorNumber; // for each color it is associated a number, used in the common cards deck
 	
+	// Reset
+	public static final String RESET = "\033[0m";  // Text Reset
+	
 	// Regular Colors
 	public static final String ANSI_BLACK = "\033[0;30m";   // BLACK
 	public static final String ANSI_RED = "\033[0;31m";     // RED

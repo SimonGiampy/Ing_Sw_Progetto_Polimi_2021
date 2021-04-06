@@ -143,36 +143,37 @@ public class Player {
 
 	/**
 	 * Checks which actions the player can do in the current turn
-	 * @return a string that contains the keywords that identifies the actions available
+	 * @return a list of strings that contains the keywords that identify the available actions the player can do
 	 */
-	public String checkWhatThisPlayerCanDo() {
-		StringBuilder moves = new StringBuilder("market;");
+	public ArrayList<String> checkWhatThisPlayerCanDo() {
+		ArrayList<String> actions = new ArrayList<>();
+		actions.add("Market");
 		if (isBuyMoveAvailable()) {
-			moves.append("buy;");
+			actions.add("Buy Development Card");
 		}
 		try {
 			if (cardManager.isAtLeastOneProductionAvailable()) {
-				moves.append("production;");
+				actions.add("Productions");
 			}
 		} catch (InvalidInputException e) {
 			e.printStackTrace();
 		}
 		if(playableLeader1 && leaderCards[0].checkCards(cardManager.getPlayerCardsRequirements()) &&
 				leaderCards[0].checkResources(gatherAllPlayersResources())) {
-			moves.append("activate1;");
+			actions.add("Activate Leader 1");
 		}
 		if(playableLeader2 && leaderCards[1].checkCards(cardManager.getPlayerCardsRequirements()) &&
 				leaderCards[1].checkResources(gatherAllPlayersResources())) {
-			moves.append("activate2;");
+			actions.add("Activate Leader 1");
 		}
 		if(playableLeader1){
-			moves.append("discard1;");
+			actions.add("Discard Leader 1");
 		}
 		if(playableLeader2){
-			moves.append("discard2;");
+			actions.add("Discard Leader 1");
 		}
 		
-		return moves.toString();
+		return actions;
 	}
 	
 	/**
