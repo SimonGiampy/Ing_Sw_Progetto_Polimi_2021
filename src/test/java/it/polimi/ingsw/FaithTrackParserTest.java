@@ -25,7 +25,9 @@ public class FaithTrackParserTest {
 		FaithTrack faithTrack = new FaithTrack(tilesTrack, reportPoints);
 		ArrayList<Tile> track = faithTrack.getTrack();
 		ArrayList<Boolean> vaticanReports = faithTrack.getVaticanReports();
-		
+		faithTrack.moveMarker(3);
+		faithTrack.showFaithTrack();
+		/*
 		for (int i = 0; i < track.size(); i++) {
 			System.out.println("tile: " + i);
 			System.out.println("victory points: " + track.get(i).tilePoints());
@@ -39,6 +41,10 @@ public class FaithTrackParserTest {
 		for (int i = 0; i < rep.size(); i++) {
 			System.out.println("report " + i + ": points = " + rep.get(i));
 		}
+
+		 */
+
+
 
 	}
 

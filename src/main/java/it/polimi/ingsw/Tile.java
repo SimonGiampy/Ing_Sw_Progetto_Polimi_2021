@@ -35,4 +35,8 @@ public class Tile {
 	public int tilePoints(){
 		return victoryPoints;
 	}
+
+	public ArrayList<Boolean> getInsideVatican() {
+		return insideVatican;
+	}
 }
