@@ -11,7 +11,12 @@ public enum Colors {
 	
 	// Reset
 	public static final String RESET = "\033[0m";  // Text Reset
-	
+	//Bold
+	public static final String BOLD = "\033[1m"; //Bold text
+	//Italic
+	public static final String ITALIC = "\033[3m"; //Italic text
+	//Underline
+	public static final String UNDERLINE = "\033[4m"; //Underlined text
 	// Regular Colors
 	public static final String ANSI_BLACK = "\033[0;30m";   // BLACK
 	public static final String ANSI_RED = "\033[0;31m";     // RED

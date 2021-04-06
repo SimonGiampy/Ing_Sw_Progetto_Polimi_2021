@@ -23,10 +23,22 @@ public class FaithTrackParserTest {
 		ArrayList<Tile> tilesTrack = parser.readTiles();
 		ArrayList<Integer> reportPoints = parser.readReportPoints();
 		FaithTrack faithTrack = new FaithTrack(tilesTrack, reportPoints);
+		FaithTrack faithTrack2 = new FaithTrack(tilesTrack, reportPoints);
 		ArrayList<Tile> track = faithTrack.getTrack();
 		ArrayList<Boolean> vaticanReports = faithTrack.getVaticanReports();
+
+		faithTrack2.moveMarker(8);
 		faithTrack.moveMarker(3);
+		faithTrack.checkVaticanReport(0);
+		faithTrack2.checkVaticanReport(0);
+		faithTrack2.moveMarker(3);
+		faithTrack.moveMarker(14);
+		faithTrack.checkVaticanReport(1);
+		faithTrack2.checkVaticanReport(1);
 		faithTrack.showFaithTrack();
+		System.out.print("\n");
+		faithTrack2.showFaithTrack();
+		faithTrack.helpMe();
 		/*
 		for (int i = 0; i < track.size(); i++) {
 			System.out.println("tile: " + i);
