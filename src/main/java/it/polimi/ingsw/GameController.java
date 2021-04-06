@@ -81,10 +81,10 @@ public class GameController {
 					processProduction(currentPlayer);
 					break;
 				case "Activate Leader 1":
-					//TODO: write code for leader activation
+					processLeaderCardActivation(currentPlayer, 0);
 					break;
 				case "Activate Leader 2":
-					//TODO: write code for leader activation
+					processLeaderCardActivation(currentPlayer, 1);
 					break;
 				case "Discard Leader 1":
 					currentPlayer.discardLeaderCard(0);
@@ -218,9 +218,9 @@ public class GameController {
 	public boolean processNewWarehouseMove(WarehouseDepot depot) throws InvalidUserRequestException {
 		Scanner scanner = new Scanner(System.in);
 		String read;
-		
-		String regexGoingToWarehouse = "move\s[1-9]\sfrom\s(deck|depot)\sto\s[1-6]"; // regex pattern for reading input for moving the
-		// resources to the warehouse
+		int deckSize = depot.getResourceDeckSize();
+		// regex pattern for reading input for moving the resources to the warehouse
+		String regexGoingToWarehouse = "move\s[1-" + deckSize + "]\sfrom\s(deck|depot)\sto\s[1-6]";
 		String regexGoingToDeck = "move\s[1-6]\sto\sdeck"; //regex pattern for reading input for moving back to the deck
 		
 		depot.showIncomingDeck();
@@ -284,6 +284,9 @@ public class GameController {
 		System.out.println("The positional number in the warehouse is between 1 and 6: from top to bottom, and from left to right");
 	}
 	
+	public void processLeaderCardActivation(Player currentPlayer, int whichLeader) {
+		currentPlayer.activateLeaderCard(whichLeader);
+	}
 	
 	public void processBuyDevCard(Player currentPlayer){
 		// buys new dev card

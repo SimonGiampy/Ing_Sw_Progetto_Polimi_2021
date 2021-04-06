@@ -164,13 +164,13 @@ public class Player {
 		}
 		if(playableLeader2 && leaderCards[1].checkCards(cardManager.getPlayerCardsRequirements()) &&
 				leaderCards[1].checkResources(gatherAllPlayersResources())) {
-			actions.add("Activate Leader 1");
+			actions.add("Activate Leader 2");
 		}
 		if(playableLeader1){
 			actions.add("Discard Leader 1");
 		}
 		if(playableLeader2){
-			actions.add("Discard Leader 1");
+			actions.add("Discard Leader 2");
 		}
 		
 		return actions;
