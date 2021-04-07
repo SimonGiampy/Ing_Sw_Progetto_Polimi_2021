@@ -78,30 +78,16 @@ public class GameController {
 				}
 			}
 			int input = Integer.parseInt(playerInput);
-			
-			
+
+
 			switch (playerActions.get(input - 1)) {
-				case "Market":
-					processMarketInteraction(currentPlayer);
-					break;
-				case "Buy Development Card":
-					processBuyDevCard(currentPlayer);
-					break;
-				case "Productions":
-					processProduction(currentPlayer);
-					break;
-				case "Activate Leader 1":
-					processLeaderCardActivation(currentPlayer, 0);
-					break;
-				case "Activate Leader 2":
-					processLeaderCardActivation(currentPlayer, 1);
-					break;
-				case "Discard Leader 1":
-					currentPlayer.discardLeaderCard(0);
-					break;
-				case "Discard Leader 2":
-					currentPlayer.discardLeaderCard(1);
-					break;
+				case "Market" -> processMarketInteraction(currentPlayer);
+				case "Buy Development Card" -> processBuyDevCard(currentPlayer);
+				case "Productions" -> processProduction(currentPlayer);
+				case "Activate Leader 1" -> processLeaderCardActivation(currentPlayer, 0);
+				case "Activate Leader 2" -> processLeaderCardActivation(currentPlayer, 1);
+				case "Discard Leader 1" -> currentPlayer.discardLeaderCard(0);
+				case "Discard Leader 2" -> currentPlayer.discardLeaderCard(1);
 			}
 			
 			

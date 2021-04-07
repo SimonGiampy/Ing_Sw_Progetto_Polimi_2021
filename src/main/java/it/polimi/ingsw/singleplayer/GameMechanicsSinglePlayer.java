@@ -58,7 +58,6 @@ public class GameMechanicsSinglePlayer extends GameMechanicsMultiPlayer {
 
 	/**
 	 * Reveals the top token of the deck, removes it, appends it and returns it
-	 *
 	 * @return the first token of the deck
 	 */
 	public Token revealTop() {
@@ -83,6 +82,23 @@ public class GameMechanicsSinglePlayer extends GameMechanicsMultiPlayer {
 	 */
 	public void shuffleTokenDeck() {
 		Collections.shuffle(tokenList);
+	}
+
+	/**
+	 * Checks if the single player game is finished and show the total score
+	 */
+	@Override
+	public void winner(){
+		if(getPlayer().isEndgameStarted()){
+			System.out.println("Congratulations! You won against Lorenzo");
+			System.out.println("Score: " +getPlayer().totalScore() + "Victory Points");
+		}else if(lorenzoFaithTrack.isTrackFinished() || super.getGameDevCardsDeck().getCardStackStructure()[2][0].isEmpty()
+				|| super.getGameDevCardsDeck().getCardStackStructure()[2][1].isEmpty()
+				|| super.getGameDevCardsDeck().getCardStackStructure()[2][2].isEmpty()
+				|| super.getGameDevCardsDeck().getCardStackStructure()[2][3].isEmpty()){
+			System.out.println("Game Over!\nLorenzo won!");
+			System.out.println("Your score: "+ getPlayer().totalScore());
+		}
 	}
 
 	public FaithTrack getLorenzoFaithTrack() {
