@@ -184,8 +184,12 @@ public class GameMechanicsMultiPlayer {
 			System.out.println("The Winner is Player "); //+winner.
 		}
 		else if (winnerPlayers.size()>1) {
-			winner = winnerPlayers.stream().max(Comparator.comparing(Player::gatherAllPlayersResources)).orElse(null);
+			winner = winnerPlayers.stream().max(Comparator.comparing(Player::numberOfResources)).orElse(null);
 			winnerPlayers = Arrays.stream(players).filter(i -> i.totalScore() == finalWinner.totalScore()).collect(Collectors.toCollection(ArrayList::new));
+			if(winnerPlayers.size()==1){
+				System.out.println("The Winner is Player ");
+			}
+			else System.out.println("Draw");
 		}
 	}
 

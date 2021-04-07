@@ -212,10 +212,13 @@ public class Player {
 	 * gathers all player's resources
 	 * @return a list of all the resources of the player, from warehouse depot and the strongbox
 	 */
-	protected ArrayList<Resources> gatherAllPlayersResources() {
+	private ArrayList<Resources> gatherAllPlayersResources() {
 		ArrayList<Resources> total = myStrongbox.getContent();
 		total.addAll(myWarehouseDepot.gatherAllResources());
 		return total;
+	}
+	public int numberOfResources(){
+		return gatherAllPlayersResources().size();
 	}
 
 	/**
