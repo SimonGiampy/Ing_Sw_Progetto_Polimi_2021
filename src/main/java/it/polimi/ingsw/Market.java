@@ -55,9 +55,12 @@ public class Market {
 			for (int j = 0; j < 4; j++) { // columns
 				System.out.print(market[i][j].colorCode + "Ø\t");
 			}
-			System.out.print("\n");
+			System.out.println(Colors.RESET+"<--");
 		}
-		System.out.print("\033[0m\n");
+		for (int j = 0; j < 4; j++) {
+			System.out.print("^\t");
+		}
+		System.out.print("\n");
 	}
 	
 	/**

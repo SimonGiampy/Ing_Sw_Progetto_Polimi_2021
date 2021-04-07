@@ -27,7 +27,8 @@ public class DiscardToken implements Token{
 	 */
 	@Override
 	public boolean applyEffect() {
-		cardsDeck.claimCard(cardsDeck.lowestCardLevelAvailable(color), color);
+		for(int i = 0; i < cardsNumber || cardsDeck.lowestCardLevelAvailable(color) > 0; i++)
+			cardsDeck.claimCard(cardsDeck.lowestCardLevelAvailable(color), color);
 		return false;
 	}
 	@Override
