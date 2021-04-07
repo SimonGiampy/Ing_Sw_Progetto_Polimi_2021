@@ -35,9 +35,9 @@ public class FaithTrackParserTest {
 		faithTrack.moveMarker(14);
 		faithTrack.checkVaticanReport(1);
 		faithTrack2.checkVaticanReport(1);
-		faithTrack.showFaithTrack();
+		faithTrack.showFaithTrack(0);
 		System.out.print("\n");
-		faithTrack2.showFaithTrack();
+		faithTrack2.showFaithTrack(1);
 		faithTrack.helpMe();
 		/*
 		for (int i = 0; i < track.size(); i++) {

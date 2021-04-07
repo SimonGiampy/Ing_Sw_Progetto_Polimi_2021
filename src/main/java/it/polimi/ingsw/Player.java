@@ -28,11 +28,13 @@ public class Player {
 	private boolean playableLeader2; // indicates whether the player has the second leader card in his hand
 	private boolean activeAbilityLeader1; // indicates whether the first leader card ability is activated or not
 	private boolean activeAbilityLeader2; // indicates whether the second leader card ability is activated or not
-	
-	int coinDiscount;
-	int servantDiscount;
-	int shieldDiscount;
-	int stoneDiscount;
+
+	private final int playerIndex;
+
+	private int coinDiscount;
+	private int servantDiscount;
+	private int shieldDiscount;
+	private int stoneDiscount;
 	
 	/**
 	 * constructor for the Player
@@ -46,7 +48,8 @@ public class Player {
 	 * @param leaderCards the 4 leader cards to be assigned to the player
 	 */
 	public Player(Market market, DevelopmentCardsDeck developmentCardsDeck, WarehouseDepot warehouseDepot, Strongbox strongbox,
-	              ResourceDeck resourceDeck, FaithTrack faithTrack, CardProductionsManagement cardProductionsManagement, LeaderCard[] leaderCards) {
+	              ResourceDeck resourceDeck, FaithTrack faithTrack, CardProductionsManagement cardProductionsManagement,
+				  LeaderCard[] leaderCards, int playerIndex) {
 		
 		commonMarket = market;
 		commonCardsDeck = developmentCardsDeck;
@@ -68,6 +71,8 @@ public class Player {
 		playableLeader2 = false;
 		activeAbilityLeader1 = false;
 		activeAbilityLeader2 = false;
+
+		this.playerIndex = playerIndex;
 	}
 
 

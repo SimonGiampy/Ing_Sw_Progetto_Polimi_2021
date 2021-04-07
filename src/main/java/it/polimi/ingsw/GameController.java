@@ -169,8 +169,8 @@ public class GameController {
 			currentToken=mechanics.revealTop();
 			currentToken.showToken();
 			currentToken.applyEffect();
-			currentPlayer.getPlayerFaithTrack().showFaithTrack();
-			mechanics.getLorenzoFaithTrack().showFaithTrack();
+			currentPlayer.getPlayerFaithTrack().showFaithTrack(1);
+			mechanics.getLorenzoFaithTrack().showFaithTrack(0);
 
 		}
 

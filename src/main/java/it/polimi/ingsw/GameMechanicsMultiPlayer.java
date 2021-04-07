@@ -54,7 +54,7 @@ public class GameMechanicsMultiPlayer {
 		
 		for (int i = 0; i < numberOfPlayers; i++) {
 			playersTracks[i] = new FaithTrack(xmlTiles, reportPoints);
-			players[i] = instantiatePlayer(gameLeaders[i], playersTracks[i], rules);
+			players[i] = instantiatePlayer(gameLeaders[i], playersTracks[i], rules, i);
 		}
 		
 		startingPlayer = (int) Math.floor(Math.random() * numberOfPlayers);
@@ -71,13 +71,14 @@ public class GameMechanicsMultiPlayer {
 	 * @param rules common base production rules object
 	 * @return Player instance created
 	 */
-	public Player instantiatePlayer(LeaderCard[] playersLeaders, FaithTrack track, ProductionRules rules) {
+	public Player instantiatePlayer(LeaderCard[] playersLeaders, FaithTrack track, ProductionRules rules, int playerIndex) {
 		WarehouseDepot depot = new WarehouseDepot();
 		ResourceDeck resourceDeck = new ResourceDeck(depot);
 		Strongbox strongbox = new Strongbox();
 		CardProductionsManagement cardProductionsManagement = new CardProductionsManagement(strongbox, depot, rules);
 		
-		return new Player(market, gameDevCardsDeck, depot, strongbox, resourceDeck, track, cardProductionsManagement, playersLeaders);
+		return new Player(market, gameDevCardsDeck, depot, strongbox, resourceDeck, track, cardProductionsManagement,
+				playersLeaders, playerIndex);
 	}
 
 	

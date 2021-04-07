@@ -8,8 +8,6 @@ public class FaithTrack {
 	private Integer currentPosition;
 	private ArrayList<Tile> track;
 	private final ArrayList<Integer> reportPoints;
-	private int lastReportClaimed;	//Attribute of support for showFaithTrack
-	
 	
 	/**
 	 * Constructor that initializes the entire faith track
@@ -23,7 +21,6 @@ public class FaithTrack {
 		for(Integer ignored : reportPoints)
 			vaticanReports.add(false);
 		this.reportPoints = reportPoints;
-		lastReportClaimed = -1;
 	}
 
 	
@@ -47,7 +44,6 @@ public class FaithTrack {
 	public boolean checkVaticanReport(int reportNumber){
 		if (reportNumber < reportPoints.size() && track.get(currentPosition).isInsideVatican(reportNumber)) {
 			vaticanReports.set(reportNumber, true);
-			lastReportClaimed = reportNumber;
 			return true;
 		}
 		return false;
@@ -85,10 +81,15 @@ public class FaithTrack {
 	 * Show all the track with the current position, the activated reports, the victory points for every tile
 	 * and the number that identifies the tiles
 	 */
-	public void showFaithTrack(){
+	public void showFaithTrack(int marker){
 
 		StringBuilder string = new StringBuilder();
 
+		StringBuilder markerColor = new StringBuilder();
+		if(marker == 1)
+			markerColor.append(Colors.RED_BOLD);
+		else
+			markerColor.append(Colors.BLACK_BOLD);
 		//Row for vatican reports
 		int count = 0;
 		for(int i = 0; i < reportPoints.size(); i++) {
@@ -130,7 +131,7 @@ public class FaithTrack {
 			}
 			string.append("|  ");
 			if(i == currentPosition){
-				string.append(Colors.RED_BOLD + "+  " + Colors.RESET);
+				string.append(markerColor).append("+  ").append(Colors.RESET);
 			}
 			else{
 				string.append("   ");
@@ -252,23 +253,3 @@ public class FaithTrack {
 
 
 }
-
-
-
-/*
-NB: This is the code that will go in GameMechanics to make the reports work
-if(a.moveMarker(num)){
-        a.checkVaticanReport();
-        b.checkVaticanReport();
-        c.checkVaticanReport();
-        d.checkVaticanReport();
-        }
-
-And this is the code to handle the simultaneous movement in the case of resource not stored from the market
-        if(a.moveMarker(5) || b.moveMarker(4) || c.moveMarker(8)){
-            a.checkVaticanReport();
-            b.checkVaticanReport();
-            c.checkVaticanReport();
-            d.checkVaticanReport();
-        }
- */
