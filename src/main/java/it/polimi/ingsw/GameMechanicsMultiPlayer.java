@@ -1,7 +1,12 @@
 package it.polimi.ingsw;
 
+import it.polimi.ingsw.singleplayer.Token;
+
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
+import java.util.Comparator;
+import java.util.stream.Collectors;
 
 public class GameMechanicsMultiPlayer {
 	
@@ -152,5 +157,43 @@ public class GameMechanicsMultiPlayer {
 	
 	public int getStartingPlayer() {
 		return startingPlayer;
+	}
+
+	public void winner() {
+		int max=0;
+		boolean[] winnerPlayersIndex= new boolean[]{false,false,false,false};
+		int winnerPlayerIndex=-1;
+		for (int i = 0; i < players.length; i++) {
+			if (players[i].totalScore()> max) {
+				max = players[i].totalScore();
+				winnerPlayersIndex[i]=true;
+			}
+		}
+		for (int i = 0; i < players.length; i++) {
+			if(i!= winnerPlayerIndex && players[i].totalScore()==max){
+
+			}
+		}
+
+		ArrayList<Player> winnerPlayers;
+		Player winner;
+		winner = Arrays.stream(players).max(Comparator.comparing(Player::totalScore)).orElse(null);
+		Player finalWinner = winner;
+		winnerPlayers=Arrays.stream(players).filter(i -> i.totalScore() == finalWinner.totalScore()).collect(Collectors.toCollection(ArrayList::new));
+		if (winnerPlayers.size()==1){
+			System.out.println("The Winner is Player "); //+winner.
+		}
+		else if (winnerPlayers.size()>1) {
+			winner = winnerPlayers.stream().max(Comparator.comparing(Player::gatherAllPlayersResources)).orElse(null);
+			winnerPlayers = Arrays.stream(players).filter(i -> i.totalScore() == finalWinner.totalScore()).collect(Collectors.toCollection(ArrayList::new));
+		}
+	}
+
+	public FaithTrack getLorenzoFaithTrack() {
+		return null;
+	}
+
+	public Token revealTop(){
+		return null;
 	}
 }

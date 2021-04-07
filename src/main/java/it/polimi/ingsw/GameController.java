@@ -2,6 +2,8 @@ package it.polimi.ingsw;
 
 import it.polimi.ingsw.exceptions.InvalidInputException;
 import it.polimi.ingsw.exceptions.InvalidUserRequestException;
+import it.polimi.ingsw.singleplayer.GameMechanicsSinglePlayer;
+import it.polimi.ingsw.singleplayer.Token;
 import it.polimi.ingsw.xml_parsers.XMLParser;
 
 import java.io.File;
@@ -16,20 +18,21 @@ public class GameController {
 
 	public static void main(String[] args) {
 		scanner = new Scanner(System.in);
-		
+
 		GameController test = new GameController();
-		test.startGame();
+		System.out.println("How many players: ");
+		int numberOfPlayers= Integer.parseInt(scanner.nextLine());
+		if (numberOfPlayers==1)
+			test.startSinglePlayerGame();
+		else test.startMultiPlayerGame(numberOfPlayers);
 	}
-	
-	public void startGame() {
-		
-		mechanics = new GameMechanicsMultiPlayer(this, 3);
-		
+
+	public void readInformation(){
+
 		String fileName = "game_configuration_complete.xml";
 		ClassLoader classLoader = getClass().getClassLoader();
 		File file = new File(classLoader.getResource(fileName).getFile());
 		String fullPath = file.getAbsolutePath();
-		
 		XMLParser parser = new XMLParser(fullPath);
 		ArrayList<Tile> tiles = parser.readTiles();
 		ArrayList<Integer> report = parser.readReportPoints();
@@ -37,7 +40,14 @@ public class GameController {
 		ArrayList<LeaderCard> leaderCards = parser.readLeaderCards();
 		ProductionRules baseProduction = parser.parseBaseProductionFromXML();
 		mechanics.instantiateGame(devCards, leaderCards, baseProduction, tiles, report);
-		
+
+	}
+
+
+	public void startMultiPlayerGame(int numberOfPlayers) {
+		mechanics = new GameMechanicsMultiPlayer(this, numberOfPlayers);
+		readInformation();
+
 		for (Player p: mechanics.getPlayers()) {
 			p.chooseTwoLeaders(1, 4); // chooses 1 and 4 leader
 		}
@@ -99,6 +109,71 @@ public class GameController {
 			indexCurrentPlayer = (indexCurrentPlayer+1) % mechanics.getNumberOfPlayers();
 		}
 		
+	}
+
+	public void startSinglePlayerGame(){
+		mechanics = new GameMechanicsSinglePlayer(this,1);
+		Player currentPlayer= mechanics.getPlayer(0);
+		currentPlayer.chooseTwoLeaders(1,4);
+		currentPlayer.checkWhatThisPlayerCanDo();
+		Token currentToken;
+		for(int round = 0; round < 6; round++) {
+			//scanner.nextLine();
+			System.out.println("Player 1 is playing. You can do:");
+			ArrayList<String> playerActions = currentPlayer.checkWhatThisPlayerCanDo();
+			int x = 1;
+			for (String s: playerActions) {
+				System.out.println(x + ": " + s);
+				x++;
+			}
+			x--;
+
+			System.out.println("What do you want to do?");
+			String playerInput = scanner.nextLine();
+			String playerActionRegex = "[1-" + x + "]"; //stupid warning: DO NOT TOUCH
+			boolean check = Pattern.matches(playerActionRegex, playerInput);
+			if (!check) {
+				try {
+					throw new InvalidUserRequestException("player action is not correct");
+				} catch (InvalidUserRequestException e) {
+					e.printStackTrace();
+				}
+			}
+			int input = Integer.parseInt(playerInput);
+
+
+			switch (playerActions.get(input - 1)) {
+				case "Market":
+					processMarketInteraction(currentPlayer);
+					break;
+				case "Buy Development Card":
+					processBuyDevCard(currentPlayer);
+					break;
+				case "Productions":
+					processProduction(currentPlayer);
+					break;
+				case "Activate Leader 1":
+					processLeaderCardActivation(currentPlayer, 0);
+					break;
+				case "Activate Leader 2":
+					processLeaderCardActivation(currentPlayer, 1);
+					break;
+				case "Discard Leader 1":
+					currentPlayer.discardLeaderCard(0);
+					break;
+				case "Discard Leader 2":
+					currentPlayer.discardLeaderCard(1);
+					break;
+			}
+
+			currentToken=mechanics.revealTop();
+			currentToken.showToken();
+			currentToken.applyEffect();
+			currentPlayer.getPlayerFaithTrack().showFaithTrack();
+			mechanics.getLorenzoFaithTrack().showFaithTrack();
+
+		}
+
 	}
 	
 	public Resources[] requestInitialResource(int playerIndex, int howMany) {

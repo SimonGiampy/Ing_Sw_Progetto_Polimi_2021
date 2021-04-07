@@ -22,20 +22,22 @@ public class GameMechanicsSinglePlayer extends GameMechanicsMultiPlayer {
 		super(controller,1);
 	}
 */
+
 	/**
 	 * constructor for creating the single player instances and Lorenzo's personal Faith track
+	 *
 	 * @param allDevelopmentCards the list of all the development cards read from the xml file. Will be shuffled
-	 * @param allLeaderCards a list of all the leader cards present in the XML. Will be shuffled
-	 * @param rules the base production rule
-	 * @param xmlTiles the list of tiles for the creation of the faith tracks
-	 * @param reportPoints points to earn from each report zone
+	 * @param allLeaderCards      a list of all the leader cards present in the XML. Will be shuffled
+	 * @param rules               the base production rule
+	 * @param xmlTiles            the list of tiles for the creation of the faith tracks
+	 * @param reportPoints        points to earn from each report zone
 	 */
 	@Override
 	public void instantiateGame(ArrayList<DevelopmentCard> allDevelopmentCards, ArrayList<LeaderCard> allLeaderCards, ProductionRules rules,
 								ArrayList<Tile> xmlTiles, ArrayList<Integer> reportPoints) {
-		
+
 		lorenzoFaithTrack = new FaithTrack(xmlTiles, reportPoints);
-		
+
 		super.instantiateGame(allDevelopmentCards, allLeaderCards, rules, xmlTiles, reportPoints);
 
 		tokenList = new ArrayList<>();
@@ -53,9 +55,10 @@ public class GameMechanicsSinglePlayer extends GameMechanicsMultiPlayer {
 		Collections.shuffle(tokenList);
 
 	}
-	
+
 	/**
 	 * Reveals the top token of the deck, removes it, appends it and returns it
+	 *
 	 * @return the first token of the deck
 	 */
 	public Token revealTop() {
@@ -65,9 +68,10 @@ public class GameMechanicsSinglePlayer extends GameMechanicsMultiPlayer {
 		tokenList.add(topToken);
 		return topToken;
 	}
-	
+
 	/**
 	 * getter for the Player object
+	 *
 	 * @return single instance of player
 	 */
 	public Player getPlayer() {
@@ -77,7 +81,11 @@ public class GameMechanicsSinglePlayer extends GameMechanicsMultiPlayer {
 	/**
 	 * Shuffles the token deck
 	 */
-	public void shuffleTokenDeck(){
+	public void shuffleTokenDeck() {
 		Collections.shuffle(tokenList);
+	}
+
+	public FaithTrack getLorenzoFaithTrack() {
+		return lorenzoFaithTrack;
 	}
 }

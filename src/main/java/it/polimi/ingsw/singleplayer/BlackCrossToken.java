@@ -28,4 +28,8 @@ public class BlackCrossToken implements Token{
 		lorenzoTrack.moveMarker(tileNumber);
 		return false;
 	}
+	@Override
+	public void showToken(){
+		System.out.println("Black Cross Token +2 for Lorenzo");
+	}
 }

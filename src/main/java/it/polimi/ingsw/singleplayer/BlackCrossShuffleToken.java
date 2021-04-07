@@ -26,4 +26,9 @@ public class BlackCrossShuffleToken implements Token{
 		lorenzoTrack.moveMarker(tileNumber);
 		return true;
 	}
+
+	@Override
+	public void showToken(){
+		System.out.println("Black Cross Shuffle Token +1 for Lorenzo");
+	}
 }

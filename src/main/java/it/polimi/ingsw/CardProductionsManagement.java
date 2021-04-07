@@ -74,7 +74,7 @@ public class CardProductionsManagement {
 	}
 
 	/**
-	 * TODO : Javadoc
+	 * it shows card's information
  	 */
 	public void showCards(){
 		for (int i = 0; i < 3; i++) {

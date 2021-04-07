@@ -30,4 +30,8 @@ public class DiscardToken implements Token{
 		cardsDeck.claimCard(cardsDeck.lowestCardLevelAvailable(color), color);
 		return false;
 	}
+	@Override
+	public void showToken(){
+		System.out.println("Discard token");
+	}
 }
