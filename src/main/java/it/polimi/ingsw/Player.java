@@ -347,4 +347,10 @@ public class Player {
 	public DevelopmentCardsDeck getCommonCardsDeck() {
 		return commonCardsDeck;
 	}
+
+	public int getPlayerIndex() {
+		return playerIndex;
+	}
+
+
 }

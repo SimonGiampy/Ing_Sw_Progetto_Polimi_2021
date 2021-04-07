@@ -161,34 +161,20 @@ public class GameMechanicsMultiPlayer {
 	}
 
 	public void winner() {
-		int max=0;
-		boolean[] winnerPlayersIndex= new boolean[]{false,false,false,false};
-		int winnerPlayerIndex=-1;
-		for (int i = 0; i < players.length; i++) {
-			if (players[i].totalScore()> max) {
-				max = players[i].totalScore();
-				winnerPlayersIndex[i]=true;
-			}
-		}
-		for (int i = 0; i < players.length; i++) {
-			if(i!= winnerPlayerIndex && players[i].totalScore()==max){
-
-			}
-		}
-
 		ArrayList<Player> winnerPlayers;
 		Player winner;
 		winner = Arrays.stream(players).max(Comparator.comparing(Player::totalScore)).orElse(null);
 		Player finalWinner = winner;
 		winnerPlayers=Arrays.stream(players).filter(i -> i.totalScore() == finalWinner.totalScore()).collect(Collectors.toCollection(ArrayList::new));
 		if (winnerPlayers.size()==1){
-			System.out.println("The Winner is Player "); //+winner.
+			System.out.println("The Winner is Player " + finalWinner.getPlayerIndex()); //+winner.
 		}
 		else if (winnerPlayers.size()>1) {
 			winner = winnerPlayers.stream().max(Comparator.comparing(Player::numberOfResources)).orElse(null);
-			winnerPlayers = Arrays.stream(players).filter(i -> i.totalScore() == finalWinner.totalScore()).collect(Collectors.toCollection(ArrayList::new));
+			Player finalWinner1 = winner;
+			winnerPlayers = Arrays.stream(players).filter(i -> i.totalScore() == finalWinner1.totalScore()).collect(Collectors.toCollection(ArrayList::new));
 			if(winnerPlayers.size()==1){
-				System.out.println("The Winner is Player ");
+				System.out.println("The Winner is Player "+ finalWinner.getPlayerIndex());
 			}
 			else System.out.println("Draw");
 		}
@@ -201,4 +187,5 @@ public class GameMechanicsMultiPlayer {
 	public Token revealTop(){
 		return null;
 	}
+
 }

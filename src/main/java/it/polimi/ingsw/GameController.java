@@ -112,7 +112,8 @@ public class GameController {
 	}
 
 	public void startSinglePlayerGame(){
-		mechanics = new GameMechanicsSinglePlayer(this,1);
+		mechanics = new GameMechanicsSinglePlayer(this);
+		readInformation();
 		Player currentPlayer= mechanics.getPlayer(0);
 		currentPlayer.chooseTwoLeaders(1,4);
 		currentPlayer.checkWhatThisPlayerCanDo();
