@@ -13,6 +13,7 @@ public enum Unicode {
 	T_SHAPE("\u252c"),			//┬
 	REVERSE_T_SHAPE("\u2534"),	//┴
 	CROSS_MARKER("\u256c"),
+	CROSS2("\u271E"),
 
 	//Escape codes for colors and text formatting
 	//Bold

@@ -118,33 +118,34 @@ public class FaithTrack {
 
 		//Second row of "|", spaces and marker
 		int k = 0;
+		String currentColor = Unicode.RESET;
 		for(int i = 0; i < track.size(); i++){
 			if (k < reportPoints.size() && track.get(i).isInsideVatican(k)) {
-				string.append(Unicode.ANSI_YELLOW);
+				currentColor = Unicode.ANSI_YELLOW.toString();
 				k++;
 			}
 			if(track.get(i).isPapalSpace()){
-				string.append(Unicode.ANSI_RED);
+				currentColor = Unicode.ANSI_RED.toString();
 			}
 			if(i > 1 && track.get(i-2).isPapalSpace()){
-				string.append(Unicode.RESET);
+				currentColor = Unicode.RESET;
 			}
 			if(i == currentPosition){
-				string.append(Unicode.VERTICAL).append(Unicode.WHITE_BACKGROUND_BRIGHT).append("  ");
-				string.append(markerColor).append(Unicode.CROSS_MARKER)
-						.append("  ").append(Unicode.RESET);
+				string.append(currentColor).append(Unicode.VERTICAL).append(Unicode.WHITE_BACKGROUND_BRIGHT).append("  ");
+				string.append(markerColor).append(Unicode.CROSS2)
+						.append(" ").append(currentColor);
 			}
 			else{
-				string.append(Unicode.VERTICAL).append("  ");
+				string.append(currentColor).append(Unicode.VERTICAL).append("  ");
 				string.append("   ");
 			}
 		}
-		string.append(Unicode.VERTICAL).append("\n").append(Unicode.RESET);
+		string.append(currentColor).append(Unicode.VERTICAL).append("\n").append(Unicode.RESET);
 
 		//Third row of "|", spaces and victory points (printed only in the tile where they change)
 		int currentVictoryPoints = -1;
 		int l = 0;
-		String currentColor = Unicode.RESET;
+		currentColor = Unicode.RESET;
 		for(int i = 0; i < track.size(); i++){
 			if (l < reportPoints.size() && track.get(i).isInsideVatican(l)) {
 				currentColor = Unicode.ANSI_YELLOW.toString();
@@ -162,7 +163,12 @@ public class FaithTrack {
 			}
 			string.append("  ");
 			if(track.get(i).tilePoints() != currentVictoryPoints){
-				string.append(Unicode.RESET).append(track.get(i).tilePoints()).append(currentColor);
+				if(i==currentPosition) {
+					string.append(Unicode.WHITE_BACKGROUND_BRIGHT).append(Unicode.ANSI_BLACK);
+				}else{
+					string.append(Unicode.RESET);
+				}
+				string.append(track.get(i).tilePoints()).append(currentColor);
 				if(track.get(i).tilePoints() < 10){
 					string.append("  ");
 				}
