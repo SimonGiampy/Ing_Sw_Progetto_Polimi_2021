@@ -134,5 +134,7 @@ public class DevelopmentCard {
 	}
 
 
-
+	public ProductionRules getProductionRules() {
+		return productionRules;
+	}
 }
