@@ -12,11 +12,10 @@ import java.util.stream.Collectors;
  */
 public class CardProductionsManagement {
 	private final ArrayList<Stack<DevelopmentCard>> cards;
-	private final ProductionRules baseProductionRules;
-	private final ArrayList<ProductionRules> leaderProductionRules;
 	private final Strongbox myStrongbox;
 	private final WarehouseDepot myWarehouseDepot;
 	private final boolean[] numberOfProduction;
+	private final ProductionRules[] productions;
 
 	/**
 	 * default constructor
@@ -26,11 +25,12 @@ public class CardProductionsManagement {
 		cards.add(new Stack<>());
 		cards.add(new Stack<>());
 		cards.add(new Stack<>());
-		this.baseProductionRules = baseProductionRules;
-		leaderProductionRules = new ArrayList<>();
 		myStrongbox = playerStrongbox;
 		myWarehouseDepot = playerWarehouseDepot;
 		numberOfProduction = new boolean[]{false,false,false,true,false,false};
+		productions= new ProductionRules[6];
+		productions[3]=baseProductionRules;
+
 	}
 
 	/** TODO: Testing?
@@ -39,11 +39,14 @@ public class CardProductionsManagement {
 	 * @param faithOutput is the number of faith points
 	 */
 	public void addLeaderCard(ArrayList<Resources> input, ArrayList<Resources> output, int faithOutput){
-		if (leaderProductionRules.size()==0)
+		if (!numberOfProduction[4]) {
 			numberOfProduction[4] = true;
-		else
+			productions[4]=new ProductionRules(input,output,faithOutput);
+		}
+		else {
 			numberOfProduction[5] = true;
-		leaderProductionRules.add(new ProductionRules(input,output,faithOutput));
+			productions[5]= new ProductionRules(input, output, faithOutput);
+		}
 	}
 
 
@@ -53,24 +56,10 @@ public class CardProductionsManagement {
 	 * @param selectedStack is the number of the selected stack
 	 */
 	public void addCard(DevelopmentCard newCard,int selectedStack) {
-		switch (selectedStack){
-			case 1 -> {
-				if(cards.get(0).size()==0)
-					numberOfProduction[0]=true;
-				cards.get(0).push(newCard);
-			}
-			case 2 -> {
-				if(cards.get(1).size()==0)
-					numberOfProduction[1]=true;
-				cards.get(1).push(newCard);
-			}
-			case 3 -> {
-				if(cards.get(2).size()==0)
-					numberOfProduction[2]=true;
-				cards.get(2).push(newCard);
-			}
-			default ->{}
-		}
+		if(cards.get(selectedStack-1).size()==0)
+			numberOfProduction[selectedStack-1]=true;
+		cards.get(selectedStack-1).push(newCard);
+		productions[selectedStack-1]=cards.get(selectedStack-1).peek().getProductionRules();
 	}
 
 	/**
@@ -90,12 +79,7 @@ public class CardProductionsManagement {
 	 * @return top card's level of the selected stack
 	 */
 	public int checkStackLevel(int selectedStack) {
-		return switch (selectedStack) {
-			case 1 ->   cards.get(0).size();
-			case 2 ->   cards.get(1).size();
-			case 3 ->   cards.get(2).size();
-			default ->  0;
-		};
+		return  cards.get(selectedStack-1).size();
 	}
 
 	/**
@@ -115,16 +99,8 @@ public class CardProductionsManagement {
 	 * it activates production
 	 * @param selectedProduction is the number of the selected stack
 	 */
-	public ArrayList<Resources> activateSingleProduction(int selectedProduction) throws InvalidUserRequestException {
-		return switch (selectedProduction) {
-			case 1 -> cards.get(0).peek().produce();
-			case 2 -> cards.get(1).peek().produce();
-			case 3 -> cards.get(2).peek().produce();
-			case 4 -> baseProductionRules.produce();
-			case 5 -> leaderProductionRules.get(0).produce();
-			case 6 -> leaderProductionRules.get(1).produce();
-			default -> throw new InvalidUserRequestException("invalid production number chosen");
-		};
+	public ArrayList<Resources> activateSingleProduction(int selectedProduction){
+		return productions[selectedProduction-1].produce();
 	}
 
 	/** TODO: Testing
@@ -133,7 +109,7 @@ public class CardProductionsManagement {
 	 * @param inputResources is a list of resources selected by the player
 	 * @return the number of faith points of the selected productions
 	 */
-	public int activateSelectedProduction(ArrayList<Integer> playerInput,int[] inputResources) throws InvalidUserRequestException {
+	public int activateSelectedProduction(ArrayList<Integer> playerInput,int[] inputResources){
 		ArrayList<Resources> selectedProduction= new ArrayList<>();
 		int totalFaithPoints=0;
 		for (Integer integer : playerInput) {
@@ -156,16 +132,8 @@ public class CardProductionsManagement {
 	 * @param selectedStack is the number of the selected stack
 	 * @return the number of faith points
 	 */
-	public int returnFaithPoints(int selectedStack) throws InvalidUserRequestException {
-		return switch (selectedStack) {
-			case 1 -> cards.get(0).peek().returnFaithPoints();
-			case 2 -> cards.get(1).peek().returnFaithPoints();
-			case 3 -> cards.get(2).peek().returnFaithPoints();
-			case 4 -> baseProductionRules.getFaithOutput();
-			case 5 -> leaderProductionRules.get(0).getFaithOutput();
-			case 6 -> leaderProductionRules.get(1).getFaithOutput();
-			default -> throw new InvalidUserRequestException("invalid production number chosen");
-		};
+	public int returnFaithPoints(int selectedStack){
+		return productions[selectedStack-1].getFaithOutput();
 	}
 
 	/**
@@ -186,15 +154,7 @@ public class CardProductionsManagement {
 	public boolean isSingleProductionAvailable(int selectedStack) {
 		ArrayList<Resources> playerResources= myStrongbox.getContent();
 		playerResources.addAll(myWarehouseDepot.gatherAllResources());
-		return switch (selectedStack) {
-			case 1 -> cards.get(0).peek().isCardProductionAvailable(playerResources);
-			case 2 -> cards.get(1).peek().isCardProductionAvailable(playerResources);
-			case 3 -> cards.get(2).peek().isCardProductionAvailable(playerResources);
-			case 4 -> baseProductionRules.isProductionAvailable(playerResources);
-			case 5 -> leaderProductionRules.get(0).isProductionAvailable(playerResources);
-			case 6 -> leaderProductionRules.get(1).isProductionAvailable(playerResources);
-			default -> false;
-		};
+		return productions[selectedStack-1].isProductionAvailable(playerResources);
 	}
 
 	/**
@@ -202,16 +162,8 @@ public class CardProductionsManagement {
 	 * @param selectedStack is the number of the selected stack
 	 * @return an Arraylist of production's input
 	 */
-	public ArrayList<Resources> getProductionInput(int selectedStack) throws InvalidUserRequestException {
-		return switch (selectedStack) {
-			case 1 -> cards.get(0).peek().getProductionInput();
-			case 2 -> cards.get(1).peek().getProductionInput();
-			case 3 -> cards.get(2).peek().getProductionInput();
-			case 4 -> baseProductionRules.getInputCopy();
-			case 5 -> leaderProductionRules.get(0).getInputCopy();
-			case 6 -> leaderProductionRules.get(1).getInputCopy();
-			default -> throw new InvalidUserRequestException("invalid production number chosen");
-		};
+	public ArrayList<Resources> getProductionInput(int selectedStack){
+		return productions[selectedStack-1].getInputCopy();
 	}
 
 	/**
@@ -219,7 +171,7 @@ public class CardProductionsManagement {
 	 * @param playerInput is a list of selected production
 	 * @return true if all productions can be started at the same time
 	 */
-	public boolean isSelectedProductionAvailable(ArrayList<Integer> playerInput) throws InvalidUserRequestException {
+	public boolean isSelectedProductionAvailable(ArrayList<Integer> playerInput){
 		ArrayList<Resources> playerResources= myStrongbox.getContent();
 		playerResources.addAll(myWarehouseDepot.gatherAllResources());
 		ArrayList<Resources> productionInput= new ArrayList<>();
@@ -301,15 +253,7 @@ public class CardProductionsManagement {
 	 * @return the number of ? in input
 	 */
 	public int numberOfInputEmptyResources(int selectedStack){
-		return switch (selectedStack) {
-			case 1 -> cards.get(0).peek().numberOfInputEmptyResources();
-			case 2 -> cards.get(1).peek().numberOfInputEmptyResources();
-			case 3 -> cards.get(2).peek().numberOfInputEmptyResources();
-			case 4 -> baseProductionRules.numberOfInputEmptyResources();
-			case 5 -> leaderProductionRules.get(0).numberOfInputEmptyResources();
-			case 6 -> leaderProductionRules.get(1).numberOfInputEmptyResources();
-			default ->0;
-		};
+		return productions[selectedStack-1].numberOfInputEmptyResources();
 	}
 
 	/**
@@ -342,21 +286,13 @@ public class CardProductionsManagement {
 	 * @return the number of ? in output
 	 */
 	public int numberOfOutputEmptyResources(int selectedStack) {
-		return switch (selectedStack) {
-			case 1 -> cards.get(0).peek().numberOfOutputEmptyResources();
-			case 2 -> cards.get(1).peek().numberOfOutputEmptyResources();
-			case 3 -> cards.get(2).peek().numberOfOutputEmptyResources();
-			case 4 -> baseProductionRules.numberOfOutputEmptyResources();
-			case 5 -> leaderProductionRules.get(0).numberOfOutputEmptyResources();
-			case 6 -> leaderProductionRules.get(1).numberOfOutputEmptyResources();
-			default -> 0;
-		};
+		return productions[selectedStack-1].numberOfOutputEmptyResources();
 	}
 
 	/**
 	 * it calculates the number of input ? selected (by the player) productions
 	 * @param playerInput is a list of production selected by the player
-	 * @return
+	 * @return the number of all ? in input
 	 */
 	public int numberOfOutputEmptySelectedProduction(ArrayList<Integer> playerInput){
 		int totalNumber=0;
@@ -382,16 +318,7 @@ public class CardProductionsManagement {
 	 * @param selectedStack is the number of selected production
 	 */
 	public void showSingleProduction(int selectedStack){
-		switch (selectedStack) {
-			case 1 -> cards.get(0).peek().showProductionRulesInformation();
-			case 2 -> cards.get(1).peek().showProductionRulesInformation();
-			case 3 -> cards.get(2).peek().showProductionRulesInformation();
-			case 4 -> baseProductionRules.showProductionRulesInformation();
-			case 5 -> leaderProductionRules.get(0).showProductionRulesInformation();
-			case 6 -> leaderProductionRules.get(1).showProductionRulesInformation();
-			default -> {
-			}
-		}
+		productions[selectedStack-1].showProductionRulesInformation();
 	}
 
 	/**
