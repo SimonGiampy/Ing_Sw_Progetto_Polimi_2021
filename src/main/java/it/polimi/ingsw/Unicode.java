@@ -97,4 +97,9 @@ public enum Unicode {
 	Unicode(String code) {
 		this.code = code;
 	}
+
+	@Override
+	public String toString(){
+		return code;
+	}
 }
