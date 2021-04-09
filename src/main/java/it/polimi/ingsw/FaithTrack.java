@@ -129,16 +129,19 @@ public class FaithTrack {
 			if(i > 1 && track.get(i-2).isPapalSpace()){
 				string.append(Unicode.RESET);
 			}
-			string.append(Unicode.VERTICAL).append("  ");
 			if(i == currentPosition){
-				string.append(markerColor).append(Unicode.CROSS_MARKER).append("  ").append(Unicode.RESET);
+				string.append(Unicode.VERTICAL).append(Unicode.WHITE_BACKGROUND_BRIGHT).append("  ");
+				string.append(markerColor).append(Unicode.CROSS_MARKER)
+						.append("  ").append(Unicode.RESET);
 			}
 			else{
+				string.append(Unicode.VERTICAL).append("  ");
 				string.append("   ");
 			}
 		}
 		string.append(Unicode.VERTICAL).append("\n").append(Unicode.RESET);
-		//Third row of "|", spaces and victory points (printed only in the tile there they change)
+
+		//Third row of "|", spaces and victory points (printed only in the tile where they change)
 		int currentVictoryPoints = -1;
 		int l = 0;
 		String currentColor = Unicode.RESET;
@@ -153,7 +156,11 @@ public class FaithTrack {
 			if(i > 1 && track.get(i-2).isPapalSpace()){
 				currentColor = Unicode.RESET;
 			}
-			string.append(currentColor).append("\u2502  ");
+			string.append(currentColor).append(Unicode.VERTICAL);
+			if(i==currentPosition) {
+				string.append(Unicode.WHITE_BACKGROUND_BRIGHT);
+			}
+			string.append("  ");
 			if(track.get(i).tilePoints() != currentVictoryPoints){
 				string.append(Unicode.RESET).append(track.get(i).tilePoints()).append(currentColor);
 				if(track.get(i).tilePoints() < 10){
@@ -166,15 +173,14 @@ public class FaithTrack {
 			}else{
 				string.append("   ");
 			}
+			string.append(Unicode.RESET);
 		}
-		string.append("\u2502\n");
-		string.append(Unicode.RESET);
+		string.append(Unicode.ANSI_RED).append(Unicode.VERTICAL).append("\n").append(Unicode.RESET);
 
 		//Last row of "-"
 		appendBottomFrame(string);
 
 		//Number of the tiles
-
 		string.append(Unicode.RESET);
 		for(int i = 0; i < track.size(); i++){
 			string.append("   ").append(i);
@@ -207,7 +213,7 @@ public class FaithTrack {
 			}
 			if(i > 0 && track.get(i-1).isPapalSpace()){
 				string.append(Unicode.T_SHAPE).append(Unicode.RESET).append(Unicode.HORIZONTAL).append(Unicode.HORIZONTAL)
-						.append(Unicode.HORIZONTAL).append(Unicode.HORIZONTAL);
+						.append(Unicode.HORIZONTAL).append(Unicode.HORIZONTAL).append(Unicode.HORIZONTAL);
 			}else {
 				string.append(s).append(Unicode.HORIZONTAL).append(Unicode.HORIZONTAL).append(Unicode.HORIZONTAL)
 						.append(Unicode.HORIZONTAL).append(Unicode.HORIZONTAL);
@@ -231,7 +237,7 @@ public class FaithTrack {
 			}
 			if(i > 0 && track.get(i-1).isPapalSpace()){
 				string.append(Unicode.REVERSE_T_SHAPE).append(Unicode.RESET).append(Unicode.HORIZONTAL).append(Unicode.HORIZONTAL)
-						.append(Unicode.HORIZONTAL).append(Unicode.HORIZONTAL);
+						.append(Unicode.HORIZONTAL).append(Unicode.HORIZONTAL).append(Unicode.HORIZONTAL);
 			}else {
 				string.append(s).append(Unicode.HORIZONTAL).append(Unicode.HORIZONTAL).append(Unicode.HORIZONTAL)
 						.append(Unicode.HORIZONTAL).append(Unicode.HORIZONTAL);

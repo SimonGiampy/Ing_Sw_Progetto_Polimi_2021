@@ -31,8 +31,8 @@ public class FaithTrackParserTest {
 		faithTrack.moveMarker(3);
 		faithTrack.checkVaticanReport(0);
 		faithTrack2.checkVaticanReport(0);
-		faithTrack2.moveMarker(3);
-		faithTrack.moveMarker(14);
+		faithTrack2.moveMarker(4);
+		faithTrack.moveMarker(11);
 		faithTrack.checkVaticanReport(1);
 		faithTrack2.checkVaticanReport(1);
 		faithTrack.showFaithTrack(0);
