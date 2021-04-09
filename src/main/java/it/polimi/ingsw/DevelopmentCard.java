@@ -1,7 +1,6 @@
 package it.polimi.ingsw;
 
 import java.util.ArrayList;
-import java.util.stream.IntStream;
 
 /**
  * this class handles single card management
@@ -61,14 +60,6 @@ public class DevelopmentCard {
 	public Colors getColor(){
 		return color;
 	}
-	
-	/**
-	 * it recall production rules function to get the output of the production
-	 * @return an arraylist of resources that contains production's output.
-	 */
-	public ArrayList<Resources> produce(){
-		return productionRules.produce();
-	}
 
 	public void showCard(){
 		/*
@@ -86,7 +77,7 @@ public class DevelopmentCard {
 		System.out.print("Resources requirements: ");
 		ListSet.showListMultiplicityOnConsole(getResourcesRequirement());
 		System.out.println("Card: level " + getLevel() + " and color " + getColor());
-		showProductionRulesInformation();
+		productionRules.showProductionRulesInformation();
 		System.out.println("Card victory points: "+ getVictoryPoints() + "\n");
 	}
 	// "\033[0m"; white
@@ -96,43 +87,6 @@ public class DevelopmentCard {
 	YELLOW("\u001B[33m"); //yellow color
 	GREEN("\U001B[32M");
 	 */
-
-	/**
-	 * it checks if card's production is available
-	 * @param input is a list of all the resources the player owns
-	 * @return true if the the production is available
-	 */
-	public boolean isCardProductionAvailable(ArrayList<Resources> input){
-		return productionRules.isProductionAvailable(input);
-	}
-
-
-	/**
-	 * getter for card's production faith points
-	 * @return the number of faith points
-	 */
-	public int returnFaithPoints(){
-		return productionRules.getFaithOutput();
-	}
-
-	public void showProductionRulesInformation(){
-		productionRules.showProductionRulesInformation();
-	}
-
-	/**
-	 * retrieves a copy of the production input resources
-	 * @return a copy of the production
-	 */
-	public ArrayList<Resources> getProductionInput(){
-		 return productionRules.getInputCopy();
-	}
-	public int numberOfOutputEmptyResources(){
-		return productionRules.numberOfOutputEmptyResources();
-	}
-	public int numberOfInputEmptyResources(){
-		return productionRules.numberOfInputEmptyResources();
-	}
-
 
 	public ProductionRules getProductionRules() {
 		return productionRules;
