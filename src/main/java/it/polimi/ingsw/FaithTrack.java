@@ -102,11 +102,11 @@ public class FaithTrack {
 
 			 */
 			if(vaticanReports.get(i)){
-				string.append(Unicode.GREEN_BOLD).append("  ✓ ").append(Unicode.RESET)
-						.append(reportPoints.get(i)).append(" ");
+				string.append(Unicode.GREEN_BOLD).append("  ").append(Unicode.TICK).append(" ").append(Unicode.RESET)
+						.append(reportPoints.get(i));
 			}else{
-				string.append(Unicode.RED_BOLD).append("  X ").append(Unicode.RESET)
-						.append(reportPoints.get(i)).append(" ");
+				string.append(Unicode.RED_BOLD).append("  ").append(Unicode.CROSS_REPORT).append(" ").append(Unicode.RESET)
+						.append(reportPoints.get(i));
 			}
 			//✖ ✕ ✔ ✓
 			count++;
@@ -132,8 +132,8 @@ public class FaithTrack {
 			}
 			if(i == currentPosition){
 				string.append(currentColor).append(Unicode.VERTICAL).append(Unicode.WHITE_BACKGROUND_BRIGHT).append("  ");
-				string.append(markerColor).append(Unicode.CROSS2)
-						.append(" ").append(currentColor);
+				string.append(markerColor).append(Unicode.CROSS_MARKER)
+						.append("  ").append(currentColor);
 			}
 			else{
 				string.append(currentColor).append(Unicode.VERTICAL).append("  ");
@@ -164,17 +164,17 @@ public class FaithTrack {
 			string.append("  ");
 			if(track.get(i).tilePoints() != currentVictoryPoints){
 				if(i==currentPosition) {
-					string.append(Unicode.WHITE_BACKGROUND_BRIGHT).append(Unicode.ANSI_BLACK);
+					string.append(Unicode.BLACK_BOLD).append(track.get(i).tilePoints()).append(Unicode.WHITE_BACKGROUND_BRIGHT);
 				}else{
-					string.append(Unicode.RESET);
+					string.append(Unicode.RESET).append(track.get(i).tilePoints());
 				}
-				string.append(track.get(i).tilePoints()).append(currentColor);
 				if(track.get(i).tilePoints() < 10){
 					string.append("  ");
 				}
 				else{
 					string.append(" ");
 				}
+				string.append(currentColor);
 				currentVictoryPoints = track.get(i).tilePoints();
 			}else{
 				string.append("   ");

@@ -15,6 +15,9 @@ public enum Unicode {
 	CROSS_MARKER("\u256c"),
 	CROSS2("\u271E"),
 
+	TICK("\u2714"),
+	CROSS_REPORT("\u274c"),
+
 	//Escape codes for colors and text formatting
 	//Bold
 	BOLD("\033[1m"), //Bold text
