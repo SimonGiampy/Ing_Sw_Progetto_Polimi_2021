@@ -17,18 +17,5 @@ public enum Colors {
 		return colorNumber;
 	}
 	
-	/**
-	 * probably useless function
-	 * @param colorNumber the number
-	 * @return the corresponding color
-	 */
-	public static Colors getColorFromNumber(int colorNumber) {
-		return switch (colorNumber) {
-			case 0 -> GREEN;
-			case 1 -> BLUE;
-			case 2 -> YELLOW;
-			case 3 -> PURPLE;
-			default -> throw new IllegalStateException("invalid color number");
-		};
-	}
+
 }

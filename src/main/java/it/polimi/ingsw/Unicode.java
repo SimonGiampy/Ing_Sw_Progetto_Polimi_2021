@@ -19,12 +19,11 @@ public enum Unicode {
 	CROSS_REPORT("\u274c"),
 
 	//Escape codes for colors and text formatting
-	//Bold
+	
 	BOLD("\033[1m"), //Bold text
-	//Italic
 	ITALIC("\033[3m"), //Italic text
-	//Underline
 	UNDERLINE("\033[4m"), //Underlined text
+	
 	// Regular Colors
 	ANSI_BLACK("\033[0;30m"),   // BLACK
 	ANSI_RED("\033[0;31m"),     // RED
@@ -35,7 +34,7 @@ public enum Unicode {
 	ANSI_CYAN("\033[0;36m"),    // CYAN
 	ANSI_WHITE("\033[0;37m"),   // WHITE
 
-	// Bold
+	// Bold Colors
 	BLACK_BOLD("\033[1;30m"),  // BLACK
 	RED_BOLD("\033[1;31m"),    // RED
 	GREEN_BOLD("\033[1;32m"),  // GREEN
@@ -45,7 +44,7 @@ public enum Unicode {
 	CYAN_BOLD("\033[1;36m"),   // CYAN
 	WHITE_BOLD("\033[1;37m"),  // WHITE
 
-	// Underline
+	// Underline Colors
 	BLACK_UNDERLINED("\033[4;30m"),  // BLACK
 	RED_UNDERLINED("\033[4;31m"),    // RED
 	GREEN_UNDERLINED("\033[4;32m"),  // GREEN
@@ -55,7 +54,7 @@ public enum Unicode {
 	CYAN_UNDERLINED("\033[4;36m"),   // CYAN
 	WHITE_UNDERLINED("\033[4;37m"),  // WHITE
 
-	// Background
+	// Background Colors
 	BLACK_BACKGROUND("\033[40m"),  // BLACK
 	RED_BACKGROUND("\033[41m"),    // RED
 	GREEN_BACKGROUND("\033[42m"),  // GREEN
@@ -65,7 +64,7 @@ public enum Unicode {
 	CYAN_BACKGROUND("\033[46m"),   // CYAN
 	WHITE_BACKGROUND("\033[47m"),  // WHITE
 
-	// High Intensity
+	// High Intensity Colors
 	BLACK_BRIGHT("\033[0;90m"),  // BLACK
 	RED_BRIGHT("\033[0;91m"),    // RED
 	GREEN_BRIGHT("\033[0;92m"),  // GREEN
@@ -75,7 +74,7 @@ public enum Unicode {
 	CYAN_BRIGHT("\033[0;96m"),   // CYAN
 	WHITE_BRIGHT("\033[0;97m"),  // WHITE
 
-	// Bold High Intensity
+	// Bold High Intensity Colors
 	BLACK_BOLD_BRIGHT("\033[1;90m"), // BLACK
 	RED_BOLD_BRIGHT("\033[1;91m"),   // RED
 	GREEN_BOLD_BRIGHT("\033[1;92m"), // GREEN
@@ -85,7 +84,7 @@ public enum Unicode {
 	CYAN_BOLD_BRIGHT("\033[1;96m"),  // CYAN
 	WHITE_BOLD_BRIGHT("\033[1;97m"), // WHITE
 
-	// High Intensity backgrounds
+	// High Intensity backgrounds colors
 	BLACK_BACKGROUND_BRIGHT("\033[0;100m"),	// BLACK
 	RED_BACKGROUND_BRIGHT("\033[0;101m"),	// RED
 	GREEN_BACKGROUND_BRIGHT("\033[0;102m"),	// GREEN
