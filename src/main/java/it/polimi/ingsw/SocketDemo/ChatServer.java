@@ -1,14 +1,11 @@
-package it.polimi.ingsw.InternetTesting;
+package it.polimi.ingsw.SocketDemo;
 
 import java.io.*;
 import java.net.*;
 import java.util.*;
 
 /**
- * This is the chat server program.
- * Press Ctrl + C to terminate the program.
- *
- * @author www.codejava.net
+ * This is the chat server program
  */
 public class ChatServer {
 	private int port;
@@ -19,6 +16,17 @@ public class ChatServer {
 		this.port = port;
 	}
 	
+	public static void main(String[] args) {
+		
+		Scanner scanner = new Scanner(System.in);
+		System.out.println("Hosting server: write port number: ");
+		int port = Integer.parseInt(scanner.nextLine());
+		
+		// creates a server hosted on localhost with the defined port
+		ChatServer server = new ChatServer(port);
+		server.execute();
+	}
+	
 	public void execute() {
 		try (ServerSocket serverSocket = new ServerSocket(port)) {
 			
@@ -26,11 +34,12 @@ public class ChatServer {
 			
 			while (true) {
 				Socket socket = serverSocket.accept();
-				System.out.println("New user connected");
+				System.out.println("New user connected from " + socket.getRemoteSocketAddress().toString());
 				
+				// each logged client is a thread that runs and interacts with the server
 				UserThread newUser = new UserThread(socket, this);
 				userThreads.add(newUser);
-				newUser.start();
+				new Thread(newUser).start();
 				
 			}
 			
@@ -40,25 +49,10 @@ public class ChatServer {
 		}
 	}
 	
-	public static void main(String[] args) {
-		/*
-		if (args.length < 1) {
-			System.out.println("Syntax: java ChatServer <port-number>");
-			System.exit(0);
-		}
-		 */
-		Scanner scanner = new Scanner(System.in);
-		System.out.println("write port number: ");
-		int port = Integer.parseInt(scanner.nextLine());
-		
-		ChatServer server = new ChatServer(port);
-		server.execute();
-	}
-	
 	/**
-	 * Delivers a message from one user to others (broadcasting)
+	 * Delivers a message from one user to the others (broadcasting)
 	 */
-	void broadcast(String message, UserThread excludeUser) {
+	void broadcast(Message message, UserThread excludeUser) {
 		for (UserThread aUser : userThreads) {
 			if (aUser != excludeUser) {
 				aUser.sendMessage(message);
