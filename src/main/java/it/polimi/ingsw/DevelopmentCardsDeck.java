@@ -48,11 +48,11 @@ public class DevelopmentCardsDeck {
 		}
 		
 		// checks if the level of the selected card is equal to at least one top card in the player's cards slots plus 1
-		if (playersCard.checkStackLevel(0) == level - 1) {
+		if (playersCard.checkStackLevel(1) == level - 1) {
 			return true;
-		} else if (playersCard.checkStackLevel(1) == level - 1) {
+		} else if (playersCard.checkStackLevel(2) == level - 1) {
 			return true;
-		} else return playersCard.checkStackLevel(2) == level - 1;
+		} else return playersCard.checkStackLevel(3) == level - 1;
 		
 		
 	}

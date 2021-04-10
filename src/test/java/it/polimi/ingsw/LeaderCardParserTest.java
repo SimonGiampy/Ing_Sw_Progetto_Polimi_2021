@@ -33,6 +33,8 @@ public class LeaderCardParserTest {
 
 			
 		}
+		System.out.println("\n\n");
+	leaderCards.get(10).showLeader();
 
 	}
 	

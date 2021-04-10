@@ -32,6 +32,17 @@ public class CardRequirement {
 	 */
 	@Override
 	public String toString() {
-		return "CardRequirement { " + "color = " + color + ", level = " + level +	'}';
+		String support;
+		if (level==0)
+			support="any";
+		else support= String.valueOf(level);
+		return color.getColorCode()+"█"+Unicode.RESET+" LVL = "+support;
+	}
+
+
+	@Override
+	public boolean equals(Object obj) {
+		CardRequirement comparison = (CardRequirement) obj;
+		return this.getColor() == comparison.getColor() && this.getLevel() == comparison.getLevel();
 	}
 }

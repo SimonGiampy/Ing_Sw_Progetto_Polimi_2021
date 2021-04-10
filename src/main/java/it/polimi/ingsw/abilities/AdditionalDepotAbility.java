@@ -38,4 +38,9 @@ public class AdditionalDepotAbility implements AbilityEffectActivation{
 	public String toString() {
 		return "Additional Depot: resources = " + abilityResource.toString();
 	}
+
+	@Override
+	public void appendPower(StringBuilder string){
+
+	}
 }

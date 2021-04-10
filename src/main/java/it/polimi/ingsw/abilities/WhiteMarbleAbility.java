@@ -1,5 +1,6 @@
 package it.polimi.ingsw.abilities;
 
+import it.polimi.ingsw.ListSet;
 import it.polimi.ingsw.Player;
 import it.polimi.ingsw.Resources;
 
@@ -30,6 +31,16 @@ public class WhiteMarbleAbility implements AbilityEffectActivation {
 	@Override
 	public void activateAbility(Player player) {
 		player.getPlayersResourceDeck().setFromWhiteMarble(abilityResources, whiteMarbleNumber);
+	}
+
+	@Override
+	public void appendPower(StringBuilder string) {
+		string.append("White Marble Ability: \n");
+		for (int i = 0; i < whiteMarbleNumber; i++) {
+			string.append("\uD83D\uDFE3 ");
+		}
+		string.append("= ");
+		string.append(ListSet.showListMultiplicityOnConsole(abilityResources)+"\n");
 	}
 
 	public ArrayList<Resources> getAbilityResources() {

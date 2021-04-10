@@ -33,6 +33,11 @@ public class ExtraProductionAbility implements AbilityEffectActivation {
 				addLeaderCard(inputResources,outputResources,faithPointsOutput);
 	}
 
+	@Override
+	public void appendPower(StringBuilder string) {
+
+	}
+
 	public ArrayList<Resources> getInputResources() {
 		return inputResources;
 	}

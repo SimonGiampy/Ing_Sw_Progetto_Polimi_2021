@@ -2,13 +2,14 @@ package it.polimi.ingsw;
 
 public enum Resources {
 
-	COIN("\uD83D\uDCB0"), // 💰
-	SERVANT("\uD83D\uDE47"), // 🙇
-	SHIELD("\uD83D\uDEE1"), // 🛡
-	STONE("\uD83D\uDDFF"), // 🗿
+	COIN(Unicode.YELLOW_BRIGHT+"\uD83D\uDCB0"+Unicode.RESET), // 💰
+	SERVANT(Unicode.PURPLE_BOLD+"\uD83D\uDC64"+Unicode.RESET), // 🙇
+	SHIELD(Unicode.BLUE_BOLD+"\uD83D\uDEE1"+Unicode.RESET), // 🛡
+	STONE(Unicode.BLACK_BOLD+"\u2B1B"+Unicode.RESET), // 🗿 █
+	FREE_CHOICE(Unicode.BLACK_BOLD+"\u2753"+Unicode.RESET),
 	EMPTY("  "); // indicates an empty slot resources in the warehouse depot
 	
-	public static final String VICTORY_POINTS = "\uD83C\uDFC6"; // 🏆
+	public static final String VICTORY_POINTS = Unicode.YELLOW_BOLD+"\uD83C\uDFC6"+Unicode.RESET; // 🏆
 	
 	private final String unicode;
 	

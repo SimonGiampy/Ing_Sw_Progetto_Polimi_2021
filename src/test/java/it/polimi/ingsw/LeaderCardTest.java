@@ -32,6 +32,7 @@ class LeaderCardTest {
 
 	@Test
 	void checkCards_1() {
+		StringBuilder string= new StringBuilder();
 		ArrayList<CardRequirement> leaderInput=new ArrayList<>();
 		ArrayList<CardRequirement> playerCards= new ArrayList<>();
 		leaderInput.add(yellow0);
@@ -44,6 +45,8 @@ class LeaderCardTest {
 		ArrayList<AbilityEffectActivation> effectActivations = new ArrayList<>();
 		effectActivations.add(disc);
 		LeaderCard leaderCard = new LeaderCard(0,new ArrayList<>(), leaderInput, effectActivations);
+		leaderCard.appendFirstLine(string);
+		System.out.println(string);
 		assertTrue(leaderCard.checkCards(playerCards));
 	}
 	@Test

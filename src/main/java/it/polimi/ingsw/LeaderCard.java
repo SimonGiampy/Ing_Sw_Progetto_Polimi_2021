@@ -100,4 +100,30 @@ public class LeaderCard {
 	public ArrayList<AbilityEffectActivation> getEffectsActivation() {
 		return effectsActivation;
 	}
+
+	public void showLeader(){
+		StringBuilder string= new StringBuilder();
+		appendFirstLine(string);
+		appendAbility(string);
+		System.out.println(string);
+
+	}
+
+	public void appendFirstLine(StringBuilder string){
+		if(resourceRequirements.size()!=0)
+			string.append("REQs "+ListSet.showListMultiplicityOnConsole(resourceRequirements)+"\n");
+		if(cardRequirements.size()!=0)
+			string.append("REQs "+ListSet.showListMultiplicityOnConsole(cardRequirements)+"\n");
+	}
+
+	public void appendAbility(StringBuilder string){
+		for (int i = 0; i < effectsActivation.size(); i++) {
+			effectsActivation.get(i).appendPower(string);
+		}
+	}
+
+	public static void main(String[] args) {
+
+		//StringBuilder string =
+	}
 }

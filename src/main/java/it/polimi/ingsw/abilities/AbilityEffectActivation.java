@@ -15,4 +15,6 @@ public interface AbilityEffectActivation {
 	 */
 	void activateAbility(Player player);
 
+	void appendPower(StringBuilder string);
+
 }

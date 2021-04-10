@@ -30,6 +30,11 @@ public class DiscountAbility implements AbilityEffectActivation {
 		player.setDiscount(singleDiscounts);
 	}
 
+	@Override
+	public void appendPower(StringBuilder string) {
+
+	}
+
 	public ArrayList<Resources> getSingleDiscounts() {
 		return singleDiscounts;
 	}

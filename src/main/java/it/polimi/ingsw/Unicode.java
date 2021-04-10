@@ -18,6 +18,13 @@ public enum Unicode {
 	TICK("\u2714"),
 	CROSS_REPORT("\u274c"),
 
+	// Dot for Dev cards
+	GREEN_DOT("\033[1;32m●"+Unicode.RESET),
+	BLUE_DOT("\033[1;34m●"+Unicode.RESET),
+	YELLOW_DOT("\033[1;33m●"+Unicode.RESET),
+	PURPLE_DOT("\033[1;35m●"+Unicode.RESET),
+	DOT("●"),
+
 	//Escape codes for colors and text formatting
 	
 	BOLD("\033[1m"), //Bold text
