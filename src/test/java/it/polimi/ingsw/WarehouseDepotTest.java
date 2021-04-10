@@ -362,4 +362,13 @@ public class WarehouseDepotTest {
 		assertEquals(list2, depot.getIncomingResources());
 		
 	}
+
+	@Test
+	void showDepot(){
+		WarehouseDepot depot = new WarehouseDepot();
+		Resources[] list = new Resources[] {Resources.COIN, Resources.SHIELD, Resources.COIN,
+				Resources.SHIELD, Resources.STONE, Resources.SERVANT};
+		depot.setDepotForDebugging(list);
+		depot.showDepot();
+	}
 }

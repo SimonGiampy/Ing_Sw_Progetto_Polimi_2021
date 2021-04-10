@@ -50,10 +50,36 @@ public class WarehouseDepot {
 	 * debugging function for showing warehouse shelves content
 	 */
 	protected void showDepot() {
-		System.out.println("warehouse contains: ");
-		System.out.println("top: \t\t" + depot[0].toString());
-		System.out.println("middle: \t" + depot[1].toString() + "\t" + depot[2].toString());
-		System.out.println("bottom: \t" + depot[3].toString() + "\t" + depot[4].toString() + "\t" + depot[5].toString());
+		StringBuilder string = new StringBuilder();
+		string.append("            ").append(Unicode.TOP_LEFT).append(Unicode.HORIZONTAL).append(Unicode.HORIZONTAL)
+				.append(Unicode.HORIZONTAL).append(Unicode.HORIZONTAL).append(Unicode.TOP_RIGHT).append("\n");
+		string.append("            ").append(Unicode.VERTICAL).append(" ").append(depot[0].toString())
+				.append(" ").append(Unicode.VERTICAL).append("\n");
+		string.append("        ").append(Unicode.TOP_LEFT).append(Unicode.HORIZONTAL).append(Unicode.HORIZONTAL)
+				.append(Unicode.HORIZONTAL).append(Unicode.BOTTOM_RIGHT).append("    ")
+				.append(Unicode.BOTTOM_LEFT).append(Unicode.HORIZONTAL).append(Unicode.HORIZONTAL)
+				.append(Unicode.HORIZONTAL).append(Unicode.TOP_RIGHT).append("\n");
+		string.append("        ").append(Unicode.VERTICAL).append(" ").append(depot[1].toString()).append("      ")
+				.append(depot[2].toString()).append(" ").append(Unicode.VERTICAL).append("\n");
+		string.append("    ").append(Unicode.TOP_LEFT).append(Unicode.HORIZONTAL).append(Unicode.HORIZONTAL)
+				.append(Unicode.HORIZONTAL).append(Unicode.BOTTOM_RIGHT).append("            ")
+				.append(Unicode.BOTTOM_LEFT).append(Unicode.HORIZONTAL).append(Unicode.HORIZONTAL)
+				.append(Unicode.HORIZONTAL).append(Unicode.TOP_RIGHT).append("\n");
+		string.append("    ").append(Unicode.VERTICAL).append(" ").append(depot[3].toString())
+				.append("      ").append(depot[4].toString()).append("  ").append("    ").append(depot[5].toString())
+				.append(" ").append(Unicode.VERTICAL).append("\n");
+		string.append("    ").append(Unicode.BOTTOM_LEFT);
+		string.append(String.valueOf(Unicode.HORIZONTAL).repeat(20)).append(Unicode.BOTTOM_RIGHT).append("\n");
+		/*
+		string.append("Top:       " + "_|").append(depot[0].toString()).append("|_").append("\n");
+		string.append("Middle:  " + "_|").append(depot[1].toString()).append("  ")
+				.append(depot[2].toString()).append("|_").append("\n");
+		string.append("Bottom: " + "|").append(depot[3].toString())
+				.append("  ").append(depot[4].toString()).append("  ").append(depot[5].toString()).append("|").append("\n");
+
+		 */
+		System.out.println(string);
+
 	}
 	
 	/**
@@ -401,6 +427,7 @@ public class WarehouseDepot {
 		
 		return price;
 	}
+
 	
 	
 	public int getResourceDeckSize() {
