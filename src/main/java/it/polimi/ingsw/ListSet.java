@@ -92,7 +92,7 @@ public class ListSet {
 	public static <T> String showListMultiplicityOnConsole(ArrayList<T> list) {
 		HashMap<T, Integer> setMap = new HashMap<>(10);
 		for (T obj: list) {
-			setMap.replace(obj, setMap.getOrDefault(obj, 0) + 1);
+			setMap.put(obj, setMap.getOrDefault(obj, 0) + 1);
 		}
 		
 		StringBuilder builder = new StringBuilder();
