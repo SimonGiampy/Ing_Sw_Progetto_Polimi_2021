@@ -35,12 +35,21 @@ public class WhiteMarbleAbility implements AbilityEffectActivation {
 
 	@Override
 	public void appendPower(StringBuilder string) {
-		string.append("White Marble Ability: \n");
+		string.append("  White Marble Ability:\n");
+		string.append("  ");
 		for (int i = 0; i < whiteMarbleNumber; i++) {
 			string.append("\uD83D\uDFE3 ");
 		}
 		string.append("= ");
 		string.append(ListSet.showListMultiplicityOnConsole(abilityResources)+"\n");
+	}
+
+	@Override
+	public int maxLength() {
+		int size=(int)(5+3*whiteMarbleNumber+4*abilityResources.stream().distinct().count());
+		if (size>23)
+			return size;
+		else return 23;
 	}
 
 	public ArrayList<Resources> getAbilityResources() {

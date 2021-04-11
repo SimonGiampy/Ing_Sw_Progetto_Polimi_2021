@@ -1,7 +1,9 @@
 package it.polimi.ingsw.abilities;
 
+import it.polimi.ingsw.ListSet;
 import it.polimi.ingsw.Player;
 import it.polimi.ingsw.Resources;
+import it.polimi.ingsw.Unicode;
 
 import java.util.ArrayList;
 
@@ -35,7 +37,16 @@ public class ExtraProductionAbility implements AbilityEffectActivation {
 
 	@Override
 	public void appendPower(StringBuilder string) {
+		string.append("  In : ").append(ListSet.showListMultiplicityOnConsole(inputResources)).append("\n");
+		string.append("  Out: ").append(ListSet.showListMultiplicityOnConsole(outputResources)).append("\n");
+		string.append("  "+faithPointsOutput+ Unicode.RED_BOLD+Unicode.CROSS2);
+	}
 
+	@Override
+	public int maxLength() {
+		int inputSize= (int) (8+4*inputResources.stream().distinct().count());
+		int outputSize=(int) (8+4*outputResources.stream().distinct().count());
+		return Math.max(inputSize, outputSize);
 	}
 
 	public ArrayList<Resources> getInputResources() {

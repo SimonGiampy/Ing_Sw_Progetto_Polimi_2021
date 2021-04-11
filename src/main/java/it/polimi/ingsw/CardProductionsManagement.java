@@ -121,7 +121,7 @@ public class CardProductionsManagement {
 				selectedProduction.add(Resources.values()[i]);
 			}
 		}
-		selectedProduction = selectedProduction.stream().filter(i -> i != Resources.EMPTY).collect(Collectors.toCollection(ArrayList::new));
+		selectedProduction = selectedProduction.stream().filter(i -> i != Resources.FREE_CHOICE).collect(Collectors.toCollection(ArrayList::new));
 		myStrongbox.storeResources(selectedProduction);
 		return totalFaithPoints;
 	}
@@ -195,7 +195,7 @@ public class CardProductionsManagement {
 		for (Integer integer : playerInput) {
 			productionInput.addAll(getProductionInput(integer));
 		}
-		ArrayList<Resources> filteredProduction = productionInput.stream().filter(i->i!=Resources.EMPTY)
+		ArrayList<Resources> filteredProduction = productionInput.stream().filter(i->i!=Resources.FREE_CHOICE)
 				.collect(Collectors.toCollection(ArrayList::new));
 		for (int i = 0; i < 4; i++) {
 			for (int j = 0; j < inputResources[i]; j++) {

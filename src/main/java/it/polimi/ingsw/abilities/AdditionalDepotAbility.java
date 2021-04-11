@@ -1,5 +1,6 @@
 package it.polimi.ingsw.abilities;
 
+import it.polimi.ingsw.ListSet;
 import it.polimi.ingsw.Player;
 import it.polimi.ingsw.Resources;
 
@@ -41,6 +42,17 @@ public class AdditionalDepotAbility implements AbilityEffectActivation{
 
 	@Override
 	public void appendPower(StringBuilder string){
-
+		string.append("  Additional Depot:\n");
+		string.append("  "+ListSet.showListMultiplicityOnConsole(abilityResource)+"\n");
 	}
+
+	@Override
+	public int maxLength() {
+		int size= (int) (3+4*abilityResource.stream().distinct().count());
+		if(size>19)
+			return size;
+		else return 19;
+	}
+
+
 }

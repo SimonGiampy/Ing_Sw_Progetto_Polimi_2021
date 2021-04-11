@@ -40,11 +40,14 @@ public class MainAlessandro {
 		ArrayList<Resources> prova = new ArrayList<>();
 		prova.add(Resources.COIN);
 		prova.add(Resources.SHIELD);
+		prova.add(Resources.SHIELD);
+		prova.add(Resources.STONE);
+		prova.add(Resources.SERVANT);
 		box.storeResources(prova);
 		box.showStrongbox();
-		System.out.println(prova.stream().distinct());
-		System.out.println(prova.stream().equals(prova.stream().distinct()));
-		System.out.println(prova);
-		System.out.println(prova.size() == prova.stream().distinct().count());
+		System.out.println(ListSet.showListMultiplicityOnConsole(prova));
+		System.out.println(ListSet.showListMultiplicityOnConsole(prova).length());
+		String s= "CIAO";
+		System.out.println(s.length());
 	}
 }

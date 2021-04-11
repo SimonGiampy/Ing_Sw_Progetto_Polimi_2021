@@ -15,8 +15,8 @@ public class LeaderCard {
 	private final ArrayList<CardRequirement> cardRequirements; // list of development card requirements
 	private final ArrayList<AbilityEffectActivation> effectsActivation; // a single leader card supports multiple abilities
 	private boolean abilitiesActivated;
-	
-	
+
+
 	/**
 	 * Constructor that sets the attributes to their values based on the parsed information
 	 * @param victoryPoints number of victory points of the card
@@ -63,8 +63,8 @@ public class LeaderCard {
 		remainingCardsColor=remainingCards.stream().map(CardRequirement::getColor).collect(Collectors.toCollection(ArrayList::new));
 		return ListSet.subset(remainingCardsColor, leaderCardColorsRequirement);
 	}
-	
-	
+
+
 	/**
 	 * activates ability with the Strategy design pattern
 	 * @param player the player who is asking to activate its ability
@@ -75,51 +75,89 @@ public class LeaderCard {
 		}
 		abilitiesActivated = true;
 	}
-	
+
 	/**
 	 * victory points earned from a leader card
 	 * @return the value when the game is finished
 	 */
 	protected int getVictoryPoints() {
-		if (abilitiesActivated) return victoryPoints;
-		else return 0;
+		return victoryPoints;
 	}
-	
+
 	public ArrayList<Resources> getResourceRequirements() {
 		return resourceRequirements;
 	}
-	
+
 	public ArrayList<CardRequirement> getCardRequirements() {
 		return cardRequirements;
 	}
-	
+
 	public AbilityEffectActivation getEffectActivation(int whichAbility) {
 		return effectsActivation.get(whichAbility);
 	}
-	
+
 	public ArrayList<AbilityEffectActivation> getEffectsActivation() {
 		return effectsActivation;
 	}
 
 	public void showLeader(){
 		StringBuilder string= new StringBuilder();
+		int size= string.length();
+		appendTopFrame(string);
+		appendVictoryPoints(string);
 		appendFirstLine(string);
 		appendAbility(string);
+		appendBottomFrame(string);
 		System.out.println(string);
+	}
 
+	public int maxLength(){
+		int max=0;
+		int size= (int) (8+4*resourceRequirements.stream().distinct().count());
+		if(size>max)
+			max=size;
+		size= (int) (6+11*cardRequirements.stream().distinct().count());
+		if(size>max)
+			max=size;
+		for (int i = 0; i < effectsActivation.size(); i++) {
+			if (effectsActivation.get(i).maxLength()>max)
+				max=effectsActivation.get(i).maxLength();
+		}
+		return max;
+	}
+
+
+	public void appendTopFrame(StringBuilder string){
+		string.append(Unicode.TOP_LEFT);
+		for (int i = 0; i < maxLength(); i++) {
+			string.append(Unicode.HORIZONTAL);
+		}
+		string.append(Unicode.TOP_RIGHT+"\n");
+	}
+
+	public void appendBottomFrame(StringBuilder string){
+		string.append(Unicode.BOTTOM_LEFT);
+		for (int i = 0; i < maxLength(); i++) {
+			string.append(Unicode.HORIZONTAL);
+		}
+		string.append(Unicode.BOTTOM_RIGHT+"\n");
 	}
 
 	public void appendFirstLine(StringBuilder string){
 		if(resourceRequirements.size()!=0)
-			string.append("REQs "+ListSet.showListMultiplicityOnConsole(resourceRequirements)+"\n");
+			string.append("  REQs "+ListSet.showListMultiplicityOnConsole(resourceRequirements)+"\n");
 		if(cardRequirements.size()!=0)
-			string.append("REQs "+ListSet.showListMultiplicityOnConsole(cardRequirements)+"\n");
+			string.append("  REQs "+ListSet.showListMultiplicityOnConsole(cardRequirements)+"\n");
 	}
 
 	public void appendAbility(StringBuilder string){
 		for (int i = 0; i < effectsActivation.size(); i++) {
 			effectsActivation.get(i).appendPower(string);
 		}
+	}
+
+	public void appendVictoryPoints(StringBuilder string){
+		string.append("  "+getVictoryPoints()+Resources.VICTORY_POINTS+"\n");
 	}
 
 	public static void main(String[] args) {

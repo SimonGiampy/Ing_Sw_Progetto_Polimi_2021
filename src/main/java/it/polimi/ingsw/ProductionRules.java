@@ -62,13 +62,13 @@ public class ProductionRules {
 	 * @return true if the list needed for production is contained in the player's boxes. this version handles also the case when production input contains ? values
 	 */
 	public boolean isProductionAvailable(ArrayList<Resources> input){
-		if (this.input.stream().noneMatch(i -> i != Resources.EMPTY))
+		if (this.input.stream().noneMatch(i -> i != Resources.FREE_CHOICE))
 			return this.input.size() <= input.size();
 		else
 			return ListSet.subset(
-					input, this.input.stream().filter(i -> i != Resources.EMPTY).collect(Collectors.toCollection(ArrayList::new)))
-					&& this.input.stream().filter((i -> i == Resources.EMPTY)).count() <=
-					input.size() - this.input.stream().filter((i-> i != Resources.EMPTY)).count();
+					input, this.input.stream().filter(i -> i != Resources.FREE_CHOICE).collect(Collectors.toCollection(ArrayList::new)))
+					&& this.input.stream().filter((i -> i == Resources.FREE_CHOICE)).count() <=
+					input.size() - this.input.stream().filter((i-> i != Resources.FREE_CHOICE)).count();
 	}
 
 	/**
@@ -76,10 +76,10 @@ public class ProductionRules {
 	 * @return the number of ? production values (indicated with EMPTY flag)
 	 */
 	public int numberOfOutputEmptyResources(){
-		return (int) output.stream().filter(i -> i==Resources.EMPTY).count();
+		return (int) output.stream().filter(i -> i==Resources.FREE_CHOICE).count();
 	}
 	public int numberOfInputEmptyResources(){
-		return (int) input.stream().filter(i -> i==Resources.EMPTY).count();
+		return (int) input.stream().filter(i -> i==Resources.FREE_CHOICE).count();
 	}
 
 	public void showProductionRulesInformation(){

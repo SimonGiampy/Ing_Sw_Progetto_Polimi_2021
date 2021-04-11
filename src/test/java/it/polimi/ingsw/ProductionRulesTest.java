@@ -53,7 +53,7 @@ public class ProductionRulesTest {
 		ArrayList<Resources> outputProduction=new ArrayList<>();
 		ArrayList<Resources> playerResources= new ArrayList<>();
 		inputProduction.add(Resources.COIN);
-		inputProduction.add(Resources.EMPTY);
+		inputProduction.add(Resources.FREE_CHOICE);
 		playerResources.add(Resources.COIN);
 		playerResources.add(Resources.STONE);
 		ProductionRules productionRules = new ProductionRules(inputProduction,outputProduction,1);
@@ -70,7 +70,7 @@ public class ProductionRulesTest {
 		ArrayList<Resources> outputProduction=new ArrayList<>();
 		ArrayList<Resources> playerResources= new ArrayList<>();
 		inputProduction.add(Resources.COIN);
-		inputProduction.add(Resources.EMPTY);
+		inputProduction.add(Resources.FREE_CHOICE);
 		ProductionRules productionRules = new ProductionRules(inputProduction,outputProduction,1);
 		assertFalse(productionRules.isProductionAvailable(playerResources));
 	}
@@ -84,8 +84,8 @@ public class ProductionRulesTest {
 		ArrayList<Resources> inputProduction=new ArrayList<>();
 		ArrayList<Resources> outputProduction=new ArrayList<>();
 		ArrayList<Resources> playerResources= new ArrayList<>();
-		inputProduction.add(Resources.EMPTY);
-		inputProduction.add(Resources.EMPTY);
+		inputProduction.add(Resources.FREE_CHOICE);
+		inputProduction.add(Resources.FREE_CHOICE);
 		playerResources.add(Resources.STONE);
 		playerResources.add(Resources.SHIELD);
 		ProductionRules productionRules = new ProductionRules(inputProduction,outputProduction,1);
@@ -101,8 +101,8 @@ public class ProductionRulesTest {
 		ArrayList<Resources> inputProduction=new ArrayList<>();
 		ArrayList<Resources> outputProduction=new ArrayList<>();
 		ArrayList<Resources> playerResources= new ArrayList<>();
-		inputProduction.add(Resources.EMPTY);
-		inputProduction.add(Resources.EMPTY);
+		inputProduction.add(Resources.FREE_CHOICE);
+		inputProduction.add(Resources.FREE_CHOICE);
 		ProductionRules productionRules = new ProductionRules(inputProduction,outputProduction,1);
 		assertFalse(productionRules.isProductionAvailable(playerResources));
 	}
@@ -115,7 +115,7 @@ public class ProductionRulesTest {
 		ArrayList<Resources> inputProduction= new ArrayList<>();
 		ArrayList<Resources> outputProduction= new ArrayList<>();
 		ArrayList<Resources> playerResources= new ArrayList<>();
-		inputProduction.add(Resources.EMPTY);
+		inputProduction.add(Resources.FREE_CHOICE);
 		inputProduction.add(Resources.STONE);
 		ProductionRules productionRules = new ProductionRules(inputProduction,outputProduction,1);
 		assertEquals(1,productionRules.numberOfInputEmptyResources());

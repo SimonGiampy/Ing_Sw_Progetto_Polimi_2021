@@ -17,4 +17,6 @@ public interface AbilityEffectActivation {
 
 	void appendPower(StringBuilder string);
 
+	int maxLength();
+
 }

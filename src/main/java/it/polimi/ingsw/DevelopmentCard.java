@@ -176,7 +176,6 @@ public class DevelopmentCard {
 		System.out.println("  REQs 3"+Unicode.YELLOW_BRIGHT+"\uD83D\uDCB0"+Unicode.RESET+" 2"+Unicode.PURPLE_BOLD+"\uD83D\uDE47"+Unicode.RESET+" 1"+Unicode.BLUE_BOLD+"\uD83D\uDEE1"+Unicode.RESET+" 4"+Unicode.BLACK_BOLD+"\uD83D\uDDFF"+Unicode.RESET);
 		System.out.println("  In : 3"+Unicode.YELLOW_BRIGHT+"\uD83D\uDCB0 "+Unicode.RESET+"1"+Unicode.PURPLE_BOLD+"\uD83D\uDE47"+Unicode.RESET+" 1"+Unicode.BLACK_BOLD+"\uD83D\uDDFF"+Unicode.RESET+" 1"+Unicode.BLUE_BOLD+"\uD83D\uDEE1"+Unicode.RESET);
 		System.out.println("  Out: 1"+Unicode.PURPLE_BOLD+"\uD83D\uDC64"+Unicode.RESET+" 1"+Unicode.BLACK_BOLD+"\uD83D\uDDFF"+Unicode.RESET);
-
 		dev.appendBottomFrame(string2);
 		System.out.println(string2);
 

@@ -34,9 +34,9 @@ public class CardRequirement {
 	public String toString() {
 		String support;
 		if (level==0)
-			support="any";
+			support="X";
 		else support= String.valueOf(level);
-		return color.getColorCode()+"█"+Unicode.RESET+" LVL = "+support;
+		return "["+color.getColorCode()+"█"+Unicode.RESET+" LVL "+support+"]";
 	}
 	
 	
@@ -60,4 +60,5 @@ public class CardRequirement {
 		int n = this.getColor().getColorNumber() * 100;
 		return n + this.getLevel();
 	}
+
 }
