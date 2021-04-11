@@ -112,7 +112,7 @@ public class LeaderCard {
 	}
 
 	public int maxLength(){
-		int max=0;
+		int max=12;
 		int size= (int) (8+4*resourceRequirements.stream().distinct().count());
 		if(size>max)
 			max=size;
@@ -157,11 +157,7 @@ public class LeaderCard {
 	}
 
 	public void appendVictoryPoints(StringBuilder string){
-		string.append("  "+getVictoryPoints()+Resources.VICTORY_POINTS+"\n");
+		string.append(Unicode.RED_BOLD+"  LEADER "+Unicode.RESET+getVictoryPoints()+Resources.VICTORY_POINTS+"\n");
 	}
 
-	public static void main(String[] args) {
-
-		//StringBuilder string =
-	}
 }
