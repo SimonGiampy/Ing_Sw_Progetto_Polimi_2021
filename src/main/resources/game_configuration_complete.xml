@@ -1447,7 +1447,7 @@
                             <res value = "shield"/>
                         </input>
                         <output>
-                            <res value = "empty"/>
+                            <res value = "free_choice"/>
                         </output>
                     </power>
                 </ability>
@@ -1467,7 +1467,7 @@
                             <res value = "servant"/>
                         </input>
                         <output>
-                            <res value = "empty"/>
+                            <res value = "free_choice"/>
                         </output>
                     </power>
                 </ability>
@@ -1487,7 +1487,7 @@
                             <res value = "stone"/>
                         </input>
                         <output>
-                            <res value = "empty"/>
+                            <res value = "free_choice"/>
                         </output>
                     </power>
                 </ability>
@@ -1507,7 +1507,7 @@
                             <res value = "coin"/>
                         </input>
                         <output>
-                            <res value = "empty"/>
+                            <res value = "free_choice"/>
                         </output>
                     </power>
                 </ability>
@@ -1516,11 +1516,11 @@
     </cards>
     <base_production>
         <input>
-            <res value = "empty"/>
-            <res value = "empty"/>
+            <res value = "free_choice"/>
+            <res value = "free_choice"/>
         </input>
         <output>
-            <res value = "empty"/>
+            <res value = "free_choice"/>
         </output>
     </base_production>
 </game_configuration>

@@ -127,4 +127,15 @@ public class DevelopmentCardsDeck {
 			System.out.println("\n");
 		}
 	}
+
+	public void showBuyableCards(ArrayList<Resources> playerResources, CardProductionsManagement playerCards){
+		for (int i = 0; i < 3; i++) {
+			for (int j = 0; j < 4; j++) {
+				if(!cardStackStructure[i][j].isEmpty() &&
+						isSelectedDevCardBuyable(cardStackStructure[i][j].get(0).getLevel(),cardStackStructure[i][j].get(0).getColor(),playerResources,playerCards))
+					cardStackStructure[i][j].get(0).showCard();
+			}
+
+		}
+	}
 }

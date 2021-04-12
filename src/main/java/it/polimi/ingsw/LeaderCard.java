@@ -102,7 +102,6 @@ public class LeaderCard {
 
 	public void showLeader(){
 		StringBuilder string= new StringBuilder();
-		int size= string.length();
 		appendTopFrame(string);
 		appendVictoryPoints(string);
 		appendFirstLine(string);
@@ -114,32 +113,31 @@ public class LeaderCard {
 	public int maxLength(){
 		int max=12;
 		int size= (int) (8+4*resourceRequirements.stream().distinct().count());
+		StringBuilder s= new StringBuilder();
+
+		if(s.append("  REQs "+ListSet.showListMultiplicityOnConsole(resourceRequirements)).length()>resourceRequirements.stream().distinct().count()*15)
+			size=size+(s.length()-8-(int)resourceRequirements.stream().distinct().count()*15);
 		if(size>max)
 			max=size;
 		size= (int) (6+11*cardRequirements.stream().distinct().count());
 		if(size>max)
 			max=size;
-		for (int i = 0; i < effectsActivation.size(); i++) {
-			if (effectsActivation.get(i).maxLength()>max)
-				max=effectsActivation.get(i).maxLength();
+		for (AbilityEffectActivation abilityEffectActivation : effectsActivation) {
+			if (abilityEffectActivation.maxLength() > max)
+				max = abilityEffectActivation.maxLength();
 		}
 		return max;
 	}
 
-
 	public void appendTopFrame(StringBuilder string){
 		string.append(Unicode.TOP_LEFT);
-		for (int i = 0; i < maxLength(); i++) {
-			string.append(Unicode.HORIZONTAL);
-		}
+		string.append(String.valueOf(Unicode.HORIZONTAL).repeat(Math.max(0, maxLength())));
 		string.append(Unicode.TOP_RIGHT+"\n");
 	}
 
 	public void appendBottomFrame(StringBuilder string){
 		string.append(Unicode.BOTTOM_LEFT);
-		for (int i = 0; i < maxLength(); i++) {
-			string.append(Unicode.HORIZONTAL);
-		}
+		string.append(String.valueOf(Unicode.HORIZONTAL).repeat(Math.max(0, maxLength())));
 		string.append(Unicode.BOTTOM_RIGHT+"\n");
 	}
 
@@ -151,8 +149,8 @@ public class LeaderCard {
 	}
 
 	public void appendAbility(StringBuilder string){
-		for (int i = 0; i < effectsActivation.size(); i++) {
-			effectsActivation.get(i).appendPower(string);
+		for (AbilityEffectActivation abilityEffectActivation : effectsActivation) {
+			abilityEffectActivation.appendPower(string);
 		}
 	}
 

@@ -203,6 +203,7 @@ public class GameController {
 	}
 
 	public void processMarketInteraction(Player currentPlayer){
+
 		String which; // row/column for market (input)
 		int where; //selected row/selected column (input)
 		mechanics.getMarket().showMarket();
@@ -367,7 +368,7 @@ public class GameController {
 		
 
 		if (currentPlayer.isBuyMoveAvailable()) {
-			mechanics.getGameDevCardsDeck().showDevelopmentCardsDeck();
+			mechanics.getGameDevCardsDeck().showBuyableCards(currentPlayer.gatherAllPlayersResources(),currentPlayer.getPlayersCardManager());
 		}
 
 		currentPlayer.getPlayersWarehouseDepot().showDepot();
