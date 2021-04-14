@@ -126,7 +126,7 @@ public class ResourceDeckTest {
 		Exception exception = assertThrows(InvalidUserRequestException.class,
 				() -> deck.addResources(marbles,1,2));
 		String message = exception.getMessage();
-		assertTrue(message.equals("Invalid number of activations of leaders ability"));
+		assertEquals("Invalid number of activations of leaders ability", message);
 
 		try {
 			deck.addResources(marbles,1,0);

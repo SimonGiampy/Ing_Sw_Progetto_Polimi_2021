@@ -113,27 +113,27 @@ public class Player {
 	 * @param which must be equal to row or col
 	 * @param where indicates the number of the row or the column to move
 	 */
-	protected void interactWithMarket(String which, int where) throws InvalidUserRequestException {
+	public void interactWithMarket(String which, int where) throws InvalidUserRequestException {
 		Marbles[] output;
 		if (which.equals("col")) {
 			output = commonMarket.shiftCol(where - 1);
 		} else if (which.equals("row")) {
 			output = commonMarket.shiftRow(where - 1);
-		} else throw new InvalidUserRequestException("command for using market is not correct");
+		} else throw new InvalidUserRequestException("Command for using market is not correct");
 		
 		if (Arrays.asList(output).contains(Marbles.WHITE)) { //needs to ask how to transform the white marbles
 			
 			if (myResourceDeck.isWhiteAbility2Activated()) { //both leaders activated
 				Scanner scanner = new Scanner(System.in);
-				System.out.println("how many times do you want to use the first leader? ");
+				System.out.println("How many times do you want to use the first leader? ");
 				int quantity1 = scanner.nextInt();
-				System.out.println("how many times do you want to use the second leader? ");
+				System.out.println("How many times do you want to use the second leader? ");
 				int quantity2 = scanner.nextInt();
 				
 				myResourceDeck.addResources(output, quantity1, quantity2);
 			} else if (myResourceDeck.isWhiteAbility1Activated()) { //only first leader activated
 				Scanner scanner = new Scanner(System.in);
-				System.out.println("how many times do you want to use the leader? ");
+				System.out.println("How many times do you want to use the leader? ");
 				int quantity1 = scanner.nextInt();
 				
 				myResourceDeck.addResources(output, quantity1, 0);
@@ -237,40 +237,37 @@ public class Player {
 	 */
 	public void buyNewDevCard(int level, Colors color, int selectedSlot) throws InvalidInputException {
 		//Check if the player has enough resources and at least one eligible slot for the card
-		if (commonCardsDeck.isSelectedDevCardBuyable(level, color, gatherAllPlayersResources(), cardManager)) {
-			//Get the price, which is the sum of all the resources needed for buying the dev card
-			ArrayList <Resources> price = commonCardsDeck.getPriceDevCard(level, color);
+		if (!commonCardsDeck.isSelectedDevCardBuyable(level, color, gatherAllPlayersResources(), cardManager))
+			throw new InvalidInputException("Card requirements not satisfied");
+		//Check if the slot is an eligible one
+		if(cardManager.checkStackLevel(selectedSlot) == level - 1)
+			throw new InvalidDevCardSlotException("Selected slot is not available");
 
-			//Check that the slot is an eligible one
-			if(cardManager.checkStackLevel(selectedSlot) == level - 1) {
+		//Get the price, which is the sum of all the resources needed for buying the dev card
+		ArrayList <Resources> price = commonCardsDeck.getPriceDevCard(level, color);
 
-				//Apply the discounts of the leader cards
-				for(int i = 0; i < coinDiscount; i++)
-					if(!price.remove(Resources.COIN))
-						break;
-				for(int i = 0; i < servantDiscount; i++)
-					if(!price.remove(Resources.SERVANT))
-						break;
-				for(int i = 0; i < stoneDiscount; i++)
-					if(!price.remove(Resources.STONE))
-						break;
-				for(int i = 0; i < shieldDiscount; i++)
-					if(!price.remove(Resources.SHIELD))
-						break;
+		//Apply the discounts of the leader cards
+		for(int i = 0; i < coinDiscount; i++)
+			if(!price.remove(Resources.COIN))
+				break;
+		for(int i = 0; i < servantDiscount; i++)
+			if(!price.remove(Resources.SERVANT))
+				break;
+		for(int i = 0; i < stoneDiscount; i++)
+			if(!price.remove(Resources.STONE))
+				break;
+		for(int i = 0; i < shieldDiscount; i++)
+			if(!price.remove(Resources.SHIELD))
+				break;
 
-				//Pay with what there's in the depot or in the additional depots
-				price = myWarehouseDepot.payResources(price);
-				//Pay the remaining resources with the ones in the strongbox
-				if (!(price.isEmpty()))
-					myStrongbox.retrieveResources(price);
-				//Add card the slot
-				cardManager.addCard(commonCardsDeck.claimCard(level, color), selectedSlot);
+		//Pay with what there's in the depot or in the additional depots
+		price = myWarehouseDepot.payResources(price);
+		//Pay the remaining resources with the ones in the strongbox
+		if (!(price.isEmpty()))
+			myStrongbox.retrieveResources(price);
+		//Add card the slot
+		cardManager.addCard(commonCardsDeck.claimCard(level, color), selectedSlot);
 
-			} else{
-				throw new InvalidDevCardSlotException("selected slot is not available");
-			}
-
-		}
 	}
 
 	/**
@@ -355,5 +352,27 @@ public class Player {
 		return playerIndex;
 	}
 
+	public LeaderCard[] getLeaderCards() {
+		return leaderCards;
+	}
 
+	public boolean isPlayableLeader1() {
+		return playableLeader1;
+	}
+
+	public boolean isPlayableLeader2() {
+		return playableLeader2;
+	}
+
+	public boolean isActiveAbilityLeader1() {
+		return activeAbilityLeader1;
+	}
+
+	public boolean isActiveAbilityLeader2() {
+		return activeAbilityLeader2;
+	}
+
+	public Market getCommonMarket() {
+		return commonMarket;
+	}
 }

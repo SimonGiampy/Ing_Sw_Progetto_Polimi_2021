@@ -111,5 +111,7 @@ public class Market {
 		return selected;
 	}
 
-
+	public Marbles[][] getMarket() {
+		return market;
+	}
 }
