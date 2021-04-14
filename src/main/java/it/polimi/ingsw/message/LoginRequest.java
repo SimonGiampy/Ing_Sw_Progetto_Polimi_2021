@@ -1,4 +1,4 @@
-package message;
+package it.polimi.ingsw.message;
 
 public class LoginRequest extends Message {
 
