@@ -1,7 +1,7 @@
 package it.polimi.ingsw;
 
+import it.polimi.ingsw.util.Resources;
 import it.polimi.ingsw.abilities.*;
-import it.polimi.ingsw.exceptions.InvalidInputException;
 
 import java.util.ArrayList;
 

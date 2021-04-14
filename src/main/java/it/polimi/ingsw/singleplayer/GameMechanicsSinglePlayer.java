@@ -1,6 +1,7 @@
 package it.polimi.ingsw.singleplayer;
 
 import it.polimi.ingsw.*;
+import it.polimi.ingsw.util.Colors;
 
 import java.util.ArrayList;
 import java.util.Collections;

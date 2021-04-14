@@ -1,5 +1,11 @@
-package it.polimi.ingsw;
+package it.polimi.ingsw.util;
 
+import it.polimi.ingsw.CardRequirement;
+import it.polimi.ingsw.LeaderCard;
+import it.polimi.ingsw.Strongbox;
+import it.polimi.ingsw.util.Colors;
+import it.polimi.ingsw.util.ListSet;
+import it.polimi.ingsw.util.Resources;
 import it.polimi.ingsw.abilities.AbilityEffectActivation;
 import it.polimi.ingsw.abilities.DiscountAbility;
 
@@ -38,6 +44,9 @@ public class MainAlessandro {
 
 		Strongbox box = new Strongbox();
 		ArrayList<Resources> prova = new ArrayList<>();
+		for (int i = 0; i < 10; i++) {
+			prova.add(Resources.COIN);
+		}
 		prova.add(Resources.COIN);
 		prova.add(Resources.SHIELD);
 		prova.add(Resources.SHIELD);

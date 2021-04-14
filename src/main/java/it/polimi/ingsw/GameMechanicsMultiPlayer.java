@@ -1,5 +1,6 @@
 package it.polimi.ingsw;
 
+import it.polimi.ingsw.util.Resources;
 import it.polimi.ingsw.singleplayer.Token;
 
 import java.util.ArrayList;

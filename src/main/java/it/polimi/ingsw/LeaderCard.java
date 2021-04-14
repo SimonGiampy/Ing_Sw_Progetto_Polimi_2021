@@ -1,5 +1,8 @@
 package it.polimi.ingsw;
 
+import it.polimi.ingsw.util.Colors;
+import it.polimi.ingsw.util.ListSet;
+import it.polimi.ingsw.util.Resources;
 import it.polimi.ingsw.abilities.AbilityEffectActivation;
 
 import java.util.ArrayList;

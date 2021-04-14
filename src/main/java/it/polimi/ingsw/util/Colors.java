@@ -1,8 +1,10 @@
-package it.polimi.ingsw;
+package it.polimi.ingsw.util;
+
+import it.polimi.ingsw.Unicode;
 
 public enum Colors {
 	
-	GREEN(0,Unicode.GREEN_BOLD.toString()),
+	GREEN(0, Unicode.GREEN_BOLD.toString()),
 	BLUE(1, Unicode.BLUE_BOLD.toString()),
 	YELLOW(2, Unicode.YELLOW_BRIGHT.toString()),
 	PURPLE(3, Unicode.PURPLE_BOLD.toString());

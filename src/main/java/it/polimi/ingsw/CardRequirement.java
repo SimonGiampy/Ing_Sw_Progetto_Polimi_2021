@@ -1,5 +1,7 @@
 package it.polimi.ingsw;
 
+import it.polimi.ingsw.util.Colors;
+
 /**
  * This class represent the requirement of a single card for the activation of a leader card
  */
@@ -36,7 +38,7 @@ public class CardRequirement {
 		if (level==0)
 			support="X";
 		else support= String.valueOf(level);
-		return "["+color.getColorCode()+"█"+Unicode.RESET+" LVL "+support+"]";
+		return "["+color.getColorCode()+"█"+ Unicode.RESET+" LVL "+support+"]";
 	}
 	
 	

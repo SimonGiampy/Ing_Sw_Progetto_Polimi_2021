@@ -1,8 +1,8 @@
 package it.polimi.ingsw.abilities;
 
-import it.polimi.ingsw.ListSet;
+import it.polimi.ingsw.util.ListSet;
 import it.polimi.ingsw.Player;
-import it.polimi.ingsw.Resources;
+import it.polimi.ingsw.util.Resources;
 
 import java.util.ArrayList;
 

@@ -1,6 +1,8 @@
 package it.polimi.ingsw;
 
 
+import it.polimi.ingsw.util.Colors;
+import it.polimi.ingsw.util.Resources;
 import it.polimi.ingsw.exceptions.InvalidUserRequestException;
 import it.polimi.ingsw.xml_parsers.XMLParser;
 import org.junit.jupiter.api.Test;
@@ -19,11 +21,21 @@ public class CardProductionsManagementTest {
 	ProductionRules baseProduction = parser.parseBaseProductionFromXML();
 	Strongbox strongbox=new Strongbox();
 	CardProductionsManagement cardProductionsManagement = new CardProductionsManagement(strongbox,new WarehouseDepot(),baseProduction);
+	ArrayList<ArrayList<Resources>> cards_Input= new ArrayList<>();
+	ArrayList<ArrayList<Resources>> cards_Output= new ArrayList<>();
 
-	DevelopmentCard developmentCard1= new DevelopmentCard(1,Colors.GREEN,0,new ArrayList<>(),baseProduction);
+	ArrayList<Resources> cardInput_1= new ArrayList<>();
+	ArrayList<Resources> cardInput_2= new ArrayList<>();
+	ArrayList<Resources> cardInput_3= new ArrayList<>();
+	ArrayList<Resources> cardOutput_1= new ArrayList<>();
+	ArrayList<Resources> cardOutput_2= new ArrayList<>();
+	ArrayList<Resources> cardOutput_3= new ArrayList<>();
+	ArrayList<Resources> cardInput_4= new ArrayList<>();
+	ArrayList<Resources> cardOutput_4= new ArrayList<>();
+
+	DevelopmentCard developmentCard1= new DevelopmentCard(1, Colors.GREEN,0,new ArrayList<>(),baseProduction);
 	DevelopmentCard developmentCard2= new DevelopmentCard(1,Colors.YELLOW,3, new ArrayList<>(),baseProduction);
 	DevelopmentCard developmentCard3= new DevelopmentCard(2,Colors.YELLOW,5, new ArrayList<>(),baseProduction);
-
 	@Test // test for addCard and checkStackLevel && numberOfCards && totalVictoryPoints
 	public void checkStackLevel(){
 		cardProductionsManagement.addCard(developmentCard1,1);
@@ -143,6 +155,13 @@ public class CardProductionsManagementTest {
 		inputTest.add(2);
 		boolean test= cardProductionsManagement.checkPlayerInput(inputTest);
 		assertFalse(test);
+	}
+
+	@Test //
+	public void activateSelectedProduction(){
+		cardProductionsManagement.addCard(developmentCard1,1);
+		cardProductionsManagement.addCard(developmentCard2,2);
+		ArrayList<Integer> inputTest=new ArrayList<>();
 	}
 
 
