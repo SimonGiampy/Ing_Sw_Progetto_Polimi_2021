@@ -4,6 +4,7 @@ import it.polimi.ingsw.exceptions.InvalidUserRequestException;
 import it.polimi.ingsw.util.Marbles;
 import it.polimi.ingsw.util.Resources;
 import it.polimi.ingsw.xml_parsers.XMLParser;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -25,6 +26,9 @@ class PlayerTest {
 
 	@BeforeEach
 	void setUp() {
+
+		System.setOut(new PrintStream(outputStreamCaptor));
+
 		GameController controller = new GameController();
 		GameMechanicsMultiPlayer mechanics = new GameMechanicsMultiPlayer(controller, 2);
 		String fileName = "game_configuration_complete.xml";
@@ -57,7 +61,6 @@ class PlayerTest {
 		}
 
 		this.player = players[0];
-		System.setOut(new PrintStream(outputStreamCaptor));
 	}
 
 	@Test
@@ -147,6 +150,11 @@ class PlayerTest {
 
 	@Test
 	void setDiscount() {
+	}
+
+	@AfterEach
+	public void tearDown() {
+		System.setOut(standardOut);
 	}
 
 
