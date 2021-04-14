@@ -1,5 +1,7 @@
 package message;
 
 public enum MessageType {
-	LOGIN_REQUEST, LOGIN_REPLY
+	LOGIN_REQUEST, LOGIN_REPLY,
+	RESOURCES_LIST, LEADERS_LIST,
+
 }

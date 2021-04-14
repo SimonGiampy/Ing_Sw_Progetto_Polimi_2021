@@ -25,6 +25,6 @@ public abstract class Message implements Serializable {
 		return "Message{ "+
 				"nickname: "+ nickname+
 				", messageType: "+ messageType+
-				"}";
+				" }";
 	}
 }

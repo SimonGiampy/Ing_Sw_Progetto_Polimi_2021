@@ -10,6 +10,6 @@ public class LoginRequest extends Message {
 	public String toString(){
 		return "LoginRequest{ "+
 				"nickname: "+ getNickname()+
-				'}';
+				" }";
 	}
 }
