@@ -33,14 +33,14 @@ public class WriteThread implements Runnable {
 		
 		Scanner scanner = new Scanner(System.in);
 		String userInput;
-		Message message; //Message format: 12;something here;3.14
+		MessageTest message; //MessageTest format: 12;something here;3.14
 		
 		do {
 			System.out.print("[" + clientUserName + "]: ");
 			userInput = scanner.nextLine();
 			
 			if (!userInput.equals("bye")) {
-				message = new Message(userInput);
+				message = new MessageTest(userInput);
 				
 				try {
 					objectOutputStream.writeObject(message);

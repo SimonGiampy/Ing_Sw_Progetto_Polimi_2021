@@ -30,7 +30,7 @@ public class WarehouseDepot {
 	/**
 	 * constructor for instantiating the default values
 	 */
-	protected WarehouseDepot() {
+	public WarehouseDepot() {
 		incomingResources = new ArrayList<>();
 		positionsIncomingResources = new ArrayList<>();
 		depot = new Resources[6];
@@ -51,7 +51,7 @@ public class WarehouseDepot {
 	/**
 	 * debugging function for showing warehouse shelves content
 	 */
-	protected void showDepot() {
+	public void showDepot() {
 		StringBuilder string = new StringBuilder();
 		string.append("            ").append(Unicode.TOP_LEFT).append(Unicode.HORIZONTAL).append(Unicode.HORIZONTAL)
 				.append(Unicode.HORIZONTAL).append(Unicode.HORIZONTAL).append(Unicode.TOP_RIGHT).append("\n");
@@ -87,7 +87,7 @@ public class WarehouseDepot {
 	/**
 	 * debugging function for showing deck resources
 	 */
-	protected void showIncomingDeck() {
+	public void showIncomingDeck() {
 		System.out.print("deck contains: \t");
 		for (int i = 1; i <= incomingResources.size(); i++) {
 			System.out.print(i + ": " + incomingResources.get(i - 1).toString() + "\t");
@@ -103,7 +103,7 @@ public class WarehouseDepot {
 	 * @return true if the present configuration of the warehouse is correct
 	 *         false if more moves are required
 	 */
-	protected boolean moveResources(String where, int from, int destination) throws InvalidUserRequestException {
+	public boolean moveResources(String where, int from, int destination) throws InvalidUserRequestException {
 		//syntax: move <from> from <deck/depot> to <destination>
 		// moves a resource coming from the deck (input) or the same depot. The resource has a related positional number for input and output
 		// the destination is always in the depot (pyramid) where each position has a number associated (from 1 to 6)
@@ -150,7 +150,7 @@ public class WarehouseDepot {
 	 * @param position the positional number of the resource in the warehouse
 	 * @return true if the move is permitted and correctly executed
 	 */
-	protected boolean moveResourcesBackToDeck(int position) throws InvalidUserRequestException {
+	public boolean moveResourcesBackToDeck(int position) throws InvalidUserRequestException {
 		if (depot[position - 1] == Resources.EMPTY) { // cannot move an empty resource
 	        throw new InvalidUserRequestException("move is not permitted");
 		} else {
@@ -179,7 +179,7 @@ public class WarehouseDepot {
 	 * adds new resources to the deck, from the market
 	 * @param list of resources to add. Its length must be from 1 to 4
 	 */
-	protected void addIncomingResources(ArrayList<Resources> list) {
+	public void addIncomingResources(ArrayList<Resources> list) {
 		if (incomingResources.isEmpty()) {
 			incomingResources = list;
 		}
@@ -189,7 +189,7 @@ public class WarehouseDepot {
 	 * assigns a single resource according to the game rules, at the start of the game
 	 * @param res a single resource to start with
 	 */
-	protected void assignInitialResources(Resources res) {
+	public void assignInitialResources(Resources res) {
 		depot[0] = res;
 	}
 	
@@ -198,7 +198,7 @@ public class WarehouseDepot {
 	 * @param res1 first resource
 	 * @param res2 second resource
 	 */
-	protected void assignInitialResources(Resources res1, Resources res2) {
+	public void assignInitialResources(Resources res1, Resources res2) {
 		if (res1 == res2) {
 			depot[1] = res1;
 			depot[2] = res2;
@@ -213,7 +213,7 @@ public class WarehouseDepot {
 	 * All the resources in the deck are automatically discarded
 	 * @return the number of resources discarded
 	 */
-	protected int discardResourcesAfterUserConfirmation() {
+	public int discardResourcesAfterUserConfirmation() {
 		int discarding = incomingResources.size();
 		incomingResources.clear();
 		positionsIncomingResources.clear();
@@ -243,7 +243,7 @@ public class WarehouseDepot {
 	 * Moves the resources to both additional depots automatically, giving priority to the leader specified in input
 	 * @param priorityLeader the number of the leader card depot to prioritize when assigning resources (1 or 2)
 	 */
-	protected void moveResourcesToAdditionalDepots(int priorityLeader) throws InvalidUserRequestException {
+	public void moveResourcesToAdditionalDepots(int priorityLeader) throws InvalidUserRequestException {
 		if (priorityLeader == 1) {
 			moveResourcesToLeaderDepot(0);
 			moveResourcesToLeaderDepot(1);
@@ -288,7 +288,7 @@ public class WarehouseDepot {
 	 * @param pyramid the converted array
 	 * @return true if the combination of resources is a valid one
 	 */
-	protected boolean isCombinationCorrect(int[] pyramid) {
+	public boolean isCombinationCorrect(int[] pyramid) {
 		if (pyramid[0] != 0) { // top shelf is not empty
 			// top shelf has the same resource as middle shelf or top shelf
 			if (pyramid[0] == pyramid[1] || pyramid[0] == pyramid[2] || pyramid[0] == pyramid[3] ||
@@ -331,7 +331,7 @@ public class WarehouseDepot {
 	 * @param list of resources to be converted
 	 * @return converted list
 	 */
-	protected int[] getConvertedList(Resources[] list) {
+	public int[] getConvertedList(Resources[] list) {
 		assert list.length == 6;
 		int[] depotConverted = new int[6];
 		for (int i = 0; i < 6; i++) {
@@ -351,7 +351,7 @@ public class WarehouseDepot {
 	 * returns the list of all the resources contained in the data structures
 	 * @return the list of all the resources in the warehouse depot and the additional depots for each player
 	 */
-	protected ArrayList<Resources> gatherAllResources() {
+	public ArrayList<Resources> gatherAllResources() {
 		ArrayList<Resources> completeList = new ArrayList<>(Arrays.asList(depot));
 		completeList = removeEmptySpaces(completeList);
 		

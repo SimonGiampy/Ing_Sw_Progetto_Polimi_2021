@@ -52,7 +52,7 @@ public class ChatServer {
 	/**
 	 * Delivers a message from one user to the others (broadcasting)
 	 */
-	void broadcast(Message message, UserThread excludeUser) {
+	void broadcast(MessageTest message, UserThread excludeUser) {
 		for (UserThread aUser : userThreads) {
 			if (aUser != excludeUser) {
 				aUser.sendMessage(message);

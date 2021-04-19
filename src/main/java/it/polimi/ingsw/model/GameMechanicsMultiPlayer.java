@@ -20,7 +20,7 @@ public class GameMechanicsMultiPlayer {
 	private Player[] players;
 	
 	private final int numberOfPlayers;
-	int lastReportClaimed;
+	private int lastReportClaimed;
 	
 	int startingPlayer; //index of starting player: from 0 to 3 maximum
 	
@@ -157,6 +157,10 @@ public class GameMechanicsMultiPlayer {
 	
 	public int getLastReportClaimed() {
 		return lastReportClaimed;
+	}
+
+	public void increaseLastReportClaimed(){
+		lastReportClaimed++;
 	}
 	
 	public int getStartingPlayer() {
