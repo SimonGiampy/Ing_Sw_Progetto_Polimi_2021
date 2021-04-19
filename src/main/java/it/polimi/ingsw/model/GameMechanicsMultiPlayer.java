@@ -1,7 +1,7 @@
 package it.polimi.ingsw.model;
 
 import it.polimi.ingsw.DevelopmentCardsDeck;
-import it.polimi.ingsw.GameController;
+import it.polimi.ingsw.controller.GameController;
 import it.polimi.ingsw.model.util.Resources;
 import it.polimi.ingsw.model.singleplayer.Token;
 

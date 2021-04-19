@@ -1,6 +1,6 @@
 package it.polimi.ingsw.model.singleplayer;
 
-import it.polimi.ingsw.*;
+import it.polimi.ingsw.controller.GameController;
 import it.polimi.ingsw.model.*;
 import it.polimi.ingsw.model.util.Colors;
 

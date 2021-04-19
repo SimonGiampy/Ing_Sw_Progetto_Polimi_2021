@@ -1,13 +1,27 @@
 package it.polimi.ingsw.controller;
 
 import it.polimi.ingsw.model.util.Colors;
+import it.polimi.ingsw.network.Client;
+import it.polimi.ingsw.network.message.LoginRequest;
 import it.polimi.ingsw.network.message.Message;
+import it.polimi.ingsw.network.message.PlayerNumberReply;
 import it.polimi.ingsw.observer.Observer;
 import it.polimi.ingsw.observer.ViewObserver;
+import it.polimi.ingsw.view.View;
 
 import java.util.ArrayList;
 
 public class ClientController implements ViewObserver, Observer {
+
+	private Client client;
+	private View view;
+	private String nickname;
+
+	public ClientController(String address, int port, View view){
+		client = new Client(address, port);
+		this.view = view;
+	}
+
 	@Override
 	public void update(Message message) {
 
@@ -15,12 +29,13 @@ public class ClientController implements ViewObserver, Observer {
 
 	@Override
 	public void onUpdateNickname(String nickname) {
-
+		this.nickname = nickname;
+		client.sendMessage(new LoginRequest(nickname));
 	}
 
 	@Override
 	public void onUpdatePlayersNumber(int playerNumber) {
-
+		client.sendMessage(new PlayerNumberReply(nickname, playerNumber));
 	}
 
 	@Override
