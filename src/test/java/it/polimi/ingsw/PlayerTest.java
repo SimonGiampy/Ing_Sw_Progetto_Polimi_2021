@@ -1,18 +1,17 @@
 package it.polimi.ingsw;
 
 import it.polimi.ingsw.exceptions.InvalidUserRequestException;
-import it.polimi.ingsw.util.Marbles;
-import it.polimi.ingsw.util.Resources;
+import it.polimi.ingsw.model.*;
+import it.polimi.ingsw.model.util.Marbles;
+import it.polimi.ingsw.model.util.Resources;
 import it.polimi.ingsw.xml_parsers.XMLParser;
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.PrintStream;
-import java.sql.Array;
 import java.util.ArrayList;
 import java.util.Collections;
 

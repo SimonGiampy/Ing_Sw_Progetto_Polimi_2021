@@ -1,11 +1,12 @@
 package it.polimi.ingsw;
 
-import it.polimi.ingsw.util.Colors;
-import it.polimi.ingsw.util.Resources;
+import it.polimi.ingsw.model.*;
+import it.polimi.ingsw.model.util.Colors;
+import it.polimi.ingsw.model.util.Resources;
 import it.polimi.ingsw.exceptions.InvalidInputException;
 import it.polimi.ingsw.exceptions.InvalidUserRequestException;
-import it.polimi.ingsw.singleplayer.GameMechanicsSinglePlayer;
-import it.polimi.ingsw.singleplayer.Token;
+import it.polimi.ingsw.model.singleplayer.GameMechanicsSinglePlayer;
+import it.polimi.ingsw.model.singleplayer.Token;
 import it.polimi.ingsw.xml_parsers.XMLParser;
 
 import java.io.File;

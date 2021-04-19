@@ -1,7 +1,8 @@
 package it.polimi.ingsw.view;
 
 import it.polimi.ingsw.*;
-import it.polimi.ingsw.util.Resources;
+import it.polimi.ingsw.model.*;
+import it.polimi.ingsw.model.util.Resources;
 
 import java.util.ArrayList;
 

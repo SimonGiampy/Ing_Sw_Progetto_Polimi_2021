@@ -1,8 +1,8 @@
 package it.polimi.ingsw.xml_parsers;
 
-import it.polimi.ingsw.*;
-import it.polimi.ingsw.util.Colors;
-import it.polimi.ingsw.util.Resources;
+import it.polimi.ingsw.model.*;
+import it.polimi.ingsw.model.util.Colors;
+import it.polimi.ingsw.model.util.Resources;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;

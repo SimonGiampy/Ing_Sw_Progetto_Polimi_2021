@@ -1,6 +1,7 @@
 package it.polimi.ingsw;
 
-import it.polimi.ingsw.util.Resources;
+import it.polimi.ingsw.model.ProductionRules;
+import it.polimi.ingsw.model.util.Resources;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;

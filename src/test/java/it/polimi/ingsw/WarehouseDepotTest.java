@@ -1,6 +1,7 @@
 package it.polimi.ingsw;
 
-import it.polimi.ingsw.util.Resources;
+import it.polimi.ingsw.model.WarehouseDepot;
+import it.polimi.ingsw.model.util.Resources;
 import it.polimi.ingsw.exceptions.InvalidUserRequestException;
 import org.junit.jupiter.api.Test;
 

@@ -1,8 +1,9 @@
 package it.polimi.ingsw;
 
 
-import it.polimi.ingsw.util.Colors;
-import it.polimi.ingsw.util.Resources;
+import it.polimi.ingsw.model.*;
+import it.polimi.ingsw.model.util.Colors;
+import it.polimi.ingsw.model.util.Resources;
 import it.polimi.ingsw.exceptions.InvalidUserRequestException;
 import it.polimi.ingsw.xml_parsers.XMLParser;
 import org.junit.jupiter.api.Test;

@@ -1,5 +1,7 @@
 package it.polimi.ingsw;
 
+import it.polimi.ingsw.model.util.Unicode;
+
 public class Main {
 	
 	public static void main(String[] args) {

@@ -1,8 +1,10 @@
 package it.polimi.ingsw;
 
-import it.polimi.ingsw.util.Colors;
-import it.polimi.ingsw.util.ListSet;
-import it.polimi.ingsw.util.Resources;
+import it.polimi.ingsw.model.CardProductionsManagement;
+import it.polimi.ingsw.model.DevelopmentCard;
+import it.polimi.ingsw.model.util.Colors;
+import it.polimi.ingsw.model.util.ListSet;
+import it.polimi.ingsw.model.util.Resources;
 
 import java.util.ArrayList;
 import java.util.Collections;

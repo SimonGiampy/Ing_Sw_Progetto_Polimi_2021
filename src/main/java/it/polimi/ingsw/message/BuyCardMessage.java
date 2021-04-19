@@ -1,6 +1,6 @@
 package it.polimi.ingsw.message;
 
-import it.polimi.ingsw.util.Colors;
+import it.polimi.ingsw.model.util.Colors;
 
 public class BuyCardMessage extends Message {
 	private final int level;

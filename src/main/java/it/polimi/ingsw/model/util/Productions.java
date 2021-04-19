@@ -1,0 +1,13 @@
+package it.polimi.ingsw.model.util;
+
+public enum Productions {
+
+	STACK_1_CARD_PRODUCTION,
+	STACK_2_CARD_PRODUCTION,
+	STACK_3_CARD_PRODUCTION,
+	BASE_PRODUCTION,
+	LEADER_CARD_1_PRODUCTION,
+	LEADER_CARD_2_PRODUCTION
+
+}
+

@@ -1,8 +1,10 @@
 package it.polimi.ingsw;
 
-import it.polimi.ingsw.util.Colors;
-import it.polimi.ingsw.abilities.AbilityEffectActivation;
-import it.polimi.ingsw.abilities.DiscountAbility;
+import it.polimi.ingsw.model.CardRequirement;
+import it.polimi.ingsw.model.LeaderCard;
+import it.polimi.ingsw.model.util.Colors;
+import it.polimi.ingsw.model.abilities.AbilityEffectActivation;
+import it.polimi.ingsw.model.abilities.DiscountAbility;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;

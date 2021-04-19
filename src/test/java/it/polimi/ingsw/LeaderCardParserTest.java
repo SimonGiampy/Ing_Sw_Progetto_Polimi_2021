@@ -1,5 +1,7 @@
 package it.polimi.ingsw;
 
+import it.polimi.ingsw.model.LeaderCard;
+import it.polimi.ingsw.model.ProductionRules;
 import it.polimi.ingsw.xml_parsers.XMLParser;
 import org.junit.jupiter.api.Test;
 
