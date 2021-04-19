@@ -1,4 +1,4 @@
-package it.polimi.ingsw.message;
+package it.polimi.ingsw.network.message;
 
 public class PlayerNumberRequest extends Message {
 	public PlayerNumberRequest(){

@@ -1,4 +1,4 @@
-package it.polimi.ingsw.SocketDemo;
+package it.polimi.ingsw.network;
 
 /**
  * This thread handles connection for each connected client, so the server

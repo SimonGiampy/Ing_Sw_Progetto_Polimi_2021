@@ -1,4 +1,4 @@
-package it.polimi.ingsw.SocketDemo;
+package it.polimi.ingsw.network;
 
 import java.io.*;
 import java.net.*;
