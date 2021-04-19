@@ -220,10 +220,10 @@ public class GameController {
 			currentPlayer.interactWithMarket(which, where);
 			ArrayList<Boolean> check = new ArrayList<>();
 			for (int i = 0; i < mechanics.getPlayers().length; i++) {
-				check.add(mechanics.getPlayers()[i].getPlayerFaithTrack().checkVaticanReport(mechanics.lastReportClaimed));
+				check.add(mechanics.getPlayers()[i].getPlayerFaithTrack().checkVaticanReport(mechanics.getLastReportClaimed()));
 			}
 			if (check.contains(true)) {
-				mechanics.lastReportClaimed++;
+				mechanics.increaseLastReportClaimed();
 			}
 
 		} catch (InvalidUserRequestException e) {

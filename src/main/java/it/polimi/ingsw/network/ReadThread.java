@@ -37,8 +37,8 @@ public class ReadThread implements Runnable {
 				// every incoming data must be read as a specific object, rather than seeing which object it is
 				if (object instanceof String) {
 					System.out.println("\nstring = " + object.toString());
-				} else if (object instanceof Message) {
-					Message response = (Message) object;
+				} else if (object instanceof MessageTest) {
+					MessageTest response = (MessageTest) object;
 					System.out.println("\nmessage = " + response.toString());
 				}
 				

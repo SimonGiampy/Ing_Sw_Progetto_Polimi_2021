@@ -52,7 +52,7 @@ public class Market {
 	/**
 	 * debugging function that shows the content of the market
 	 */
-	protected void showMarket() {
+	public void showMarket() {
 		System.out.println("\033[0m" + "extra ball = " + extraBall.colorCode + "\uD83D\uDFE3");
 		for (int i = 0; i < 3; i++) { // rows
 			for (int j = 0; j < 4; j++) { // columns
@@ -79,7 +79,7 @@ public class Market {
 	 * @param row the row where the player interacts
 	 * @return the selected row, so that the equivalent resources are sent to the resource deck
 	 */
-	protected Marbles[] shiftRow(int row) {
+	public Marbles[] shiftRow(int row) {
 		Marbles[] selected = market[row];
 
 		Marbles temp = extraBall;
@@ -97,7 +97,7 @@ public class Market {
 	 * @param col the column where the player interacts
 	 * @return the selected column, so that the equivalent resources are sent to the resource deck
 	 */
-	protected Marbles[] shiftCol(int col) {
+	public Marbles[] shiftCol(int col) {
 		Marbles[] selected = new Marbles[3];
 		selected[0] = market[0][col];
 		selected[1] = market[1][col];
