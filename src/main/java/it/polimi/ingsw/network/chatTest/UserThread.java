@@ -1,4 +1,4 @@
-package it.polimi.ingsw.network;
+package it.polimi.ingsw.network.chatTest;
 
 /**
  * This thread handles connection for each connected client, so the server

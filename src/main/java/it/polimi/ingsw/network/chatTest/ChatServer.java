@@ -1,4 +1,4 @@
-package it.polimi.ingsw.network;
+package it.polimi.ingsw.network.chatTest;
 
 import java.io.*;
 import java.net.*;
