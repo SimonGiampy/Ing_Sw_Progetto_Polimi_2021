@@ -1,6 +1,6 @@
 package it.polimi.ingsw.network;
 
-import it.polimi.ingsw.network.message.Message;
+import it.polimi.ingsw.network.messages.Message;
 import it.polimi.ingsw.observer.Observable;
 
 import java.io.IOException;

@@ -1,7 +1,7 @@
 package it.polimi.ingsw.model.singleplayer;
 
 import it.polimi.ingsw.model.util.Colors;
-import it.polimi.ingsw.DevelopmentCardsDeck;
+import it.polimi.ingsw.model.DevelopmentCardsDeck;
 
 public class DiscardToken implements Token{
 

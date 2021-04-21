@@ -1,4 +1,4 @@
-package it.polimi.ingsw.network.message;
+package it.polimi.ingsw.network.messages;
 
 public class DepotInteractionMessage extends Message{
 	private final String where;

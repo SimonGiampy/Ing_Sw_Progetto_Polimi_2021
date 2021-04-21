@@ -1,4 +1,4 @@
-package it.polimi.ingsw.network.message;
+package it.polimi.ingsw.network.messages;
 
 public class LoginReply extends Message {
 	private final boolean nicknameAccepted;

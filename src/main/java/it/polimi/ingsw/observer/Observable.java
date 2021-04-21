@@ -1,6 +1,6 @@
 package it.polimi.ingsw.observer;
 
-import it.polimi.ingsw.network.message.Message;
+import it.polimi.ingsw.network.messages.Message;
 
 import java.util.ArrayList;
 

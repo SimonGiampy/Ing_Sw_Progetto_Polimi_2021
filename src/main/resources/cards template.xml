@@ -77,7 +77,7 @@
 					 	of resources to gain in output -->
 					<faith output = "2"/>
 					<input>
-						<res value = "empty"/>
+						<res value = "free_choice"/>
 						<res value = "stone"/>
 					</input>
 					<output>

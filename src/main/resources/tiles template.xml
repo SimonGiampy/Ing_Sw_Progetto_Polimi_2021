@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='UTF-8' ?>
-
+<root>
 <!-- faith track is the root-->
 <faith_track>
     
@@ -48,3 +48,4 @@
 </report>
 
 </report_points>
+</root>

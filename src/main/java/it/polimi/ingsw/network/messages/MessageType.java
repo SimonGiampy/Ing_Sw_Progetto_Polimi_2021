@@ -1,6 +1,9 @@
-package it.polimi.ingsw.network.message;
+package it.polimi.ingsw.network.messages;
 
 public enum MessageType {
+	
+	//TODO: change the names of this communication messages (delete _message at the end)
+	
 	LOGIN_REQUEST, LOGIN_REPLY,
 	RESOURCES_LIST_MESSAGE, INPUT_SELECTION_MESSAGE,
 	PLAYER_NUMBER_REQUEST, PLAYER_NUMBER_REPLY,
