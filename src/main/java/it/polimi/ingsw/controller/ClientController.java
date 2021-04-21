@@ -1,7 +1,7 @@
 package it.polimi.ingsw.controller;
 
 import it.polimi.ingsw.model.util.Colors;
-import it.polimi.ingsw.network.Client;
+import it.polimi.ingsw.network.server.SocketClient;
 import it.polimi.ingsw.network.messages.LoginRequest;
 import it.polimi.ingsw.network.messages.Message;
 import it.polimi.ingsw.network.messages.PlayerNumberReply;
@@ -13,12 +13,12 @@ import java.util.ArrayList;
 
 public class ClientController implements ViewObserver, Observer {
 
-	private Client client;
+	private SocketClient client;
 	private View view;
 	private String nickname;
 
 	public ClientController(String address, int port, View view){
-		client = new Client(address, port);
+		client = new SocketClient(address, port);
 		this.view = view;
 	}
 

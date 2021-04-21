@@ -44,7 +44,7 @@ public class ResourceDeck {
 	 * @param quantityLeader1 number of times the player wants to activate the power of the first leader played
 	 * @param quantityLeader2 number of times the player wants to activate the power of the second leader played
 	 */
-	protected void addResources(Marbles[] marblesFromMarket, int quantityLeader1, int quantityLeader2)
+	public void addResources(Marbles[] marblesFromMarket, int quantityLeader1, int quantityLeader2)
 			throws InvalidUserRequestException {
 		int whiteMarblesFromMarket = ListSet.count(new ArrayList<>(Arrays.asList(marblesFromMarket)), Marbles.WHITE);
 		

@@ -24,6 +24,7 @@ public abstract class ViewObservable {
 		observers.removeAll(observerList);
 	}
 
+	//TODO: è palese che sta cosa sia copiata ahahhaha
 	protected void notifyObserver(Consumer<ViewObserver> lambda) {
 		for (ViewObserver observer : observers) {
 			lambda.accept(observer);

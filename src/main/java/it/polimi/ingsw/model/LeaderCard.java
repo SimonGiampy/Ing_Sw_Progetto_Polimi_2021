@@ -54,7 +54,7 @@ public class LeaderCard {
 	 * @param totalCardOwned ArrayList of colors and levels of dev cards owned by the player
 	 * @return true if requirements are satisfied, false otherwise
 	 */
-	protected boolean checkCards(ArrayList<CardRequirement> totalCardOwned) {
+	public boolean checkCards(ArrayList<CardRequirement> totalCardOwned) {
 		ArrayList<Colors> leaderCardColorsRequirement;
 		ArrayList<CardRequirement> leaderCardRequirements;
 		ArrayList<CardRequirement> remainingCards;
