@@ -346,6 +346,26 @@ public class CardProductionsManagement {
 			}
 		}
 	}
+
+	public ArrayList<Stack<DevelopmentCard>> getCards() {
+		return cards;
+	}
+
+	public Strongbox getMyStrongbox() {
+		return myStrongbox;
+	}
+
+	public WarehouseDepot getMyWarehouseDepot() {
+		return myWarehouseDepot;
+	}
+
+	public boolean[] getNumberOfProduction() {
+		return numberOfProduction;
+	}
+
+	public ProductionRules[] getProductions() {
+		return productions;
+	}
 }
 
 

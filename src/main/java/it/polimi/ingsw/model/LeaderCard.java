@@ -84,7 +84,7 @@ public class LeaderCard {
 	 * victory points earned from a leader card
 	 * @return the value when the game is finished
 	 */
-	protected int getVictoryPoints() {
+	public int getVictoryPoints() {
 		return victoryPoints;
 	}
 
@@ -162,4 +162,7 @@ public class LeaderCard {
 		string.append(Unicode.RED_BOLD+"  LEADER "+Unicode.RESET+getVictoryPoints()+Resources.VICTORY_POINTS+"\n");
 	}
 
+	public boolean isAbilitiesActivated() {
+		return abilitiesActivated;
+	}
 }
