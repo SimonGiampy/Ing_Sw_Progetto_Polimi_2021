@@ -12,7 +12,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.logging.Logger;
 
-public class SocketClient extends Observable {
+public class Client extends Observable {
 
 	private Socket socket;
 	private ObjectOutputStream outputStream;
@@ -20,9 +20,9 @@ public class SocketClient extends Observable {
 	
 	private final ExecutorService readExecutionQueue;
 	
-	public static final Logger LOGGER = Logger.getLogger(SocketClient.class.getName());
+	public static final Logger LOGGER = Logger.getLogger(Client.class.getName());
 
-	public SocketClient(String address, int port) {
+	public Client(String address, int port) {
 
 		try {
 			this.socket = new Socket(address, port);
@@ -41,14 +41,14 @@ public class SocketClient extends Observable {
 				Message message;
 				try {
 					message = (Message) inputStream.readObject();
-					SocketClient.LOGGER.info("Received: " + message);
+					Client.LOGGER.info("Received: " + message);
 				} catch (IOException | ClassNotFoundException e) {
 					e.printStackTrace();
-					//message = new ErrorMessage();
+					message = new ErrorMessage("", "Error: disconnection");
 					disconnect();
 					readExecutionQueue.shutdownNow();
 				}
-				//notifyObserver(message);
+				notifyObserver(message);
 			}
 		});
 		

@@ -1,6 +1,7 @@
 package it.polimi.ingsw.network.messages;
 
 public class PlayerNumberReply extends Message {
+	
 	private final int playerNumber;
 
 	public PlayerNumberReply(String nickname, int playerNumber){

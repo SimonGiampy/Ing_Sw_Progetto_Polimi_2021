@@ -39,13 +39,13 @@ public class ClientHandler implements Runnable {
 			this.output = new ObjectOutputStream(client.getOutputStream());
 			this.input = new ObjectInputStream(client.getInputStream());
 		} catch (IOException e) {
-			Lobby.LOGGER.severe(e.getMessage());
+			Server.LOGGER.severe(e.getMessage());
 		}
 	}
 	
 	@Override
 	public void run() {
-		Lobby.LOGGER.info("Client connected from " + client.getRemoteSocketAddress());
+		Server.LOGGER.info("Client connected from " + client.getRemoteSocketAddress());
 		try {
 			while (!Thread.currentThread().isInterrupted()) {
 				synchronized (inputLock) {
@@ -53,24 +53,24 @@ public class ClientHandler implements Runnable {
 					if (message != null) {
 						if (message.getMessageType() == MessageType.LOGIN_REQUEST) {
 							server.addClient(message.getNickname(), this);
-							Lobby.LOGGER.info("new client connected : " + message.toString());
+							Server.LOGGER.info("new client connected : " + message.toString());
 						} else {
-							Lobby.LOGGER.info(() -> "Received: " + message);
+							Server.LOGGER.info(() -> "Received: " + message);
 							server.onMessageReceived(message);
 						}
 					}
 				}
 			}
 		} catch (ClassCastException | ClassNotFoundException ex) {
-			Lobby.LOGGER.severe("Invalid stream from client");
+			Server.LOGGER.severe("Invalid stream from client");
 		} catch (IOException e) {
-			Lobby.LOGGER.severe("Invalid IO from client");
+			Server.LOGGER.severe("Invalid IO from client");
 			e.printStackTrace();
 		}
 		try {
 			client.close();
 		} catch (IOException e) {
-			Lobby.LOGGER.severe("Client " + client.getRemoteSocketAddress() + " connection dropped.");
+			Server.LOGGER.severe("Client " + client.getRemoteSocketAddress() + " connection dropped.");
 			disconnect();
 		}
 	}
@@ -93,7 +93,7 @@ public class ClientHandler implements Runnable {
 					client.close();
 				}
 			} catch (IOException e) {
-				Lobby.LOGGER.severe(e.getMessage());
+				Server.LOGGER.severe(e.getMessage());
 			}
 			connected = false;
 			Thread.currentThread().interrupt();
@@ -111,11 +111,11 @@ public class ClientHandler implements Runnable {
 			synchronized (outputLock) {
 				output.writeObject(message);
 				//output.reset();
-				Lobby.LOGGER.info(() -> "Sent: " + message);
+				Server.LOGGER.info(() -> "Sent: " + message);
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
-			Lobby.LOGGER.severe(e.getMessage());
+			Server.LOGGER.severe(e.getMessage());
 			disconnect();
 		}
 	}

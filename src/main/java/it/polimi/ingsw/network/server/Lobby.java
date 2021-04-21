@@ -11,7 +11,7 @@ public class Lobby {
 	
 	public static final Logger LOGGER = Logger.getLogger(Lobby.class.getName());
 	
-	//TODO: add gamecontroller instance here
+	//TODO: add Game Controller instance here
 	
 	public Lobby() {
 		this.clientHandlerHashMap = new HashMap<>();

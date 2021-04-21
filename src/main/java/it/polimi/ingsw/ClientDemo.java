@@ -1,14 +1,9 @@
 package it.polimi.ingsw;
 
-import it.polimi.ingsw.network.chatTest.ReadThread;
-import it.polimi.ingsw.network.chatTest.WriteThread;
 import it.polimi.ingsw.network.messages.LoginRequest;
 import it.polimi.ingsw.network.messages.Message;
-import it.polimi.ingsw.network.server.SocketClient;
+import it.polimi.ingsw.network.server.Client;
 
-import java.io.IOException;
-import java.net.Socket;
-import java.net.UnknownHostException;
 import java.util.Scanner;
 
 public class ClientDemo {
@@ -25,7 +20,7 @@ public class ClientDemo {
 		int port = Integer.parseInt(scanner.nextLine());
 		
 		ClientDemo client = new ClientDemo(hostname, port);
-		SocketClient socketClient = new SocketClient(hostname, port);
+		Client socketClient = new Client(hostname, port);
 		
 		
 		// chooses the username and communicates it to the host server

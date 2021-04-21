@@ -8,7 +8,7 @@ public class ServerDemo {
 	public static void main(String[] args) {
 		
 		Lobby lobby = new Lobby();
-		Server server = new Server(lobby, 25000);
+		Server server = new Server(25000);
 		
 		new Thread(server).start();
 	}
