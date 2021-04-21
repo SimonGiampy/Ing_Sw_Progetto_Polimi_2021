@@ -1,15 +1,15 @@
 package it.polimi.ingsw;
 
-import it.polimi.ingsw.network.server.Server;
-import it.polimi.ingsw.network.server.SocketServer;
+import it.polimi.ingsw.network.server.Lobby;
+import it.polimi.ingsw.network.server.SocketConnection;
 
 public class ServerDemo {
 	
 	public static void main(String[] args) {
 		
-		Server server = new Server();
-		SocketServer socketServer = new SocketServer(server, 25000);
+		Lobby lobby = new Lobby();
+		SocketConnection socketConnection = new SocketConnection(lobby, 25000);
 		
-		new Thread(socketServer).start();
+		new Thread(socketConnection).start();
 	}
 }

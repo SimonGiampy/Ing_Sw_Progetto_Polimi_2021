@@ -35,7 +35,8 @@ public class ClientDemo {
 		Message message = new LoginRequest(client.userName);
 		socketClient.sendMessage(message);
 		
-		
+		scanner.nextLine();
+		//socketClient.readMessage();
 	}
 	
 	public ClientDemo(String hostname, int port) {

@@ -5,19 +5,19 @@ import it.polimi.ingsw.network.messages.Message;
 import java.util.HashMap;
 import java.util.logging.Logger;
 
-public class Server {
+public class Lobby {
 
-	private final HashMap<String, SocketClientHandler> clientHandlerHashMap;
+	private final HashMap<String, ClientHandler> clientHandlerHashMap;
 	
-	public static final Logger LOGGER = Logger.getLogger(Server.class.getName());
+	public static final Logger LOGGER = Logger.getLogger(Lobby.class.getName());
 	
 	//TODO: add gamecontroller instance here
 	
-	public Server() {
+	public Lobby() {
 		this.clientHandlerHashMap = new HashMap<>();
 	}
 	
-	public void addClient(String nickname, SocketClientHandler clientHandler) {
+	public void addClient(String nickname, ClientHandler clientHandler) {
 		// check if game is not started
 		// check if the chosen nickname is valid
 		clientHandlerHashMap.put(nickname, clientHandler);
@@ -39,7 +39,7 @@ public class Server {
 		//gameController.onMessageReceived(message);
 	}
 	
-	public synchronized void onDisconnect(SocketClientHandler clientHandler) {
+	public synchronized void onDisconnect(ClientHandler clientHandler) {
 		String clientNickname = clientHandlerHashMap.entrySet()
 				.stream()
 				.filter(entry -> clientHandler.equals(entry.getValue()))

@@ -8,10 +8,10 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 
-public class SocketClientHandler implements Runnable {
+public class ClientHandler implements Runnable {
 	
 	private final Socket client;
-	private final SocketServer socketServer;
+	private final SocketConnection socketConnection;
 	
 	private boolean connected;
 	
@@ -24,11 +24,11 @@ public class SocketClientHandler implements Runnable {
 	
 	/**
 	 * Default constructor
-	 * @param socketServer the socket of the server.
+	 * @param socketConnection the socket of the server.
 	 * @param client       the client connecting.
 	 */
-	public SocketClientHandler(SocketServer socketServer, Socket client) {
-		this.socketServer = socketServer;
+	public ClientHandler(SocketConnection socketConnection, Socket client) {
+		this.socketConnection = socketConnection;
 		this.client = client;
 		this.connected = true;
 		
@@ -39,38 +39,38 @@ public class SocketClientHandler implements Runnable {
 			this.output = new ObjectOutputStream(client.getOutputStream());
 			this.input = new ObjectInputStream(client.getInputStream());
 		} catch (IOException e) {
-			Server.LOGGER.severe(e.getMessage());
+			Lobby.LOGGER.severe(e.getMessage());
 		}
 	}
 	
 	@Override
 	public void run() {
-		Server.LOGGER.info("Client connected from " + client.getRemoteSocketAddress());
+		Lobby.LOGGER.info("Client connected from " + client.getRemoteSocketAddress());
 		try {
 			while (!Thread.currentThread().isInterrupted()) {
 				synchronized (inputLock) {
 					Message message = (Message) input.readObject();
-					
 					if (message != null) {
 						if (message.getMessageType() == MessageType.LOGIN_REQUEST) {
-							socketServer.addClient(message.getNickname(), this);
-							Server.LOGGER.info("new client connected : " + message.toString());
+							socketConnection.addClient(message.getNickname(), this);
+							Lobby.LOGGER.info("new client connected : " + message.toString());
 						} else {
-							Server.LOGGER.info(() -> "Received: " + message);
-							socketServer.onMessageReceived(message);
+							Lobby.LOGGER.info(() -> "Received: " + message);
+							socketConnection.onMessageReceived(message);
 						}
 					}
 				}
 			}
 		} catch (ClassCastException | ClassNotFoundException ex) {
-			Server.LOGGER.severe("Invalid stream from client");
+			Lobby.LOGGER.severe("Invalid stream from client");
 		} catch (IOException e) {
-			Server.LOGGER.severe("Invalid IO from client");
+			Lobby.LOGGER.severe("Invalid IO from client");
+			e.printStackTrace();
 		}
 		try {
 			client.close();
 		} catch (IOException e) {
-			Server.LOGGER.severe("Client " + client.getRemoteSocketAddress() + " connection dropped.");
+			Lobby.LOGGER.severe("Client " + client.getRemoteSocketAddress() + " connection dropped.");
 			disconnect();
 		}
 	}
@@ -93,12 +93,12 @@ public class SocketClientHandler implements Runnable {
 					client.close();
 				}
 			} catch (IOException e) {
-				Server.LOGGER.severe(e.getMessage());
+				Lobby.LOGGER.severe(e.getMessage());
 			}
 			connected = false;
 			Thread.currentThread().interrupt();
 			
-			socketServer.onDisconnect(this);
+			socketConnection.onDisconnect(this);
 		}
 	}
 	
@@ -110,11 +110,12 @@ public class SocketClientHandler implements Runnable {
 		try {
 			synchronized (outputLock) {
 				output.writeObject(message);
-				output.reset();
-				Server.LOGGER.info(() -> "Sent: " + message);
+				//output.reset();
+				Lobby.LOGGER.info(() -> "Sent: " + message);
 			}
 		} catch (IOException e) {
-			Server.LOGGER.severe(e.getMessage());
+			e.printStackTrace();
+			Lobby.LOGGER.severe(e.getMessage());
 			disconnect();
 		}
 	}

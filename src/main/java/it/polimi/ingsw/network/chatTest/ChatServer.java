@@ -30,7 +30,7 @@ public class ChatServer {
 	public void execute() {
 		try (ServerSocket serverSocket = new ServerSocket(port)) {
 			
-			System.out.println("Chat Server is listening on port " + port);
+			System.out.println("Chat Lobby is listening on port " + port);
 			
 			while (true) {
 				Socket socket = serverSocket.accept();

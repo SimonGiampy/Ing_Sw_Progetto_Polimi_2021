@@ -1,5 +1,6 @@
 package it.polimi.ingsw.network.server;
 
+import it.polimi.ingsw.network.messages.ErrorMessage;
 import it.polimi.ingsw.network.messages.Message;
 import it.polimi.ingsw.observer.Observable;
 
@@ -21,7 +22,7 @@ public class SocketClient extends Observable {
 	
 	public static final Logger LOGGER = Logger.getLogger(SocketClient.class.getName());
 
-	public SocketClient(String address, int port){
+	public SocketClient(String address, int port) {
 
 		try {
 			this.socket = new Socket(address, port);
@@ -45,9 +46,9 @@ public class SocketClient extends Observable {
 					e.printStackTrace();
 					//message = new ErrorMessage();
 					disconnect();
-					
+					readExecutionQueue.shutdownNow();
 				}
-				//notifyObserver(message);
+				notifyObserver(message);
 			}
 		});
 		
@@ -57,11 +58,11 @@ public class SocketClient extends Observable {
 	public void sendMessage(Message message) {
 		try {
 			outputStream.writeObject(message);
-			//outputStream.reset();
+			//outputStream.reset(); // is this necessary?
 		} catch (IOException e) {
 			e.printStackTrace();
 			disconnect();
-			//notifyObserver(new ErrorMessage);
+			notifyObserver(new ErrorMessage("", "Error in sending message"));
 		}
 	}
 	
@@ -69,7 +70,7 @@ public class SocketClient extends Observable {
 		try {
 			socket.close();
 		} catch (IOException e) {
-			//notifyObserver(new ErrorMessage);
+			notifyObserver(new ErrorMessage("", "disconnection"));
 		}
 	}
 

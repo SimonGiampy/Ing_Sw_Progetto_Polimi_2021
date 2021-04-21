@@ -5,16 +5,16 @@ import it.polimi.ingsw.network.messages.Message;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.ArrayList;
 
-public class SocketServer implements Runnable {
+public class SocketConnection implements Runnable {
 	
-	
-	private final Server server;
+	private ArrayList<ClientHandler> waitingRoom;
+	private final ArrayList<Lobby> lobbies;
 	private final int port;
 	ServerSocket serverSocket;
 	
-	public SocketServer(Server server, int port) {
-		this.server = server;
+	public SocketConnection(int port) {
 		this.port = port;
 	}
 	
@@ -22,9 +22,9 @@ public class SocketServer implements Runnable {
 	public void run() {
 		try {
 			serverSocket = new ServerSocket(port);
-			Server.LOGGER.info(() -> "Socket server started on port " + port + ".");
+			Lobby.LOGGER.info(() -> "Socket lobby started on port " + port + ".");
 		} catch (IOException e) {
-			Server.LOGGER.severe("Server could not start!");
+			Lobby.LOGGER.severe("Lobby could not start!");
 			return;
 		}
 		
@@ -33,40 +33,41 @@ public class SocketServer implements Runnable {
 				// accepts new client connections
 				Socket client = serverSocket.accept();
 				
-				client.setSoTimeout(5000);
+				ClientHandler clientHandler = new ClientHandler(this, client);
+				waitingRoom.add(clientHandler);
 				
-				SocketClientHandler clientHandler = new SocketClientHandler(this, client);
 				Thread thread = new Thread(clientHandler, "ss_handler" + client.getInetAddress());
 				thread.start();
 			} catch (IOException e) {
-				Server.LOGGER.severe("Connection dropped");
+				Lobby.LOGGER.severe("Connection dropped");
 			}
 		}
 	}
+	
 	
 	/**
 	 * Handles the addition of a new client to the game
 	 * @param nickname      the nickname of the new client.
 	 * @param clientHandler the ClientHandler of the new client.
 	 */
-	public void addClient(String nickname, SocketClientHandler clientHandler) {
-		server.addClient(nickname, clientHandler);
+	public void addClient(String nickname, ClientHandler clientHandler) {
+		lobby.addClient(nickname, clientHandler);
 	}
 	
 	/**
-	 * Forwards a received message from the client to the Server
+	 * Forwards a received message from the client to the Lobby
 	 * @param message the message to be forwarded.
 	 */
 	public void onMessageReceived(Message message) {
-		server.onMessageReceived(message);
+		lobby.onMessageReceived(message);
 	}
 	
 	/**
 	 * Handles a client disconnection.
 	 * @param clientHandler the ClientHandler of the disconnecting client.
 	 */
-	public void onDisconnect(SocketClientHandler clientHandler) {
-		server.onDisconnect(clientHandler);
+	public void onDisconnect(ClientHandler clientHandler) {
+		lobby.onDisconnect(clientHandler);
 	}
 	
 }

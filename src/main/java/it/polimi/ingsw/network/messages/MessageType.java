@@ -20,7 +20,7 @@ public enum MessageType {
 	PLAYER_CARDS_AND_PRODUCTION_SHOW,
 	RESOURCES_LIST,
 
-	//Server messages
+	//Lobby messages
 	LOBBY_LIST,
 	LOGIN_REPLY,
 	PLAYER_NUMBER_REQUEST,
