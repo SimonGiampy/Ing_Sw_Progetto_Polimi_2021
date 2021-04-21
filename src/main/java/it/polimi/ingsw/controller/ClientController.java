@@ -49,7 +49,7 @@ public class ClientController implements ViewObserver, Observer {
 	}
 
 	@Override
-	public void onUpdateAction(ArrayList<Integer> availableAction) {
+	public void onUpdateAction(int selectedAction) {
 
 	}
 

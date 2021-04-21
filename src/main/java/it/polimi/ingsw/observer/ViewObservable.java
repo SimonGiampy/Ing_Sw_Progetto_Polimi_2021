@@ -3,6 +3,8 @@ package it.polimi.ingsw.observer;
 import java.util.ArrayList;
 import java.util.function.Consumer;
 
+
+//extended by CLI and GUI
 public abstract class ViewObservable {
 	protected final ArrayList<ViewObserver> observers= new ArrayList<>();
 

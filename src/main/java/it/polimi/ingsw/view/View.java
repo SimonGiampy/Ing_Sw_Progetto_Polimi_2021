@@ -1,6 +1,7 @@
 package it.polimi.ingsw.view;
 
 import it.polimi.ingsw.model.*;
+import it.polimi.ingsw.model.reducedClasses.*;
 import it.polimi.ingsw.model.util.Resources;
 
 import java.util.ArrayList;
@@ -35,15 +36,17 @@ public interface View {
 
 	void showError(String error);
 
-	void showFaithTrack(FaithTrack faithTrack);
+	void showFaithTrack(ReducedFaithTrack faithTrack);
 
-	void showDepot(WarehouseDepot depot);
+	void showDepot(ReducedWarehouseDepot depot);
 
-	void showMarket(Market market);
+	void showMarket(ReducedMarket market);
 
-	void showPlayerCardsAndProduction(CardProductionsManagement cardProductionsManagement);
+	void showPlayerCardsAndProduction(ReducedCardProductionManagement cardProductionsManagement);
 
-	void showCardsDeck(DevelopmentCardsDeck deck);
+	void showCardsDeck(ReducedDevelopmentCardsDeck deck);
+
+	void showStrongBox(ReducedStrongbox strongbox);
 
 	void showLobby(ArrayList<String> players, int numPlayers);
 
