@@ -1,11 +1,11 @@
 package it.polimi.ingsw.network.messages;
 
-public class InteractionWithMarketMessage extends Message {
+public class InteractionWithMarket extends Message {
 	private final String which;
 	private final int where;
 
-	public InteractionWithMarketMessage(String nickname, String which, int where){
-		super(nickname,MessageType.INTERACTION_WITH_MARKET_MESSAGE);
+	public InteractionWithMarket(String nickname, String which, int where){
+		super(nickname,MessageType.INTERACTION_WITH_MARKET);
 		this.which=which;
 		this.where=where;
 	}

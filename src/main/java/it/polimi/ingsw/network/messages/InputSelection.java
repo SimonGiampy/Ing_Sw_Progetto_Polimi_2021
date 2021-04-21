@@ -2,11 +2,11 @@ package it.polimi.ingsw.network.messages;
 
 import java.util.ArrayList;
 
-public class InputSelectionMessage extends Message {
+public class InputSelection extends Message {
 	private final ArrayList<Integer> inputSelection;
 
-	public InputSelectionMessage(String nickname, ArrayList<Integer> inputSelection){
-		super(nickname, MessageType.INPUT_SELECTION_MESSAGE);
+	public InputSelection(String nickname, ArrayList<Integer> inputSelection){
+		super(nickname, MessageType.INPUT_SELECTION);
 		this.inputSelection=inputSelection;
 	}
 

@@ -70,7 +70,7 @@ public class Market {
 	 * getter for the extra ball that is not present in the matrix
 	 * @return the other ball
 	 */
-	private Marbles getExtraBall() {
+	public Marbles getExtraBall() {
 		return this.extraBall;
 	}
 	

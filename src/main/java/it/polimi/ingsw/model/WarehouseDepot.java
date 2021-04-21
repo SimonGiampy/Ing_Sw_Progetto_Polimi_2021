@@ -13,7 +13,10 @@ import java.util.stream.Collectors;
  * This class also handles the additional depots for a certain number of leader cards activated
  */
 public class WarehouseDepot {
-	
+	public ArrayList<ArrayList<Resources>> getExtraDepotResources() {
+		return extraDepotResources;
+	}
+
 	private ArrayList<Resources> incomingResources; //incoming resources from the market
 	private Resources[] depot; // array of fixed length = 6, representing the pyramid
 	private final ArrayList<Integer> positionsIncomingResources; // memorizes the positions of the resources that have been moved from the deck
