@@ -7,15 +7,16 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
 
-public class SocketConnection implements Runnable {
+public class Server implements Runnable {
 	
 	private ArrayList<ClientHandler> waitingRoom;
 	private final ArrayList<Lobby> lobbies;
 	private final int port;
 	ServerSocket serverSocket;
 	
-	public SocketConnection(int port) {
+	public Server(int port) {
 		this.port = port;
+		lobbies= new ArrayList<>();
 	}
 	
 	@Override
@@ -34,8 +35,11 @@ public class SocketConnection implements Runnable {
 				Socket client = serverSocket.accept();
 				
 				ClientHandler clientHandler = new ClientHandler(this, client);
+				if (waitingRoom.size()==0){
+
+				}
 				waitingRoom.add(clientHandler);
-				
+
 				Thread thread = new Thread(clientHandler, "ss_handler" + client.getInetAddress());
 				thread.start();
 			} catch (IOException e) {

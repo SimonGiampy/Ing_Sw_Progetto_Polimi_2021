@@ -1,6 +1,6 @@
 package it.polimi.ingsw;
 
-import it.polimi.ingsw.controller.GameController;
+import it.polimi.ingsw.controller.GameDemo;
 import it.polimi.ingsw.exceptions.InvalidUserRequestException;
 import it.polimi.ingsw.model.*;
 import it.polimi.ingsw.model.util.Marbles;
@@ -29,7 +29,7 @@ class PlayerTest {
 
 		System.setOut(new PrintStream(outputStreamCaptor));
 
-		GameController controller = new GameController();
+		GameDemo controller = new GameDemo();
 		GameMechanicsMultiPlayer mechanics = new GameMechanicsMultiPlayer(controller, 2);
 		String fileName = "game_configuration_complete.xml";
 		ClassLoader classLoader = getClass().getClassLoader();

@@ -1,6 +1,6 @@
 package it.polimi.ingsw.model;
 
-import it.polimi.ingsw.controller.GameController;
+import it.polimi.ingsw.controller.GameDemo;
 import it.polimi.ingsw.model.util.Resources;
 import it.polimi.ingsw.model.singleplayer.Token;
 
@@ -12,7 +12,7 @@ import java.util.stream.Collectors;
 
 public class GameMechanicsMultiPlayer {
 	
-	GameController gameController;
+	GameDemo gameDemo;
 	
 	private Market market;
 	private DevelopmentCardsDeck gameDevCardsDeck;
@@ -23,9 +23,9 @@ public class GameMechanicsMultiPlayer {
 	
 	int startingPlayer; //index of starting player: from 0 to 3 maximum
 	
-	public GameMechanicsMultiPlayer(GameController controller, int players) {
+	public GameMechanicsMultiPlayer(GameDemo controller, int players) {
 		numberOfPlayers = players;
-		this.gameController = controller;
+		this.gameDemo = controller;
 	}
 	
 	
@@ -113,20 +113,20 @@ public class GameMechanicsMultiPlayer {
 		// add starting resources and faith points to the players
 		int round = (startingPlayer + 1) % numberOfPlayers;
 		if (numberOfPlayers >= 2) {
-			Resources[] resources = gameController.requestInitialResource(round,1);
+			Resources[] resources = gameDemo.requestInitialResource(round,1);
 			
 			players[round].getPlayersWarehouseDepot().assignInitialResources(resources[0]); //needs to be changed into the chosen resource
 		}
 		round = (round + 1) % numberOfPlayers;
 		if (numberOfPlayers >= 3) {
-			Resources[] resources = gameController.requestInitialResource(round,1);
+			Resources[] resources = gameDemo.requestInitialResource(round,1);
 			
 			players[round].getPlayersWarehouseDepot().assignInitialResources(resources[0]); //needs to be changed into the chosen resource
 			players[round].getPlayerFaithTrack().moveMarker(1);
 		}
 		round = (round + 1) % numberOfPlayers;
 		if (numberOfPlayers == 4) {
-			Resources[] resources = gameController.requestInitialResource(round,2);
+			Resources[] resources = gameDemo.requestInitialResource(round,2);
 			players[round].getPlayersWarehouseDepot().assignInitialResources(resources[0], resources[1]); //needs to be changed into the chosen
 			// resource
 			players[round].getPlayerFaithTrack().moveMarker(1);

@@ -11,7 +11,7 @@ import java.net.Socket;
 public class ClientHandler implements Runnable {
 	
 	private final Socket client;
-	private final SocketConnection socketConnection;
+	private final Server server;
 	
 	private boolean connected;
 	
@@ -24,11 +24,11 @@ public class ClientHandler implements Runnable {
 	
 	/**
 	 * Default constructor
-	 * @param socketConnection the socket of the server.
+	 * @param server the socket of the server.
 	 * @param client       the client connecting.
 	 */
-	public ClientHandler(SocketConnection socketConnection, Socket client) {
-		this.socketConnection = socketConnection;
+	public ClientHandler(Server server, Socket client) {
+		this.server = server;
 		this.client = client;
 		this.connected = true;
 		
@@ -52,11 +52,11 @@ public class ClientHandler implements Runnable {
 					Message message = (Message) input.readObject();
 					if (message != null) {
 						if (message.getMessageType() == MessageType.LOGIN_REQUEST) {
-							socketConnection.addClient(message.getNickname(), this);
+							server.addClient(message.getNickname(), this);
 							Lobby.LOGGER.info("new client connected : " + message.toString());
 						} else {
 							Lobby.LOGGER.info(() -> "Received: " + message);
-							socketConnection.onMessageReceived(message);
+							server.onMessageReceived(message);
 						}
 					}
 				}
@@ -98,7 +98,7 @@ public class ClientHandler implements Runnable {
 			connected = false;
 			Thread.currentThread().interrupt();
 			
-			socketConnection.onDisconnect(this);
+			server.onDisconnect(this);
 		}
 	}
 	

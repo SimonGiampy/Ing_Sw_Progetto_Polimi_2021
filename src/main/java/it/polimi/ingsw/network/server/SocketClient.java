@@ -48,7 +48,7 @@ public class SocketClient extends Observable {
 					disconnect();
 					readExecutionQueue.shutdownNow();
 				}
-				notifyObserver(message);
+				//notifyObserver(message);
 			}
 		});
 		
