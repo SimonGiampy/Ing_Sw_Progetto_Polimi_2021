@@ -13,4 +13,12 @@ public class ResourcesList extends Message {
 		this.resourcesList=resourcesList;
 		this.resourcesNumber=resourcesNumber;
 	}
+
+	public ArrayList<Resources> getResourcesList() {
+		return resourcesList;
+	}
+
+	public ArrayList<Integer> getResourcesNumber() {
+		return resourcesNumber;
+	}
 }

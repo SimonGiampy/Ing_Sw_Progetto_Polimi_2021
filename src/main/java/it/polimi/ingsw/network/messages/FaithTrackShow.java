@@ -15,6 +15,4 @@ public class FaithTrackShow extends Message{
 		return faithTrack;
 	}
 
-
-
 }

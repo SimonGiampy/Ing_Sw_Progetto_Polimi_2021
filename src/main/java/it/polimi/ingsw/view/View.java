@@ -24,7 +24,7 @@ public interface View {
 
 	void askDepotMove();
 
-	void askBuyCardAction(ArrayList<DevelopmentCard> cardsAvailable); // maybe this need a message too
+	void askBuyCardAction(ArrayList<DevelopmentCard> cardsAvailable);
 
 	void askProductionAction(ArrayList<Integer> productionAvailable);
 

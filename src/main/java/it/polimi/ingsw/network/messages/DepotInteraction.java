@@ -11,4 +11,16 @@ public class DepotInteraction extends Message{
 		this.from = from;
 		this.destination = destination;
 	}
+
+	public String getWhere() {
+		return where;
+	}
+
+	public int getFrom() {
+		return from;
+	}
+
+	public int getDestination() {
+		return destination;
+	}
 }
