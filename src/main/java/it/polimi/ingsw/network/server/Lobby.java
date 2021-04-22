@@ -1,5 +1,6 @@
 package it.polimi.ingsw.network.server;
 
+import it.polimi.ingsw.controller.GameController;
 import it.polimi.ingsw.network.messages.Message;
 
 import java.util.HashMap;
@@ -8,12 +9,13 @@ import java.util.logging.Logger;
 public class Lobby {
 
 	private final HashMap<String, ClientHandler> clientHandlerHashMap;
-	
+	private final GameController gameController;
 	public static final Logger LOGGER = Logger.getLogger(Lobby.class.getName());
 	
 	//TODO: add Game Controller instance here
 	
-	public Lobby() {
+	public Lobby(GameController gameController) {
+		this.gameController=gameController;
 		this.clientHandlerHashMap = new HashMap<>();
 	}
 	
@@ -36,7 +38,7 @@ public class Lobby {
 	 * @param message the message to be forwarded.
 	 */
 	public void onMessageReceived(Message message) {
-		//gameController.onMessageReceived(message);
+		gameController.onMessageReceived(message);
 	}
 	
 	public synchronized void onDisconnect(ClientHandler clientHandler) {

@@ -58,24 +58,24 @@ public class Server implements Runnable {
 	 * @param nickname      the nickname of the new client.
 	 * @param clientHandler the ClientHandler of the new client.
 	 */
-	public void addClient(String nickname, ClientHandler clientHandler) {
-		lobby.addClient(nickname, clientHandler);
+	public void addClient(int lobbyIndex, String nickname, ClientHandler clientHandler) {
+		lobbies.get(lobbyIndex).addClient(nickname, clientHandler);
 	}
 	
 	/**
 	 * Forwards a received message from the client to the Lobby
 	 * @param message the message to be forwarded.
 	 */
-	public void onMessageReceived(Message message) {
-		lobby.onMessageReceived(message);
+	public void onMessageReceived(int lobbyIndex, Message message) {
+		lobbies.get(lobbyIndex).onMessageReceived(message);
 	}
 	
 	/**
 	 * Handles a client disconnection.
 	 * @param clientHandler the ClientHandler of the disconnecting client.
 	 */
-	public void onDisconnect(ClientHandler clientHandler) {
-		lobby.onDisconnect(clientHandler);
+	public void onDisconnect(int lobbyIndex, ClientHandler clientHandler) {
+		lobbies.get(lobbyIndex).onDisconnect(clientHandler);
 	}
 	
 }
