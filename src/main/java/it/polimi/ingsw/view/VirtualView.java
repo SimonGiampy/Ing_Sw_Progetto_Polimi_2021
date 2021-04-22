@@ -6,27 +6,22 @@ import it.polimi.ingsw.model.util.Resources;
 import it.polimi.ingsw.network.messages.InteractionWithMarket;
 import it.polimi.ingsw.network.messages.Message;
 import it.polimi.ingsw.network.messages.PlayerNumberRequest;
-import it.polimi.ingsw.network.server.SocketClientHandler;
+import it.polimi.ingsw.network.server.ClientHandler;
 import it.polimi.ingsw.observer.Observer;
 
 import java.util.ArrayList;
 
 public class VirtualView implements View, Observer {
 
-	private final SocketClientHandler clientHandler;
+	private final ClientHandler clientHandler;
 
-	public VirtualView(SocketClientHandler clientHandler){
+	public VirtualView(ClientHandler clientHandler){
 		this.clientHandler = clientHandler;
 	}
 
 	@Override
 	public void update(Message message) {
 		clientHandler.sendMessage(message);
-	}
-
-	@Override
-	public void askNickname() {
-		clientHandler.sendMessage();
 	}
 
 	@Override
@@ -138,7 +133,7 @@ public class VirtualView implements View, Observer {
 
 	}
 
-	public SocketClientHandler getClientHandler() {
+	public ClientHandler getClientHandler() {
 		return clientHandler;
 	}
 

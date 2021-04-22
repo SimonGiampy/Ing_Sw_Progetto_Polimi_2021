@@ -2,6 +2,7 @@ package it.polimi.ingsw.network.server;
 
 import it.polimi.ingsw.network.messages.Message;
 import it.polimi.ingsw.network.messages.MessageType;
+import it.polimi.ingsw.network.messages.PlayerNumberReply;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -11,7 +12,7 @@ import java.net.Socket;
 public class ClientHandler implements Runnable {
 	
 	private final Socket client;
-	private final Server server;
+	private Lobby lobby;
 	
 	private boolean connected;
 	
@@ -24,11 +25,10 @@ public class ClientHandler implements Runnable {
 	
 	/**
 	 * Default constructor
-	 * @param server the socket of the server.
-	 * @param client       the client connecting.
+	 * @param client the client connecting.
 	 */
-	public ClientHandler(Server server, Socket client) {
-		this.server = server;
+	public ClientHandler(Socket client) {
+		this.lobby = null;
 		this.client = client;
 		this.connected = true;
 		
@@ -39,38 +39,38 @@ public class ClientHandler implements Runnable {
 			this.output = new ObjectOutputStream(client.getOutputStream());
 			this.input = new ObjectInputStream(client.getInputStream());
 		} catch (IOException e) {
-			Server.LOGGER.severe(e.getMessage());
+			Lobby.LOGGER.severe(e.getMessage());
 		}
 	}
 	
 	@Override
 	public void run() {
-		Server.LOGGER.info("Client connected from " + client.getRemoteSocketAddress());
+		Lobby.LOGGER.info("Client connected from " + client.getRemoteSocketAddress());
 		try {
 			while (!Thread.currentThread().isInterrupted()) {
 				synchronized (inputLock) {
 					Message message = (Message) input.readObject();
 					if (message != null) {
 						if (message.getMessageType() == MessageType.LOGIN_REQUEST) {
-							server.addClient(message.getNickname(), this);
-							Server.LOGGER.info("new client connected : " + message.toString());
+							lobby.addClient(message.getNickname(), this);
+							Lobby.LOGGER.info("new client connected : " + message.toString());
 						} else {
-							Server.LOGGER.info(() -> "Received: " + message);
-							server.onMessageReceived(message);
+							Lobby.LOGGER.info(() -> "Received: " + message);
+							lobby.onMessageReceived(message);
 						}
 					}
 				}
 			}
 		} catch (ClassCastException | ClassNotFoundException ex) {
-			Server.LOGGER.severe("Invalid stream from client");
+			Lobby.LOGGER.severe("Invalid stream from client");
 		} catch (IOException e) {
-			Server.LOGGER.severe("Invalid IO from client");
+			Lobby.LOGGER.severe("Invalid IO from client");
 			e.printStackTrace();
 		}
 		try {
 			client.close();
 		} catch (IOException e) {
-			Server.LOGGER.severe("Client " + client.getRemoteSocketAddress() + " connection dropped.");
+			Lobby.LOGGER.severe("Client " + client.getRemoteSocketAddress() + " connection dropped.");
 			disconnect();
 		}
 	}
@@ -93,12 +93,12 @@ public class ClientHandler implements Runnable {
 					client.close();
 				}
 			} catch (IOException e) {
-				Server.LOGGER.severe(e.getMessage());
+				Lobby.LOGGER.severe(e.getMessage());
 			}
 			connected = false;
 			Thread.currentThread().interrupt();
 			
-			server.onDisconnect(this);
+			lobby.onDisconnect(this);
 		}
 	}
 	
@@ -111,14 +111,36 @@ public class ClientHandler implements Runnable {
 			synchronized (outputLock) {
 				output.writeObject(message);
 				//output.reset();
-				Server.LOGGER.info(() -> "Sent: " + message);
+				Lobby.LOGGER.info(() -> "Sent: " + message);
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
-			Server.LOGGER.severe(e.getMessage());
+			Lobby.LOGGER.severe(e.getMessage());
 			disconnect();
 		}
 	}
-	
-	
+
+	public int readNumberOfPlayers() {
+		try {
+			synchronized (inputLock) {
+				Message message = (Message) input.readObject();
+				if (message != null) {
+					if (message.getMessageType() == MessageType.PLAYER_NUMBER_REPLY) {
+						PlayerNumberReply mes = (PlayerNumberReply) message;
+						return mes.getPlayerNumber();
+					}
+				}
+			}
+		} catch (ClassCastException | ClassNotFoundException ex) {
+			Lobby.LOGGER.severe("Invalid stream from client");
+		} catch (IOException e) {
+			Lobby.LOGGER.severe("Invalid IO from client");
+			e.printStackTrace();
+		}
+		return 0;
+	}
+
+	public void setLobby(Lobby lobby) {
+		this.lobby = lobby;
+	}
 }

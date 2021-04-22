@@ -1,5 +1,6 @@
 package it.polimi.ingsw.network.server;
 
+import it.polimi.ingsw.controller.GameController;
 import it.polimi.ingsw.network.messages.Message;
 import it.polimi.ingsw.network.messages.PlayerNumberRequest;
 
@@ -14,13 +15,15 @@ public class Server implements Runnable {
 	public static final Logger LOGGER = Logger.getLogger(Server.class.getName());
 	
 	private ArrayList<ClientHandler> waitingRoom;
-	private final ArrayList<Lobby> lobbies;
+	private final ArrayList<Lobby> lobbyList;
 	private final int port;
 	ServerSocket serverSocket;
+	private int numberOfPlayers;
 	
 	public Server(int port) {
 		this.port = port;
-		lobbies = new ArrayList<>();
+		lobbyList = new ArrayList<>();
+		numberOfPlayers = 0;
 	}
 	
 	@Override
@@ -38,14 +41,24 @@ public class Server implements Runnable {
 				// accepts new client connections
 				Socket client = serverSocket.accept();
 				
-				ClientHandler clientHandler = new ClientHandler(this, client);
+				ClientHandler clientHandler = new ClientHandler(client);
 				if (waitingRoom.size() == 0) {
 					clientHandler.sendMessage(new PlayerNumberRequest());
+					numberOfPlayers = clientHandler.readNumberOfPlayers();
 				}
-				waitingRoom.add(clientHandler);
-
+				/*
 				Thread thread = new Thread(clientHandler, "ss_handler" + client.getInetAddress());
 				thread.start();
+
+				 */
+				waitingRoom.add(clientHandler);
+				if(waitingRoom.size() == numberOfPlayers){
+					Lobby lobby = new Lobby(new GameController("game_configuration_complete.xml"));
+					lobbyList.add(lobby);
+
+				}
+
+
 			} catch (IOException e) {
 				LOGGER.severe("Connection dropped");
 			}
@@ -59,7 +72,7 @@ public class Server implements Runnable {
 	 * @param clientHandler the ClientHandler of the new client.
 	 */
 	public void addClient(int lobbyIndex, String nickname, ClientHandler clientHandler) {
-		lobbies.get(lobbyIndex).addClient(nickname, clientHandler);
+		lobbyList.get(lobbyIndex).addClient(nickname, clientHandler);
 	}
 	
 	/**
@@ -67,7 +80,7 @@ public class Server implements Runnable {
 	 * @param message the message to be forwarded.
 	 */
 	public void onMessageReceived(int lobbyIndex, Message message) {
-		lobbies.get(lobbyIndex).onMessageReceived(message);
+		lobbyList.get(lobbyIndex).onMessageReceived(message);
 	}
 	
 	/**
@@ -75,7 +88,7 @@ public class Server implements Runnable {
 	 * @param clientHandler the ClientHandler of the disconnecting client.
 	 */
 	public void onDisconnect(int lobbyIndex, ClientHandler clientHandler) {
-		lobbies.get(lobbyIndex).onDisconnect(clientHandler);
+		lobbyList.get(lobbyIndex).onDisconnect(clientHandler);
 	}
 	
 }

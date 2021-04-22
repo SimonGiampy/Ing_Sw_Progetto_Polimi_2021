@@ -33,6 +33,7 @@ public class Player {
 	private boolean activeAbilityLeader2; // indicates whether the second leader card ability is activated or not
 
 	private final int playerIndex;
+	private String nickname;
 
 	private int coinDiscount;
 	private int servantDiscount;
@@ -76,6 +77,7 @@ public class Player {
 		activeAbilityLeader2 = false;
 
 		this.playerIndex = playerIndex;
+		nickname = "";
 	}
 
 
@@ -374,5 +376,13 @@ public class Player {
 
 	public Market getCommonMarket() {
 		return commonMarket;
+	}
+
+	public String getNickname() {
+		return nickname;
+	}
+
+	public void setNickname(String nickname) {
+		this.nickname = nickname;
 	}
 }

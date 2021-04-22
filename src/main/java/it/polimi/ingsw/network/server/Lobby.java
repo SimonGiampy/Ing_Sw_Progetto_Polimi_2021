@@ -6,13 +6,11 @@ import it.polimi.ingsw.network.messages.Message;
 import java.util.HashMap;
 import java.util.logging.Logger;
 
-public class Lobby {
+public class Lobby implements Runnable{
 
 	private final HashMap<String, ClientHandler> clientHandlerHashMap;
 	private final GameController gameController;
 	public static final Logger LOGGER = Logger.getLogger(Lobby.class.getName());
-	
-	//TODO: add Game Controller instance here
 	
 	public Lobby(GameController gameController) {
 		this.gameController=gameController;
@@ -25,6 +23,7 @@ public class Lobby {
 		clientHandlerHashMap.put(nickname, clientHandler);
 		// handle login in game controller and assign virtual view object
 		//else show invalid nickname message and disconnects the client
+		clientHandler.setLobby(this);
 	}
 	
 	public void removeClient(String nickname) {
@@ -58,5 +57,10 @@ public class Lobby {
 				// end the game in GameController
 				//clientHandlerHashMap.clear();
 		}
+	}
+
+	@Override
+	public void run() {
+
 	}
 }

@@ -61,8 +61,6 @@ public class GameMechanicsMultiPlayer {
 		
 		startingPlayer = (int) Math.floor(Math.random() * numberOfPlayers);
 		
-		assignInitialAdvantage();
-		
 	}
 	
 	
