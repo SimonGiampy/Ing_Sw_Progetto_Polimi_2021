@@ -1,20 +1,21 @@
 package it.polimi.ingsw.network.server;
 
-import it.polimi.ingsw.controller.GameController;
-import it.polimi.ingsw.network.messages.Message;
 import it.polimi.ingsw.network.messages.PlayerNumberRequest;
+import it.polimi.ingsw.view.VirtualView;
 
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.logging.Logger;
 
 public class Server implements Runnable {
 	
 	public static final Logger LOGGER = Logger.getLogger(Server.class.getName());
 	
-	private ArrayList<ClientHandler> waitingRoom;
+	private HashMap<String, ClientHandler> waitingRoom;
+	
 	private final ArrayList<Lobby> lobbyList;
 	private final int port;
 	ServerSocket serverSocket;
@@ -23,7 +24,7 @@ public class Server implements Runnable {
 	public Server(int port) {
 		this.port = port;
 		lobbyList = new ArrayList<>();
-		numberOfPlayers = 0;
+		numberOfPlayers = 5; // must never reach this number
 	}
 	
 	@Override
@@ -36,26 +37,38 @@ public class Server implements Runnable {
 			return;
 		}
 		
+		String hostname = "";
 		while (!Thread.currentThread().isInterrupted()) {
 			try {
 				// accepts new client connections
 				Socket client = serverSocket.accept();
 				
-				ClientHandler clientHandler = new ClientHandler(client);
+				ClientHandler clientHandler = new ClientHandler(client); // creation of the client handler
+				VirtualView view = new VirtualView(clientHandler); // associates the virtual view to the client handler
+				view.askNickname(); // asks for a nickname (message from the server to the client)
+				// gets the nickname the client chose, and memorizes it in the relative hashmap
+				String nick = clientHandler.readNickname();
+				waitingRoom.put(nick, clientHandler);
+				
+				// if the waiting room is empty, the host client decides the number of players
 				if (waitingRoom.size() == 0) {
-					clientHandler.sendMessage(new PlayerNumberRequest());
-					numberOfPlayers = clientHandler.readNumberOfPlayers();
+					hostname = nick;
+					clientHandler.sendMessage(new PlayerNumberRequest()); // asks for the number of players to be assigned in the lobby
+					numberOfPlayers = clientHandler.readNumberOfPlayers(); // gets the number of players
 				}
-				/*
-				Thread thread = new Thread(clientHandler, "ss_handler" + client.getInetAddress());
-				thread.start();
-
-				 */
-				waitingRoom.add(clientHandler);
-				if(waitingRoom.size() == numberOfPlayers){
-					Lobby lobby = new Lobby(new GameController("game_configuration_complete.xml"));
+				
+				//waitingRoom.add(clientHandler); // adds the client to the waiting room list
+				// if the waiting room is full, creates a Lobby, assigns the clients and proceed to reset the waiting room
+				if(waitingRoom.size() == numberOfPlayers) {
+					// creates a lobby and passes the list of clients and their relative hashmap
+					
+					//TODO:
+					
+					Lobby lobby = new Lobby(new HashMap<>(waitingRoom), hostname);
 					lobbyList.add(lobby);
-
+					new Thread(lobby).start();
+					
+					waitingRoom.clear();
 				}
 
 
@@ -66,29 +79,22 @@ public class Server implements Runnable {
 	}
 	
 	
-	/**
-	 * Handles the addition of a new client to the game
-	 * @param nickname      the nickname of the new client.
-	 * @param clientHandler the ClientHandler of the new client.
-	 */
-	public void addClient(int lobbyIndex, String nickname, ClientHandler clientHandler) {
-		lobbyList.get(lobbyIndex).addClient(nickname, clientHandler);
-	}
-	
+/*
 	/**
 	 * Forwards a received message from the client to the Lobby
 	 * @param message the message to be forwarded.
-	 */
+	 
 	public void onMessageReceived(int lobbyIndex, Message message) {
 		lobbyList.get(lobbyIndex).onMessageReceived(message);
 	}
 	
+	
 	/**
 	 * Handles a client disconnection.
 	 * @param clientHandler the ClientHandler of the disconnecting client.
-	 */
+	 
 	public void onDisconnect(int lobbyIndex, ClientHandler clientHandler) {
 		lobbyList.get(lobbyIndex).onDisconnect(clientHandler);
 	}
-	
+	*/
 }

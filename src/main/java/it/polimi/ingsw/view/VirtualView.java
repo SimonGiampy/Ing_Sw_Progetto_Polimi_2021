@@ -3,9 +3,7 @@ package it.polimi.ingsw.view;
 import it.polimi.ingsw.model.*;
 import it.polimi.ingsw.model.reducedClasses.*;
 import it.polimi.ingsw.model.util.Resources;
-import it.polimi.ingsw.network.messages.InteractionWithMarket;
-import it.polimi.ingsw.network.messages.Message;
-import it.polimi.ingsw.network.messages.PlayerNumberRequest;
+import it.polimi.ingsw.network.messages.*;
 import it.polimi.ingsw.network.server.ClientHandler;
 import it.polimi.ingsw.observer.Observer;
 
@@ -27,6 +25,11 @@ public class VirtualView implements View, Observer {
 	@Override
 	public void askNumberOfPlayer() {
 		clientHandler.sendMessage(new PlayerNumberRequest());
+	}
+	
+	@Override
+	public void askNickname() {
+		clientHandler.sendMessage(new NicknameRequest());
 	}
 
 	@Override

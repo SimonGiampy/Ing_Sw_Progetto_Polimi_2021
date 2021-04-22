@@ -2,6 +2,7 @@ package it.polimi.ingsw.network.server;
 
 import it.polimi.ingsw.network.messages.ErrorMessage;
 import it.polimi.ingsw.network.messages.Message;
+import it.polimi.ingsw.network.messages.MessageType;
 import it.polimi.ingsw.observer.Observable;
 
 import java.io.IOException;
@@ -38,31 +39,28 @@ public class Client extends Observable {
 	public void readMessage() {
 		readExecutionQueue.execute(() -> {
 			while (!readExecutionQueue.isShutdown()) {
-				Message message;
+				Message message = null;
 				try {
 					message = (Message) inputStream.readObject();
-					Client.LOGGER.info("Received: " + message);
+					LOGGER.info("Received: " + message);
 				} catch (IOException | ClassNotFoundException e) {
 					e.printStackTrace();
-					message = new ErrorMessage("", "Error: disconnection");
+					LOGGER.severe("Error: disconnection caused by developers' Asperger's syndrome");
 					disconnect();
 					readExecutionQueue.shutdownNow();
 				}
 				notifyObserver(message);
 			}
 		});
-		
-		
 	}
 
 	public void sendMessage(Message message) {
 		try {
 			outputStream.writeObject(message);
-			//outputStream.reset(); // is this necessary?
 		} catch (IOException e) {
 			e.printStackTrace();
 			disconnect();
-			notifyObserver(new ErrorMessage("", "Error in sending message"));
+			LOGGER.severe("Error in sending message");
 		}
 	}
 	
@@ -70,7 +68,7 @@ public class Client extends Observable {
 		try {
 			socket.close();
 		} catch (IOException e) {
-			notifyObserver(new ErrorMessage("", "disconnection"));
+			notifyObserver(new ErrorMessage("Client-side", "Client-side disconnection"));
 		}
 	}
 

@@ -22,7 +22,7 @@ public class ClientDemo {
 		ClientDemo client = new ClientDemo(hostname, port);
 		Client socketClient = new Client(hostname, port);
 		
-		
+		/*
 		// chooses the username and communicates it to the host server
 		System.out.println("Enter your username first: ");
 		String input = scanner.nextLine();
@@ -32,6 +32,8 @@ public class ClientDemo {
 		
 		scanner.nextLine();
 		//socketClient.readMessage();
+		
+		 */
 	}
 	
 	public ClientDemo(String hostname, int port) {

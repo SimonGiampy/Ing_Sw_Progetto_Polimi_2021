@@ -2,32 +2,39 @@ package it.polimi.ingsw.network.server;
 
 import it.polimi.ingsw.controller.GameController;
 import it.polimi.ingsw.network.messages.Message;
+import it.polimi.ingsw.view.VirtualView;
 
+import java.sql.Array;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.logging.Logger;
 
-public class Lobby implements Runnable{
+public class Lobby implements Runnable {
 
-	private final HashMap<String, ClientHandler> clientHandlerHashMap;
+	private ArrayList<Triple> clients;
+	;
+	private ClientHandler host;
 	private final GameController gameController;
 	public static final Logger LOGGER = Logger.getLogger(Lobby.class.getName());
 	
-	public Lobby(GameController gameController) {
-		this.gameController=gameController;
-		this.clientHandlerHashMap = new HashMap<>();
+	public Lobby() {
+		clients = new ArrayList<>();
+		
+		//TODO: fix the configuration file name
+		gameController = new GameController("asks for config file");
 	}
 	
-	public void addClient(String nickname, ClientHandler clientHandler) {
-		// check if game is not started
-		// check if the chosen nickname is valid
-		clientHandlerHashMap.put(nickname, clientHandler);
-		// handle login in game controller and assign virtual view object
-		//else show invalid nickname message and disconnects the client
-		clientHandler.setLobby(this);
+	public void addClient(String nickname, ClientHandler handler, VirtualView view) {
+		if (clients.isEmpty()) {
+			host = handler;
+		}
+		handler.setLobby(this);
+		clients.add(new Triple(nickname, handler, view));
 	}
 	
 	public void removeClient(String nickname) {
-		clientHandlerHashMap.remove(nickname);
+		clients.indexOf();
+		clients.remove(nickname);
 		// remove virtual view association
 		LOGGER.info(() -> "Removed " + nickname + " from the client list.");
 	}
@@ -61,6 +68,23 @@ public class Lobby implements Runnable{
 
 	@Override
 	public void run() {
-
+		//TODO: ask for configuration file
+		host.
+		
+		
+		LOGGER.info("Match started");
 	}
+	
+	class Triple {
+		String nickname;
+		ClientHandler handler;
+		VirtualView view;
+		
+		public Triple(String nickname, ClientHandler handler, VirtualView view) {
+			this.nickname = nickname;
+			this.handler = handler;
+			this.view = view;
+		}
+	}
+	
 }

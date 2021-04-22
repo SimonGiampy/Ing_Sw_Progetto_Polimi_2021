@@ -1,6 +1,7 @@
 package it.polimi.ingsw.controller;
 
 import it.polimi.ingsw.model.util.Colors;
+import it.polimi.ingsw.network.messages.MessageType;
 import it.polimi.ingsw.network.server.Client;
 import it.polimi.ingsw.network.messages.LoginRequest;
 import it.polimi.ingsw.network.messages.Message;
@@ -21,10 +22,19 @@ public class ClientController implements ViewObserver, Observer {
 		client = new Client(address, port);
 		this.view = view;
 	}
-
+	
+	
+	/**
+	 * Messages from the server to the client
+	 * @param message sent to the client (Reception Rx)
+	 */
 	@Override
 	public void update(Message message) {
-
+		if (message != null) {
+			if (message.getMessageType() == MessageType.NICKNAME_REQUEST) {
+				view.askNickname();
+			}
+		}
 	}
 
 	@Override

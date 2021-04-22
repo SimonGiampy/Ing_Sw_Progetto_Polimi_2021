@@ -2,8 +2,11 @@ package it.polimi.ingsw.network.messages;
 
 public enum MessageType {
 
-	//Client messages
+	//TODO: add separation between Client messages and Server Messages
 	LOGIN_REQUEST,
+	NICKNAME_REQUEST,
+	GAME_CONFIG_REQUEST,
+	GAME_CONFIG_REPLY,
 	LOBBY_ACCESS,
 	GENERIC_MESSAGE,
 	DISCONNECTION_MESSAGE,
