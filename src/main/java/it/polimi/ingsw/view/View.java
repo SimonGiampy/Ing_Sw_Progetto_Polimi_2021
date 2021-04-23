@@ -14,15 +14,15 @@ public interface View {
 
 	void askCustomGame();
 
-	void askInitLeaders();
+	void askInitLeaders(ArrayList<ReducedLeaderCard> leaderCards);
 
-	void askLeaderAction(ArrayList<Resources> availableLeaders);
+	void askLeaderAction(ArrayList<ReducedLeaderCard> availableLeaders);
 
 	void askAction(ArrayList<Integer> availableAction);
 
-	void askMarketAction();
+	void askMarketAction(ReducedMarket market);
 
-	void askDepotMove();
+	void askDepotMove(ReducedWarehouseDepot depot);
 
 	void askBuyCardAction(ArrayList<DevelopmentCard> cardsAvailable);
 

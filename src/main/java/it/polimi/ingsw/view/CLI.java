@@ -101,7 +101,7 @@ public class CLI extends ViewObservable implements View {
 					serverInfo.put("port", port);
 					validInput = true;
 				} else {
-					out.println("Invalid port!");
+					System.out.println("Invalid port!");
 					validInput = false;
 				}
 			}
@@ -118,21 +118,16 @@ public class CLI extends ViewObservable implements View {
 	}
 	
 	@Override
-	public void askPlayersNumber() {
+	public void askNumberOfPlayer() {
 		int playerNumber;
 		String question = "How many players are going to play? (You can choose between 2 or 3 players): ";
-		
+
 		try {
 			playerNumber = numberInput(2, 3, null, question);
 			notifyObserver(obs -> obs.onUpdatePlayersNumber(playerNumber));
 		} catch (ExecutionException e) {
 			System.out.println(STR_INPUT_CANCELED);
 		}
-	}
-	
-	@Override
-	public void askNumberOfPlayer() {
-	
 	}
 	
 	
@@ -142,12 +137,12 @@ public class CLI extends ViewObservable implements View {
 	}
 	
 	@Override
-	public void askInitLeaders() {
+	public void askInitLeaders(ArrayList<ReducedLeaderCard> leaderCards) {
 	
 	}
 	
 	@Override
-	public void askLeaderAction(ArrayList<Resources> availableLeaders) {
+	public void askLeaderAction(ArrayList<ReducedLeaderCard> availableLeaders) {
 	
 	}
 	
@@ -157,12 +152,12 @@ public class CLI extends ViewObservable implements View {
 	}
 	
 	@Override
-	public void askMarketAction() {
+	public void askMarketAction(ReducedMarket market) {
 	
 	}
 	
 	@Override
-	public void askDepotMove() {
+	public void askDepotMove(ReducedWarehouseDepot depot) {
 	
 	}
 	
