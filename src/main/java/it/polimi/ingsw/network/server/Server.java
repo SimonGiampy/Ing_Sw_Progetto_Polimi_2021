@@ -8,6 +8,7 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.logging.Logger;
 
 public class Server implements Runnable {
@@ -16,6 +17,9 @@ public class Server implements Runnable {
 	
 	private ArrayList<String> nicknames;
 	private final LinkedList<Lobby> lobbyList;
+	
+	private ConcurrentLinkedQueue<Lobby> lobbies; // new approach for concurrent lobby accesses
+	
 	private final int port;
 	ServerSocket serverSocket;
 	private int numberOfPlayers;
@@ -46,6 +50,18 @@ public class Server implements Runnable {
 				ClientHandler clientHandler = new ClientHandler(client); // creation of the client handler
 				VirtualView view = new VirtualView(clientHandler); // associates the virtual view to the client handler
 				
+				new Thread(clientHandler).start();
+				
+			} catch (IOException e) {
+				LOGGER.severe("Connection dropped");
+			}
+		}
+	}
+	
+	/*
+				ClientHandler clientHandler = new ClientHandler(client); // creation of the client handler
+				VirtualView view = new VirtualView(clientHandler); // associates the virtual view to the client handler
+				
 				String nick;
 				boolean valid;
 				do {
@@ -59,7 +75,7 @@ public class Server implements Runnable {
 				lobbyList.getLast().addClient(nick, clientHandler, view); // adds the client to the lobby
 				
 				// if the waiting room is empty, the host client decides the number of players
-				if (nicknames.size() == 0) {
+				if (nicknames.size() == 1) {
 					clientHandler.sendMessage(new PlayerNumberRequest()); // asks for the number of players to be assigned in the lobby
 					numberOfPlayers = clientHandler.readNumberOfPlayers(); // gets the number of players
 				}
@@ -74,12 +90,7 @@ public class Server implements Runnable {
 					nicknames.clear(); // clears the list of nicknames
 				}
 
-
-			} catch (IOException e) {
-				LOGGER.severe("Connection dropped");
-			}
-		}
-	}
+	 */
 	
 	
 /*

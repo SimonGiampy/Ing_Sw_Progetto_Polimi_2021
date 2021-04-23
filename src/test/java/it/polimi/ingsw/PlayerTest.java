@@ -1,5 +1,6 @@
 package it.polimi.ingsw;
 
+import it.polimi.ingsw.controller.GameController;
 import it.polimi.ingsw.controller.GameDemo;
 import it.polimi.ingsw.exceptions.InvalidUserRequestException;
 import it.polimi.ingsw.model.*;
@@ -30,7 +31,7 @@ class PlayerTest {
 		System.setOut(new PrintStream(outputStreamCaptor));
 
 		GameDemo controller = new GameDemo();
-		GameMechanicsMultiPlayer mechanics = new GameMechanicsMultiPlayer(controller, 2);
+		GameMechanicsMultiPlayer mechanics = new GameMechanicsMultiPlayer(new GameController(null), 2);
 		String fileName = "game_configuration_complete.xml";
 		ClassLoader classLoader = getClass().getClassLoader();
 		File file = new File(classLoader.getResource(fileName).getFile());

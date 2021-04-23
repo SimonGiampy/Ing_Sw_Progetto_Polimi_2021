@@ -1,5 +1,6 @@
 package it.polimi.ingsw.model.singleplayer;
 
+import it.polimi.ingsw.controller.GameController;
 import it.polimi.ingsw.controller.GameDemo;
 import it.polimi.ingsw.model.*;
 import it.polimi.ingsw.model.util.Colors;
@@ -15,10 +16,16 @@ public class GameMechanicsSinglePlayer extends GameMechanicsMultiPlayer {
 
 	private ArrayList<Token> tokenList;
 	private FaithTrack lorenzoFaithTrack;
-
+	
+	public GameMechanicsSinglePlayer(GameController controller, int players) {
+		super(controller, players);
+	}
+/*
 	public GameMechanicsSinglePlayer(GameDemo controller) {
 		super(controller, 1);
 	}
+	
+ */
 /*
 	public GameMechanicsSinglePlayer(GameController controller){
 		super(controller,1);

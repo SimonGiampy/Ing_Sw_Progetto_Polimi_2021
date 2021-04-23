@@ -1,8 +1,6 @@
 package it.polimi.ingsw.model;
 
 import it.polimi.ingsw.controller.GameController;
-import it.polimi.ingsw.controller.GameDemo;
-import it.polimi.ingsw.model.util.Resources;
 import it.polimi.ingsw.model.singleplayer.Token;
 
 import java.util.ArrayList;
@@ -13,7 +11,7 @@ import java.util.stream.Collectors;
 
 public class GameMechanicsMultiPlayer {
 	
-	GameController gameDemo;
+	private GameController gameController;
 	
 	private Market market;
 	private DevelopmentCardsDeck gameDevCardsDeck;
@@ -26,7 +24,7 @@ public class GameMechanicsMultiPlayer {
 	
 	public GameMechanicsMultiPlayer(GameController controller, int players) {
 		numberOfPlayers = players;
-		this.gameDemo = controller;
+		this.gameController = controller;
 	}
 	
 	
@@ -107,7 +105,8 @@ public class GameMechanicsMultiPlayer {
 		
 		return matrixDeck;
 	}
-	
+	/*
+	//TODO: modify this method so it communicates with game controller
 	public void assignInitialAdvantage() {
 		// add starting resources and faith points to the players
 		int round = (startingPlayer + 1) % numberOfPlayers;
@@ -131,7 +130,7 @@ public class GameMechanicsMultiPlayer {
 			players[round].getPlayerFaithTrack().moveMarker(1);
 		}
 	}
-	
+	*/
 	
 	public Market getMarket() {
 		return market;

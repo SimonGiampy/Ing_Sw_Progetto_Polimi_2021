@@ -15,7 +15,7 @@ public class GameController {
 	private GameState gameState;
 	private HashMap<String, VirtualView> virtualViewMap;
 
-	public GameController( HashMap<String, VirtualView> virtualViewMap) {
+	public GameController(HashMap<String, VirtualView> virtualViewMap) {
 		mechanics = new GameMechanicsMultiPlayer(this, virtualViewMap.size());
 		readGameConfig("game_configuration_complete.xml");
 		this.virtualViewMap = virtualViewMap;
@@ -41,7 +41,7 @@ public class GameController {
 	private void initState(Message receivedMessage, VirtualView virtualView){
 		switch (receivedMessage.getMessageType()){
 			case RESOURCES_LIST: {
-				mechanics.assignInitialAdvantage();
+				//mechanics.assignInitialAdvantage();
 			} break;
 			
 			case INPUT_SELECTION:
@@ -64,9 +64,6 @@ public class GameController {
 			case INIT:
 		}
 	}
-
-
-
 	
 
 	public void setGameState(GameState gameState) {

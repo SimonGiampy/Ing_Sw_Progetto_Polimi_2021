@@ -12,14 +12,14 @@ public class Lobby implements Runnable {
 	private ArrayList<User> clients;
 	private int numberOfPlayers;
 	private ClientHandler host;
-	private final GameController gameController;
+	//private final GameController gameController;
 	public static final Logger LOGGER = Logger.getLogger(Lobby.class.getName());
 	
 	public Lobby() {
 		clients = new ArrayList<>();
 		
-		//TODO: fix the configuration file name
-		gameController = new GameController("asks for config file");
+		//TODO: fix the configuration file name and instantiation of game controller
+		//gameController = new GameController("asks for config file");
 	}
 	
 	public void addClient(String nickname, ClientHandler handler, VirtualView view) {
@@ -43,13 +43,22 @@ public class Lobby implements Runnable {
 		numberOfPlayers = clients.size();
 	}
 	
+	@Override
+	public void run() {
+		//TODO: ask for configuration file
+		
+		
+		LOGGER.info("Match started");
+	}
+	
 	/**
 	 * Forwards a received message from the client to the GameController
 	 * @param message the message to be forwarded.
 	 */
 	public void onMessageReceived(Message message) {
-		gameController.onMessageReceived(message);
+		//gameController.onMessageReceived(message);
 	}
+	
 	/*
 	//TODO: handle client disconnection before the match starts and after the match is started
 
@@ -74,14 +83,7 @@ public class Lobby implements Runnable {
 
 	 */
 
-	@Override
-	public void run() {
-		//TODO: ask for configuration file
-		//host.
-		
-		
-		LOGGER.info("Match started");
-	}
+	
 	
 	private class User {
 		private String nickname;

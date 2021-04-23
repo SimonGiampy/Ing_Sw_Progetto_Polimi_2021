@@ -68,7 +68,7 @@ public class Client extends Observable {
 		try {
 			socket.close();
 		} catch (IOException e) {
-			notifyObserver(new ErrorMessage("Client-side", "Client-side disconnection"));
+			notifyObserver(new ErrorMessage("Client-side disconnection"));
 		}
 	}
 

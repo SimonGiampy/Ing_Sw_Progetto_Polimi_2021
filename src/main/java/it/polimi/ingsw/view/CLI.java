@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Scanner;
 import java.util.concurrent.ExecutionException;
+import java.util.regex.Pattern;
 
 public class CLI extends ViewObservable implements View {
 	
@@ -59,8 +60,7 @@ public class CLI extends ViewObservable implements View {
 	}
 	
 	/**
-	 * Asks the server address and port to the user.
-	 *
+	 * Asks the server address and port to the use
 	 * @throws ExecutionException if the input stream thread is interrupted.
 	 */
 	public void askServerInfo() throws ExecutionException {
@@ -69,14 +69,12 @@ public class CLI extends ViewObservable implements View {
 		String defaultPort = "25000";
 		boolean validInput;
 		
-		System.out.println("Please specify the following settings. The default value is shown between brackets.");
-		
 		do {
 			System.out.print("Enter the server address [" + defaultAddress + "]: ");
 			
 			String address = scanner.nextLine();
 			
-			if (address.equals("")) {
+			if (address.equals("") || address.equals("localhost")) {
 				serverInfo.put("address", defaultAddress);
 				validInput = true;
 			} else if (ClientController.isValidIpAddress(address)) {
@@ -120,14 +118,17 @@ public class CLI extends ViewObservable implements View {
 	@Override
 	public void askNumberOfPlayer() {
 		int playerNumber;
-		String question = "How many players are going to play? (You can choose between 2 or 3 players): ";
-
-		try {
-			playerNumber = numberInput(2, 3, null, question);
-			notifyObserver(obs -> obs.onUpdatePlayersNumber(playerNumber));
-		} catch (ExecutionException e) {
-			System.out.println(STR_INPUT_CANCELED);
-		}
+		System.out.println("How many players are going to play? (You can choose between 1 and 4 players): ");
+		boolean check;
+		do {
+			String input = scanner.nextLine();
+			playerNumber = Integer.parseInt(input);
+			check = Pattern.matches("[1-4]", input);
+			if (!check) System.out.print("Input incorrect, write again: ");
+		} while (!check);
+		
+		int finalPlayerNumber = playerNumber;
+		notifyObserver(obs -> obs.onUpdatePlayersNumber(finalPlayerNumber));
 	}
 	
 	

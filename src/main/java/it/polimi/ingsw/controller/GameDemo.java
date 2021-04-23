@@ -48,7 +48,7 @@ public class GameDemo {
 
 
 	public void startMultiPlayerGame(int numberOfPlayers) {
-		mechanics = new GameMechanicsMultiPlayer(this, numberOfPlayers);
+		//mechanics = new GameMechanicsMultiPlayer(this, numberOfPlayers);
 		readInformation();
 
 		for (Player p: mechanics.getPlayers()) {
@@ -101,7 +101,7 @@ public class GameDemo {
 	}
 
 	public void startSinglePlayerGame(){
-		mechanics = new GameMechanicsSinglePlayer(this);
+		//mechanics = new GameMechanicsSinglePlayer(this);
 		readInformation();
 		Player currentPlayer= mechanics.getPlayer(0);
 		currentPlayer.chooseTwoLeaders(1,4);

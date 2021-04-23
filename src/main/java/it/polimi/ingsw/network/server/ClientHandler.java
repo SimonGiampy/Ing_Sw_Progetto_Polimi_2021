@@ -1,9 +1,6 @@
 package it.polimi.ingsw.network.server;
 
-import it.polimi.ingsw.network.messages.LoginRequest;
-import it.polimi.ingsw.network.messages.Message;
-import it.polimi.ingsw.network.messages.MessageType;
-import it.polimi.ingsw.network.messages.PlayerNumberReply;
+import it.polimi.ingsw.network.messages.*;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -50,6 +47,7 @@ public class ClientHandler implements Runnable {
 			LOGGER.severe(e.getMessage());
 		}
 	}
+	
 	// need to be modified, login request have to set the nickname in player
 	@Override
 	public void run() {
@@ -59,6 +57,18 @@ public class ClientHandler implements Runnable {
 				synchronized (inputLock) {
 					Message message = (Message) input.readObject();
 					if (message != null) {
+						
+						if (message.getMessageType() == MessageType.LOBBY_ACCESS) {
+							LobbyAccess lobbyAccess = (LobbyAccess) message;
+							if (lobbyAccess.getLobbyNumber() == 0) {
+								// create new lobby and add the client. Then let it choose the number of players
+							} else {
+								// check if the lobby is not full
+								//       if the lobby is full, send negative confirmation
+								//       else send positive confirmation and add to the lobby
+							}
+						}
+						
 						LOGGER.info(() -> "Received: " + message);
 						lobby.onMessageReceived(message);
 					}
