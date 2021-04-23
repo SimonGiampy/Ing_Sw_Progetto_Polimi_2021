@@ -7,6 +7,7 @@ import it.polimi.ingsw.view.VirtualView;
 import java.sql.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Optional;
 import java.util.logging.Logger;
 
 public class Lobby implements Runnable {
@@ -33,8 +34,8 @@ public class Lobby implements Runnable {
 	}
 	
 	public void removeClient(String nickname) {
-		clients.indexOf();
-		clients.remove(nickname);
+		Triple triple=clients.stream().filter(i-> i.getNickname().equals(nickname)).findFirst().orElse(null);
+		clients.remove(triple);
 		// remove virtual view association
 		LOGGER.info(() -> "Removed " + nickname + " from the client list.");
 	}
@@ -46,7 +47,9 @@ public class Lobby implements Runnable {
 	public void onMessageReceived(Message message) {
 		gameController.onMessageReceived(message);
 	}
-	
+	/*
+
+
 	public synchronized void onDisconnect(ClientHandler clientHandler) {
 		String clientNickname = clientHandlerHashMap.entrySet()
 				.stream()
@@ -66,6 +69,8 @@ public class Lobby implements Runnable {
 		}
 	}
 
+	 */
+
 	@Override
 	public void run() {
 		//TODO: ask for configuration file
@@ -79,7 +84,11 @@ public class Lobby implements Runnable {
 		String nickname;
 		ClientHandler handler;
 		VirtualView view;
-		
+
+		public String getNickname() {
+			return nickname;
+		}
+
 		public Triple(String nickname, ClientHandler handler, VirtualView view) {
 			this.nickname = nickname;
 			this.handler = handler;

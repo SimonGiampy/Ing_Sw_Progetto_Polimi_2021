@@ -50,7 +50,7 @@ public class ClientHandler implements Runnable {
 			LOGGER.severe(e.getMessage());
 		}
 	}
-	
+	// need to be modified, login request have to set the nickname in player
 	@Override
 	public void run() {
 		LOGGER.info("Client connected from " + client.getRemoteSocketAddress());
