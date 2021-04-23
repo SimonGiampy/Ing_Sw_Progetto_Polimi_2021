@@ -87,7 +87,7 @@ public class ClientHandler implements Runnable {
 	}
 	
 	/**
-	 * Disconnect the socket.
+	 * //TODO: Disconnect the socket gracefully
 	 */
 	public void disconnect() {
 		if (connected) {
@@ -101,7 +101,7 @@ public class ClientHandler implements Runnable {
 			connected = false;
 			Thread.currentThread().interrupt();
 			
-			lobby.onDisconnect(this);
+			//lobby.onDisconnect(this);
 		}
 	}
 	
@@ -112,7 +112,6 @@ public class ClientHandler implements Runnable {
 	public synchronized void sendMessage(Message message) {
 		try {
 			output.writeObject(message);
-			//output.reset();
 			LOGGER.info(() -> "Sent: " + message);
 			
 		} catch (IOException e) {

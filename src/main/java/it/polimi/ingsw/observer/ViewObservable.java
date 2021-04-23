@@ -8,7 +8,7 @@ import java.util.function.Consumer;
 public abstract class ViewObservable {
 	protected final ArrayList<ViewObserver> observers= new ArrayList<>();
 
-	public void addObserver(ViewObserver observer){
+	public void attach(ViewObserver observer){
 		observers.add(observer);
 	}
 
@@ -16,18 +16,22 @@ public abstract class ViewObservable {
 		observers.addAll(observerList);
 	}
 
-	public void removeObserver(ViewObserver observer) {
+	public void detach(ViewObserver observer) {
 		observers.remove(observer);
 	}
 
 	public void removeAllObservers(ArrayList<ViewObserver> observerList) {
 		observers.removeAll(observerList);
 	}
-
-	//TODO: è palese che sta cosa sia copiata ahahhaha
+	
+	/**
+	 * è da pazzi furiosi
+	 * @param lambda
+	 */
 	protected void notifyObserver(Consumer<ViewObserver> lambda) {
 		for (ViewObserver observer : observers) {
 			lambda.accept(observer);
 		}
 	}
+	
 }

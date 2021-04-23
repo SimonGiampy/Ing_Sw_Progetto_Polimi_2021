@@ -1,8 +1,8 @@
 package it.polimi.ingsw;
 
-import it.polimi.ingsw.network.messages.LoginRequest;
-import it.polimi.ingsw.network.messages.Message;
+import it.polimi.ingsw.controller.ClientController;
 import it.polimi.ingsw.network.server.Client;
+import it.polimi.ingsw.view.CLI;
 
 import java.util.Scanner;
 
@@ -19,8 +19,13 @@ public class ClientDemo {
 		System.out.println("write port number: ");
 		int port = Integer.parseInt(scanner.nextLine());
 		
-		ClientDemo client = new ClientDemo(hostname, port);
-		Client socketClient = new Client(hostname, port);
+		//ClientDemo client = new ClientDemo(hostname, port);
+		//Client socketClient = new Client(hostname, port);
+		
+		CLI cli = new CLI();
+		ClientController clientcontroller = new ClientController(cli);
+		cli.attach(clientcontroller);
+		cli.initialize();
 		
 		/*
 		// chooses the username and communicates it to the host server

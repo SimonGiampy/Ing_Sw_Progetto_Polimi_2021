@@ -72,8 +72,8 @@ public class VirtualView implements View, Observer {
 	}
 
 	@Override
-	public void showLoginResult(boolean nicknameAccepted, boolean connectionSuccessful, String nickname) {
-
+	public void showLoginResult(boolean nicknameAccepted) {
+		clientHandler.sendMessage(new LoginReply(nicknameAccepted));
 	}
 
 	@Override

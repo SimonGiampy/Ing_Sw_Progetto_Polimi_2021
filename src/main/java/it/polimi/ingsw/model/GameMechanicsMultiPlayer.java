@@ -1,5 +1,6 @@
 package it.polimi.ingsw.model;
 
+import it.polimi.ingsw.controller.GameController;
 import it.polimi.ingsw.controller.GameDemo;
 import it.polimi.ingsw.model.util.Resources;
 import it.polimi.ingsw.model.singleplayer.Token;
@@ -12,7 +13,7 @@ import java.util.stream.Collectors;
 
 public class GameMechanicsMultiPlayer {
 	
-	GameDemo gameDemo;
+	GameController gameDemo;
 	
 	private Market market;
 	private DevelopmentCardsDeck gameDevCardsDeck;
@@ -23,7 +24,7 @@ public class GameMechanicsMultiPlayer {
 	
 	int startingPlayer; //index of starting player: from 0 to 3 maximum
 	
-	public GameMechanicsMultiPlayer(GameDemo controller, int players) {
+	public GameMechanicsMultiPlayer(GameController controller, int players) {
 		numberOfPlayers = players;
 		this.gameDemo = controller;
 	}

@@ -4,16 +4,13 @@ import it.polimi.ingsw.controller.GameController;
 import it.polimi.ingsw.network.messages.Message;
 import it.polimi.ingsw.view.VirtualView;
 
-import java.sql.Array;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Optional;
 import java.util.logging.Logger;
 
 public class Lobby implements Runnable {
 
-	private ArrayList<Triple> clients;
-	;
+	private ArrayList<User> clients;
+	private int numberOfPlayers;
 	private ClientHandler host;
 	private final GameController gameController;
 	public static final Logger LOGGER = Logger.getLogger(Lobby.class.getName());
@@ -30,14 +27,20 @@ public class Lobby implements Runnable {
 			host = handler;
 		}
 		handler.setLobby(this);
-		clients.add(new Triple(nickname, handler, view));
+		clients.add(new User(nickname, handler, view));
+		//handler.sendMessage(); //updates the other connected clients that a new user entered the game lobby
 	}
 	
 	public void removeClient(String nickname) {
-		Triple triple=clients.stream().filter(i-> i.getNickname().equals(nickname)).findFirst().orElse(null);
-		clients.remove(triple);
+		//User triple=clients.stream().filter(i-> i.getNickname().equals(nickname)).findFirst().orElse(null);
+		//clients.remove(triple);
+		clients.removeIf(user -> user.getNickname().equals(nickname));
 		// remove virtual view association
 		LOGGER.info(() -> "Removed " + nickname + " from the client list.");
+	}
+	
+	public void setNumberOfPlayers() {
+		numberOfPlayers = clients.size();
 	}
 	
 	/**
@@ -48,7 +51,7 @@ public class Lobby implements Runnable {
 		gameController.onMessageReceived(message);
 	}
 	/*
-
+	//TODO: handle client disconnection before the match starts and after the match is started
 
 	public synchronized void onDisconnect(ClientHandler clientHandler) {
 		String clientNickname = clientHandlerHashMap.entrySet()
@@ -74,22 +77,22 @@ public class Lobby implements Runnable {
 	@Override
 	public void run() {
 		//TODO: ask for configuration file
-		host.
+		//host.
 		
 		
 		LOGGER.info("Match started");
 	}
 	
-	class Triple {
-		String nickname;
-		ClientHandler handler;
-		VirtualView view;
+	private class User {
+		private String nickname;
+		private ClientHandler handler;
+		private VirtualView view;
 
 		public String getNickname() {
 			return nickname;
 		}
 
-		public Triple(String nickname, ClientHandler handler, VirtualView view) {
+		public User(String nickname, ClientHandler handler, VirtualView view) {
 			this.nickname = nickname;
 			this.handler = handler;
 			this.view = view;

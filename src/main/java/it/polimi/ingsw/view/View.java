@@ -28,7 +28,7 @@ public interface View {
 
 	void askProductionAction(ArrayList<Integer> productionAvailable);
 
-	void showLoginResult(boolean nicknameAccepted, boolean connectionSuccessful, String nickname);
+	void showLoginResult(boolean nicknameAccepted);
 
 	void showGenericMessage(String genericMessage);
 

@@ -3,11 +3,20 @@ package it.polimi.ingsw.observer;
 import it.polimi.ingsw.model.util.Colors;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 // implemented by Client Controller
 // TODO: add CustomGame method
 
 public interface ViewObserver {
+	
+	/**
+	 * Create a new connection to the server with the updated info.
+	 *
+	 * @param serverInfo a map of server address and server port.
+	 */
+	void onUpdateServerInfo(HashMap<String, String> serverInfo);
 
 	/**
 	 * it sends a message to the server with the chosen nickname
