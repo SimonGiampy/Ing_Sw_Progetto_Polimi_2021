@@ -7,7 +7,7 @@ import it.polimi.ingsw.model.util.Resources;
 import java.util.ArrayList;
 
 public interface View {
-
+	
 	void askNumberOfPlayer();
 	
 	void askNickname();

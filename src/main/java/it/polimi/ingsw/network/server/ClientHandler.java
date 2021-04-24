@@ -1,14 +1,11 @@
 package it.polimi.ingsw.network.server;
 
 import it.polimi.ingsw.network.messages.*;
-import it.polimi.ingsw.view.VirtualView;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
-import java.util.concurrent.locks.Condition;
-import java.util.concurrent.locks.ReentrantLock;
 import java.util.logging.Logger;
 
 public class ClientHandler implements Runnable {
@@ -20,28 +17,15 @@ public class ClientHandler implements Runnable {
 	
 	private boolean connected;
 	
-	//TODO: add more sophisticated condition locks
-	
-	private ReentrantLock lock;
-	private Condition inputLock;
-	private Condition outputLock;
-	
 	private ObjectOutputStream output;
 	private ObjectInputStream input;
 	
-	/**
-	 * Default constructor
-	 * @param client the client connecting.
-	 */
+
 	public ClientHandler(Server server, Socket client) {
 		this.lobby = null;
 		this.client = client;
 		this.server = server;
 		this.connected = true;
-		
-		lock = new ReentrantLock();
-		this.inputLock = lock.newCondition();
-		this.outputLock = lock.newCondition();
 		
 		try {
 			this.output = new ObjectOutputStream(client.getOutputStream());
@@ -51,20 +35,19 @@ public class ClientHandler implements Runnable {
 		}
 	}
 	
-	// need to be modified, login request have to set the nickname in player
+	
 	@Override
 	public void run() {
 		LOGGER.info("Client connected from " + client.getRemoteSocketAddress());
 		lobbyLogin();
 		try {
 			while (!Thread.currentThread().isInterrupted()) {
-				synchronized (inputLock) {
-					Message message = (Message) input.readObject();
-					if (message != null) {
-						LOGGER.info(() -> "Received: " + message);
-						lobby.onMessageReceived(message);
-					}
+				Message message = (Message) input.readObject();
+				if (message != null) {
+					LOGGER.info(() -> "Received: " + message);
+					lobby.onMessageReceived(message);
 				}
+				
 			}
 		} catch (ClassCastException | ClassNotFoundException ex) {
 			LOGGER.severe("Invalid class from stream from client");
@@ -81,7 +64,7 @@ public class ClientHandler implements Runnable {
 	}
 	
 	public void lobbyLogin() {
-		Message message = null;
+		Message message;
 		boolean valid = false;
 		while(!valid) {
 			try {
@@ -89,19 +72,21 @@ public class ClientHandler implements Runnable {
 				message = (Message) input.readObject();
 				if (message.getMessageType() == MessageType.LOBBY_ACCESS) {
 					LobbyAccess lobbyAccess = (LobbyAccess) message;
-					if (lobbyAccess.getLobbyNumber() == 0) {
-						// create new lobby and add the client. Then let it choose the number of players
+					
+					if (lobbyAccess.getLobbyNumber() == 0) { // client logs in as game host
+						// create new lobby and add the client. Then let it choose the number of players and configuration file
 						Lobby lobby = server.createLobby(this);
-						lobby.addClient(this);
+						lobby.join(this);
+						lobby.setUpGameConfig();
 						valid = true;
-					} else {
+					} else { // client logs in as guest player
 						// check if the lobby is not full
 						Lobby lobby = server.joinLobby(lobbyAccess.getLobbyNumber(), this);
-						if (lobby == null) {
-							sendMessage(new LoginConfirmation(false)); //if the lobby is full, send negative confirmation
-						} else {
-							sendMessage(new LoginConfirmation(true)); //else send positive confirmation and add to the lobby
-							lobby.addClient(this);    //add client to the lobby
+						if (lobby == null) { //if the lobby is full, send negative confirmation
+							sendMessage(new LoginConfirmation(false));
+						} else { //else send positive confirmation and adds the client to the lobby
+							sendMessage(new LoginConfirmation(true));
+							lobby.join(this);
 							valid = true;
 						}
 					}
@@ -143,11 +128,10 @@ public class ClientHandler implements Runnable {
 	 * Sends a message to the client via socket
 	 * @param message the message to be sent.
 	 */
-	public synchronized void sendMessage(Message message) {
+	public void sendMessage(Message message) {
 		try {
 			output.writeObject(message);
 			LOGGER.info(() -> "Sent: " + message);
-			
 		} catch (IOException e) {
 			e.printStackTrace();
 			LOGGER.severe(e.getMessage());
@@ -176,13 +160,29 @@ public class ClientHandler implements Runnable {
 		return 0;
 	}
 	
-	public synchronized String readNickname() {
+	public String readNickname() {
 		try {
 			Message message = (Message) input.readObject();
 			if (message != null) {
 				if (message.getMessageType() == MessageType.NICKNAME_REPLY) {
 					NicknameReply nicknameReply = (NicknameReply) message;
 					return nicknameReply.getNickname();
+				}
+			}
+			
+		} catch (IOException | ClassNotFoundException e) {
+			e.printStackTrace();
+		}
+		return "cipolla";
+	}
+	
+	public String readGameConfig() {
+		try {
+			Message message = (Message) input.readObject();
+			if (message != null) {
+				if (message.getMessageType() == MessageType.GAME_CONFIG_REPLY) {
+					GameConfigReply configReply = (GameConfigReply) message;
+					return configReply.getGameConfiguration();
 				}
 			}
 			

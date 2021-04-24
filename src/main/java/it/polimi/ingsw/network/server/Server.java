@@ -11,6 +11,10 @@ import java.util.List;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.locks.Condition;
+import java.util.concurrent.locks.ReentrantLock;
 import java.util.logging.Logger;
 
 public class Server implements Runnable {
@@ -18,6 +22,7 @@ public class Server implements Runnable {
 	public static final Logger LOGGER = Logger.getLogger(Server.class.getName());
 	
 	private final List<Lobby> lobbies; // new approach for concurrent lobby accesses
+	private final ExecutorService lobbyStarter;
 	
 	private final int port;
 	private ServerSocket serverSocket;
@@ -34,10 +39,15 @@ public class Server implements Runnable {
 		} catch (IOException e) {
 			LOGGER.severe("Lobby could not start!");
 		}
+		lobbyStarter = Executors.newSingleThreadExecutor();
 	}
 	
 	@Override
 	public void run() {
+		// checks asynchronously if the match can be started
+		LobbyStarter lobbyStarter = new LobbyStarter();
+		new Thread(lobbyStarter).start();
+		
 		while (!Thread.currentThread().isInterrupted()) {
 			try {
 				// accepts new client connections
@@ -85,40 +95,27 @@ public class Server implements Runnable {
 		}
 	}
 	
-	/*
-				ClientHandler clientHandler = new ClientHandler(client); // creation of the client handler
-				VirtualView view = new VirtualView(clientHandler); // associates the virtual view to the client handler
-				
-				String nick;
-				boolean valid;
-				do {
-					view.askNickname(); // asks for a nickname (message from the server to the client)
-					nick = clientHandler.readNickname();
-					valid = nicknames.contains(nick); //checks if the nickname isn't already chosen by another client
-					view.showLoginResult(valid); // sends the login result to the client, otherwise
-				} while (!valid);
-				
-				nicknames.add(nick); // memorizes the accepted nickname
-				lobbyList.getLast().addClient(nick, clientHandler, view); // adds the client to the lobby
-				
-				// if the waiting room is empty, the host client decides the number of players
-				if (nicknames.size() == 1) {
-					clientHandler.sendMessage(new PlayerNumberRequest()); // asks for the number of players to be assigned in the lobby
-					numberOfPlayers = clientHandler.readNumberOfPlayers(); // gets the number of players
-				}
-				
-				// if the waiting room is full, creates a Lobby, assigns the clients and proceed to reset the waiting room
-				if(nicknames.size() == numberOfPlayers) {
-					// creates a lobby and passes the list of clients and their relative hashmap
-					lobbyList.getLast().setNumberOfPlayers();
-					new Thread(lobbyList.getLast()).start();
-					
-					lobbyList.add(new Lobby()); // creates a new empty lobby for the next players
-					nicknames.clear(); // clears the list of nicknames
-				}
 
-	 */
-	
+	 protected class LobbyStarter implements Runnable {
+		
+		private ReentrantLock lock;
+		private Condition condition;
+		
+		private LobbyStarter() {
+			this.lock = new ReentrantLock();
+			this.condition = lock.newCondition();
+		}
+		
+		 @Override
+		 public void run() {
+			
+		 }
+		 
+		 protected Condition getLock() {
+			return this.condition;
+		 }
+		 
+	 }
 	
 /*
 	/**

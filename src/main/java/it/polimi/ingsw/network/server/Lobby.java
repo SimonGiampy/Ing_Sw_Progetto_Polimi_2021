@@ -1,31 +1,35 @@
 package it.polimi.ingsw.network.server;
 
 import it.polimi.ingsw.controller.GameController;
+import it.polimi.ingsw.network.messages.GameConfigRequest;
+import it.polimi.ingsw.network.messages.GenericMessage;
 import it.polimi.ingsw.network.messages.Message;
 import it.polimi.ingsw.view.VirtualView;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.logging.Logger;
 
 public class Lobby implements Runnable {
 
 	private ArrayList<User> clients;
-	private ArrayList<String> nicknames;
+	private List<String> nicknames;
 	private int numberOfPlayers;
 	
 	private ClientHandler host;
 	private ArrayList<ClientHandler> handlersList;
 	private final GameController gameController;
+	
 	public static final Logger LOGGER = Logger.getLogger(Lobby.class.getName());
 	
 	public Lobby(ClientHandler host) {
 		clients = new ArrayList<>();
-		nicknames = new ArrayList<>();
+		nicknames = Collections.synchronizedList(new ArrayList<>());
 		handlersList = new ArrayList<>();
 		this.host = host;
 		
-		gameController = new GameController();
-		
+		gameController = new GameController(this);
 		
 	}
 	
@@ -42,40 +46,43 @@ public class Lobby implements Runnable {
 	 * The game can't be started until the host doesn't choose with config file to use for the match
 	 */
 	public void setUpGameConfig() {
-		//TODO: ask for configuration file to the lobby host
-		
-		//TODO: instantiation of game controller with the game config
+		host.sendMessage(new GameConfigRequest());
+		String config = host.readGameConfig();
+		gameController.setGameConfig(config);
 	}
 
-	public void connectClient(ClientHandler client){
+	public void connectClient(ClientHandler client) {
 		handlersList.add(client);
 	}
 
-	public void addClient(ClientHandler handler) {
-		if(handlersList.contains(handler)) {
-			VirtualView view = new VirtualView(handler);
-			String nick;
-			boolean valid;
-			do {
-				view.askNickname(); // asks for a nickname (message from the server to the client)
-				nick = handler.readNickname();
+	public void join(ClientHandler handler) {
+		VirtualView view = new VirtualView(handler);
+		String nick;
+		boolean valid;
+		do {
+			view.askNickname(); // asks for a nickname (message from the server to the client)
+			nick = handler.readNickname();
+			synchronized (nicknames) {
 				valid = nicknames.contains(nick); //checks if the nickname isn't already chosen by another client
-				view.showNicknameConfirmation(valid); // sends the login result to the client, otherwise
-			} while (!valid);
-
+			}
+			view.showNicknameConfirmation(valid); // sends the login result to the client, otherwise
+		} while (!valid);
+		
+		synchronized (nicknames) {
 			nicknames.add(nick); // memorizes the accepted nickname
-
-			handler.setLobby(this);
-			clients.add(new User(nick, handler, view));
 		}
-		//broadcastMessage(Message communication); //TODO: updates the other connected clients that a new user entered the game lobby
+		
+		handler.setLobby(this);
+		clients.add(new User(nick, handler, view));
+		
+		// updates the other connected clients that a new user entered the game lobby
+		broadcastMessage(new GenericMessage(nick + " joined the lobby!"));
+		
 	}
 	
 	public void removeClient(String nickname) {
-		//User triple=clients.stream().filter(i-> i.getNickname().equals(nickname)).findFirst().orElse(null);
-		//clients.remove(triple);
 		clients.removeIf(user -> user.getNickname().equals(nickname));
-		// remove virtual view association
+		//TODO: remove virtual view association
 		LOGGER.info(() -> "Removed " + nickname + " from the client list.");
 	}
 	
@@ -83,13 +90,17 @@ public class Lobby implements Runnable {
 		numberOfPlayers = clients.size();
 	}
 	
+	public void broadcastMessage(Message message) {
+		for (User user: clients) {
+			user.getHandler().sendMessage(message);
+		}
+	}
+	
 	/**
 	 * Runnable starts when the match starts
 	 */
 	@Override
 	public void run() {
-		
-		
 		
 		LOGGER.info("Match started");
 	}
@@ -144,7 +155,15 @@ public class Lobby implements Runnable {
 		public String getNickname() {
 			return nickname;
 		}
-
+		
+		public ClientHandler getHandler() {
+			return handler;
+		}
+		
+		public VirtualView getView() {
+			return view;
+		}
+		
 		public User(String nickname, ClientHandler handler, VirtualView view) {
 			this.nickname = nickname;
 			this.handler = handler;

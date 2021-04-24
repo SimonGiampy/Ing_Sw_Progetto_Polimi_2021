@@ -20,7 +20,12 @@ public class VirtualView implements View, Observer {
 	public void update(Message message) {
 		clientHandler.sendMessage(message);
 	}
-
+	
+	@Override
+	public void askLobbyToJoin() {
+	
+	}
+	
 	@Override
 	public void askNumberOfPlayer() {
 		clientHandler.sendMessage(new PlayerNumberRequest());

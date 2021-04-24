@@ -61,6 +61,7 @@ public class CLI extends ViewObservable implements View {
 	
 	/**
 	 * Asks the server address and port to the use
+	 *
 	 * @throws ExecutionException if the input stream thread is interrupted.
 	 */
 	public void askServerInfo() throws ExecutionException {
@@ -109,6 +110,16 @@ public class CLI extends ViewObservable implements View {
 	}
 	
 	@Override
+	public void showLobbyList(ArrayList<String> lobbyList) {
+	
+	}
+	
+	@Override
+	public void showLoginConfirmation(boolean lobbyAccessed) {
+	
+	}
+	
+	@Override
 	public void askNickname() {
 		System.out.print("Enter your nickname: ");
 		String nickname = scanner.nextLine();
@@ -131,17 +142,22 @@ public class CLI extends ViewObservable implements View {
 		notifyObserver(obs -> obs.onUpdatePlayersNumber(finalPlayerNumber));
 	}
 	
+	@Override
+	public void showNicknameConfirmation(boolean nicknameAccepted) {
+	
+	}
+	
 	
 	@Override
 	public void askCustomGame() {
 	
 	}
-
+	
 	@Override
 	public void askInitResources(int number) {
-
+	
 	}
-
+	
 	@Override
 	public void askInitLeaders(ArrayList<ReducedLeaderCard> leaderCards) {
 	
@@ -176,31 +192,22 @@ public class CLI extends ViewObservable implements View {
 	public void askProductionAction(ArrayList<Integer> productionAvailable) {
 	
 	}
-
+	
 	@Override
 	public void askFreeInput(int number) {
-
+	
 	}
-
+	
 	@Override
 	public void askFreeOutput(int number) {
-
-	}
-
-	@Override
-	public void showNicknameConfirmation(boolean nicknameAccepted) {
 	
 	}
-
-	@Override
-	public void showLoginConfirmation(boolean lobbyAccessed) {
-
-	}
-
+	
+	
 	@Override
 	public void showGenericMessage(String genericMessage) {
-	
 	}
+	
 	
 	@Override
 	public void showDisconnectionMessage(String nicknameDisconnected, String text) {
@@ -246,12 +253,7 @@ public class CLI extends ViewObservable implements View {
 	public void showLobby(ArrayList<String> players, int numPlayers) {
 	
 	}
-
-	@Override
-	public void showLobbyList(ArrayList<String> lobbyList) {
-
-	}
-
+	
 	@Override
 	public void showMatchInfo(ArrayList<String> players, String activePlayer) {
 	

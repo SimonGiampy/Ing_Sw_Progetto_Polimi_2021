@@ -36,6 +36,7 @@ public class Client extends Observable {
 		readExecutionQueue = Executors.newSingleThreadExecutor();
 	}
 
+	
 	public void readMessage() {
 		readExecutionQueue.execute(() -> {
 			while (!readExecutionQueue.isShutdown()) {
