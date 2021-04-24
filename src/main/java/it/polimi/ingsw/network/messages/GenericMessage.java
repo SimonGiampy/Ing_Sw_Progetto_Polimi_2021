@@ -5,8 +5,8 @@ public class GenericMessage extends Message{
 	private final String message;
 
 
-	public GenericMessage(String nickname, String message) {
-		super(nickname, MessageType.GENERIC_MESSAGE);
+	public GenericMessage(String message) {
+		super("lobby", MessageType.GENERIC_MESSAGE);
 		this.message = message;
 	}
 

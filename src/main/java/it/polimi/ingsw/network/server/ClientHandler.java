@@ -172,9 +172,9 @@ public class ClientHandler implements Runnable {
 		try {
 			Message message = (Message) input.readObject();
 			if (message != null) {
-				if (message.getMessageType() == MessageType.LOGIN_REQUEST) {
-					LoginConfirmation request = (LoginConfirmation) message;
-					return request.getNickname();
+				if (message.getMessageType() == MessageType.NICKNAME_REPLY) {
+					NicknameReply nicknameReply = (NicknameReply) message;
+					return nicknameReply.getNickname();
 				}
 			}
 			

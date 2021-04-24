@@ -50,6 +50,8 @@ public interface View {
 
 	void showLobby(ArrayList<String> players, int numPlayers);
 
+	void showLobbyList(ArrayList<String> lobbyList);
+
 	void showMatchInfo(ArrayList<String> players, String activePlayer);
 
 	void showWinMessage(String winner);

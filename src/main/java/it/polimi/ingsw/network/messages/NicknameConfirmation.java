@@ -8,7 +8,7 @@ public class NicknameConfirmation  extends Message {
 		return confirmed;
 	}
 	
-	NicknameConfirmation(boolean confirmed) {
+	public NicknameConfirmation(boolean confirmed) {
 		super("Server", MessageType.NICKNAME_CONFIRMATION);
 		this.confirmed = confirmed;
 	}

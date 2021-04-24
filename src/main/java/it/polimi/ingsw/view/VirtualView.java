@@ -33,7 +33,7 @@ public class VirtualView implements View, Observer {
 
 	@Override
 	public void askCustomGame() {
-
+		clientHandler.sendMessage(new GameConfigRequest());
 	}
 
 	@Override
@@ -48,6 +48,7 @@ public class VirtualView implements View, Observer {
 
 	@Override
 	public void askAction(ArrayList<Integer> availableAction) {
+		clientHandler.sendMessage(new ActionMessage(availableAction));
 	}
 
 	@Override
@@ -67,22 +68,22 @@ public class VirtualView implements View, Observer {
 
 	@Override
 	public void askProductionAction(ArrayList<Integer> productionAvailable) {
-		//clientHandler.sendMessage(new Messaggio da fare (productionAvailable));
+		clientHandler.sendMessage(new ProductionShow(productionAvailable));
 	}
 
 	@Override
-	public void showLoginResult(boolean nicknameAccepted) {
-		clientHandler.sendMessage(new NicknameReply(nicknameAccepted));
+	public void showLoginResult(boolean nicknameConfirmation) {
+		clientHandler.sendMessage(new NicknameConfirmation(nicknameConfirmation));
 	}
 
 	@Override
 	public void showGenericMessage(String genericMessage) {
-
+		clientHandler.sendMessage(new GenericMessage(genericMessage));
 	}
 
 	@Override
 	public void showDisconnectionMessage(String nicknameDisconnected, String text) {
-
+		clientHandler.sendMessage(new DisconnectionMessage(nicknameDisconnected,text));
 	}
 
 	@Override
@@ -122,16 +123,21 @@ public class VirtualView implements View, Observer {
 
 	@Override
 	public void showLobby(ArrayList<String> players, int numPlayers) {
+		clientHandler.sendMessage(new LobbyShow(players,numPlayers));
+	}
+
+	public void showLobbyList(ArrayList<String> lobbyList){
+		clientHandler.sendMessage(new LobbyList(lobbyList));
 	}
 
 	@Override
 	public void showMatchInfo(ArrayList<String> players, String activePlayer) {
-
+		clientHandler.sendMessage(new MatchInfoShow(players,activePlayer));
 	}
 
 	@Override
 	public void showWinMessage(String winner) {
-
+		clientHandler.sendMessage(new WinMessage(winner));
 	}
 
 	public ClientHandler getClientHandler() {
