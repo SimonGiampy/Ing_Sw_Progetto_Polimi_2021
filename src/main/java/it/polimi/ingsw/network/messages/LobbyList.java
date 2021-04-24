@@ -7,7 +7,7 @@ import java.util.ArrayList;
  */
 public class LobbyList extends Message {
 	
-	private ArrayList<String> lobbies;
+	private final ArrayList<String> lobbies;
 	
 	public LobbyList(ArrayList<String> lobbies) {
 		super("Server", MessageType.LOBBY_LIST);

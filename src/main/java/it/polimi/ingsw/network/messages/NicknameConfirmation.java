@@ -5,7 +5,7 @@ package it.polimi.ingsw.network.messages;
  */
 public class NicknameConfirmation  extends Message {
 	
-	private boolean confirmed;
+	private final boolean confirmed;
 	
 	public boolean isConfirmed() {
 		return confirmed;

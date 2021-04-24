@@ -20,6 +20,12 @@ public interface ViewObserver {
 	void onUpdateServerInfo(HashMap<String, String> serverInfo);
 
 	/**
+	 * it sends a message with to the server with the number of the lobby to access
+	 * @param lobbyNumber number of the lobby
+	 */
+	void onUpdateLobbyAccess(int lobbyNumber);
+
+	/**
 	 * it sends a message to the server with the chosen nickname
 	 * @param nickname is the nickname to be sent
 	 */

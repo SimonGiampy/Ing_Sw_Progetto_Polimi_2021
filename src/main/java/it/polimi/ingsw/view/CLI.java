@@ -111,12 +111,32 @@ public class CLI extends ViewObservable implements View {
 	
 	@Override
 	public void showLobbyList(ArrayList<String> lobbyList) {
-	
+		int lobbyNumber;
+		boolean check;
+		String regex = "[0-" + lobbyList.size() + "]";
+		do {
+			if (lobbyList.isEmpty())
+				System.out.println("There is no existing lobby, type [0] to create one!");
+			else {
+				System.out.println("Choose which lobby to enter or type [0] to create one:");
+				for (String lobby : lobbyList)
+					System.out.println(lobby);
+			}
+			String input = scanner.nextLine();
+			lobbyNumber = Integer.parseInt(input);
+			check = Pattern.matches(regex, input);
+		}while(!check);
+
+		int finalLobbyNumber = lobbyNumber;
+		notifyObserver(obs -> obs.onUpdateLobbyAccess(finalLobbyNumber));
 	}
 	
 	@Override
 	public void showLoginConfirmation(boolean lobbyAccessed) {
-	
+		if(lobbyAccessed)
+			System.out.println("Lobby joined!");
+		else
+			System.out.println("Impossible to connect to the selected lobby");
 	}
 	
 	@Override
@@ -144,7 +164,10 @@ public class CLI extends ViewObservable implements View {
 	
 	@Override
 	public void showNicknameConfirmation(boolean nicknameAccepted) {
-	
+		if(nicknameAccepted)
+			System.out.println("Login confirmed! Waiting for the game to start");
+		else
+			System.out.println("Login failed! Your nickname is already taken");
 	}
 	
 	
@@ -155,7 +178,30 @@ public class CLI extends ViewObservable implements View {
 	
 	@Override
 	public void askInitResources(int number) {
-	
+		ArrayList<Resources> resourcesList = new ArrayList<>();
+		ArrayList<Integer> resourcesNumber = new ArrayList<>();
+		String userResponse;
+		if(number == 1)
+			System.out.println("You can choose " + number + " free resource");
+		else
+			System.out.println("You can choose " + number + " free resources");
+		//TODO: complete
+		/*
+		if (howMany == 1) { //one free choice
+			userResponse = scanner.nextLine().toUpperCase();
+			out[0] = Resources.valueOf(userResponse);
+
+		} else if (howMany == 2) { // 2 free choices
+			out = new Resources[2];
+			System.out.println("Player "+ (playerIndex+1) + " gets to choose two resources: which ones do you want [resA,resB]?");
+			userResponse = scanner.nextLine().toUpperCase();
+			String[] ress = userResponse.split(",");
+			out[0] = Resources.valueOf(ress[0]);
+			out[1] = Resources.valueOf(ress[1]);
+		}
+
+		 */
+		notifyObserver(obs -> obs.onUpdateResourceChoice(resourcesList, resourcesNumber));
 	}
 	
 	@Override

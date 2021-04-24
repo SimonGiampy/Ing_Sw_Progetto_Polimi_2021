@@ -5,14 +5,14 @@ package it.polimi.ingsw.network.messages;
  */
 public class LobbyAccess extends Message {
 	
-	private int lobbyNumber;
+	private final int lobbyNumber;
 	
 	public int getLobbyNumber() {
 		return lobbyNumber;
 	}
 	
-	LobbyAccess(int lobbyNumber) {
-		super("undefined", MessageType.LOBBY_ACCESS);
+	public LobbyAccess(int lobbyNumber) {
+		super("Undefined", MessageType.LOBBY_ACCESS);
 		this.lobbyNumber = lobbyNumber;
 	}
 }

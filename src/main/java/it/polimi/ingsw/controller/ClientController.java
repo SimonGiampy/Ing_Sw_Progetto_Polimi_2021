@@ -93,7 +93,12 @@ public class ClientController implements ViewObserver, Observer {
 		client.readMessage(); // Starts an asynchronous reading from the server.
 		taskQueue.execute(view::askNickname);
 	}
-	
+
+	@Override
+	public void onUpdateLobbyAccess(int lobbyNumber) {
+		client.sendMessage(new LobbyAccess(lobbyNumber));
+	}
+
 	@Override
 	public void onUpdateNickname(String nickname) {
 		this.nickname = nickname;
