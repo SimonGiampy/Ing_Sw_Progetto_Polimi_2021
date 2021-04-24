@@ -3,17 +3,15 @@ package it.polimi.ingsw.controller;
 import it.polimi.ingsw.model.util.Colors;
 import it.polimi.ingsw.network.messages.MessageType;
 import it.polimi.ingsw.network.server.Client;
-import it.polimi.ingsw.network.messages.LoginRequest;
+import it.polimi.ingsw.network.messages.LoginConfirmation;
 import it.polimi.ingsw.network.messages.Message;
 import it.polimi.ingsw.network.messages.PlayerNumberReply;
 import it.polimi.ingsw.observer.Observer;
 import it.polimi.ingsw.observer.ViewObserver;
 import it.polimi.ingsw.view.View;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -55,7 +53,7 @@ public class ClientController implements ViewObserver, Observer {
 	@Override
 	public void onUpdateNickname(String nickname) {
 		this.nickname = nickname;
-		client.sendMessage(new LoginRequest(nickname));
+		client.sendMessage(new LoginConfirmation(nickname));
 	}
 
 	@Override

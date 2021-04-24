@@ -14,6 +14,11 @@ public class GameController {
 	private GameMechanicsMultiPlayer mechanics;
 	private GameState gameState;
 	private HashMap<String, VirtualView> virtualViewMap;
+	
+	//TODO: new approach: instantiate this class before the rest and use it to handle clients login
+	public GameController() {
+	
+	}
 
 	public GameController(HashMap<String, VirtualView> virtualViewMap) {
 		mechanics = new GameMechanicsMultiPlayer(this, virtualViewMap.size());

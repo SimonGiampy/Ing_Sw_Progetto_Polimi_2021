@@ -1,12 +1,14 @@
 package it.polimi.ingsw.network.server;
 
-import it.polimi.ingsw.network.messages.PlayerNumberRequest;
+import it.polimi.ingsw.controller.GameController;
 import it.polimi.ingsw.view.VirtualView;
 
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.logging.Logger;
@@ -15,24 +17,20 @@ public class Server implements Runnable {
 	
 	public static final Logger LOGGER = Logger.getLogger(Server.class.getName());
 	
-	private ArrayList<String> nicknames;
-	private final LinkedList<Lobby> lobbyList;
+	//private ArrayList<String> nicknames;
+	//private final LinkedList<Lobby> lobbyList;
 	
-	private ConcurrentLinkedQueue<Lobby> lobbies; // new approach for concurrent lobby accesses
+	private List<Lobby> lobbies; // new approach for concurrent lobby accesses
 	
 	private final int port;
-	ServerSocket serverSocket;
+	private ServerSocket serverSocket;
 	private int numberOfPlayers;
 	
 	public Server(int port) {
 		this.port = port;
-		lobbyList = new LinkedList<>();
-		nicknames = new ArrayList<>();
 		numberOfPlayers = 5; // must never reach this number
-	}
-	
-	@Override
-	public void run() {
+		lobbies = Collections.synchronizedList(new ArrayList<>());
+		
 		try {
 			serverSocket = new ServerSocket(port); // creates a local socket connection
 			LOGGER.info("Socket lobby started on port " + port + ".");
@@ -40,21 +38,44 @@ public class Server implements Runnable {
 			LOGGER.severe("Lobby could not start!");
 			return;
 		}
-		
-		lobbyList.add(new Lobby());
+	}
+	
+	@Override
+	public void run() {
+	
 		while (!Thread.currentThread().isInterrupted()) {
 			try {
 				// accepts new client connections
 				Socket client = serverSocket.accept();
 				
-				ClientHandler clientHandler = new ClientHandler(client); // creation of the client handler
-				VirtualView view = new VirtualView(clientHandler); // associates the virtual view to the client handler
-				
+				ClientHandler clientHandler = new ClientHandler(this, client); // creation of the client handler
 				new Thread(clientHandler).start();
 				
 			} catch (IOException e) {
 				LOGGER.severe("Connection dropped");
 			}
+		}
+	}
+	
+	public void addClient(String nickname, ClientHandler handler) {
+	
+	}
+	
+	public ArrayList<String> getLobbiesDescription() {
+		ArrayList<String> lobbyDes = new ArrayList<>();
+		int i = 1;
+		for (Lobby l: lobbies) {
+			lobbyDes.add("Lobby" + i + ": " + l.getConnectedClients() + "/" + l.getNumberOfPlayers() + ";");
+			i++;
+		}
+		return lobbyDes;
+	}
+	
+	public void createLobby(ClientHandler host) {
+		Lobby lobby = new Lobby(host);
+		lobby.setUpLobby();
+		synchronized (lobbies) {
+			lobbies.add(lobby);
 		}
 	}
 	

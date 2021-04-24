@@ -10,25 +10,60 @@ import java.util.logging.Logger;
 public class Lobby implements Runnable {
 
 	private ArrayList<User> clients;
+	private ArrayList<String> nicknames;
 	private int numberOfPlayers;
+	
 	private ClientHandler host;
-	//private final GameController gameController;
+	private final GameController gameController;
 	public static final Logger LOGGER = Logger.getLogger(Lobby.class.getName());
 	
-	public Lobby() {
+	public Lobby(ClientHandler host) {
 		clients = new ArrayList<>();
+		nicknames = new ArrayList<>();
+		this.host = host;
 		
-		//TODO: fix the configuration file name and instantiation of game controller
-		//gameController = new GameController("asks for config file");
+		gameController = new GameController();
+		
+		
 	}
 	
-	public void addClient(String nickname, ClientHandler handler, VirtualView view) {
-		if (clients.isEmpty()) {
-			host = handler;
-		}
+	/**
+	 * method called by the server for the initialization of the lobby (choose the number of players)
+	 */
+	public void setUpLobby() {
+		//TODO: let the host choose the number of players
+		
+	}
+	
+	/**
+	 * The request of choosing which game config to be used must be asynchronous for this thread
+	 * The game can't be started until the host doesn't choose with config file to use for the match
+	 */
+	public void setUpGameConfig() {
+		//TODO: ask for configuration file to the lobby host
+		
+		//TODO: instantiation of game controller with the game config
+	}
+	
+	
+	
+	public void addClient(ClientHandler handler, VirtualView view) {
+		
+		String nick;
+		boolean valid;
+		do {
+			view.askNickname(); // asks for a nickname (message from the server to the client)
+			nick = handler.readNickname();
+			valid = nicknames.contains(nick); //checks if the nickname isn't already chosen by another client
+			view.showLoginResult(valid); // sends the login result to the client, otherwise
+		} while (!valid);
+		
+		nicknames.add(nick); // memorizes the accepted nickname
+		
 		handler.setLobby(this);
-		clients.add(new User(nickname, handler, view));
-		//handler.sendMessage(); //updates the other connected clients that a new user entered the game lobby
+		clients.add(new User(nick, handler, view));
+		
+		//broadcastMessage(Message commmunication); //TODO: updates the other connected clients that a new user entered the game lobby
 	}
 	
 	public void removeClient(String nickname) {
@@ -43,13 +78,18 @@ public class Lobby implements Runnable {
 		numberOfPlayers = clients.size();
 	}
 	
+	/**
+	 * Runnable starts when the match starts
+	 */
 	@Override
 	public void run() {
-		//TODO: ask for configuration file
+		
 		
 		
 		LOGGER.info("Match started");
 	}
+	
+	//TODO: add broadcast message function via the virtual views
 	
 	/**
 	 * Forwards a received message from the client to the GameController
@@ -82,8 +122,14 @@ public class Lobby implements Runnable {
 	}
 
 	 */
-
 	
+	public int getNumberOfPlayers() {
+		return numberOfPlayers;
+	}
+	
+	public int getConnectedClients() {
+		return clients.size();
+	}
 	
 	private class User {
 		private String nickname;

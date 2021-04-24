@@ -1,6 +1,7 @@
 package it.polimi.ingsw.network.server;
 
 import it.polimi.ingsw.network.messages.*;
+import it.polimi.ingsw.view.VirtualView;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -13,6 +14,7 @@ import java.util.logging.Logger;
 public class ClientHandler implements Runnable {
 	
 	private final Socket client;
+	private final Server server;
 	public static final Logger LOGGER = Logger.getLogger(ClientHandler.class.getName());
 	private Lobby lobby;
 	
@@ -31,9 +33,10 @@ public class ClientHandler implements Runnable {
 	 * Default constructor
 	 * @param client the client connecting.
 	 */
-	public ClientHandler(Socket client) {
+	public ClientHandler(Server server, Socket client) {
 		this.lobby = null;
 		this.client = client;
+		this.server = server;
 		this.connected = true;
 		
 		lock = new ReentrantLock();
@@ -52,22 +55,12 @@ public class ClientHandler implements Runnable {
 	@Override
 	public void run() {
 		LOGGER.info("Client connected from " + client.getRemoteSocketAddress());
+		lobbyLogin();
 		try {
 			while (!Thread.currentThread().isInterrupted()) {
 				synchronized (inputLock) {
 					Message message = (Message) input.readObject();
 					if (message != null) {
-						
-						if (message.getMessageType() == MessageType.LOBBY_ACCESS) {
-							LobbyAccess lobbyAccess = (LobbyAccess) message;
-							if (lobbyAccess.getLobbyNumber() == 0) {
-								// create new lobby and add the client. Then let it choose the number of players
-							} else {
-								// check if the lobby is not full
-								//       if the lobby is full, send negative confirmation
-								//       else send positive confirmation and add to the lobby
-							}
-						}
 						
 						LOGGER.info(() -> "Received: " + message);
 						lobby.onMessageReceived(message);
@@ -86,6 +79,31 @@ public class ClientHandler implements Runnable {
 			LOGGER.severe("Client " + client.getRemoteSocketAddress() + " connection dropped.");
 			disconnect();
 		}
+	}
+	
+	public void lobbyLogin() {
+		VirtualView view = new VirtualView(this); // associates the virtual view to the client handler
+		sendMessage(new LobbyList(server.getLobbiesDescription()));
+		
+		Message message = null;
+		try {
+			message = (Message) input.readObject();
+			if (message.getMessageType() == MessageType.LOBBY_ACCESS) {
+				LobbyAccess lobbyAccess = (LobbyAccess) message;
+				if (lobbyAccess.getLobbyNumber() == 0) {
+					// create new lobby and add the client. Then let it choose the number of players
+					server.createLobby(this);
+				} else {
+					// check if the lobby is not full
+					//       if the lobby is full, send negative confirmation
+					//       else send positive confirmation and add to the lobby
+				}
+			}
+		} catch (IOException | ClassNotFoundException e) {
+			e.printStackTrace();
+			
+		}
+		
 	}
 	
 	/**
@@ -155,7 +173,7 @@ public class ClientHandler implements Runnable {
 			Message message = (Message) input.readObject();
 			if (message != null) {
 				if (message.getMessageType() == MessageType.LOGIN_REQUEST) {
-					LoginRequest request = (LoginRequest) message;
+					LoginConfirmation request = (LoginConfirmation) message;
 					return request.getNickname();
 				}
 			}

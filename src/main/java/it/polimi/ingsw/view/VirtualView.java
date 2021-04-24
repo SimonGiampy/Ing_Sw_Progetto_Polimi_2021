@@ -2,12 +2,10 @@ package it.polimi.ingsw.view;
 
 import it.polimi.ingsw.model.*;
 import it.polimi.ingsw.model.reducedClasses.*;
-import it.polimi.ingsw.model.util.Resources;
 import it.polimi.ingsw.network.messages.*;
 import it.polimi.ingsw.network.server.ClientHandler;
 import it.polimi.ingsw.observer.Observer;
 
-import java.sql.Array;
 import java.util.ArrayList;
 
 public class VirtualView implements View, Observer {
@@ -74,7 +72,7 @@ public class VirtualView implements View, Observer {
 
 	@Override
 	public void showLoginResult(boolean nicknameAccepted) {
-		clientHandler.sendMessage(new LoginReply(nicknameAccepted));
+		clientHandler.sendMessage(new NicknameReply(nicknameAccepted));
 	}
 
 	@Override
