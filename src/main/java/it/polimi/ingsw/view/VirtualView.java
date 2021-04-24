@@ -37,6 +37,11 @@ public class VirtualView implements View, Observer {
 	}
 
 	@Override
+	public void askInitResources(int number) {
+		clientHandler.sendMessage(new ResourceChoice(number, 0));
+	}
+
+	@Override
 	public void askInitLeaders(ArrayList<ReducedLeaderCard> leaderCards) {
 		clientHandler.sendMessage(new LeaderShow(leaderCards));
 	}
@@ -48,17 +53,17 @@ public class VirtualView implements View, Observer {
 
 	@Override
 	public void askAction(ArrayList<Integer> availableAction) {
-		clientHandler.sendMessage(new ActionMessage(availableAction));
+		clientHandler.sendMessage(new ActionRequest(availableAction));
 	}
 
 	@Override
 	public void askMarketAction(ReducedMarket market) {
-		clientHandler.sendMessage(new MarketShow(market));
+		clientHandler.sendMessage(new MarketShow(market, 1));
 	}
 
 	@Override
 	public void askDepotMove(ReducedWarehouseDepot depot) {
-		clientHandler.sendMessage(new DepotShow(depot));
+		clientHandler.sendMessage(new DepotShow(depot, 1));
 	}
 
 	@Override
@@ -69,6 +74,16 @@ public class VirtualView implements View, Observer {
 	@Override
 	public void askProductionAction(ArrayList<Integer> productionAvailable) {
 		clientHandler.sendMessage(new ProductionShow(productionAvailable));
+	}
+
+	@Override
+	public void askFreeInput(int number) {
+		clientHandler.sendMessage(new ResourceChoice(number, 1));
+	}
+
+	@Override
+	public void askFreeOutput(int number) {
+		clientHandler.sendMessage(new ResourceChoice(number, 2));
 	}
 
 	@Override
@@ -113,12 +128,12 @@ public class VirtualView implements View, Observer {
 
 	@Override
 	public void showDepot(ReducedWarehouseDepot depot) {
-		clientHandler.sendMessage(new DepotShow(depot));
+		clientHandler.sendMessage(new DepotShow(depot, 0));
 	}
 
 	@Override
 	public void showMarket(ReducedMarket market) {
-		clientHandler.sendMessage(new MarketShow(market));
+		clientHandler.sendMessage(new MarketShow(market, 0));
 	}
 
 	@Override

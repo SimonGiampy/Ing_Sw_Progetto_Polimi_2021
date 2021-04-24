@@ -1,6 +1,7 @@
 package it.polimi.ingsw.observer;
 
 import it.polimi.ingsw.model.util.Colors;
+import it.polimi.ingsw.model.util.Resources;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -38,9 +39,10 @@ public interface ViewObserver {
 
 	/**
 	 * it sends a message to the server with the leaders selected for action
-	 * @param selectedLeaders is an arraylist of index of the selected leaders
+	 * @param selectedLeader is the index of the selected leader
+	 * @param action play, discard or nothing
 	 */
-	void onUpdateLeaderAction(ArrayList<Integer> selectedLeaders);
+	void onUpdateLeaderAction(int selectedLeader, int action);
 
 	/**
 	 * it sends a message to the server with the selected action
@@ -56,9 +58,12 @@ public interface ViewObserver {
 	void onUpdateMarketAction(String which, int where);
 
 	/**
-	 *
+	 * it sends a message to the server with the movement of a resource
+	 * @param where depot or deck. Indicates the place where to move the resources from
+	 * @param from positional number in the corresponding array of the place containing the resources
+	 * @param destination positional number of the warehouse pyramid
 	 */
-	void onUpdateDepotMove(); // TODO: incomplete
+	void onUpdateDepotMove(String where, int from, int destination);
 
 	/**
 	 * it sends a message to the server with the bought card
@@ -72,6 +77,13 @@ public interface ViewObserver {
 	 * @param selectedProduction is an arraylist of index of the selected production
 	 */
 	void onUpdateProductionAction(ArrayList<Integer> selectedProduction);
+
+	/**
+	 * it sends a message to the server with the selected free choice resources
+	 * @param resourcesList list of the resources
+	 * @param resourcesNumber how much of each one
+	 */
+	void onUpdateResourceChoice(ArrayList<Resources> resourcesList, ArrayList<Integer> resourcesNumber);
 
 	/**
 	 * it handles a disconnection wanted by the user

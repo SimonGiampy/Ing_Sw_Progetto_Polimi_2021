@@ -14,6 +14,8 @@ public interface View {
 
 	void askCustomGame();
 
+	void askInitResources(int number);
+
 	void askInitLeaders(ArrayList<ReducedLeaderCard> leaderCards);
 
 	void askLeaderAction(ArrayList<ReducedLeaderCard> availableLeaders);
@@ -27,6 +29,10 @@ public interface View {
 	void askBuyCardAction(ArrayList<DevelopmentCard> cardsAvailable);
 
 	void askProductionAction(ArrayList<Integer> productionAvailable);
+
+	void askFreeInput(int number);
+
+	void askFreeOutput(int number);
 
 	void showLoginResult(boolean nicknameAccepted);
 

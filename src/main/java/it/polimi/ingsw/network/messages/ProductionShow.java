@@ -6,7 +6,7 @@ public class ProductionShow extends Message {
 	private final ArrayList<Integer> availableProduction;
 
 	public ProductionShow(ArrayList<Integer> availableProduction){
-		super("lobby", MessageType.PRODUCTION_SHOW);
+		super("Lobby", MessageType.PRODUCTION_SHOW);
 		this.availableProduction =availableProduction;
 	}
 

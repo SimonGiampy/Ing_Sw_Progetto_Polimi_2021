@@ -1,11 +1,9 @@
 package it.polimi.ingsw.controller;
 
 import it.polimi.ingsw.model.util.Colors;
-import it.polimi.ingsw.network.messages.MessageType;
+import it.polimi.ingsw.model.util.Resources;
+import it.polimi.ingsw.network.messages.*;
 import it.polimi.ingsw.network.server.Client;
-import it.polimi.ingsw.network.messages.LoginConfirmation;
-import it.polimi.ingsw.network.messages.Message;
-import it.polimi.ingsw.network.messages.PlayerNumberReply;
 import it.polimi.ingsw.observer.Observer;
 import it.polimi.ingsw.observer.ViewObserver;
 import it.polimi.ingsw.view.View;
@@ -18,7 +16,7 @@ import java.util.concurrent.Executors;
 public class ClientController implements ViewObserver, Observer {
 
 	private Client client;
-	private View view;
+	private final View view;
 	private String nickname;
 	
 	private final ExecutorService taskQueue;
@@ -39,6 +37,7 @@ public class ClientController implements ViewObserver, Observer {
 			if (message.getMessageType() == MessageType.NICKNAME_REQUEST) {
 				view.askNickname();
 			}
+			//if(message.getMessageType() == MessageType.NICKNAME_REQUEST)
 		}
 	}
 	
@@ -53,7 +52,7 @@ public class ClientController implements ViewObserver, Observer {
 	@Override
 	public void onUpdateNickname(String nickname) {
 		this.nickname = nickname;
-		client.sendMessage(new LoginConfirmation(nickname));
+		client.sendMessage(new NicknameReply(nickname));
 	}
 
 	@Override
@@ -63,37 +62,42 @@ public class ClientController implements ViewObserver, Observer {
 
 	@Override
 	public void onUpdateInitLeaders(ArrayList<Integer> selectedLeaders) {
-
+		client.sendMessage(new LeaderSelection(nickname, selectedLeaders));
 	}
 
 	@Override
-	public void onUpdateLeaderAction(ArrayList<Integer> selectedLeaders) {
-
+	public void onUpdateLeaderAction(int selectedLeader, int action) {
+		client.sendMessage(new LeaderAction(nickname, selectedLeader, action));
 	}
 
 	@Override
 	public void onUpdateAction(int selectedAction) {
-
+		client.sendMessage(new ActionReply(nickname, selectedAction));
 	}
 
 	@Override
 	public void onUpdateMarketAction(String which, int where) {
-
+		client.sendMessage(new InteractionWithMarket(nickname, which, where));
 	}
 
 	@Override
-	public void onUpdateDepotMove() {
-
+	public void onUpdateDepotMove(String where, int from, int destination) {
+		client.sendMessage(new DepotInteraction(nickname, where, from, destination));
 	}
 
 	@Override
 	public void onUpdateBuyCardAction(Colors color, int level) {
-
+		client.sendMessage(new BuyCard(nickname, level, color));
 	}
 
 	@Override
 	public void onUpdateProductionAction(ArrayList<Integer> selectedProduction) {
+		client.sendMessage(new ProductionSelection(nickname, selectedProduction));
+	}
 
+	@Override
+	public void onUpdateResourceChoice(ArrayList<Resources> resourcesList, ArrayList<Integer> resourcesNumber) {
+		client.sendMessage(new ResourcesList(nickname, resourcesList, resourcesNumber));
 	}
 
 	@Override

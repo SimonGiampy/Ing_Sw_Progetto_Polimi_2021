@@ -2,13 +2,13 @@ package it.polimi.ingsw.network.messages;
 
 import java.util.ArrayList;
 
-public class ActionMessage extends Message{
+public class ActionRequest extends Message{
 
 	private final ArrayList<Integer> availableAction;
 
 
-	public ActionMessage(ArrayList<Integer> availableAction) {
-		super("lobby", MessageType.ACTION_MESSAGE);
+	public ActionRequest(ArrayList<Integer> availableAction) {
+		super("lobby", MessageType.ACTION_REQUEST);
 		this.availableAction = availableAction;
 	}
 

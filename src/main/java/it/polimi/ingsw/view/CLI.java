@@ -136,7 +136,12 @@ public class CLI extends ViewObservable implements View {
 	public void askCustomGame() {
 	
 	}
-	
+
+	@Override
+	public void askInitResources(int number) {
+
+	}
+
 	@Override
 	public void askInitLeaders(ArrayList<ReducedLeaderCard> leaderCards) {
 	
@@ -171,7 +176,17 @@ public class CLI extends ViewObservable implements View {
 	public void askProductionAction(ArrayList<Integer> productionAvailable) {
 	
 	}
-	
+
+	@Override
+	public void askFreeInput(int number) {
+
+	}
+
+	@Override
+	public void askFreeOutput(int number) {
+
+	}
+
 	@Override
 	public void showLoginResult(boolean nicknameAccepted) {
 	
@@ -226,7 +241,12 @@ public class CLI extends ViewObservable implements View {
 	public void showLobby(ArrayList<String> players, int numPlayers) {
 	
 	}
-	
+
+	@Override
+	public void showLobbyList(ArrayList<String> lobbyList) {
+
+	}
+
 	@Override
 	public void showMatchInfo(ArrayList<String> players, String activePlayer) {
 	
