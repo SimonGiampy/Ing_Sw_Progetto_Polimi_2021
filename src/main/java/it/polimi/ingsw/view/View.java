@@ -36,7 +36,7 @@ public interface View {
 
 	void showNicknameConfirmation(boolean nicknameAccepted);
 
-	void showAccessConfirmation(boolean lobbyAccessed);
+	void showLoginConfirmation(boolean lobbyAccessed);
 
 	void showGenericMessage(String genericMessage);
 

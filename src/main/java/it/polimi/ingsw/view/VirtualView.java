@@ -43,12 +43,12 @@ public class VirtualView implements View, Observer {
 
 	@Override
 	public void askInitLeaders(ArrayList<ReducedLeaderCard> leaderCards) {
-		clientHandler.sendMessage(new LeaderShow(leaderCards));
+		clientHandler.sendMessage(new LeaderShow(leaderCards, false));
 	}
 
 	@Override
 	public void askLeaderAction(ArrayList<ReducedLeaderCard> availableLeaders) {
-		clientHandler.sendMessage(new LeaderShow(availableLeaders));
+		clientHandler.sendMessage(new LeaderShow(availableLeaders, true));
 	}
 
 	@Override
@@ -89,6 +89,11 @@ public class VirtualView implements View, Observer {
 	@Override
 	public void showNicknameConfirmation(boolean nicknameConfirmation) {
 		clientHandler.sendMessage(new NicknameConfirmation(nicknameConfirmation));
+	}
+
+	@Override
+	public void showLoginConfirmation(boolean lobbyAccessed) {
+		clientHandler.sendMessage(new LoginConfirmation(lobbyAccessed));
 	}
 
 	@Override

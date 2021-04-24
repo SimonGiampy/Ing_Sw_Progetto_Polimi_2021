@@ -191,7 +191,12 @@ public class CLI extends ViewObservable implements View {
 	public void showNicknameConfirmation(boolean nicknameAccepted) {
 	
 	}
-	
+
+	@Override
+	public void showLoginConfirmation(boolean lobbyAccessed) {
+
+	}
+
 	@Override
 	public void showGenericMessage(String genericMessage) {
 	

@@ -36,11 +36,53 @@ public class ClientController implements ViewObserver, Observer {
 		if (message != null) {
 			switch(message.getMessageType()) {
 				case LOBBY_LIST -> view.showLobbyList(((LobbyList) message).getLobbies());
-				case LOGIN_CONFIRMATION -> view.showNicknameConfirmation(((LoginConfirmation) message).isConfirmed());
+				case LOGIN_CONFIRMATION -> view.showLoginConfirmation(((LoginConfirmation) message).isConfirmed());
+				case PLAYER_NUMBER_REQUEST -> view.askNumberOfPlayer();
 				case NICKNAME_REQUEST -> view.askNickname();
-
+				case NICKNAME_CONFIRMATION -> view.showNicknameConfirmation(((NicknameConfirmation) message).isConfirmed());
+				case GAME_CONFIG_REQUEST -> view.askCustomGame();
+				case LOBBY_SHOW -> view.showLobby(((LobbyShow) message).getPlayers(), ((LobbyShow) message).getNumberOfPlayers());
+				case RESOURCE_CHOICE -> {
+					switch (((ResourceChoice) message).getAction()) {
+						case 0 -> view.askInitResources(((ResourceChoice) message).getNumber());
+						case 1 -> view.askFreeInput(((ResourceChoice) message).getNumber());
+						case 2 -> view.askFreeOutput(((ResourceChoice) message).getNumber());
+						default -> view.showError("Wrong info from server");
+					}
+				}
+				case LEADER_SHOW -> {
+					if(((LeaderShow) message).isInGame())
+						view.askLeaderAction(((LeaderShow) message).getLeaderCards());
+					else
+						view.askInitLeaders(((LeaderShow) message).getLeaderCards());
+				}
+				case MARKET_SHOW -> {
+					if(((MarketShow) message).getAction() == 0)
+						view.showMarket(((MarketShow) message).getMarket());
+					else
+						view.askMarketAction(((MarketShow) message).getMarket());
+				}
+				case DEPOT_SHOW -> {
+					if(((DepotShow) message).getAction() == 0)
+						view.showDepot(((DepotShow) message).getDepot());
+					else
+						view.askDepotMove(((DepotShow) message).getDepot());
+				}
+				case STRONGBOX_SHOW -> view.showStrongBox(((StrongboxShow) message).getStrongbox());
+				case FAITH_TRACK_SHOW -> view.showFaithTrack(((FaithTrackShow) message).getFaithTrack());
+				case CARDS_DECK_SHOW -> view.showCardsDeck(((CardsDeckShow) message).getCardsDeck());
+				case PLAYER_CARDS_AND_PRODUCTION_SHOW ->
+						view.showPlayerCardsAndProduction(((PlayerCardsAndProductionShow) message).getCardProductionManagement());
+				case ACTION_REQUEST -> view.askAction(((ActionRequest) message).getAvailableAction());
+				case CARDS_SHOW -> view.askBuyCardAction(((CardsShow) message).getCards());
+				case PRODUCTION_SHOW -> view.askProductionAction(((ProductionShow) message).getAvailableProduction());
+				case MATCH_INFO_SHOW -> view.showMatchInfo(((MatchInfoShow) message).getPlayers(),
+						((MatchInfoShow) message).getActivePlayer());
+				case WIN_MESSAGE -> view.showWinMessage(((WinMessage) message).getWinner());
+				case DISCONNECTION_MESSAGE -> view.showDisconnectionMessage(((DisconnectionMessage) message).getNicknameDisconnected(),
+						((DisconnectionMessage) message).getMessage());
+				case GENERIC_MESSAGE -> view.showGenericMessage(((GenericMessage) message).getMessage());
 			}
-			//if(message.getMessageType() == MessageType.NICKNAME_REQUEST)
 		}
 	}
 	
