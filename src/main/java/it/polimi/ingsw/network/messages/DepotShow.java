@@ -2,6 +2,9 @@ package it.polimi.ingsw.network.messages;
 
 import it.polimi.ingsw.model.reducedClasses.ReducedWarehouseDepot;
 
+/**
+ *  the server sends the depot to the player
+ */
 public class DepotShow extends Message{
 
 	 private final ReducedWarehouseDepot depot;

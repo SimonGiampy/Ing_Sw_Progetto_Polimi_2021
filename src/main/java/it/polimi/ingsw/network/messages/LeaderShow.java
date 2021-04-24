@@ -1,4 +1,7 @@
 package it.polimi.ingsw.network.messages;
+/**
+ * the server sends leader cards to the player
+ */
 
 import it.polimi.ingsw.model.reducedClasses.ReducedLeaderCard;
 

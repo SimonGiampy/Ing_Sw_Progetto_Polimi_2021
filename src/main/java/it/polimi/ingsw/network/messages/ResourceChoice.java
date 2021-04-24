@@ -1,5 +1,8 @@
 package it.polimi.ingsw.network.messages;
 
+/**
+ * the server sends the number of free choice resources
+ */
 public class ResourceChoice extends Message{
 
 	private final int number;

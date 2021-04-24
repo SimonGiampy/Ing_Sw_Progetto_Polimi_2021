@@ -1,5 +1,8 @@
 package it.polimi.ingsw.network.messages;
 
+/**
+ * the server sends a generic message
+ */
 public class GenericMessage extends Message{
 
 	private final String message;

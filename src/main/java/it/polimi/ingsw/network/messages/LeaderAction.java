@@ -1,5 +1,8 @@
 package it.polimi.ingsw.network.messages;
 
+/**
+ * the client sends chosen leader and selected action
+ */
 public class LeaderAction extends Message{
 
 	private final int selectedLeader;

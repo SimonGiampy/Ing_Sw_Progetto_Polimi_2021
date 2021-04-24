@@ -2,6 +2,9 @@ package it.polimi.ingsw.network.messages;
 
 import java.util.ArrayList;
 
+/**
+ * the server sends lobby's info (players nicknames and number of players)
+ */
 public class LobbyShow extends Message{
 
 	private final ArrayList<String> players;

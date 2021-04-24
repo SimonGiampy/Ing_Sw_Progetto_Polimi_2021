@@ -1,5 +1,8 @@
 package it.polimi.ingsw.network.messages;
 
+/**
+ * the server sends info about a disconnection
+ */
 public class DisconnectionMessage extends Message{
 
 	private final String nicknameDisconnected;

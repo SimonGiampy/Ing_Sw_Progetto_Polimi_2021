@@ -4,6 +4,9 @@ import it.polimi.ingsw.model.util.Resources;
 
 import java.util.ArrayList;
 
+/**
+ * the client sends selected resources
+ */
 public class ResourcesList extends Message {
 	private final ArrayList<Resources> resourcesList;
 	private final ArrayList<Integer> resourcesNumber;

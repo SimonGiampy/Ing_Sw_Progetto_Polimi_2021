@@ -1,4 +1,7 @@
 package it.polimi.ingsw.network.messages;
+/**
+ * the client sends chosen leaders
+ */
 
 import java.util.ArrayList;
 

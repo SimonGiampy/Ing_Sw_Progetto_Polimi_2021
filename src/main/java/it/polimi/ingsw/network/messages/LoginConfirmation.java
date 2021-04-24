@@ -1,5 +1,8 @@
 package it.polimi.ingsw.network.messages;
 
+/**
+ * the server communicates if the lobby joining has been successful or not
+ */
 public class LoginConfirmation extends Message {
 	
 	private final boolean confirmed;

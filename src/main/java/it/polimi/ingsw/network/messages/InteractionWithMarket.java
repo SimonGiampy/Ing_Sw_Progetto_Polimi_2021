@@ -1,5 +1,8 @@
 package it.polimi.ingsw.network.messages;
 
+/**
+ * the client sends market interaction info (which,where)
+ */
 public class InteractionWithMarket extends Message {
 	private final String which;
 	private final int where;

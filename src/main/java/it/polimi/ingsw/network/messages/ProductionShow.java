@@ -2,6 +2,9 @@ package it.polimi.ingsw.network.messages;
 
 import java.util.ArrayList;
 
+/**
+ * the server sends available production to the player
+ */
 public class ProductionShow extends Message {
 	private final ArrayList<Integer> availableProduction;
 

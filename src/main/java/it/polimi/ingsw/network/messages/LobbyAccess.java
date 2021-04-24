@@ -1,5 +1,8 @@
 package it.polimi.ingsw.network.messages;
 
+/**
+ * the client chooses the lobby to join, or creates a new one
+ */
 public class LobbyAccess extends Message {
 	
 	private int lobbyNumber;

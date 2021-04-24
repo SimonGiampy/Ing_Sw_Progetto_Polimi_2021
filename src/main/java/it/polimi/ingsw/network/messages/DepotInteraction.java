@@ -1,5 +1,8 @@
 package it.polimi.ingsw.network.messages;
 
+/**
+ *  the client sends depot interaction info ( where, from, destination)
+ */
 public class DepotInteraction extends Message{
 	private final String where;
 	private final int from;

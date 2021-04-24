@@ -2,6 +2,9 @@ package it.polimi.ingsw.network.messages;
 
 import java.util.ArrayList;
 
+/**
+ * the server sends match's info (players nicknames and current player)
+ */
 public class MatchInfoShow extends Message{
 
 	private final ArrayList<String> players;

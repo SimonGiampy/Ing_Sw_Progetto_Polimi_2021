@@ -1,5 +1,8 @@
 package it.polimi.ingsw.network.messages;
 
+/**
+ *  the client sends chosen action index to the server
+ */
 public class ActionReply extends Message{
 
 	private final int selectedAction;

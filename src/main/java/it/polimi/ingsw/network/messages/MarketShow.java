@@ -2,6 +2,9 @@ package it.polimi.ingsw.network.messages;
 
 import it.polimi.ingsw.model.reducedClasses.ReducedMarket;
 
+/**
+ * the server sends the market to the player
+ */
 public class MarketShow extends Message{
 
 	 private final ReducedMarket market;

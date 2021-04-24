@@ -2,6 +2,9 @@ package it.polimi.ingsw.network.messages;
 
 import java.util.ArrayList;
 
+/**
+ * the server tells the client the available lobbies
+ */
 public class LobbyList extends Message {
 	
 	private ArrayList<String> lobbies;

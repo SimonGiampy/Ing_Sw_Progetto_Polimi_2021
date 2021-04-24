@@ -2,6 +2,9 @@ package it.polimi.ingsw.network.messages;
 
 import it.polimi.ingsw.model.reducedClasses.ReducedFaithTrack;
 
+/**
+ * the server sends the faith track to the player
+ */
 public class FaithTrackShow extends Message{
 
 	private ReducedFaithTrack faithTrack;

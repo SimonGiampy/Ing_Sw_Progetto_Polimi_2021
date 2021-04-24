@@ -2,6 +2,9 @@ package it.polimi.ingsw.network.messages;
 
 import it.polimi.ingsw.model.util.Colors;
 
+/**
+ *  the client sends chosen color and chosen level
+ */
 public class BuyCard extends Message {
 	private final int level;
 	private final Colors color;

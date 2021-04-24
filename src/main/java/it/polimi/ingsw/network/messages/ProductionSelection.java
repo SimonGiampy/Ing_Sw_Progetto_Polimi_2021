@@ -2,6 +2,9 @@ package it.polimi.ingsw.network.messages;
 
 import java.util.ArrayList;
 
+/**
+ * the client sends selected production
+ */
 public class ProductionSelection extends Message{
 
 	private final ArrayList<Integer> selectedProductions;

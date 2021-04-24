@@ -3,6 +3,9 @@ package it.polimi.ingsw.network.messages;
 import it.polimi.ingsw.model.Strongbox;
 import it.polimi.ingsw.model.reducedClasses.ReducedStrongbox;
 
+/**
+ * the server sends the strongbox to the player
+ */
 public class StrongboxShow extends Message{
 
 	private ReducedStrongbox strongbox;

@@ -2,6 +2,9 @@ package it.polimi.ingsw.network.messages;
 
 import it.polimi.ingsw.model.reducedClasses.ReducedDevelopmentCardsDeck;
 
+/**
+ *  the server sends cards deck
+ */
 public class CardsDeckShow extends Message{
 
 	private ReducedDevelopmentCardsDeck cardsDeck;

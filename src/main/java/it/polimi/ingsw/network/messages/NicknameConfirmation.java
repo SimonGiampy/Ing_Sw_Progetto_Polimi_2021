@@ -1,5 +1,8 @@
 package it.polimi.ingsw.network.messages;
 
+/**
+ * the server communicates if the nickname is valid or already chosen
+ */
 public class NicknameConfirmation  extends Message {
 	
 	private boolean confirmed;

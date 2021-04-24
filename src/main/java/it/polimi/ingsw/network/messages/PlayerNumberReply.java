@@ -1,5 +1,8 @@
 package it.polimi.ingsw.network.messages;
 
+/**
+ * the game host communicates the number of players to play with
+ */
 public class PlayerNumberReply extends Message {
 	
 	private final int playerNumber;
