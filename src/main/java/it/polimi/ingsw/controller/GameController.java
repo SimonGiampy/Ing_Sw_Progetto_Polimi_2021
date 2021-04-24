@@ -3,6 +3,7 @@ package it.polimi.ingsw.controller;
 import it.polimi.ingsw.model.*;
 import it.polimi.ingsw.model.util.GameState;
 import it.polimi.ingsw.network.messages.Message;
+import it.polimi.ingsw.network.messages.ResourcesList;
 import it.polimi.ingsw.network.server.Lobby;
 import it.polimi.ingsw.view.VirtualView;
 import it.polimi.ingsw.xml_parsers.XMLParser;
@@ -27,7 +28,7 @@ public class GameController {
 		mechanics = new GameMechanicsMultiPlayer(this, virtualViewMap.size());
 		this.virtualViewMap = virtualViewMap;
 		
-		setGameState(GameState.INIT);
+		setGameState(GameState.LOGIN);
 	}
 	
 	public void setGameConfig(String path) {
@@ -54,11 +55,15 @@ public class GameController {
 	private void initState(Message receivedMessage, VirtualView virtualView){
 		switch (receivedMessage.getMessageType()){
 			case RESOURCES_LIST: {
-				//mechanics.assignInitialAdvantage();
+				initialResourcesHandler((ResourcesList) receivedMessage);
 			} break;
 
 			default:
 		}
+	}
+
+	private void initialResourcesHandler(ResourcesList message){
+		mechanics.assignInitialAdvantage(message.getResourcesList(),1); //TODO: need a method to select player by his nickname
 	}
 
 	private void inGameState(Message receivedMessage){
@@ -69,10 +74,22 @@ public class GameController {
 		}
 	}
 
+	private void loginState(Message receivedMessage){
+
+	}
+
+	private void endGameState(Message receivedMessage){
+
+	}
+
 	public void onMessageReceived(Message receivedMessage){
 		VirtualView virtualView = virtualViewMap.get(receivedMessage.getNickname());
 		switch (gameState){
-			case INIT:
+			case LOGIN -> loginState(receivedMessage);
+			case INIT -> initState(receivedMessage,virtualView);
+			case GAME -> inGameState(receivedMessage);
+			case ENDGAME-> endGameState(receivedMessage);
+			default -> throw new IllegalStateException("Unexpected value: " + gameState);
 		}
 	}
 	
