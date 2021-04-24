@@ -8,26 +8,29 @@ import it.polimi.ingsw.view.VirtualView;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.logging.Logger;
 
 public class Lobby implements Runnable {
 
-	private ArrayList<User> clients;
-	private List<String> nicknames;
+	private final ArrayList<User> clients;
+	private final List<String> nicknames;
 	private int numberOfPlayers;
 	
-	private ClientHandler host;
-	private ArrayList<ClientHandler> handlersList;
+	private final ClientHandler host;
+	private final Server server;
+	private final List<ClientHandler> handlersList;
 	private final GameController gameController;
 	
 	public static final Logger LOGGER = Logger.getLogger(Lobby.class.getName());
 	
-	public Lobby(ClientHandler host) {
+	public Lobby(Server server, ClientHandler host) {
 		clients = new ArrayList<>();
 		nicknames = Collections.synchronizedList(new ArrayList<>());
-		handlersList = new ArrayList<>();
+		handlersList = Collections.synchronizedList(new ArrayList<>());
 		this.host = host;
+		this.server = server;
 		
 		gameController = new GameController(this);
 		
@@ -41,6 +44,12 @@ public class Lobby implements Runnable {
 		connectClient(host);
 	}
 	
+	public void connectClient(ClientHandler client) {
+		synchronized (handlersList) {
+			handlersList.add(client);
+		}
+	}
+	
 	/**
 	 * The request of choosing which game config to be used must be asynchronous for this thread
 	 * The game can't be started until the host doesn't choose with config file to use for the match
@@ -50,10 +59,7 @@ public class Lobby implements Runnable {
 		String config = host.readGameConfig();
 		gameController.setGameConfig(config);
 	}
-
-	public void connectClient(ClientHandler client) {
-		handlersList.add(client);
-	}
+	
 
 	public void join(ClientHandler handler) {
 		VirtualView view = new VirtualView(handler);
@@ -75,6 +81,10 @@ public class Lobby implements Runnable {
 		handler.setLobby(this);
 		clients.add(new User(nick, handler, view));
 		
+		if (clients.size() == numberOfPlayers) {
+			server.startLobby(this);
+		}
+		
 		// updates the other connected clients that a new user entered the game lobby
 		broadcastMessage(new GenericMessage(nick + " joined the lobby!"));
 		
@@ -86,9 +96,6 @@ public class Lobby implements Runnable {
 		LOGGER.info(() -> "Removed " + nickname + " from the client list.");
 	}
 	
-	public void setNumberOfPlayers() {
-		numberOfPlayers = clients.size();
-	}
 	
 	public void broadcastMessage(Message message) {
 		for (User user: clients) {
@@ -101,11 +108,15 @@ public class Lobby implements Runnable {
 	 */
 	@Override
 	public void run() {
-		
 		LOGGER.info("Match started");
+		HashMap<String, VirtualView> virtualViewHashMap = new HashMap<>();
+		for (User user: clients) {
+			virtualViewHashMap.put(user.getNickname(), user.getView());
+		}
+		gameController.setVirtualViews(virtualViewHashMap);
+		
+		
 	}
-	
-	//TODO: add broadcast message function via the virtual views
 	
 	/**
 	 * Forwards a received message from the client to the GameController
@@ -144,13 +155,17 @@ public class Lobby implements Runnable {
 	}
 	
 	public int getConnectedClients() {
-		return clients.size();
+		int num;
+		synchronized (handlersList) {
+			num = handlersList.size();
+		}
+		return num;
 	}
 	
-	private class User {
-		private String nickname;
-		private ClientHandler handler;
-		private VirtualView view;
+	private static class User {
+		private final String nickname;
+		private final ClientHandler handler;
+		private final VirtualView view;
 
 		public String getNickname() {
 			return nickname;

@@ -19,7 +19,6 @@ public class GameController {
 	private HashMap<String, VirtualView> virtualViewMap;
 	private Lobby lobby;
 	
-	//TODO: new approach: instantiate this class before the rest and use it to handle clients login
 	public GameController(Lobby lobby) {
 		this.lobby = lobby;
 	}
