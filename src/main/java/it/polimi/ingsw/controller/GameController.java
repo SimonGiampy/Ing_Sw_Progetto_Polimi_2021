@@ -62,7 +62,7 @@ public class GameController {
 	}
 
 	public void onMessageReceived(Message receivedMessage){
-		VirtualView virtualView= virtualViewMap.get(receivedMessage.getNickname());
+		VirtualView virtualView = virtualViewMap.get(receivedMessage.getNickname());
 		switch (gameState){
 			case INIT:
 		}

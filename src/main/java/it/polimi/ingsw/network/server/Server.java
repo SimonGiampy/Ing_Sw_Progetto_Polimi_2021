@@ -17,9 +17,6 @@ public class Server implements Runnable {
 	
 	public static final Logger LOGGER = Logger.getLogger(Server.class.getName());
 	
-	//private ArrayList<String> nicknames;
-	//private final LinkedList<Lobby> lobbyList;
-	
 	private final List<Lobby> lobbies; // new approach for concurrent lobby accesses
 	
 	private final int port;
@@ -41,7 +38,6 @@ public class Server implements Runnable {
 	
 	@Override
 	public void run() {
-	
 		while (!Thread.currentThread().isInterrupted()) {
 			try {
 				// accepts new client connections
@@ -55,18 +51,18 @@ public class Server implements Runnable {
 			}
 		}
 	}
-	
-	public void addClient(String nickname, ClientHandler handler) {
-	
-	}
+
 	
 	public ArrayList<String> getLobbiesDescription() {
 		ArrayList<String> lobbyDes = new ArrayList<>();
 		int i = 1;
-		for (Lobby l: lobbies) {
-			lobbyDes.add("Lobby" + i + ": " + l.getConnectedClients() + "/" + l.getNumberOfPlayers() + ";");
-			i++;
+		synchronized (lobbies) {
+			for (Lobby l: lobbies) {
+				lobbyDes.add("Lobby" + i + ": " + l.getConnectedClients() + "/" + l.getNumberOfPlayers() + ";");
+				i++;
+			}
 		}
+
 		return lobbyDes;
 	}
 	

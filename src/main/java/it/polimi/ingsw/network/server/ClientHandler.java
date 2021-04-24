@@ -155,7 +155,9 @@ public class ClientHandler implements Runnable {
 		}
 	}
 	
-	public synchronized int readNumberOfPlayers() {
+	public int readNumberOfPlayers() {
+
+		sendMessage(new PlayerNumberRequest());
 		try {
 			Message message = (Message) input.readObject();
 			
