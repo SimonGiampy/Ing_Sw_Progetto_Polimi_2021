@@ -48,8 +48,7 @@ public class GameController {
 			case RESOURCES_LIST: {
 				//mechanics.assignInitialAdvantage();
 			} break;
-			
-			case INPUT_SELECTION:
+
 			default:
 		}
 	}
@@ -58,7 +57,6 @@ public class GameController {
 		switch (receivedMessage.getMessageType()){
 			case INTERACTION_WITH_MARKET:
 			case BUY_CARD:
-			case INPUT_SELECTION:
 			default:
 		}
 	}

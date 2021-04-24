@@ -87,7 +87,7 @@ public class VirtualView implements View, Observer {
 	}
 
 	@Override
-	public void showLoginResult(boolean nicknameConfirmation) {
+	public void showNicknameConfirmation(boolean nicknameConfirmation) {
 		clientHandler.sendMessage(new NicknameConfirmation(nicknameConfirmation));
 	}
 

@@ -34,7 +34,9 @@ public interface View {
 
 	void askFreeOutput(int number);
 
-	void showLoginResult(boolean nicknameAccepted);
+	void showNicknameConfirmation(boolean nicknameAccepted);
+
+	void showAccessConfirmation(boolean lobbyAccessed);
 
 	void showGenericMessage(String genericMessage);
 

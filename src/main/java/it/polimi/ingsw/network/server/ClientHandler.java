@@ -61,7 +61,6 @@ public class ClientHandler implements Runnable {
 				synchronized (inputLock) {
 					Message message = (Message) input.readObject();
 					if (message != null) {
-						
 						LOGGER.info(() -> "Received: " + message);
 						lobby.onMessageReceived(message);
 					}
@@ -82,28 +81,35 @@ public class ClientHandler implements Runnable {
 	}
 	
 	public void lobbyLogin() {
-		VirtualView view = new VirtualView(this); // associates the virtual view to the client handler
-		sendMessage(new LobbyList(server.getLobbiesDescription()));
-		
 		Message message = null;
-		try {
-			message = (Message) input.readObject();
-			if (message.getMessageType() == MessageType.LOBBY_ACCESS) {
-				LobbyAccess lobbyAccess = (LobbyAccess) message;
-				if (lobbyAccess.getLobbyNumber() == 0) {
-					// create new lobby and add the client. Then let it choose the number of players
-					server.createLobby(this);
-				} else {
-					// check if the lobby is not full
-					//       if the lobby is full, send negative confirmation
-					//       else send positive confirmation and add to the lobby
+		boolean valid = false;
+		while(!valid) {
+			try {
+				sendMessage(new LobbyList(server.getLobbiesDescription()));
+				message = (Message) input.readObject();
+				if (message.getMessageType() == MessageType.LOBBY_ACCESS) {
+					LobbyAccess lobbyAccess = (LobbyAccess) message;
+					if (lobbyAccess.getLobbyNumber() == 0) {
+						// create new lobby and add the client. Then let it choose the number of players
+						Lobby lobby = server.createLobby(this);
+						lobby.addClient(this);
+						valid = true;
+					} else {
+						// check if the lobby is not full
+						Lobby lobby = server.joinLobby(lobbyAccess.getLobbyNumber(), this);
+						if (lobby == null) {
+							sendMessage(new LoginConfirmation(false)); //if the lobby is full, send negative confirmation
+						} else {
+							sendMessage(new LoginConfirmation(true)); //else send positive confirmation and add to the lobby
+							lobby.addClient(this);    //add client to the lobby
+							valid = true;
+						}
+					}
 				}
+			} catch (IOException | ClassNotFoundException e) {
+				e.printStackTrace();
 			}
-		} catch (IOException | ClassNotFoundException e) {
-			e.printStackTrace();
-			
 		}
-		
 	}
 	
 	/**
@@ -178,9 +184,7 @@ public class ClientHandler implements Runnable {
 				}
 			}
 			
-		} catch (IOException e) {
-			e.printStackTrace();
-		} catch (ClassNotFoundException e) {
+		} catch (IOException | ClassNotFoundException e) {
 			e.printStackTrace();
 		}
 		return "cipolla";

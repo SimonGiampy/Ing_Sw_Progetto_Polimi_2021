@@ -20,7 +20,7 @@ public class Server implements Runnable {
 	//private ArrayList<String> nicknames;
 	//private final LinkedList<Lobby> lobbyList;
 	
-	private List<Lobby> lobbies; // new approach for concurrent lobby accesses
+	private final List<Lobby> lobbies; // new approach for concurrent lobby accesses
 	
 	private final int port;
 	private ServerSocket serverSocket;
@@ -36,7 +36,6 @@ public class Server implements Runnable {
 			LOGGER.info("Socket lobby started on port " + port + ".");
 		} catch (IOException e) {
 			LOGGER.severe("Lobby could not start!");
-			return;
 		}
 	}
 	
@@ -71,11 +70,22 @@ public class Server implements Runnable {
 		return lobbyDes;
 	}
 	
-	public void createLobby(ClientHandler host) {
+	public Lobby createLobby(ClientHandler host) {
 		Lobby lobby = new Lobby(host);
 		lobby.setUpLobby();
 		synchronized (lobbies) {
 			lobbies.add(lobby);
+		}
+		return lobby;
+	}
+
+	public Lobby joinLobby(int number, ClientHandler client){
+		synchronized (lobbies) {
+			if (lobbies.get(number - 1).getConnectedClients() < lobbies.get(number - 1).getNumberOfPlayers()) {
+				lobbies.get(number - 1).connectClient(client);
+				return lobbies.get(number-1);
+			}
+			return null;
 		}
 	}
 	

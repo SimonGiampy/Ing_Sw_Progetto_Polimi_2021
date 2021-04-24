@@ -14,12 +14,14 @@ public class Lobby implements Runnable {
 	private int numberOfPlayers;
 	
 	private ClientHandler host;
+	private ArrayList<ClientHandler> handlersList;
 	private final GameController gameController;
 	public static final Logger LOGGER = Logger.getLogger(Lobby.class.getName());
 	
 	public Lobby(ClientHandler host) {
 		clients = new ArrayList<>();
 		nicknames = new ArrayList<>();
+		handlersList = new ArrayList<>();
 		this.host = host;
 		
 		gameController = new GameController();
@@ -28,11 +30,11 @@ public class Lobby implements Runnable {
 	}
 	
 	/**
-	 * method called by the server for the initialization of the lobby (choose the number of players)
+	 * Method called by the server for the initialization of the lobby (choose the number of players)
 	 */
 	public void setUpLobby() {
-		//TODO: let the host choose the number of players
-		
+		numberOfPlayers = host.readNumberOfPlayers();
+		connectClient(host);
 	}
 	
 	/**
@@ -44,26 +46,29 @@ public class Lobby implements Runnable {
 		
 		//TODO: instantiation of game controller with the game config
 	}
-	
-	
-	
-	public void addClient(ClientHandler handler, VirtualView view) {
-		
-		String nick;
-		boolean valid;
-		do {
-			view.askNickname(); // asks for a nickname (message from the server to the client)
-			nick = handler.readNickname();
-			valid = nicknames.contains(nick); //checks if the nickname isn't already chosen by another client
-			view.showLoginResult(valid); // sends the login result to the client, otherwise
-		} while (!valid);
-		
-		nicknames.add(nick); // memorizes the accepted nickname
-		
-		handler.setLobby(this);
-		clients.add(new User(nick, handler, view));
-		
-		//broadcastMessage(Message commmunication); //TODO: updates the other connected clients that a new user entered the game lobby
+
+	public void connectClient(ClientHandler client){
+		handlersList.add(client);
+	}
+
+	public void addClient(ClientHandler handler) {
+		if(handlersList.contains(handler)) {
+			VirtualView view = new VirtualView(handler);
+			String nick;
+			boolean valid;
+			do {
+				view.askNickname(); // asks for a nickname (message from the server to the client)
+				nick = handler.readNickname();
+				valid = nicknames.contains(nick); //checks if the nickname isn't already chosen by another client
+				view.showNicknameConfirmation(valid); // sends the login result to the client, otherwise
+			} while (!valid);
+
+			nicknames.add(nick); // memorizes the accepted nickname
+
+			handler.setLobby(this);
+			clients.add(new User(nick, handler, view));
+		}
+		//broadcastMessage(Message communication); //TODO: updates the other connected clients that a new user entered the game lobby
 	}
 	
 	public void removeClient(String nickname) {

@@ -22,7 +22,7 @@ public abstract class Message implements Serializable {
 
 	@Override
 	public String toString(){
-		return "MessageTest{ "+
+		return "Message{ "+
 				"nickname: "+ nickname+
 				", messageType: "+ messageType+
 				" }";

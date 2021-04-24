@@ -34,8 +34,11 @@ public class ClientController implements ViewObserver, Observer {
 	@Override
 	public void update(Message message) {
 		if (message != null) {
-			if (message.getMessageType() == MessageType.NICKNAME_REQUEST) {
-				view.askNickname();
+			switch(message.getMessageType()) {
+				case LOBBY_LIST -> view.showLobbyList(((LobbyList) message).getLobbies());
+				case LOGIN_CONFIRMATION -> view.showNicknameConfirmation(((LoginConfirmation) message).isConfirmed());
+				case NICKNAME_REQUEST -> view.askNickname();
+
 			}
 			//if(message.getMessageType() == MessageType.NICKNAME_REQUEST)
 		}

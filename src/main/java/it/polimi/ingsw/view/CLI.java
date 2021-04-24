@@ -188,7 +188,7 @@ public class CLI extends ViewObservable implements View {
 	}
 
 	@Override
-	public void showLoginResult(boolean nicknameAccepted) {
+	public void showNicknameConfirmation(boolean nicknameAccepted) {
 	
 	}
 	
