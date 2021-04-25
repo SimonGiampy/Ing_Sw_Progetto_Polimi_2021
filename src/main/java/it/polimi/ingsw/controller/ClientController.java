@@ -96,7 +96,6 @@ public class ClientController implements ViewObserver, Observer {
 		client = new Client(serverInfo.get("address"), Integer.parseInt(serverInfo.get("port")));
 		client.attach(this);
 		client.readMessage(); // Starts an asynchronous reading from the server.
-		taskQueue.execute(view::askNickname);
 	}
 
 	@Override

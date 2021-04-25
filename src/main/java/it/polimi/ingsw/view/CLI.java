@@ -181,27 +181,43 @@ public class CLI extends ViewObservable implements View {
 	public void askInitResources(int number) {
 		ArrayList<Resources> resourcesList = new ArrayList<>();
 		ArrayList<Integer> resourcesNumber = new ArrayList<>();
-		String userResponse;
-		if(number == 1)
-			System.out.println("You can choose " + number + " free resource");
-		else
-			System.out.println("You can choose " + number + " free resources");
-		//TODO: complete
-		/*
-		if (howMany == 1) { //one free choice
-			userResponse = scanner.nextLine().toUpperCase();
-			out[0] = Resources.valueOf(userResponse);
+		String input;
+		String regex = "(COIN|SERVANT|STONE|SHIELD)";
+		if(number == 1) {
+			System.out.println("You can choose " + number + " free resource, which one do you want?");
+			System.out.println("Type [resource] to select. (Example: [coin])");
+			input = scanner.nextLine().toUpperCase();
 
-		} else if (howMany == 2) { // 2 free choices
-			out = new Resources[2];
-			System.out.println("Player "+ (playerIndex+1) + " gets to choose two resources: which ones do you want [resA,resB]?");
-			userResponse = scanner.nextLine().toUpperCase();
-			String[] ress = userResponse.split(",");
-			out[0] = Resources.valueOf(ress[0]);
-			out[1] = Resources.valueOf(ress[1]);
+			while(!Pattern.matches(regex, input)){
+				System.out.println("Input incorrect! Type again!");
+				input = scanner.nextLine().toUpperCase();
+			}
+			resourcesList.add(Resources.valueOf(input));
+			resourcesNumber.add(1);
+		}
+		else {
+			System.out.println("You can choose " + number + " free resources");
+			System.out.println("Type [RESOURCE] to select. For different type of resources " +
+					"separates them with a space (Example: [stone servant])");
+			input = scanner.nextLine().toUpperCase();
+			String[] selection = input.split(" ");
+
+			while(!Pattern.matches(regex, input) || selection.length > 2){
+				System.out.println("Input incorrect! Type again!");
+				input = scanner.nextLine().toUpperCase();
+				selection = input.split(" ");
+			}
+
+			if(selection[0].equals(selection[1]))
+				resourcesNumber.add(2);
+			else {
+				resourcesNumber.add(1);
+				resourcesNumber.add(1);
+			}
+			resourcesList.add(Resources.valueOf(selection[0]));
+			resourcesList.add(Resources.valueOf(selection[1]));
 		}
 
-		 */
 		notifyObserver(obs -> obs.onUpdateResourceChoice(resourcesList, resourcesNumber));
 	}
 	
