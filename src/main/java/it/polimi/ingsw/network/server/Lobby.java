@@ -77,7 +77,7 @@ public class Lobby implements Runnable {
 		LOGGER.info("Game configuration has been read and applied to the lobby");
 	}
 	
-	/**
+	/** TODO: move in gameController if we want
 	 * Method called by the ClientHandler, that adds itself to the lobby. Then the procedure for choosing a valid nickname is started
 	 * @param client that accesses this lobby after connecting
 	 */
@@ -91,8 +91,8 @@ public class Lobby implements Runnable {
 			synchronized (nicknames) {
 				valid = nicknames.contains(nick); //checks if the nickname isn't already chosen by another client
 			}
-			view.showNicknameConfirmation(valid); // sends the login result to the client, otherwise
-		} while (!valid);
+			view.showNicknameConfirmation(!valid); // sends the login result to the client, otherwise
+		} while (valid);
 		
 		synchronized (nicknames) {
 			nicknames.add(nick); // memorizes the accepted nickname
