@@ -6,6 +6,7 @@ import it.polimi.ingsw.model.reducedClasses.*;
 import it.polimi.ingsw.model.util.Resources;
 import it.polimi.ingsw.observers.ViewObservable;
 
+import javax.swing.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -258,12 +259,38 @@ public class CLI extends ViewObservable implements View {
 	
 	@Override
 	public void askLeaderAction(ArrayList<ReducedLeaderCard> availableLeaders) {
-		System.out.println("Your Leader Cards");
+		int selectedLeader, action;
+		String input;
+		String[] splitInput;
+		String regex = "[1-" + availableLeaders.size() + "]" + "\s" + "[1-2]" ;
+		boolean check;
+		System.out.println("Your Leader Cards:");
 		for (int i = 0; i < availableLeaders.size(); i++) {
 			System.out.println("Card's number: " + (i + 1));
+			if(availableLeaders.get(i).isPlayable())
+				System.out.println("PLAYABLE");
 			availableLeaders.get(i).showLeader();
 		}
+		System.out.println("Type [INDEX ACTION] to play or discard the leader card or [0] to do nothing and end the turn");
+		System.out.println("ACTION = 1 -> play, ACTION = 2 -> discard");
+		do {
+			input = scanner.nextLine();
+			if (input.equals("0")) {
+				notifyObserver(obs-> obs.onUpdateLeaderAction(0, 0));
+				return;
+			} else {
+				check = Pattern.matches(regex, input);
+				splitInput = input.split("\s");
+				if(Integer.parseInt(splitInput[1]) == 1 && !(availableLeaders.get(Integer.parseInt(splitInput[0])).isPlayable()))
+					check = false;
+			}
+			if(!check) System.out.println("Input incorrect or selected action not available");
+		}while(!check);
 
+		selectedLeader = Integer.parseInt(splitInput[0]);
+		action = Integer.parseInt(splitInput[1]);
+
+		notifyObserver(obs-> obs.onUpdateLeaderAction(selectedLeader, action));
 	}
 	
 	@Override

@@ -16,6 +16,7 @@ public class ReducedLeaderCard implements Serializable {
 	private final ArrayList<CardRequirement> cardRequirements; // list of development card requirements
 	private final ArrayList<AbilityEffectActivation> effectsActivation; // a single leader card supports multiple abilities
 	private boolean abilitiesActivated;
+	private boolean playable;
 
 	public ReducedLeaderCard(LeaderCard leaderCard){
 		victoryPoints=leaderCard.getVictoryPoints();
@@ -42,6 +43,10 @@ public class ReducedLeaderCard implements Serializable {
 
 	public boolean isAbilitiesActivated() {
 		return abilitiesActivated;
+	}
+
+	public boolean isPlayable() {
+		return playable;
 	}
 
 	public void showLeader(){
@@ -74,15 +79,19 @@ public class ReducedLeaderCard implements Serializable {
 	}
 
 	public void appendTopFrame(StringBuilder string){
+		if(isAbilitiesActivated()) string.append(Unicode.ANSI_GREEN);
 		string.append(Unicode.TOP_LEFT);
 		string.append(String.valueOf(Unicode.HORIZONTAL).repeat(Math.max(0, maxLength())));
 		string.append(Unicode.TOP_RIGHT+"\n");
+		string.append(Unicode.RESET);
 	}
 
 	public void appendBottomFrame(StringBuilder string){
+		if(isAbilitiesActivated()) string.append(Unicode.ANSI_GREEN);
 		string.append(Unicode.BOTTOM_LEFT);
 		string.append(String.valueOf(Unicode.HORIZONTAL).repeat(Math.max(0, maxLength())));
 		string.append(Unicode.BOTTOM_RIGHT+"\n");
+		string.append(Unicode.RESET);
 	}
 
 	public void appendFirstLine(StringBuilder string){
@@ -101,5 +110,6 @@ public class ReducedLeaderCard implements Serializable {
 	public void appendVictoryPoints(StringBuilder string){
 		string.append(Unicode.RED_BOLD+"  LEADER "+Unicode.RESET+getVictoryPoints()+Resources.VICTORY_POINTS+"\n");
 	}
+
 
 }
