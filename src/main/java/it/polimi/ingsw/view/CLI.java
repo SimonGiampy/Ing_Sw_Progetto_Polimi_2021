@@ -7,6 +7,7 @@ import it.polimi.ingsw.model.util.Resources;
 import it.polimi.ingsw.observers.ViewObservable;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Scanner;
 import java.util.concurrent.ExecutionException;
@@ -113,6 +114,7 @@ public class CLI extends ViewObservable implements View {
 		int lobbyNumber;
 		boolean check;
 		String regex = "[0-" + lobbyList.size() + "]";
+		String input;
 		do {
 			if (lobbyList.isEmpty())
 				System.out.print("There is no existing lobby, type [0] to create a new one and become game host: ");
@@ -122,13 +124,12 @@ public class CLI extends ViewObservable implements View {
 					System.out.println(lobby);
 				System.out.print("Choose which lobby to enter or type [0] to create a new one and become game host: ");
 			}
-			String input = scanner.nextLine();
-			lobbyNumber = Integer.parseInt(input);
+			input = scanner.nextLine();
 			check = Pattern.matches(regex, input);
 		}while(!check);
 
-		int finalLobbyNumber = lobbyNumber;
-		notifyObserver(obs -> obs.onUpdateLobbyAccess(finalLobbyNumber));
+		lobbyNumber = Integer.parseInt(input);
+		notifyObserver(obs -> obs.onUpdateLobbyAccess(lobbyNumber));
 	}
 	
 	@Override
@@ -150,16 +151,16 @@ public class CLI extends ViewObservable implements View {
 	public void askNumberOfPlayer() {
 		int playerNumber;
 		System.out.println("How many players are going to play? (You can choose between 1 and 4 players): ");
+		String input;
 		boolean check;
 		do {
-			String input = scanner.nextLine();
-			playerNumber = Integer.parseInt(input);
+			input = scanner.nextLine();
 			check = Pattern.matches("[1-4]", input);
 			if (!check) System.out.print("Input incorrect, write again: ");
 		} while (!check);
-		
-		int finalPlayerNumber = playerNumber;
-		notifyObserver(obs -> obs.onUpdatePlayersNumber(finalPlayerNumber));
+
+		playerNumber = Integer.parseInt(input);
+		notifyObserver(obs -> obs.onUpdatePlayersNumber(playerNumber));
 	}
 	
 	@Override
@@ -187,10 +188,10 @@ public class CLI extends ViewObservable implements View {
 		ArrayList<Integer> resourcesNumber = new ArrayList<>();
 		String input;
 		String regex = "(COIN|SERVANT|STONE|SHIELD)";
+		boolean check;
 		if(number == 1) {
 			System.out.println("You can choose " + number + " free resource, which one do you want?");
 			System.out.println("Type [resource] to select. (Example: [coin])");
-			boolean check;
 			do {
 				input = scanner.nextLine().toUpperCase();
 				check = Pattern.matches(regex, input);
@@ -206,12 +207,12 @@ public class CLI extends ViewObservable implements View {
 					"separate them with a space (Example: [stone servant])");
 			input = scanner.nextLine().toUpperCase();
 			String[] selection = input.split(" ");
-
-			while(!Pattern.matches(regex, input) || selection.length > 2){
-				System.out.println("Input incorrect! Type again!");
+			do {
 				input = scanner.nextLine().toUpperCase();
 				selection = input.split("\s");
-			}
+				check = Arrays.stream(selection).allMatch(i -> Pattern.matches(regex, i));
+				if(!check) System.out.println("Input incorrect! Type again!");
+			}while(!check || selection.length > 2);
 
 			if(selection[0].equals(selection[1]))
 				resourcesNumber.add(2);
@@ -257,6 +258,11 @@ public class CLI extends ViewObservable implements View {
 	
 	@Override
 	public void askLeaderAction(ArrayList<ReducedLeaderCard> availableLeaders) {
+		System.out.println("Your Leader Cards");
+		for (int i = 0; i < availableLeaders.size(); i++) {
+			System.out.println("Card's number: " + (i + 1));
+			availableLeaders.get(i).showLeader();
+		}
 
 	}
 	
@@ -346,7 +352,16 @@ public class CLI extends ViewObservable implements View {
 	public void showDepot(ReducedWarehouseDepot depot) {
 	
 	}
-	
+
+	@Override
+	public void showLeaderCards(ArrayList<ReducedLeaderCard> availableLeaders) {
+		System.out.println("Your Leader Cards:");
+		for (int i = 0; i < availableLeaders.size(); i++) {
+			System.out.println("Card's number: " + (i + 1));
+			availableLeaders.get(i).showLeader();
+		}
+	}
+
 	@Override
 	public void showMarket(ReducedMarket market) {
 	

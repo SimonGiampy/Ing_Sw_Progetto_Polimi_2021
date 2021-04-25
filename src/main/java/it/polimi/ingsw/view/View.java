@@ -48,6 +48,8 @@ public interface View {
 
 	void showDepot(ReducedWarehouseDepot depot);
 
+	void showLeaderCards(ArrayList<ReducedLeaderCard> availableLeaders);
+
 	void showMarket(ReducedMarket market);
 
 	void showPlayerCardsAndProduction(ReducedCardProductionManagement cardProductionsManagement);

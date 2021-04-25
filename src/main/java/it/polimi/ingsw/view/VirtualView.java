@@ -49,12 +49,12 @@ public class VirtualView implements View, Observer {
 
 	@Override
 	public void askInitLeaders(ArrayList<ReducedLeaderCard> leaderCards) {
-		clientHandler.sendMessage(new LeaderShow(leaderCards, false));
+		clientHandler.sendMessage(new LeaderShow(leaderCards, 0));
 	}
 
 	@Override
 	public void askLeaderAction(ArrayList<ReducedLeaderCard> availableLeaders) {
-		clientHandler.sendMessage(new LeaderShow(availableLeaders, true));
+		clientHandler.sendMessage(new LeaderShow(availableLeaders, 2));
 	}
 
 	@Override
@@ -140,6 +140,11 @@ public class VirtualView implements View, Observer {
 	@Override
 	public void showDepot(ReducedWarehouseDepot depot) {
 		clientHandler.sendMessage(new DepotShow(depot, 0));
+	}
+
+	@Override
+	public void showLeaderCards(ArrayList<ReducedLeaderCard> availableLeaders) {
+		clientHandler.sendMessage(new LeaderShow(availableLeaders, 1));
 	}
 
 	@Override

@@ -59,8 +59,10 @@ public class ClientController implements ViewObserver, Observer {
 				}
 				case LEADER_SHOW -> {
 					LeaderShow show = (LeaderShow) message;
-					if(show.isInGame())
+					if(show.getAction() == 0)
 						view.askLeaderAction(show.getLeaderCards());
+					else if(show.getAction() == 1)
+						view.showLeaderCards(show.getLeaderCards());
 					else
 						view.askInitLeaders(show.getLeaderCards());
 				}
@@ -116,7 +118,7 @@ public class ClientController implements ViewObserver, Observer {
 
 	@Override
 	public void onUpdatePlayersNumber(int playerNumber) {
-		client.sendMessage(new PlayerNumberReply(nickname, playerNumber));
+		client.sendMessage(new PlayerNumberReply(playerNumber));
 	}
 
 	public void onUpdateGameConfiguration(String gameConfiguration){
