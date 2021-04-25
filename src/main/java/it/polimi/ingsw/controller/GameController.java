@@ -13,7 +13,9 @@ import it.polimi.ingsw.xml_parsers.XMLParser;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.stream.Collectors;
 
 public class GameController {
 
@@ -21,6 +23,7 @@ public class GameController {
 	private GameState gameState;
 	private HashMap<String, VirtualView> virtualViewMap;
 	private Lobby lobby;
+	private ArrayList<String> nicknameList;
 	
 	public GameController(Lobby lobby) {
 		this.lobby = lobby;
@@ -29,7 +32,7 @@ public class GameController {
 	public void setVirtualViews(HashMap<String, VirtualView> virtualViewMap) {
 		mechanics = new GameMechanicsMultiPlayer(this, virtualViewMap.size());
 		this.virtualViewMap = virtualViewMap;
-		
+		nicknameList= new ArrayList<>(virtualViewMap.keySet());
 		setGameState(GameState.LOGIN);
 	}
 	
@@ -51,21 +54,27 @@ public class GameController {
 		ArrayList<LeaderCard> leaderCards = parser.readLeaderCards();
 		ProductionRules baseProduction = parser.parseBaseProductionFromXML();
 		mechanics.instantiateGame(devCards, leaderCards, baseProduction, tiles, report);
-		
+		Collections.shuffle(nicknameList);
+
 	}
 
-	private void initState(Message receivedMessage, VirtualView virtualView){
+	private void initState(Message receivedMessage){
 		switch (receivedMessage.getMessageType()){
-			case RESOURCES_LIST: {
-				initialResourcesHandler((ResourcesList) receivedMessage);
-			} break;
-
-			default:
+			case RESOURCES_LIST-> initialResourcesHandler((ResourcesList) receivedMessage);
+			case LEADER_SELECTION -> leaderSelectionHandler((LeaderSelection) receivedMessage);
 		}
 	}
 
 	private void initialResourcesHandler(ResourcesList message){
-		mechanics.assignInitialAdvantage(message.getResourcesList(),1); //TODO: need a method to select player by his nickname
+		int playerIndex= nicknameList.indexOf(message.getNickname());
+		mechanics.assignInitialAdvantage(message.getResourcesList(),playerIndex);
+		//TODO: send updated Depot or just a string
+	}
+
+	private void leaderSelectionHandler(LeaderSelection message){
+		int playerIndex= nicknameList.indexOf(message.getNickname());
+		mechanics.getPlayer(playerIndex).chooseTwoLeaders(message.getLeaderSelection().get(0),message.getLeaderSelection().get(1));
+		//TODO: send update cards list
 	}
 
 	private void inGameState(Message receivedMessage){
@@ -76,8 +85,19 @@ public class GameController {
 		}
 	}
 
+	private void marketInteractionHandler(InteractionWithMarket message){
+		int playerIndex= nicknameList.indexOf(message.getNickname());
+		if(message.getWhich()=="col")
+			mechanics.getMarket().shiftCol(message.getWhere());
+		else mechanics.getMarket().shiftRow(message.getWhere());
+	}
+
 	private void loginState(Message receivedMessage){
 
+		}
+
+	private void loginHandler(LobbyAccess message){
+		message.getNickname();
 	}
 
 	private void endGameState(Message receivedMessage) {
@@ -95,7 +115,7 @@ public class GameController {
 		VirtualView virtualView = virtualViewMap.get(receivedMessage.getNickname());
 		switch (gameState){
 			case LOGIN -> loginState(receivedMessage);
-			case INIT -> initState(receivedMessage,virtualView);
+			case INIT -> initState(receivedMessage);
 			case GAME -> inGameState(receivedMessage);
 			case ENDGAME-> endGameState(receivedMessage);
 			default -> throw new IllegalStateException("Unexpected value: " + gameState);

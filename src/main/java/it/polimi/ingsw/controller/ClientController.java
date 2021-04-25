@@ -121,9 +121,11 @@ public class ClientController implements ViewObserver, Observer {
 		client.sendMessage(new PlayerNumberReply(playerNumber));
 	}
 
+	@Override
 	public void onUpdateGameConfiguration(String gameConfiguration){
 		client.sendMessage(new GameConfigReply(nickname,gameConfiguration));
 	}
+
 
 	@Override
 	public void onUpdateInitLeaders(ArrayList<Integer> selectedLeaders) {

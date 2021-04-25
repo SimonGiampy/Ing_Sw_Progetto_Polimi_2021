@@ -110,9 +110,9 @@ public class GameMechanicsMultiPlayer {
 	//TODO: modify this method so it communicates with game controller
 	public void assignInitialAdvantage(ArrayList<Resources> resources, int playerIndex) {
 		if (resources.size()==1)
-			players[playerIndex-1].getPlayersWarehouseDepot().assignInitialResources(resources.get(0));
+			players[playerIndex].getPlayersWarehouseDepot().assignInitialResources(resources.get(0));
 		if (resources.size()==2)
-			players[playerIndex-1].getPlayersWarehouseDepot().assignInitialResources(resources.get(0),resources.get(1));
+			players[playerIndex].getPlayersWarehouseDepot().assignInitialResources(resources.get(0),resources.get(1));
 
 		/*
 		// add starting resources and faith points to the players

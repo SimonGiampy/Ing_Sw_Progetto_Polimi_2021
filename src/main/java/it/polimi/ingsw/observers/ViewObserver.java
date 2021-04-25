@@ -36,6 +36,8 @@ public interface ViewObserver {
 	 */
 	void onUpdatePlayersNumber(int playerNumber);
 
+	void onUpdateGameConfiguration(String gameConfiguration);
+
 	/**
 	 * it sends a message to the server with the initial leaders selected by the player
 	 * @param selectedLeaders is an arraylist of index of the selected leaders
