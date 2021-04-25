@@ -275,8 +275,8 @@ public class CLI extends ViewObservable implements View {
 	public void askMarketAction(ReducedMarket market) {
 		String input;
 		String regex_which = "(COLUMN|COL|ROW)";
-		int index;
 		String which;
+		int where;
 		System.out.println("This is the Market in this moment! Choose row/column and an index!");
 		market.showMarket();
 		boolean check;
@@ -291,15 +291,21 @@ public class CLI extends ViewObservable implements View {
 		if (input.equals("COLUMN") || input.equals("COL"))
 			which="col";
 		else which="row";
+
 		do{
 			System.out.println("Type the index of the row/column");
 			input=scanner.nextLine();
-			index=Integer.parseInt(input);
-			check=Pattern.matches("[1-4]",input);
+			where=Integer.parseInt(input);
+			if(which.equals("col"))
+				check=Pattern.matches("[1-4]",input);
+			else
+				check=Pattern.matches("[1-3]",input);
 			if(!check)
 				System.out.println("Input incorrect! Type again!");
 		}while (!check);
 
+		int finalWhere = where;
+		notifyObserver(obs->obs.onUpdateMarketAction(which, finalWhere));
 	}
 	
 	@Override
