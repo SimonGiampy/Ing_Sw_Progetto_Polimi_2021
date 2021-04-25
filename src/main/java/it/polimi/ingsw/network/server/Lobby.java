@@ -20,10 +20,10 @@ public class Lobby implements Runnable {
 	private int numberOfPlayers;
 	private boolean gameStarted;
 	
-	private final ClientHandler host;
+	private ClientHandler host;
 	private final Server server;
 	private final List<ClientHandler> handlersList;
-	private final GameController gameController;
+	private GameController gameController;
 	
 	public static final Logger LOGGER = Logger.getLogger(Lobby.class.getName());
 	
@@ -40,8 +40,6 @@ public class Lobby implements Runnable {
 		this.host = host;
 		this.server = server;
 		
-		gameController = new GameController(this);
-		
 	}
 	
 	/**
@@ -51,6 +49,7 @@ public class Lobby implements Runnable {
 	 */
 	public void setUpLobby() {
 		numberOfPlayers = host.readNumberOfPlayers();
+		gameController = new GameController(this, numberOfPlayers);
 		connectClient(host);
 	}
 	
@@ -89,10 +88,10 @@ public class Lobby implements Runnable {
 			view.askNickname(); // asks for a nickname (message from the server to the client)
 			nick = client.readNickname();
 			synchronized (nicknames) {
-				valid = nicknames.contains(nick); //checks if the nickname isn't already chosen by another client
+				valid = !nicknames.contains(nick); //checks if the nickname isn't already chosen by another client
 			}
-			view.showNicknameConfirmation(!valid); // sends the login result to the client, otherwise
-		} while (valid);
+			view.showNicknameConfirmation(valid); // sends the login result to the client, otherwise
+		} while (!valid);
 		
 		synchronized (nicknames) {
 			nicknames.add(nick); // memorizes the accepted nickname
@@ -155,26 +154,51 @@ public class Lobby implements Runnable {
 	public synchronized void onDisconnect(ClientHandler client) {
 		synchronized (handlersList) {
 			if (handlersList.contains(client)) { // client was connected
-				User user = null;
-				for (User u: clients) {
-					if (u.getHandler().equals(client)) {
-						user = u;
+				
+				if (client.equals(host)) { // the host disconnected from the lobby
+					if (gameStarted) { // game was already started
+						broadcastMessage(new ErrorMessage("A player disconnected: Game ended!"));
+						handlersList.clear();
+						gameController.haltGame();
+					} else {
+						if (handlersList.size() == 1) { // the host was the only one connected
+							handlersList.clear();
+							server.removeLobby(this);
+						} else { // there were guests connected
+							//broadcastMessage(new GenericMessage("The host left the lobby: new host is ?"));
+							User user = null;
+							for (User u: clients) {
+								if (u.getHandler().equals(host)) {
+									user = u;
+								}
+							}
+							handlersList.remove(0); //removes host
+							nicknames.remove(user.getNickname());
+							host = handlersList.get(0); //new host is the second client that entered the lobby
+						}
+					}
+				} else { // a guest disconnected from the lobby
+					User user = null;
+					for (User u: clients) {
+						if (u.getHandler().equals(client)) {
+							user = u;
+						}
+					}
+					if (gameStarted) { // if the game already started, halts it abruptly
+						broadcastMessage(new ErrorMessage("A player disconnected: Game ended!"));
+						handlersList.clear();
+						gameController.haltGame();
+					} else if (user != null) { // the client had already chosen a nickname but the game didn't start
+						LOGGER.info("Removed " + user.getNickname() + " from the connected players list");
+						nicknames.remove(user.getNickname());
+						broadcastMessage(new ErrorMessage(user.getNickname() + " disconnected from the lobby"));
+						clients.remove(user);
+						handlersList.remove(client);
+					} else { // the client disconnected before choosing a nickname
+						LOGGER.info("Removed a client from the lobby");
+						handlersList.remove(client);
 					}
 				}
-				if (gameStarted) {
-					broadcastMessage(new ErrorMessage("A player disconnected: Game ended!"));
-					handlersList.clear();
-					gameController.haltGame();
-				} else if (user != null) { // the client had already chosen a nickname but the game didn't start
-					LOGGER.info("Removed " + user.getNickname() + " from the connected players list");
-					broadcastMessage(new ErrorMessage(user.getNickname() + " disconnected from the lobby"));
-					clients.remove(user);
-					handlersList.remove(client);
-				} else { // the client disconnected before choosing a nickname
-					LOGGER.info("Removed a client from the lobby");
-					handlersList.remove(client);
-				}
-				//TODO: what happens if the game host leaves the lobby before choosing the game configuration?
 			}
 		}
 	}
@@ -200,19 +224,19 @@ public class Lobby implements Runnable {
 		private final ClientHandler handler;
 		private final VirtualView view;
 
-		public String getNickname() {
+		private String getNickname() {
 			return nickname;
 		}
 		
-		public ClientHandler getHandler() {
+		private ClientHandler getHandler() {
 			return handler;
 		}
 		
-		public VirtualView getView() {
+		private VirtualView getView() {
 			return view;
 		}
 		
-		public User(String nickname, ClientHandler handler, VirtualView view) {
+		private User(String nickname, ClientHandler handler, VirtualView view) {
 			this.nickname = nickname;
 			this.handler = handler;
 			this.view = view;

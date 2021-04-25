@@ -30,8 +30,8 @@ class PlayerTest {
 
 		System.setOut(new PrintStream(outputStreamCaptor));
 
-		GameDemo controller = new GameDemo();
-		GameMechanicsMultiPlayer mechanics = new GameMechanicsMultiPlayer(new GameController(null), 2);
+		GameDemo demo = new GameDemo();
+		GameMechanicsMultiPlayer mechanics = new GameMechanicsMultiPlayer(new GameController(null, 2), 2);
 		String fileName = "game_configuration_complete.xml";
 		ClassLoader classLoader = getClass().getClassLoader();
 		File file = new File(classLoader.getResource(fileName).getFile());

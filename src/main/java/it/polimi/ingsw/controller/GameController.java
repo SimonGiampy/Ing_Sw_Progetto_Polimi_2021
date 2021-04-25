@@ -25,15 +25,25 @@ public class GameController {
 	private Lobby lobby;
 	private ArrayList<String> nicknameList;
 	
-	public GameController(Lobby lobby) {
+	private int numberOfPlayers;
+	
+	public GameController(Lobby lobby, int numberOfPlayers) {
 		this.lobby = lobby;
+		this.numberOfPlayers = numberOfPlayers;
+		mechanics = new GameMechanicsMultiPlayer(this, numberOfPlayers);
 	}
 
+	//TODO: fix game mechanics instantiation order
+	
+	/**
+	 * Method called just before the game starts, when all the players are ready to play
+	 * @param virtualViewMap combinations of nicknames and their virtual views
+	 */
 	public void setVirtualViews(HashMap<String, VirtualView> virtualViewMap) {
-		mechanics = new GameMechanicsMultiPlayer(this, virtualViewMap.size());
 		this.virtualViewMap = virtualViewMap;
-		nicknameList= new ArrayList<>(virtualViewMap.keySet());
-		setGameState(GameState.LOGIN);
+		nicknameList = new ArrayList<>(virtualViewMap.keySet());
+		
+		//TODO: apply shuffle to list of nicknames and then store the players references
 	}
 	
 	public void setGameConfig(String path) {
@@ -46,6 +56,7 @@ public class GameController {
 		readGameConfig(path);
 	}
 	
+	//TODO: must be called when game mechanics is ready
 	public void readGameConfig(String fullPath) {
 		XMLParser parser = new XMLParser(fullPath);
 		ArrayList<Tile> tiles = parser.readTiles();
@@ -54,7 +65,6 @@ public class GameController {
 		ArrayList<LeaderCard> leaderCards = parser.readLeaderCards();
 		ProductionRules baseProduction = parser.parseBaseProductionFromXML();
 		mechanics.instantiateGame(devCards, leaderCards, baseProduction, tiles, report);
-		Collections.shuffle(nicknameList);
 
 	}
 
@@ -94,7 +104,7 @@ public class GameController {
 
 	private void loginState(Message receivedMessage){
 
-		}
+	}
 
 	private void loginHandler(LobbyAccess message){
 		message.getNickname();
@@ -105,7 +115,7 @@ public class GameController {
 	}
 	
 	/**
-	 * called from the lobby when the game must be halted since a player left the game
+	 * TODO: called from the lobby when the game must be halted since a player left the game
 	 */
 	public void haltGame() {
 	

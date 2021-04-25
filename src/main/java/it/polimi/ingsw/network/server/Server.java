@@ -14,13 +14,17 @@ public class Server implements Runnable {
 	
 	public static final Logger LOGGER = Logger.getLogger(Server.class.getName());
 	
-	private final List<Lobby> lobbies; // new approach for concurrent lobby accesses
+	private final List<Lobby> lobbies; // concurrent list for lobby accesses
 	private final ExecutorService lobbyStarter;
 	
 	private ServerSocket serverSocket;
 
 	private Thread serverThread;
 	
+	/**
+	 * Host a server on the local machine
+	 * @param port the port that enables socket communication
+	 */
 	public Server(int port) {
 		lobbies = Collections.synchronizedList(new ArrayList<>());
 		
@@ -33,6 +37,9 @@ public class Server implements Runnable {
 		lobbyStarter = Executors.newSingleThreadExecutor();
 	}
 	
+	/**
+	 * Runnable that accepts new clients connecting to the server
+	 */
 	@Override
 	public void run() {
 		serverThread = Thread.currentThread();
@@ -57,7 +64,7 @@ public class Server implements Runnable {
 		int i = 1;
 		synchronized (lobbies) {
 			for (Lobby l : lobbies) {
-				lobbyDes.add("Lobby" + i + ": " + l.getConnectedClients() + "/" + l.getNumberOfPlayers() + ";");
+				lobbyDes.add("Lobby " + i + ": " + l.getConnectedClients() + "/" + l.getNumberOfPlayers() + ";");
 				i++;
 			}
 		}
@@ -65,6 +72,11 @@ public class Server implements Runnable {
 		return lobbyDes;
 	}
 	
+	/**
+	 * Method called by the client handler for the creation of a new lobby
+	 * @param host the client that becomes game host and decides the match parameters (automatically joins the lobby)
+	 * @return the lobby just created
+	 */
 	public Lobby createLobby(ClientHandler host) {
 		Lobby lobby = new Lobby(this, host);
 		lobby.setUpLobby();
@@ -74,6 +86,13 @@ public class Server implements Runnable {
 		return lobby;
 	}
 	
+	/**
+	 * Method called by client handler for joining the selected lobby
+	 * @param number from 1 onwards, describing the lobby in the game to be accessed
+	 * @param client thta makes the request for accessing the lobby
+	 * @return null if the client cannot access the selected lobby (because it is full)
+	 *      otherwise returns the Lobby if the client entered it
+	 */
 	public Lobby joinLobby(int number, ClientHandler client) {
 		synchronized (lobbies) {
 			if (lobbies.get(number - 1).getConnectedClients() < lobbies.get(number - 1).getNumberOfPlayers()) {
@@ -84,8 +103,18 @@ public class Server implements Runnable {
 		}
 	}
 	
+	/**
+	 * method called by the last client handler that chose the nickname after entering the lobby
+	 * @param lobby
+	 */
 	public void startLobby(Lobby lobby) {
 		lobbyStarter.execute(lobby);
+	}
+	
+	public void removeLobby(Lobby lobby) {
+		synchronized (lobbies) {
+			lobbies.remove(lobby);
+		}
 	}
 	
 	/*

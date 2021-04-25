@@ -44,7 +44,7 @@ public class Client extends Observable {
 					LOGGER.info("Received: " + message);
 				} catch (IOException | ClassNotFoundException e) {
 					e.printStackTrace();
-					LOGGER.severe("Error: disconnection caused by developers' Asperger's syndrome");
+					LOGGER.severe("Error: disconnection caused by the server termination");
 					disconnect();
 					readExecutionQueue.shutdownNow();
 				}
@@ -55,6 +55,7 @@ public class Client extends Observable {
 
 	public void sendMessage(Message message) {
 		try {
+			LOGGER.info("Sending: " + message);
 			outputStream.writeObject(message);
 		} catch (IOException e) {
 			e.printStackTrace();
