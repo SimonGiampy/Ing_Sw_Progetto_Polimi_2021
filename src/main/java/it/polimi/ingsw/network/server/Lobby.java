@@ -1,9 +1,9 @@
 package it.polimi.ingsw.network.server;
 
 import it.polimi.ingsw.controller.GameController;
-import it.polimi.ingsw.network.messages.ErrorMessage;
-import it.polimi.ingsw.network.messages.GameConfigRequest;
-import it.polimi.ingsw.network.messages.GenericMessage;
+import it.polimi.ingsw.network.messages.generic.ErrorMessage;
+import it.polimi.ingsw.network.messages.login.GameConfigRequest;
+import it.polimi.ingsw.network.messages.generic.GenericMessage;
 import it.polimi.ingsw.network.messages.Message;
 import it.polimi.ingsw.view.VirtualView;
 

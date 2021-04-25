@@ -4,6 +4,11 @@ import it.polimi.ingsw.model.util.Colors;
 import it.polimi.ingsw.model.util.Resources;
 import it.polimi.ingsw.network.messages.*;
 import it.polimi.ingsw.network.Client;
+import it.polimi.ingsw.network.messages.game.client2server.*;
+import it.polimi.ingsw.network.messages.game.server2client.*;
+import it.polimi.ingsw.network.messages.generic.DisconnectionMessage;
+import it.polimi.ingsw.network.messages.generic.GenericMessage;
+import it.polimi.ingsw.network.messages.login.*;
 import it.polimi.ingsw.observers.Observer;
 import it.polimi.ingsw.observers.ViewObserver;
 import it.polimi.ingsw.view.View;
@@ -112,6 +117,10 @@ public class ClientController implements ViewObserver, Observer {
 	@Override
 	public void onUpdatePlayersNumber(int playerNumber) {
 		client.sendMessage(new PlayerNumberReply(nickname, playerNumber));
+	}
+
+	public void onUpdateGameConfiguration(String gameConfiguration){
+		client.sendMessage(new GameConfigReply(nickname,gameConfiguration));
 	}
 
 	@Override

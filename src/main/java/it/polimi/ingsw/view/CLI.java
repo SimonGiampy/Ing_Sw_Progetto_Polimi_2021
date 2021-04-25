@@ -173,6 +173,10 @@ public class CLI extends ViewObservable implements View {
 	
 	@Override
 	public void askCustomGame() {
+
+		System.out.println("Choose game configuration!, Type [standard] for standard game, [custom] for custom game!");
+		String input = scanner.nextLine();
+		notifyObserver(obs->obs.onUpdateGameConfiguration(input));
 		//TODO: check if the input file actually exists in the selected directory and is an xml file.
 		//  We assume that if the file is an xml file, is a valid schema for the configuration
 	}
@@ -186,26 +190,27 @@ public class CLI extends ViewObservable implements View {
 		if(number == 1) {
 			System.out.println("You can choose " + number + " free resource, which one do you want?");
 			System.out.println("Type [resource] to select. (Example: [coin])");
-			input = scanner.nextLine().toUpperCase();
-
-			while(!Pattern.matches(regex, input)){
-				System.out.println("Input incorrect! Type again!");
+			boolean check;
+			do {
 				input = scanner.nextLine().toUpperCase();
-			}
+				check = Pattern.matches(regex, input);
+				if (!check) System.out.println("Input incorrect! Type again!");
+			} while(!check);
+
 			resourcesList.add(Resources.valueOf(input));
 			resourcesNumber.add(1);
 		}
 		else {
 			System.out.println("You can choose " + number + " free resources");
 			System.out.println("Type [RESOURCE] to select. For different type of resources " +
-					"separates them with a space (Example: [stone servant])");
+					"separate them with a space (Example: [stone servant])");
 			input = scanner.nextLine().toUpperCase();
 			String[] selection = input.split(" ");
 
 			while(!Pattern.matches(regex, input) || selection.length > 2){
 				System.out.println("Input incorrect! Type again!");
 				input = scanner.nextLine().toUpperCase();
-				selection = input.split(" ");
+				selection = input.split("\s");
 			}
 
 			if(selection[0].equals(selection[1]))
@@ -223,12 +228,36 @@ public class CLI extends ViewObservable implements View {
 	
 	@Override
 	public void askInitLeaders(ArrayList<ReducedLeaderCard> leaderCards) {
-	
+		System.out.println("These are your leader cards, select 2 of them! Type the index of the selected cards!");
+		for (int i = 0; i < leaderCards.size(); i++) {
+			System.out.println("Card's number: " + (i + 1));
+			leaderCards.get(i).showLeader();
+		}
+			String regex= "[1-4],\s[1-4]";
+			boolean checkRegex;
+			boolean checkArray=false;
+			String[] array;
+			do{
+				String input = scanner.nextLine();
+				checkRegex=Pattern.matches(regex,input);
+				array = input.split(",");
+				if (array.length==2)
+					checkArray= !array[0].equals(array[1]);
+
+				if (!checkRegex || !checkArray)
+					System.out.println("Input incorrect! Type again!");
+			}while (!checkRegex || !checkArray);
+
+		ArrayList<Integer> leaderSelection= new ArrayList<>();
+		leaderSelection.add(Integer.parseInt(array[0]));
+		leaderSelection.add(Integer.parseInt(array[1]));
+
+		notifyObserver(obs-> obs.onUpdateInitLeaders(leaderSelection));
 	}
 	
 	@Override
 	public void askLeaderAction(ArrayList<ReducedLeaderCard> availableLeaders) {
-	
+
 	}
 	
 	@Override
@@ -238,7 +267,33 @@ public class CLI extends ViewObservable implements View {
 	
 	@Override
 	public void askMarketAction(ReducedMarket market) {
-	
+		String input;
+		String regex_which = "(COLUMN|COL|ROW)";
+		int index;
+		String which;
+		System.out.println("This is the Market in this moment! Choose row/column and an index!");
+		market.showMarket();
+		boolean check;
+		do{
+			System.out.println("Type row to select a row or type column to select a column");
+			input=scanner.nextLine().toUpperCase();
+			check=Pattern.matches(regex_which,input);
+			if(!check)
+				System.out.println("Input incorrect! Type again!");
+		}while (!check);
+
+		if (input.equals("COLUMN") || input.equals("COL"))
+			which="col";
+		else which="row";
+		do{
+			System.out.println("Type the index of the row/column");
+			input=scanner.nextLine();
+			index=Integer.parseInt(input);
+			check=Pattern.matches("[1-4]",input);
+			if(!check)
+				System.out.println("Input incorrect! Type again!");
+		}while (!check);
+
 	}
 	
 	@Override

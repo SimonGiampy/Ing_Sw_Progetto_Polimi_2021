@@ -3,6 +3,11 @@ package it.polimi.ingsw.view;
 import it.polimi.ingsw.model.*;
 import it.polimi.ingsw.model.reducedClasses.*;
 import it.polimi.ingsw.network.messages.*;
+import it.polimi.ingsw.network.messages.game.server2client.*;
+import it.polimi.ingsw.network.messages.generic.DisconnectionMessage;
+import it.polimi.ingsw.network.messages.generic.ErrorMessage;
+import it.polimi.ingsw.network.messages.generic.GenericMessage;
+import it.polimi.ingsw.network.messages.login.*;
 import it.polimi.ingsw.network.server.ClientHandler;
 import it.polimi.ingsw.observers.Observer;
 
