@@ -20,16 +20,21 @@ public class ClientHandler implements Runnable {
 	private ObjectOutputStream output;
 	private ObjectInputStream input;
 	
-
-	public ClientHandler(Server server, Socket client) {
+	
+	/**
+	 * Constructor for the Server-side runnable that communicates between the Lobby and the Client.
+	 * @param server the server that creates this runnable
+	 * @param socket the socket created from the connection to the server
+	 */
+	public ClientHandler(Server server, Socket socket) {
 		this.lobby = null;
-		this.client = client;
+		this.client = socket;
 		this.server = server;
 		this.connected = true;
 		
 		try {
-			this.output = new ObjectOutputStream(client.getOutputStream());
-			this.input = new ObjectInputStream(client.getInputStream());
+			this.output = new ObjectOutputStream(socket.getOutputStream());
+			this.input = new ObjectInputStream(socket.getInputStream());
 		} catch (IOException e) {
 			LOGGER.severe(e.getMessage());
 		}
@@ -47,7 +52,6 @@ public class ClientHandler implements Runnable {
 					LOGGER.info(() -> "Received: " + message);
 					lobby.onMessageReceived(message);
 				}
-				
 			}
 		} catch (ClassCastException | ClassNotFoundException ex) {
 			LOGGER.severe("Invalid class from stream from client");
@@ -97,16 +101,9 @@ public class ClientHandler implements Runnable {
 		}
 	}
 	
-	/**
-	 * Returns the current status of the connection.
-	 * @return {@code true} if the connection is still active, {@code false} otherwise.
-	 */
-	public boolean isConnected() {
-		return connected;
-	}
 	
 	/**
-	 * //TODO: Disconnect the socket gracefully
+	 * disconnects the socket gracefully, and tells the lobby that the client handler is disconnecting
 	 */
 	public void disconnect() {
 		if (connected) {
@@ -115,12 +112,12 @@ public class ClientHandler implements Runnable {
 					client.close();
 				}
 			} catch (IOException e) {
-				LOGGER.severe(e.getMessage());
+				Server.LOGGER.severe(e.getMessage());
 			}
 			connected = false;
 			Thread.currentThread().interrupt();
 			
-			//lobby.onDisconnect(this);
+			lobby.onDisconnect(this);
 		}
 	}
 	
@@ -140,7 +137,6 @@ public class ClientHandler implements Runnable {
 	}
 	
 	public int readNumberOfPlayers() {
-
 		sendMessage(new PlayerNumberRequest());
 		try {
 			Message message = (Message) input.readObject();

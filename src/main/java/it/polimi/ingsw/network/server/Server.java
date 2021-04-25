@@ -37,10 +37,6 @@ public class Server implements Runnable {
 	public void run() {
 		serverThread = Thread.currentThread();
 		
-		// checks asynchronously if the match can be started
-		//LobbyStarter lobbyStarter = new LobbyStarter();
-		//new Thread(lobbyStarter).start();
-		
 		while (!serverThread.isInterrupted()) {
 			try {
 				// accepts new client connections

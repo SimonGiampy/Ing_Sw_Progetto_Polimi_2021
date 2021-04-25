@@ -1,9 +1,7 @@
-package it.polimi.ingsw.network.server;
+package it.polimi.ingsw.network;
 
-import it.polimi.ingsw.network.messages.ErrorMessage;
 import it.polimi.ingsw.network.messages.Message;
-import it.polimi.ingsw.network.messages.MessageType;
-import it.polimi.ingsw.observer.Observable;
+import it.polimi.ingsw.observers.Observable;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -65,11 +63,19 @@ public class Client extends Observable {
 		}
 	}
 	
+	/**
+	 * Method called when an error occurs and the client disconnects from the server. The socket gets closed
+	 */
 	public void disconnect() {
 		try {
-			socket.close();
+			if (!socket.isClosed()) {
+				readExecutionQueue.shutdownNow();
+				socket.close();
+			}
+			LOGGER.info("Client disconnected from the game");
 		} catch (IOException e) {
-			notifyObserver(new ErrorMessage("Client-side disconnection"));
+			LOGGER.severe("Client-side disconnection cannot be completed");
+			e.printStackTrace();
 		}
 	}
 

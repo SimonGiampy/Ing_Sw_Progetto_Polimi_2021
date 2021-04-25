@@ -1,6 +1,7 @@
 package it.polimi.ingsw.network.server;
 
 import it.polimi.ingsw.controller.GameController;
+import it.polimi.ingsw.network.messages.ErrorMessage;
 import it.polimi.ingsw.network.messages.GameConfigRequest;
 import it.polimi.ingsw.network.messages.GenericMessage;
 import it.polimi.ingsw.network.messages.Message;
@@ -17,6 +18,7 @@ public class Lobby implements Runnable {
 	private final ArrayList<User> clients;
 	private final List<String> nicknames;
 	private int numberOfPlayers;
+	private boolean gameStarted;
 	
 	private final ClientHandler host;
 	private final Server server;
@@ -25,10 +27,16 @@ public class Lobby implements Runnable {
 	
 	public static final Logger LOGGER = Logger.getLogger(Lobby.class.getName());
 	
+	/**
+	 * Lobby that handles a single game and the connected clients
+	 * @param server the server that hosts the lobby
+	 * @param host the client handler that connects first is the game host and decides the match parameters
+	 */
 	public Lobby(Server server, ClientHandler host) {
 		clients = new ArrayList<>();
 		nicknames = Collections.synchronizedList(new ArrayList<>());
 		handlersList = Collections.synchronizedList(new ArrayList<>());
+		gameStarted = false;
 		this.host = host;
 		this.server = server;
 		
@@ -37,37 +45,49 @@ public class Lobby implements Runnable {
 	}
 	
 	/**
-	 * Method called by the server for the initialization of the lobby (choose the number of players)
+	 * Method called by the server for the initialization of the lobby (the host chooses the number of players).
+	 * Then the host connects to the lobby and joins it. After this method finishes its execution, the server shows the lobby to
+	 * the other clients that connect to the server
 	 */
 	public void setUpLobby() {
 		numberOfPlayers = host.readNumberOfPlayers();
 		connectClient(host);
 	}
 	
+	/**
+	 * method called from the client handler when this lobby isn't full. The client connects to the lobby.
+	 * Then the client waits for choosing a nickname.
+	 * @param client that is connecting to the game lobby
+	 */
 	public void connectClient(ClientHandler client) {
 		synchronized (handlersList) {
 			handlersList.add(client);
 		}
+		LOGGER.info("new client connected to the lobby");
 	}
 	
 	/**
-	 * The request of choosing which game config to be used must be asynchronous for this thread
+	 * The request of choosing which game config to be used is asynchronous, and directed to the game host
 	 * The game can't be started until the host doesn't choose with config file to use for the match
 	 */
 	public void setUpGameConfig() {
 		host.sendMessage(new GameConfigRequest());
 		String config = host.readGameConfig();
 		gameController.setGameConfig(config);
+		LOGGER.info("Game configuration has been read and applied to the lobby");
 	}
 	
-
-	public void join(ClientHandler handler) {
-		VirtualView view = new VirtualView(handler);
+	/**
+	 * Method called by the ClientHandler, that adds itself to the lobby. Then the procedure for choosing a valid nickname is started
+	 * @param client that accesses this lobby after connecting
+	 */
+	public void join(ClientHandler client) {
+		VirtualView view = new VirtualView(client);
 		String nick;
 		boolean valid;
 		do {
 			view.askNickname(); // asks for a nickname (message from the server to the client)
-			nick = handler.readNickname();
+			nick = client.readNickname();
 			synchronized (nicknames) {
 				valid = nicknames.contains(nick); //checks if the nickname isn't already chosen by another client
 			}
@@ -78,8 +98,8 @@ public class Lobby implements Runnable {
 			nicknames.add(nick); // memorizes the accepted nickname
 		}
 		
-		handler.setLobby(this);
-		clients.add(new User(nick, handler, view));
+		client.setLobby(this);
+		clients.add(new User(nick, client, view));
 		
 		if (clients.size() == numberOfPlayers) {
 			server.startLobby(this);
@@ -90,13 +110,11 @@ public class Lobby implements Runnable {
 		
 	}
 	
-	public void removeClient(String nickname) {
-		clients.removeIf(user -> user.getNickname().equals(nickname));
-		//TODO: remove virtual view association
-		LOGGER.info(() -> "Removed " + nickname + " from the client list.");
-	}
-	
-	
+	/**
+	 * Message broadcast directed to all the connected users in the game.
+	 * The message is sent to all the players who have chosen a nickname
+	 * @param message to be broadcast
+	 */
 	public void broadcastMessage(Message message) {
 		for (User user: clients) {
 			user.getHandler().sendMessage(message);
@@ -109,12 +127,15 @@ public class Lobby implements Runnable {
 	@Override
 	public void run() {
 		LOGGER.info("Match started");
+		gameStarted = true;
+		
 		HashMap<String, VirtualView> virtualViewHashMap = new HashMap<>();
 		for (User user: clients) {
 			virtualViewHashMap.put(user.getNickname(), user.getView());
 		}
 		gameController.setVirtualViews(virtualViewHashMap);
 		
+		//TODO: initialize game via the game controller and keep this thread alive as long as the game is going on
 		
 	}
 	
@@ -123,32 +144,41 @@ public class Lobby implements Runnable {
 	 * @param message the message to be forwarded.
 	 */
 	public void onMessageReceived(Message message) {
-		//gameController.onMessageReceived(message);
+		gameController.onMessageReceived(message);
 	}
 	
-	/*
-	//TODO: handle client disconnection before the match starts and after the match is started
-
-	public synchronized void onDisconnect(ClientHandler clientHandler) {
-		String clientNickname = clientHandlerHashMap.entrySet()
-				.stream()
-				.filter(entry -> clientHandler.equals(entry.getValue()))
-				.map(HashMap.Entry::getKey)
-				.findFirst()
-				.orElse(null);
-		
-		if (clientNickname != null) {
-			//check if the game is started
-			removeClient(clientNickname);
-			
-			//if the game has started
-				//broadcast disconnection message via the game controller
-				// end the game in GameController
-				//clientHandlerHashMap.clear();
+	
+	/**
+	 * handle client disconnection before the match starts and after the match is started
+	 * @param client that gets disconnected from the lobby
+	 */
+	public synchronized void onDisconnect(ClientHandler client) {
+		synchronized (handlersList) {
+			if (handlersList.contains(client)) { // client was connected
+				User user = null;
+				for (User u: clients) {
+					if (u.getHandler().equals(client)) {
+						user = u;
+					}
+				}
+				if (gameStarted) {
+					broadcastMessage(new ErrorMessage("A player disconnected: Game ended!"));
+					handlersList.clear();
+					gameController.haltGame();
+				} else if (user != null) { // the client had already chosen a nickname but the game didn't start
+					LOGGER.info("Removed " + user.getNickname() + " from the connected players list");
+					broadcastMessage(new ErrorMessage(user.getNickname() + " disconnected from the lobby"));
+					clients.remove(user);
+					handlersList.remove(client);
+				} else { // the client disconnected before choosing a nickname
+					LOGGER.info("Removed a client from the lobby");
+					handlersList.remove(client);
+				}
+				//TODO: what happens if the game host leaves the lobby before choosing the game configuration?
+			}
 		}
 	}
-
-	 */
+	
 	
 	public int getNumberOfPlayers() {
 		return numberOfPlayers;
@@ -162,6 +192,9 @@ public class Lobby implements Runnable {
 		return num;
 	}
 	
+	/**
+	 * Inner class that describes a connected client with 3 parameters: nickname, client handler and its virtual view
+	 */
 	private static class User {
 		private final String nickname;
 		private final ClientHandler handler;

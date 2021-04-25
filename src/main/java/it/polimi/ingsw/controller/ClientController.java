@@ -3,15 +3,16 @@ package it.polimi.ingsw.controller;
 import it.polimi.ingsw.model.util.Colors;
 import it.polimi.ingsw.model.util.Resources;
 import it.polimi.ingsw.network.messages.*;
-import it.polimi.ingsw.network.server.Client;
-import it.polimi.ingsw.observer.Observer;
-import it.polimi.ingsw.observer.ViewObserver;
+import it.polimi.ingsw.network.Client;
+import it.polimi.ingsw.observers.Observer;
+import it.polimi.ingsw.observers.ViewObserver;
 import it.polimi.ingsw.view.View;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.regex.Pattern;
 
 public class ClientController implements ViewObserver, Observer {
 
@@ -28,8 +29,8 @@ public class ClientController implements ViewObserver, Observer {
 	
 	
 	/**
-	 * Messages from the server to the client
-	 * @param message sent to the client (Reception Rx)
+	 * Messages from the server to the client (Reception Rx)
+	 * @param message sent to the client
 	 */
 	@Override
 	public void update(Message message) {
@@ -43,18 +44,20 @@ public class ClientController implements ViewObserver, Observer {
 				case GAME_CONFIG_REQUEST -> view.askCustomGame();
 				case LOBBY_SHOW -> view.showLobby(((LobbyShow) message).getPlayers(), ((LobbyShow) message).getNumberOfPlayers());
 				case RESOURCE_CHOICE -> {
-					switch (((ResourceChoice) message).getAction()) {
-						case 0 -> view.askInitResources(((ResourceChoice) message).getNumber());
-						case 1 -> view.askFreeInput(((ResourceChoice) message).getNumber());
-						case 2 -> view.askFreeOutput(((ResourceChoice) message).getNumber());
+					ResourceChoice choice = (ResourceChoice) message;
+					switch (choice.getAction()) {
+						case 0 -> view.askInitResources(choice.getNumber());
+						case 1 -> view.askFreeInput(choice.getNumber());
+						case 2 -> view.askFreeOutput(choice.getNumber());
 						default -> view.showError("Wrong info from server");
 					}
 				}
 				case LEADER_SHOW -> {
-					if(((LeaderShow) message).isInGame())
-						view.askLeaderAction(((LeaderShow) message).getLeaderCards());
+					LeaderShow show = (LeaderShow) message;
+					if(show.isInGame())
+						view.askLeaderAction(show.getLeaderCards());
 					else
-						view.askInitLeaders(((LeaderShow) message).getLeaderCards());
+						view.askInitLeaders(show.getLeaderCards());
 				}
 				case MARKET_SHOW -> {
 					if(((MarketShow) message).getAction() == 0)
@@ -79,8 +82,10 @@ public class ClientController implements ViewObserver, Observer {
 				case MATCH_INFO_SHOW -> view.showMatchInfo(((MatchInfoShow) message).getPlayers(),
 						((MatchInfoShow) message).getActivePlayer());
 				case WIN_MESSAGE -> view.showWinMessage(((WinMessage) message).getWinner());
-				case DISCONNECTION_MESSAGE -> view.showDisconnectionMessage(((DisconnectionMessage) message).getNicknameDisconnected(),
-						((DisconnectionMessage) message).getMessage());
+				case DISCONNECTION_MESSAGE -> {
+					DisconnectionMessage mess = (DisconnectionMessage) message;
+					view.showDisconnectionMessage(mess.getNicknameDisconnected(), mess.getMessage());
+				}
 				case GENERIC_MESSAGE -> view.showGenericMessage(((GenericMessage) message).getMessage());
 			}
 		}
@@ -152,12 +157,11 @@ public class ClientController implements ViewObserver, Observer {
 
 	@Override
 	public void onDisconnection() {
-
+		client.disconnect();
 	}
 	
 	/**
 	 * Validates the given IPv4 address by using a regex.
-	 *
 	 * @param ip the string of the ip address to be validated
 	 * @return {@code true} if the ip is valid, {@code false} otherwise.
 	 */
@@ -166,12 +170,11 @@ public class ClientController implements ViewObserver, Observer {
 				"([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\." +
 				"([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\." +
 				"([01]?\\d\\d?|2[0-4]\\d|25[0-5])$";
-		return ip.matches(regex);
+		return Pattern.matches(regex, ip);
 	}
 	
 	/**
 	 * Checks if the given port string is in the range of allowed ports.
-	 *
 	 * @param portStr the ports to be checked.
 	 * @return {@code true} if the port is valid, {@code false} otherwise.
 	 */

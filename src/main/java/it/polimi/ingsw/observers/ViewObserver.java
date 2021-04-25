@@ -1,11 +1,10 @@
-package it.polimi.ingsw.observer;
+package it.polimi.ingsw.observers;
 
 import it.polimi.ingsw.model.util.Colors;
 import it.polimi.ingsw.model.util.Resources;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Map;
 
 // implemented by Client Controller
 // TODO: add CustomGame method

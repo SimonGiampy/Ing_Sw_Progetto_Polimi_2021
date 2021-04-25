@@ -4,8 +4,7 @@ import it.polimi.ingsw.controller.ClientController;
 import it.polimi.ingsw.model.DevelopmentCard;
 import it.polimi.ingsw.model.reducedClasses.*;
 import it.polimi.ingsw.model.util.Resources;
-import it.polimi.ingsw.model.util.Unicode;
-import it.polimi.ingsw.observer.ViewObservable;
+import it.polimi.ingsw.observers.ViewObservable;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -116,11 +115,12 @@ public class CLI extends ViewObservable implements View {
 		String regex = "[0-" + lobbyList.size() + "]";
 		do {
 			if (lobbyList.isEmpty())
-				System.out.println("There is no existing lobby, type [0] to create one!");
+				System.out.print("There is no existing lobby, type [0] to create a new one and become game host: ");
 			else {
-				System.out.println("Choose which lobby to enter or type [0] to create one:");
+				System.out.println("These are the lobbies present in the server: ");
 				for (String lobby : lobbyList)
 					System.out.println(lobby);
+				System.out.print("Choose which lobby to enter or type [0] to create a new one and become game host: ");
 			}
 			String input = scanner.nextLine();
 			lobbyNumber = Integer.parseInt(input);
@@ -134,9 +134,9 @@ public class CLI extends ViewObservable implements View {
 	@Override
 	public void showLoginConfirmation(boolean lobbyAccessed) {
 		if(lobbyAccessed)
-			System.out.println("Lobby joined!");
+			System.out.println("You joined the lobby!");
 		else
-			System.out.println("Impossible to connect to the selected lobby");
+			System.out.println("Cannot connect to the selected lobby");
 	}
 	
 	@Override
@@ -173,7 +173,8 @@ public class CLI extends ViewObservable implements View {
 	
 	@Override
 	public void askCustomGame() {
-	
+		//TODO: check if the input file actually exists in the selected directory and is an xml file.
+		//  We assume that if the file is an xml file, is a valid schema for the configuration
 	}
 	
 	@Override

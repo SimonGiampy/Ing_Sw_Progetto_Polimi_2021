@@ -1,4 +1,4 @@
-package it.polimi.ingsw.observer;
+package it.polimi.ingsw.observers;
 
 import java.util.ArrayList;
 import java.util.function.Consumer;

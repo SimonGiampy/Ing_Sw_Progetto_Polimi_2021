@@ -77,8 +77,15 @@ public class GameController {
 
 	}
 
-	private void endGameState(Message receivedMessage){
+	private void endGameState(Message receivedMessage) {
 
+	}
+	
+	/**
+	 * called from the lobby when the game must be halted since a player left the game
+	 */
+	public void haltGame() {
+	
 	}
 
 	public void onMessageReceived(Message receivedMessage){

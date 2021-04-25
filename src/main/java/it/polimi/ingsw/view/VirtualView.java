@@ -4,7 +4,7 @@ import it.polimi.ingsw.model.*;
 import it.polimi.ingsw.model.reducedClasses.*;
 import it.polimi.ingsw.network.messages.*;
 import it.polimi.ingsw.network.server.ClientHandler;
-import it.polimi.ingsw.observer.Observer;
+import it.polimi.ingsw.observers.Observer;
 
 import java.util.ArrayList;
 
@@ -21,10 +21,6 @@ public class VirtualView implements View, Observer {
 		clientHandler.sendMessage(message);
 	}
 	
-	@Override
-	public void askLobbyToJoin() {
-	
-	}
 	
 	@Override
 	public void askNumberOfPlayer() {
