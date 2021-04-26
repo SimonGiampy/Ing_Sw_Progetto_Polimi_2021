@@ -156,8 +156,8 @@ public class ClientController implements ViewObserver, Observer {
 	}
 
 	@Override
-	public void onUpdateBuyCardAction(Colors color, int level) {
-		client.sendMessage(new BuyCard(nickname, level, color));
+	public void onUpdateBuyCardAction(Colors color, int level, int slot) {
+		client.sendMessage(new BuyCard(nickname, level, color,slot));
 	}
 
 	@Override

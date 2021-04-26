@@ -438,7 +438,7 @@ public class CLI extends ViewObservable implements View {
 
 		Colors color = cardsAvailable.get(Integer.parseInt(input) - 1).getColor();
 		int level = cardsAvailable.get(Integer.parseInt(input) - 1).getLevel();
-		notifyObserver(obs -> obs.onUpdateBuyCardAction(color, level));
+		notifyObserver(obs -> obs.onUpdateBuyCardAction(color, level, 1)); //TODO: ask for slot
 	}
 	
 	@Override

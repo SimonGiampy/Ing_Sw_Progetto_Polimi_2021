@@ -1,8 +1,11 @@
 package it.polimi.ingsw.controller;
 
+import it.polimi.ingsw.exceptions.InvalidUserRequestException;
 import it.polimi.ingsw.model.*;
 import it.polimi.ingsw.model.util.GameState;
+import it.polimi.ingsw.model.util.Resources;
 import it.polimi.ingsw.network.messages.*;
+import it.polimi.ingsw.network.messages.game.client2server.BuyCard;
 import it.polimi.ingsw.network.messages.game.client2server.InteractionWithMarket;
 import it.polimi.ingsw.network.messages.game.client2server.LeaderSelection;
 import it.polimi.ingsw.network.messages.game.client2server.ResourcesList;
@@ -89,17 +92,33 @@ public class GameController {
 
 	private void inGameState(Message receivedMessage){
 		switch (receivedMessage.getMessageType()){
-			case INTERACTION_WITH_MARKET:
-			case BUY_CARD:
-			default:
+			case INTERACTION_WITH_MARKET-> marketInteractionHandler((InteractionWithMarket) receivedMessage);
+			case BUY_CARD-> buyCardHandler((BuyCard) receivedMessage);
+			case PRODUCTION_SELECTION -> System.out.println();
+			//default:
+
 		}
 	}
 
 	private void marketInteractionHandler(InteractionWithMarket message){
 		int playerIndex= nicknameList.indexOf(message.getNickname());
-		if(message.getWhich()=="col")
-			mechanics.getMarket().shiftCol(message.getWhere());
-		else mechanics.getMarket().shiftRow(message.getWhere());
+		try {
+			mechanics.getPlayer(playerIndex).interactWithMarket(message.getWhich(),message.getWhere());
+		} catch (InvalidUserRequestException e) {
+			e.printStackTrace();
+			//TODO: move some depot methods
+		}
+	}
+
+	private void buyCardHandler(BuyCard message){
+		VirtualView view;
+		int playerIndex= nicknameList.indexOf(message.getNickname());
+		if (mechanics.getPlayer(playerIndex).getPlayersCardManager().checkStackLevel(message.getSlot())==message.getLevel()-1) {
+			view = virtualViewMap.get(message.getNickname());
+			//view.askBuyCardAction(); TODO: need a method to take only available cards to send
+		}
+		else mechanics.getPlayer(playerIndex).buyNewDevCard(message.getLevel(),message.getColor(),message.getSlot());
+
 	}
 
 	private void loginState(Message receivedMessage){

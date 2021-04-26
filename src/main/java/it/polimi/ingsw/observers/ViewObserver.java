@@ -78,7 +78,7 @@ public interface ViewObserver {
 	 * @param color is the color of the card
 	 * @param level is the level of the card
 	 */
-	void onUpdateBuyCardAction(Colors color, int level);
+	void onUpdateBuyCardAction(Colors color, int level, int slot);
 
 	/**
 	 * it sends a message to the server with the selected production input

@@ -36,6 +36,8 @@ public class Player {
 	private final int playerIndex;
 	private String nickname;
 
+
+
 	private int coinDiscount;
 	private int servantDiscount;
 	private int shieldDiscount;
@@ -120,9 +122,9 @@ public class Player {
 		Marbles[] output;
 		if (which.equals("col")) {
 			output = commonMarket.shiftCol(where - 1);
-		} else if (which.equals("row")) {
+		} else {
 			output = commonMarket.shiftRow(where - 1);
-		} else throw new InvalidUserRequestException("Command for using market is not correct");
+		}
 		
 		if (Arrays.asList(output).contains(Marbles.WHITE)) { //needs to ask how to transform the white marbles
 			
@@ -248,13 +250,12 @@ public class Player {
 	 * @param color color fo the card
 	 * @param selectedSlot number of the slot where the player wants to put the card
 	 */
-	public void buyNewDevCard(int level, Colors color, int selectedSlot) throws InvalidInputException {
+	public void buyNewDevCard(int level, Colors color, int selectedSlot) {
+		/*TODO: move this check
 		//Check if the player has enough resources and at least one eligible slot for the card
 		if (!commonCardsDeck.isSelectedDevCardBuyable(level, color, gatherAllPlayersResources(), cardManager))
 			throw new InvalidInputException("Card requirements not satisfied");
-		//Check if the slot is an eligible one
-		if(cardManager.checkStackLevel(selectedSlot) == level - 1)
-			throw new InvalidDevCardSlotException("Selected slot is not available");
+		 */
 
 		//Get the price, which is the sum of all the resources needed for buying the dev card
 		ArrayList <Resources> price = commonCardsDeck.getPriceDevCard(level, color);
@@ -395,5 +396,21 @@ public class Player {
 
 	public void setNickname(String nickname) {
 		this.nickname = nickname;
+	}
+
+	public int getCoinDiscount() {
+		return coinDiscount;
+	}
+
+	public int getServantDiscount() {
+		return servantDiscount;
+	}
+
+	public int getShieldDiscount() {
+		return shieldDiscount;
+	}
+
+	public int getStoneDiscount() {
+		return stoneDiscount;
 	}
 }
