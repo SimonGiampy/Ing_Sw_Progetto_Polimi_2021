@@ -2,13 +2,12 @@ package it.polimi.ingsw.controller;
 
 import it.polimi.ingsw.exceptions.InvalidUserRequestException;
 import it.polimi.ingsw.model.*;
+import it.polimi.ingsw.model.reducedClasses.ReducedLeaderCard;
+import it.polimi.ingsw.model.reducedClasses.ReducedMarket;
 import it.polimi.ingsw.model.util.GameState;
 import it.polimi.ingsw.model.util.Resources;
 import it.polimi.ingsw.network.messages.*;
-import it.polimi.ingsw.network.messages.game.client2server.BuyCard;
-import it.polimi.ingsw.network.messages.game.client2server.InteractionWithMarket;
-import it.polimi.ingsw.network.messages.game.client2server.LeaderSelection;
-import it.polimi.ingsw.network.messages.game.client2server.ResourcesList;
+import it.polimi.ingsw.network.messages.game.client2server.*;
 import it.polimi.ingsw.network.messages.login.LobbyAccess;
 import it.polimi.ingsw.network.server.Lobby;
 import it.polimi.ingsw.view.VirtualView;
@@ -45,8 +44,8 @@ public class GameController {
 	public void setVirtualViews(HashMap<String, VirtualView> virtualViewMap) {
 		this.virtualViewMap = virtualViewMap;
 		nicknameList = new ArrayList<>(virtualViewMap.keySet());
-		
-		//TODO: apply shuffle to list of nicknames and then store the players references
+		Collections.shuffle(nicknameList);
+
 	}
 	
 	public void setGameConfig(String path) {
@@ -92,12 +91,38 @@ public class GameController {
 
 	private void inGameState(Message receivedMessage){
 		switch (receivedMessage.getMessageType()){
+			case ACTION_REPLY-> actionReplyHandler((ActionReply) receivedMessage);
 			case INTERACTION_WITH_MARKET-> marketInteractionHandler((InteractionWithMarket) receivedMessage);
 			case BUY_CARD-> buyCardHandler((BuyCard) receivedMessage);
-			case PRODUCTION_SELECTION -> System.out.println();
-			//default:
-
+			case PRODUCTION_SELECTION -> productionHandler((ProductionSelection) receivedMessage);
+			case LEADER_ACTION -> leaderActionHandler((LeaderAction) receivedMessage);
 		}
+	}
+
+	private void actionReplyHandler(ActionReply message){
+		VirtualView view= virtualViewMap.get(message.getNickname());
+		int playerIndex=nicknameList.indexOf(message.getNickname());
+		switch (message.getSelectedAction()){
+			case MARKET-> {
+				view.askMarketAction(new ReducedMarket(mechanics.getMarket()));
+			}
+			case BUY_CARD-> {
+				view.askBuyCardAction(new ArrayList<>
+					(mechanics.getGameDevCardsDeck().buyableCards(mechanics.getPlayer(playerIndex).gatherAllPlayersResources(),
+							mechanics.getPlayer(playerIndex).getPlayersCardManager())));
+			}
+			case PRODUCTIONS -> {
+				view.askProductionAction(mechanics.getPlayer(playerIndex).getPlayersCardManager().availableProduction());
+			}
+
+			case LEADER -> {
+				ArrayList<ReducedLeaderCard> leaderCards = new ArrayList<>();
+				leaderCards.add(new ReducedLeaderCard(mechanics.getPlayer(playerIndex).getLeaderCards()[0]));
+				leaderCards.add(new ReducedLeaderCard(mechanics.getPlayer(playerIndex).getLeaderCards()[1]));
+				view.askLeaderAction(leaderCards);
+			}
+		}
+
 	}
 
 	private void marketInteractionHandler(InteractionWithMarket message){
@@ -113,13 +138,69 @@ public class GameController {
 	private void buyCardHandler(BuyCard message){
 		VirtualView view;
 		int playerIndex= nicknameList.indexOf(message.getNickname());
+		/* // to move in cli
 		if (mechanics.getPlayer(playerIndex).getPlayersCardManager().checkStackLevel(message.getSlot())==message.getLevel()-1) {
+
 			view = virtualViewMap.get(message.getNickname());
 			//view.askBuyCardAction(); TODO: need a method to take only available cards to send
 		}
-		else mechanics.getPlayer(playerIndex).buyNewDevCard(message.getLevel(),message.getColor(),message.getSlot());
-
+		else
+		 */
+		 mechanics.getPlayer(playerIndex).buyNewDevCard(message.getLevel(),message.getColor(),message.getSlot());
+		 //TODO: phase turn
 	}
+
+	private void productionHandler(ProductionSelection message){
+		int playerIndex= nicknameList.indexOf(message.getNickname());
+		int[] inputResources = new int[]{0,0,0,0};
+		int[] outPutResources= new int[]{0,0,0,0};
+		if(message.getResourcesInputNumber() != null)
+			for (int i = 0; i < message.getResourcesInputList().size(); i++) {
+				if(message.getResourcesInputList().get(i)==Resources.COIN){
+					inputResources[0]=message.getResourcesInputNumber().get(i);
+				}
+				if(message.getResourcesInputList().get(i)==Resources.SERVANT){
+					inputResources[1]=message.getResourcesInputNumber().get(i);
+				}
+				if(message.getResourcesInputList().get(i)==Resources.SHIELD){
+					inputResources[2]=message.getResourcesInputNumber().get(i);
+				}
+				if(message.getResourcesInputList().get(i)==Resources.STONE){
+					inputResources[3]=message.getResourcesInputNumber().get(i);
+				}
+			}
+		if(message.getResourcesOutputNumber()!=null){
+			for (int i = 0; i < message.getResourcesOutputList().size(); i++) {
+				if(message.getResourcesOutputList().get(i)==Resources.COIN){
+					outPutResources[0]=message.getResourcesOutputNumber().get(i);
+				}
+				if(message.getResourcesOutputList().get(i)==Resources.SERVANT){
+					outPutResources[1]=message.getResourcesOutputNumber().get(i);
+				}
+				if(message.getResourcesOutputList().get(i)==Resources.SHIELD){
+					outPutResources[2]=message.getResourcesOutputNumber().get(i);
+				}
+				if(message.getResourcesOutputList().get(i)==Resources.STONE){
+					outPutResources[3]=message.getResourcesOutputNumber().get(i);
+				}
+			}
+		}
+		mechanics.getPlayer(playerIndex).activateProduction(message.getSelectedProductions(),inputResources,outPutResources);
+	}
+
+
+
+	private void leaderActionHandler(LeaderAction message){
+		int playerIndex = nicknameList.indexOf(message.getNickname());
+		if(message.getAction()==1)
+			mechanics.getPlayer(playerIndex).activateLeaderCard(message.getSelectedLeader());
+
+		if(message.getAction()==2)
+			mechanics.getPlayer(playerIndex).discardLeaderCard(message.getSelectedLeader());
+
+		//TODO: move phase end turn
+	}
+
 
 	private void loginState(Message receivedMessage){
 

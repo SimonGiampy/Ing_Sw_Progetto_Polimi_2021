@@ -161,8 +161,11 @@ public class ClientController implements ViewObserver, Observer {
 	}
 
 	@Override
-	public void onUpdateProductionAction(ArrayList<Integer> selectedProduction) {
-		client.sendMessage(new ProductionSelection(nickname, selectedProduction));
+	public void onUpdateProductionAction(ArrayList<Integer> selectedProduction, ArrayList<Resources> resourcesInputList, ArrayList<Integer> resourcesInputNumber,
+										 ArrayList<Resources> resourcesOutputList, ArrayList<Integer> resourcesOutputNumber) {
+		client.sendMessage(new ProductionSelection( nickname, selectedProduction,
+				resourcesInputList,  resourcesInputNumber,
+				 resourcesOutputList,  resourcesOutputNumber));
 	}
 
 	@Override

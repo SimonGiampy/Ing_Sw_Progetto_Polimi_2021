@@ -84,7 +84,8 @@ public interface ViewObserver {
 	 * it sends a message to the server with the selected production input
 	 * @param selectedProduction is an arraylist of index of the selected production
 	 */
-	void onUpdateProductionAction(ArrayList<Integer> selectedProduction);
+	void onUpdateProductionAction(ArrayList<Integer> selectedProduction, ArrayList<Resources> resourcesInputList, ArrayList<Integer> resourcesInputNumber,
+										 ArrayList<Resources> resourcesOutputList, ArrayList<Integer> resourcesOutputNumber);
 
 	/**
 	 * it sends a message to the server with the selected free choice resources

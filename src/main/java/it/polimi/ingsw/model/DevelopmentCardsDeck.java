@@ -144,4 +144,17 @@ public class DevelopmentCardsDeck {
 
 		}
 	}
+
+	public ArrayList<DevelopmentCard> buyableCards(ArrayList<Resources> playerResources, CardProductionsManagement playerCards){
+		ArrayList<DevelopmentCard> cards= new ArrayList<>();
+		for (int i = 0; i < 3; i++) {
+			for (int j = 0; j < 4; j++) {
+				if(!cardStackStructure[i][j].isEmpty() &&
+						isSelectedDevCardBuyable(cardStackStructure[i][j].get(0).getLevel(),cardStackStructure[i][j].get(0).getColor(),playerResources,playerCards))
+					cards.add(cardStackStructure[i][j].get(0));
+
+			}
+		}
+		return cards;
+	}
 }

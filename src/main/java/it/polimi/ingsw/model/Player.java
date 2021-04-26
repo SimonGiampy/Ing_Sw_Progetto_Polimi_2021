@@ -293,8 +293,8 @@ public class Player {
 	 *                       When the production does not have ?, the caller set it to [0,0,0,0].
 	 * @throws InvalidInputException when the production cannot be executed
 	 */
-	public void activateProduction(ArrayList<Integer> playerInput,int[] resourcesInput, int[] resourcesOutput) throws InvalidInputException{
-		if (!cardManager.checkPlayerInput(playerInput))
+	public void activateProduction(ArrayList<Integer> playerInput,int[] resourcesInput, int[] resourcesOutput)/*throws InvalidInputException*/{
+		/*if (!cardManager.checkPlayerInput(playerInput)) // this check is in the client
 			throw new InvalidInputException("Production input not correct");
 		if (!cardManager.isSelectedProductionAvailable(playerInput))
 			throw new InvalidInputException("Selected production not available");
@@ -302,6 +302,8 @@ public class Player {
 			throw new InvalidInputException("Input Empty Resources selection not correct");
 		if (!cardManager.isNumberOfSelectedOutputEmptyResourcesEnough(playerInput,resourcesOutput))
 		 	throw new InvalidInputException("Output Empty Resources selection not correct");
+
+		 */
 		cardManager.takeSelectedResources(playerInput,resourcesInput);
 		myFaithTrack.moveMarker(cardManager.activateSelectedProduction(playerInput,resourcesOutput));
 	}

@@ -199,7 +199,7 @@ public class CardProductionsManagement {
 	 * @param playerInput is a list of selected production
 	 * @param inputResources is an array of number of Resources [#COIN,#SERVANT,#SHIELD,#STONE]
 	 */
-	public void takeSelectedResources(ArrayList<Integer> playerInput, int[] inputResources) throws InvalidUserRequestException {
+	public void takeSelectedResources(ArrayList<Integer> playerInput, int[] inputResources) /*throws InvalidUserRequestException*/ {
 		ArrayList<Resources> playerResources= myWarehouseDepot.gatherAllResources();
 		playerResources.addAll(myStrongbox.getContent());
 		ArrayList<Resources> productionInput= new ArrayList<>();
@@ -219,7 +219,7 @@ public class CardProductionsManagement {
 			remainingResources = myWarehouseDepot.payResources(filteredProduction);
 			myStrongbox.retrieveResources(remainingResources);
 		}
-		else throw new InvalidUserRequestException("invalid input resources");
+		// else throw new InvalidUserRequestException("invalid input resources");
 	}
 
 	/** TODO: Testing
@@ -345,6 +345,15 @@ public class CardProductionsManagement {
 				showSingleProduction(i+1);
 			}
 		}
+	}
+
+	public ArrayList<Integer> availableProduction(){
+		ArrayList<Integer> list= new ArrayList<>();
+		for (int i = 0; i < 6; i++) {
+			if(numberOfProduction[i] && isSingleProductionAvailable(i+1))
+				list.add(i+1);
+		}
+		return list;
 	}
 
 	public ArrayList<Stack<DevelopmentCard>> getCards() {
