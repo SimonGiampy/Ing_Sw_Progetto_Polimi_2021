@@ -396,13 +396,9 @@ public class GameDemo {
 					System.out.print("input card slot: ");
 					String slot = scanner.nextLine();
 					if (Pattern.matches("[1-3]", slot)) {
-						try {
-							currentPlayer.buyNewDevCard(level, Colors.valueOf(color.toUpperCase()), Integer.parseInt(slot));
-							currentPlayer.getPlayersCardManager().showCards();
-							ok = true;
-						} catch (InvalidInputException ignored) {
-						
-						}
+						currentPlayer.buyNewDevCard(level, Colors.valueOf(color.toUpperCase()), Integer.parseInt(slot));
+						currentPlayer.getPlayersCardManager().showCards();
+						ok = true;
 					}
 				}
 			}
@@ -438,11 +434,7 @@ public class GameDemo {
 			listOfInt = scanner.nextLine();
 			selectedResourcesOutput = playerInputToArray(listOfInt);
 		}
-		try {
-			currentPlayer.activateProduction(playerProductionInput, selectedResourcesInput, selectedResourcesOutput);
-		} catch (InvalidInputException e) {
-			e.printStackTrace();
-		}
+		currentPlayer.activateProduction(playerProductionInput, selectedResourcesInput, selectedResourcesOutput);
 		currentPlayer.getPlayersWarehouseDepot().showDepot();
 		System.out.print("Player Strongbox after production(s): ");
 		currentPlayer.getMyStrongbox().showStrongbox();

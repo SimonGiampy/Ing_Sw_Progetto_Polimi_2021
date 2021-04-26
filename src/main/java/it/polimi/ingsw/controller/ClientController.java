@@ -49,7 +49,7 @@ public class ClientController implements ViewObserver, Observer {
 				case NICKNAME_REQUEST -> view.askNickname();
 				case NICKNAME_CONFIRMATION -> view.showNicknameConfirmation(((NicknameConfirmation) message).isConfirmed());
 				case GAME_CONFIG_REQUEST -> view.askCustomGame();
-				case LOBBY_SHOW -> view.showLobby(((LobbyShow) message).getPlayers(), ((LobbyShow) message).getNumberOfPlayers());
+				case LOBBY_SHOW -> view.showLobby(((LobbyShow) message).getPlayers());
 				case RESOURCE_CHOICE -> {
 					ResourceChoice choice = (ResourceChoice) message;
 					switch (choice.getAction()) {

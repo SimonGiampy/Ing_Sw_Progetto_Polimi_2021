@@ -9,7 +9,13 @@ import it.polimi.ingsw.network.messages.MessageType;
 public class ErrorMessage extends Message {
 
 	private final String errorMessage;
-	public ErrorMessage( String errorMessage) {
+	
+	@Override
+	public String toString() {
+		return "ErrorMessage: { " + errorMessage + "}";
+	}
+	
+	public ErrorMessage(String errorMessage) {
 		super("Server", MessageType.ERROR_MESSAGE);
 		this.errorMessage = errorMessage;
 	}

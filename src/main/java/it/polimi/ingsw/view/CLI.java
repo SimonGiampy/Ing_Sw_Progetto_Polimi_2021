@@ -1,7 +1,6 @@
 package it.polimi.ingsw.view;
 
 import it.polimi.ingsw.controller.ClientController;
-import it.polimi.ingsw.exceptions.InvalidUserRequestException;
 import it.polimi.ingsw.model.DevelopmentCard;
 import it.polimi.ingsw.model.reducedClasses.*;
 import it.polimi.ingsw.model.util.Colors;
@@ -9,7 +8,6 @@ import it.polimi.ingsw.model.util.PlayerActions;
 import it.polimi.ingsw.model.util.Resources;
 import it.polimi.ingsw.observers.ViewObservable;
 
-import javax.swing.*;
 import java.util.*;
 import java.util.concurrent.ExecutionException;
 import java.util.regex.Pattern;
@@ -465,7 +463,7 @@ public class CLI extends ViewObservable implements View {
 	
 	@Override
 	public void showDisconnectionMessage(String nicknameDisconnected, String text) {
-		System.out.println(nicknameDisconnected + " disconnected from the lobby: " + text);
+		System.out.println(nicknameDisconnected + text);
 	}
 	
 	@Override
@@ -513,7 +511,7 @@ public class CLI extends ViewObservable implements View {
 	}
 	
 	@Override
-	public void showLobby(ArrayList<String> players, int numPlayers) {
+	public void showLobby(ArrayList<String> players) {
 	
 	}
 	

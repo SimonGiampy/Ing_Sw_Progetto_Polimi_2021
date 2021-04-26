@@ -3,6 +3,7 @@ package it.polimi.ingsw.network;
 import it.polimi.ingsw.network.messages.Message;
 import it.polimi.ingsw.observers.Observable;
 
+import java.io.EOFException;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -42,10 +43,15 @@ public class Client extends Observable {
 				try {
 					message = (Message) inputStream.readObject();
 					LOGGER.info("Received: " + message);
-				} catch (IOException | ClassNotFoundException e) {
+				} catch (ClassNotFoundException e) {
+					LOGGER.severe("Error: wrong class read from stream");
+					e.printStackTrace();
+				} catch (EOFException ex) {
+					continue;
+				} catch (IOException ex) {
 					LOGGER.severe("Error: disconnection caused by the server termination");
+					ex.printStackTrace();
 					disconnect();
-					readExecutionQueue.shutdownNow();
 				}
 				notifyObserver(message);
 			}
@@ -56,6 +62,7 @@ public class Client extends Observable {
 		try {
 			LOGGER.info("Sending: " + message);
 			outputStream.writeObject(message);
+			//outputStream.reset();
 		} catch (IOException e) {
 			disconnect();
 			LOGGER.severe("Error in sending message");
@@ -67,6 +74,8 @@ public class Client extends Observable {
 	 */
 	public void disconnect() {
 		try {
+			//this.inputStream.close();
+			//this.outputStream.close();
 			if (!socket.isClosed()) {
 				readExecutionQueue.shutdownNow();
 				socket.close();

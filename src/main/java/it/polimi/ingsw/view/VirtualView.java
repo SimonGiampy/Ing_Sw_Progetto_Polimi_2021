@@ -154,8 +154,8 @@ public class VirtualView implements View, Observer {
 	}
 
 	@Override
-	public void showLobby(ArrayList<String> players, int numPlayers) {
-		clientHandler.sendMessage(new LobbyShow(players,numPlayers));
+	public void showLobby(ArrayList<String> players) {
+		clientHandler.sendMessage(new LobbyShow(players));
 	}
 
 	public void showLobbyList(ArrayList<String> lobbyList){

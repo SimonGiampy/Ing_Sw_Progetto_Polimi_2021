@@ -83,7 +83,6 @@ public class ClientHandler implements Runnable {
 						// create new lobby and add the client. Then let it choose the number of players and configuration file
 						lobby = server.createLobby(this);
 						lobby.join(this);
-						lobby.setUpGameConfig();
 						valid = true;
 					} else { // client logs in as guest player
 						// check if the lobby is not full
@@ -102,7 +101,7 @@ public class ClientHandler implements Runnable {
 			} catch (IOException e) {
 				LOGGER.severe("Invalid IO from client");
 				disconnect();
-				return; //FIXME: probably this line of code is the key to solve the problem. Didn't test it yet
+				return;
 			}
 		}
 	}
@@ -114,11 +113,13 @@ public class ClientHandler implements Runnable {
 	public void disconnect() {
 		if (connected) {
 			try {
+				//this.inputStream.close();
+				//this.outputStream.close();
 				if (!socket.isClosed()) {
 					socket.close();
 				}
 			} catch (IOException e) {
-				Server.LOGGER.severe(e.getMessage());
+				LOGGER.severe(e.getMessage());
 			}
 			connected = false;
 			Thread.currentThread().interrupt();
@@ -134,9 +135,10 @@ public class ClientHandler implements Runnable {
 	public void sendMessage(Message message) {
 		try {
 			outputStream.writeObject(message);
+			//outputStream.reset();
 			LOGGER.info("Sent: " + message);
 		} catch (IOException e) {
-			LOGGER.severe(e.getMessage());
+			LOGGER.severe("Error in client handler sending a message: " + e.getMessage());
 			disconnect();
 		}
 	}

@@ -15,7 +15,12 @@ public class GenericMessage extends Message {
 		super("lobby", MessageType.GENERIC_MESSAGE);
 		this.message = message;
 	}
-
+	
+	@Override
+	public String toString() {
+		return "GenericMessage: { " + message + "}";
+	}
+	
 	public String getMessage() {
 		return message;
 	}

@@ -24,4 +24,12 @@ public class DisconnectionMessage extends Message {
 	public String getMessage() {
 		return message;
 	}
+	
+	@Override
+	public String toString() {
+		return "DisconnectionMessage: {" +
+				"nicknameDisconnected = '" + nicknameDisconnected + '\'' +
+				", message = '" + message + '\'' +
+				'}';
+	}
 }

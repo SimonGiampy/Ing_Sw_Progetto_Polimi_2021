@@ -2,6 +2,7 @@ package it.polimi.ingsw.network.server;
 
 import it.polimi.ingsw.controller.GameController;
 import it.polimi.ingsw.network.messages.MessageType;
+import it.polimi.ingsw.network.messages.generic.DisconnectionMessage;
 import it.polimi.ingsw.network.messages.generic.ErrorMessage;
 import it.polimi.ingsw.network.messages.login.*;
 import it.polimi.ingsw.network.messages.generic.GenericMessage;
@@ -21,7 +22,6 @@ public class Lobby implements Runnable {
 	private final List<String> nicknames;
 	private int numberOfPlayers;
 	private boolean gameStarted;
-	private boolean gameConfigSet;
 	
 	private ClientHandler host;
 	private final Server server;
@@ -40,7 +40,6 @@ public class Lobby implements Runnable {
 		nicknames = Collections.synchronizedList(new ArrayList<>());
 		handlersList = Collections.synchronizedList(new ArrayList<>());
 		gameStarted = false;
-		gameConfigSet = false;
 		this.host = host;
 		this.server = server;
 		
@@ -78,29 +77,6 @@ public class Lobby implements Runnable {
 		LOGGER.info("new client connected to the lobby");
 	}
 	
-	/**
-	 * The request of choosing which game config to be used is asynchronous, and directed to the game host
-	 * The game can't be started until the host doesn't choose with config file to use for the match
-	 */
-	public void setUpGameConfig() throws IOException, ClassNotFoundException {
-		host.sendMessage(new GameConfigRequest());
-		Message message = (Message) host.getInputStream().readObject();
-		String config;
-		if (message != null) {
-			LOGGER.info("Received: " + message);
-			if (message.getMessageType() == MessageType.GAME_CONFIG_REPLY) {
-				GameConfigReply mes = (GameConfigReply) message;
-				config = mes.getGameConfiguration();
-				gameController.setGameConfig(config);
-				gameConfigSet = true;
-				LOGGER.info("Game configuration has been read and applied to the lobby");
-			}
-		}
-		
-		if (clients.size() == numberOfPlayers && !gameStarted && gameConfigSet) {
-			server.startLobby(this);
-		}
-	}
 	
 	/**
 	 * Method called by the ClientHandler, that adds itself to the lobby. Then the procedure for choosing a valid nickname is started
@@ -145,7 +121,7 @@ public class Lobby implements Runnable {
 		client.setLobby(this);
 		clients.add(new User(nick, client, view));
 		
-		if (clients.size() == numberOfPlayers && !gameStarted && gameConfigSet) {
+		if (clients.size() == numberOfPlayers && !gameStarted) {
 			server.startLobby(this);
 		}
 		
@@ -155,21 +131,40 @@ public class Lobby implements Runnable {
 	}
 	
 	/**
-	 * Message broadcast directed to all the connected users in the game.
-	 * The message is sent to all the players who have chosen a nickname
-	 * @param message to be broadcast
+	 * The request of choosing which game config to be used is asynchronous, and directed to the game host
+	 * The game can't be started until the host doesn't choose with config file to use for the match
 	 */
-	public void broadcastMessage(Message message) {
-		for (User user: clients) {
-			user.getHandler().sendMessage(message);
+	public void setUpGameConfig() throws IOException, ClassNotFoundException {
+		host.sendMessage(new GameConfigRequest());
+		Message message = (Message) host.getInputStream().readObject();
+		String config;
+		if (message != null) {
+			LOGGER.info("Received: " + message);
+			if (message.getMessageType() == MessageType.GAME_CONFIG_REPLY) {
+				GameConfigReply mes = (GameConfigReply) message;
+				config = mes.getGameConfiguration();
+				gameController.setGameConfig(config);
+				LOGGER.info("Game configuration has been read and applied to the lobby");
+			}
+			
 		}
 	}
+	
 	
 	/**
 	 * Runnable starts when the match starts
 	 */
 	@Override
 	public void run() {
+		//ask the game configuration when all the players are ready and the match is about to start
+		try {
+			setUpGameConfig();
+		} catch (IOException e) {
+			LOGGER.severe("Lobby error in setting game config: " + e.getMessage());
+		} catch (ClassNotFoundException e) {
+			LOGGER.severe(e.getMessage());
+		}
+		
 		LOGGER.info("Match started");
 		gameStarted = true;
 		broadcastMessage(new GenericMessage("Match started!"));
@@ -201,49 +196,44 @@ public class Lobby implements Runnable {
 		synchronized (handlersList) {
 			if (handlersList.contains(client)) { // client was connected
 				
+				User user = null;
 				if (client.equals(host)) { // the host disconnected from the lobby
-					if (gameStarted) { // game was already started
-						broadcastMessage(new ErrorMessage("A player disconnected: Game ended!"));
-						handlersList.clear();
-						gameController.haltGame();
-						server.removeLobby(this);
-					} else {
-						if (handlersList.size() == 1) { // the host was the only one connected
-							handlersList.clear();
-							server.removeLobby(this);
-						} else { // there were guests connected
-							//broadcastMessage(new GenericMessage("The host left the lobby: new host is ?"));
-							//TODO: server in crashing loop when the host quits the lobby and there is one player in the lobby
-							User user = null;
-							for (User u: clients) {
-								if (u.getHandler().equals(host)) {
-									user = u;
-								}
-							}
-							handlersList.remove(0); //removes host
-							if (user != null) {
-								nicknames.remove(user.getNickname());
-								clients.remove(user);
-							}
-							host = handlersList.get(0); //new host is the second client that entered the lobby
+					for (User u: clients) {
+						if (u.getHandler().equals(host)) {
+							user = u;
 						}
 					}
+					if (gameStarted) { // game was already started
+						endGame(user);
+					} else if (handlersList.size() == 1) { // the host was the only one connected
+						handlersList.clear();
+						server.removeLobby(this);
+					} else { // there were guests connected
+						if (user != null) { // user chose its nickname before the host disconnected
+							nicknames.remove(user.getNickname());
+							clients.remove(user);
+							broadcastMessage(new DisconnectionMessage("",
+									"The host (" + user.getNickname() + ") left the lobby: new host role assigned."));
+						} else { // the user didn't choose its nickname before the host disconnected
+							broadcastMessage(new DisconnectionMessage("",
+									"The host left the lobby: new host role assigned."));
+						}
+						host = handlersList.get(1); //new host is the second client that entered the lobby
+						handlersList.remove(client); //removes host
+					}
+					
 				} else { // a guest disconnected from the lobby
-					User user = null;
 					for (User u: clients) {
 						if (u.getHandler().equals(client)) {
 							user = u;
 						}
 					}
 					if (gameStarted) { // if the game already started, halts it abruptly
-						broadcastMessage(new ErrorMessage("A player disconnected: Game ended!"));
-						handlersList.clear();
-						gameController.haltGame();
-						server.removeLobby(this);
+						endGame(user);
 					} else if (user != null) { // the client had already chosen a nickname but the game didn't start
 						LOGGER.info("Removed " + user.getNickname() + " from the connected players list");
 						nicknames.remove(user.getNickname());
-						broadcastMessage(new ErrorMessage(user.getNickname() + " disconnected from the lobby"));
+						broadcastMessage(new DisconnectionMessage(user.getNickname(), " disconnected from the lobby"));
 						clients.remove(user);
 						handlersList.remove(client);
 					} else { // the client disconnected before choosing a nickname
@@ -255,6 +245,16 @@ public class Lobby implements Runnable {
 		}
 	}
 	
+	/**
+	 * Message broadcast directed to all the connected users in the game.
+	 * The message is sent to all the players who have chosen a nickname
+	 * @param message to be broadcast
+	 */
+	public void broadcastMessage(Message message) {
+		for (User user: clients) {
+			user.getHandler().sendMessage(message);
+		}
+	}
 	
 	public int getNumberOfPlayers() {
 		return numberOfPlayers;
@@ -266,6 +266,13 @@ public class Lobby implements Runnable {
 			num = handlersList.size();
 		}
 		return num;
+	}
+	
+	private void endGame(User user) {
+		broadcastMessage(new DisconnectionMessage(user.getNickname(), " disconnected from the lobby: Game ended!"));
+		handlersList.clear();
+		gameController.haltGame();
+		server.removeLobby(this);
 	}
 	
 	/**
