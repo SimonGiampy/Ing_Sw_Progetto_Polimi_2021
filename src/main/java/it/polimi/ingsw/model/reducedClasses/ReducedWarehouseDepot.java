@@ -2,6 +2,7 @@ package it.polimi.ingsw.model.reducedClasses;
 
 import it.polimi.ingsw.model.WarehouseDepot;
 import it.polimi.ingsw.model.util.Resources;
+import it.polimi.ingsw.model.util.Unicode;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -45,5 +46,52 @@ public class ReducedWarehouseDepot implements Serializable {
 
 	public ArrayList<ArrayList<Boolean>> getExtraDepotContents() {
 		return extraDepotContents;
+	}
+
+	/**
+	 * show the depot
+	 */
+	public void showDepot() {
+		StringBuilder string = new StringBuilder();
+		string.append("            ").append(Unicode.TOP_LEFT).append(Unicode.HORIZONTAL).append(Unicode.HORIZONTAL)
+				.append(Unicode.HORIZONTAL).append(Unicode.HORIZONTAL).append(Unicode.TOP_RIGHT).append("\n");
+		string.append("            ").append(Unicode.VERTICAL).append(" ").append(depot[0].toString())
+				.append(" ").append(Unicode.VERTICAL).append("\n");
+		string.append("        ").append(Unicode.TOP_LEFT).append(Unicode.HORIZONTAL).append(Unicode.HORIZONTAL)
+				.append(Unicode.HORIZONTAL).append(Unicode.BOTTOM_RIGHT).append("    ")
+				.append(Unicode.BOTTOM_LEFT).append(Unicode.HORIZONTAL).append(Unicode.HORIZONTAL)
+				.append(Unicode.HORIZONTAL).append(Unicode.TOP_RIGHT).append("\n");
+		string.append("        ").append(Unicode.VERTICAL).append(" ").append(depot[1].toString()).append("      ")
+				.append(depot[2].toString()).append(" ").append(Unicode.VERTICAL).append("\n");
+		string.append("    ").append(Unicode.TOP_LEFT).append(Unicode.HORIZONTAL).append(Unicode.HORIZONTAL)
+				.append(Unicode.HORIZONTAL).append(Unicode.BOTTOM_RIGHT).append("            ")
+				.append(Unicode.BOTTOM_LEFT).append(Unicode.HORIZONTAL).append(Unicode.HORIZONTAL)
+				.append(Unicode.HORIZONTAL).append(Unicode.TOP_RIGHT).append("\n");
+		string.append("    ").append(Unicode.VERTICAL).append(" ").append(depot[3].toString())
+				.append("      ").append(depot[4].toString()).append("  ").append("    ").append(depot[5].toString())
+				.append(" ").append(Unicode.VERTICAL).append("\n");
+		string.append("    ").append(Unicode.BOTTOM_LEFT);
+		string.append(String.valueOf(Unicode.HORIZONTAL).repeat(20)).append(Unicode.BOTTOM_RIGHT).append("\n");
+		/*
+		string.append("Top:       " + "_|").append(depot[0].toString()).append("|_").append("\n");
+		string.append("Middle:  " + "_|").append(depot[1].toString()).append("  ")
+				.append(depot[2].toString()).append("|_").append("\n");
+		string.append("Bottom: " + "|").append(depot[3].toString())
+				.append("  ").append(depot[4].toString()).append("  ").append(depot[5].toString()).append("|").append("\n");
+
+		 */
+		System.out.println(string);
+
+	}
+
+	/**
+	 * shows the incoming resources
+	 */
+	public void showIncomingDeck() {
+		System.out.print("deck contains: \t");
+		for (int i = 1; i <= incomingResources.size(); i++) {
+			System.out.print(i + ": " + incomingResources.get(i - 1).toString() + "\t");
+		}
+		System.out.print("\n");
 	}
 }

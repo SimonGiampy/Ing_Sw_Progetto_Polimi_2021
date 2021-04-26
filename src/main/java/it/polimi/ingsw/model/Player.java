@@ -2,6 +2,7 @@ package it.polimi.ingsw.model;
 
 import it.polimi.ingsw.model.util.Colors;
 import it.polimi.ingsw.model.util.Marbles;
+import it.polimi.ingsw.model.util.PlayerActions;
 import it.polimi.ingsw.model.util.Resources;
 import it.polimi.ingsw.exceptions.InvalidDevCardSlotException;
 import it.polimi.ingsw.exceptions.InvalidInputException;
@@ -153,36 +154,46 @@ public class Player {
 
 	/**
 	 * Checks which actions the player can do in the current turn
-	 * @return a list of strings that contains the keywords that identify the available actions the player can do
+	 * @return a list of player actions that contains the available actions the player can do
 	 */
-	public ArrayList<String> checkWhatThisPlayerCanDo() {
-		ArrayList<String> actions = new ArrayList<>();
-		actions.add("Market");
+	public ArrayList<PlayerActions> checkAvailableActions() {
+		ArrayList<PlayerActions> actions = new ArrayList<>();
+		actions.add(PlayerActions.MARKET);
 		if (isBuyMoveAvailable()) {
-			actions.add("Buy Development Card");
+			actions.add(PlayerActions.BUY_CARD);
 		}
 		try {
 			if (cardManager.isAtLeastOneProductionAvailable()) {
-				actions.add("Productions");
+				actions.add(PlayerActions.PRODUCTIONS);
 			}
 		} catch (InvalidInputException e) {
 			e.printStackTrace();
 		}
+		return actions;
+	}
+
+	/**
+	 * Checks which leader actions the player can do in the current turn
+	 * @return a list of player actions that contains the available leader actions the player can do
+	 */
+	public ArrayList<PlayerActions> checkAvailableLeaderActions(){
+
+		ArrayList<PlayerActions> actions = new ArrayList<>();
 		if(playableLeader1 && leaderCards[0].checkCards(cardManager.getPlayerCardsRequirements()) &&
 				leaderCards[0].checkResources(gatherAllPlayersResources())) {
-			actions.add("Activate Leader 1");
+			actions.add(PlayerActions.PLAY_LEADER_1);
 		}
 		if(playableLeader2 && leaderCards[1].checkCards(cardManager.getPlayerCardsRequirements()) &&
 				leaderCards[1].checkResources(gatherAllPlayersResources())) {
-			actions.add("Activate Leader 2");
+			actions.add(PlayerActions.PLAY_LEADER_2);
 		}
 		if(playableLeader1){
-			actions.add("Discard Leader 1");
+			actions.add(PlayerActions.DISCARD_LEADER_1);
 		}
 		if(playableLeader2){
-			actions.add("Discard Leader 2");
+			actions.add(PlayerActions.DISCARD_LEADER_2);
 		}
-		
+
 		return actions;
 	}
 	

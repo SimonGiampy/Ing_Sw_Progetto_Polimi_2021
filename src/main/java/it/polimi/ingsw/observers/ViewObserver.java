@@ -1,6 +1,7 @@
 package it.polimi.ingsw.observers;
 
 import it.polimi.ingsw.model.util.Colors;
+import it.polimi.ingsw.model.util.PlayerActions;
 import it.polimi.ingsw.model.util.Resources;
 
 import java.util.ArrayList;
@@ -55,7 +56,7 @@ public interface ViewObserver {
 	 * it sends a message to the server with the selected action
 	 * @param selectedAction is the index of the selected action
 	 */
-	void onUpdateAction(int selectedAction);
+	void onUpdateAction(PlayerActions selectedAction);
 
 	/**
 	 * it sends a message to the server with the row/column selected

@@ -1,6 +1,7 @@
 package it.polimi.ingsw.controller;
 
 import it.polimi.ingsw.model.util.Colors;
+import it.polimi.ingsw.model.util.PlayerActions;
 import it.polimi.ingsw.model.util.Resources;
 import it.polimi.ingsw.network.messages.*;
 import it.polimi.ingsw.network.Client;
@@ -138,7 +139,7 @@ public class ClientController implements ViewObserver, Observer {
 	}
 
 	@Override
-	public void onUpdateAction(int selectedAction) {
+	public void onUpdateAction(PlayerActions selectedAction) {
 		client.sendMessage(new ActionReply(nickname, selectedAction));
 	}
 

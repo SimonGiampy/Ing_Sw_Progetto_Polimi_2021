@@ -1,16 +1,16 @@
 package it.polimi.ingsw.view;
 
 import it.polimi.ingsw.controller.ClientController;
+import it.polimi.ingsw.exceptions.InvalidUserRequestException;
 import it.polimi.ingsw.model.DevelopmentCard;
 import it.polimi.ingsw.model.reducedClasses.*;
+import it.polimi.ingsw.model.util.Colors;
+import it.polimi.ingsw.model.util.PlayerActions;
 import it.polimi.ingsw.model.util.Resources;
 import it.polimi.ingsw.observers.ViewObservable;
 
 import javax.swing.*;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Scanner;
+import java.util.*;
 import java.util.concurrent.ExecutionException;
 import java.util.regex.Pattern;
 
@@ -294,8 +294,25 @@ public class CLI extends ViewObservable implements View {
 	}
 	
 	@Override
-	public void askAction(ArrayList<Integer> availableAction) {
-	
+	public void askAction(ArrayList<PlayerActions> availableAction) {
+		int x = 1;
+		for (PlayerActions s: availableAction) {
+			System.out.println(x + ": " + s);
+			x++;
+		}
+		x--;
+		String playerInput;
+		String playerActionRegex = "[1-" + x + "]"; //stupid warning: DO NOT TOUCH
+		boolean check;
+		System.out.println("What do you want to do?");
+		do {
+			playerInput = scanner.nextLine();
+			check = Pattern.matches(playerActionRegex, playerInput);
+			if(!check) System.out.println("Selected action is not correct! Type again");
+		} while (!check);
+		int index = Integer.parseInt(playerInput);
+		PlayerActions input = availableAction.get(index);
+		notifyObserver(obs -> obs.onUpdateAction(input));
 	}
 	
 	@Override
@@ -337,12 +354,91 @@ public class CLI extends ViewObservable implements View {
 	
 	@Override
 	public void askDepotMove(ReducedWarehouseDepot depot) {
-	
+		String read;
+		String where;
+		int from, destination = 0;
+
+		// regex pattern for reading input for moving the resources to the warehouse
+		String regexGoingToWarehouse = "move\s[1-" + depot.getIncomingResources().size() + "]\sfrom\s(deck|depot)\sto\s[1-6]";
+		String regexGoingToDeck = "move\s[1-6]\sto\sdeck"; //regex pattern for reading input for moving back to the deck
+
+		depot.showIncomingDeck();
+		depot.showDepot();
+		System.out.print("Write new move command (Type [help] for a tutorial, [confirm] for confirmation): ");
+		boolean checkGoingToWarehouse = false, checkGoingToDeck, check;
+		from = 0;
+		where = "";
+		do {
+			read = scanner.nextLine().toLowerCase(); // user input
+			if (read.equals("confirm")) {
+				where = "confirm";
+				check = false;
+			} else if (read.equals("help")) {
+				System.out.println("Syntax for moving resources from the deck or depot to the depot is: " +
+						"[move <position> from <deck/depot> to <destination>]");
+				System.out.println("Syntax for moving a resource from the warehouse to the deck is : [move <position> to deck]");
+				System.out.println("The positional number in the warehouse is between 1 and 6: from top to bottom, and from left to right");
+				check = false;
+			} else {
+				checkGoingToWarehouse = Pattern.matches(regexGoingToWarehouse, read);
+				if (checkGoingToWarehouse) { // process request for moving resource from the deck to the warehouse
+					from = Character.getNumericValue(read.charAt(5));
+					if (read.charAt(14) == 'c') { //send from deck
+						where = "deck";
+					} else { // send from depot
+						where = "depot";
+					}
+					if (where.equals("deck") && from > depot.getIncomingResources().size()) {
+						check = false; // invalid input: position out of deck bounds (size of list)
+					} else check = !where.equals("depot") || from <= 6; // invalid input: position out of depot bounds (from 1 to 6)
+				} else { // sends the request
+					checkGoingToDeck = Pattern.matches(regexGoingToDeck, read);
+					check = checkGoingToDeck;
+				}
+
+				if (!check) { // user input does not match with the defined pattern
+					System.out.println("Input request invalid, write again");
+				}
+			}
+
+		} while (!check); // while the input is not valid
+
+		if (checkGoingToWarehouse) { // process request for moving to the warehouse
+			if (where.equals("deck")) {
+				destination = Character.getNumericValue(read.charAt(20));
+			} else {
+				destination = Character.getNumericValue(read.charAt(21));
+			}
+		}
+
+		String finalWhere = where;
+		int finalFrom = from;
+		int finalDestination = destination;
+
+		notifyObserver(obs -> obs.onUpdateDepotMove(finalWhere, finalFrom, finalDestination));
+
 	}
 	
 	@Override
 	public void askBuyCardAction(ArrayList<DevelopmentCard> cardsAvailable) {
-	
+		String input;
+		String regex = "[1" + cardsAvailable.size() + "]";
+		System.out.println("Available Development Cards: ");
+		for(int i = 0; i < cardsAvailable.size(); i++){
+			System.out.println("Card's number: " + (i + 1));
+			cardsAvailable.get(i).showCard();
+		}
+		System.out.println("Type the number of the one you want to buy");
+		boolean check;
+		do {
+			input = scanner.nextLine();
+			check = Pattern.matches(regex, input);
+			if(!check) System.out.println("Invalid input! Type again");
+		}while(!check);
+
+		Colors color = cardsAvailable.get(Integer.parseInt(input) - 1).getColor();
+		int level = cardsAvailable.get(Integer.parseInt(input) - 1).getLevel();
+		notifyObserver(obs -> obs.onUpdateBuyCardAction(color, level));
 	}
 	
 	@Override

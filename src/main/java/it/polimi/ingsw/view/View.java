@@ -2,6 +2,7 @@ package it.polimi.ingsw.view;
 
 import it.polimi.ingsw.model.*;
 import it.polimi.ingsw.model.reducedClasses.*;
+import it.polimi.ingsw.model.util.PlayerActions;
 import it.polimi.ingsw.model.util.Resources;
 
 import java.util.ArrayList;
@@ -20,7 +21,7 @@ public interface View {
 
 	void askLeaderAction(ArrayList<ReducedLeaderCard> availableLeaders);
 
-	void askAction(ArrayList<Integer> availableAction);
+	void askAction(ArrayList<PlayerActions> availableAction);
 
 	void askMarketAction(ReducedMarket market);
 

@@ -2,6 +2,7 @@ package it.polimi.ingsw.view;
 
 import it.polimi.ingsw.model.*;
 import it.polimi.ingsw.model.reducedClasses.*;
+import it.polimi.ingsw.model.util.PlayerActions;
 import it.polimi.ingsw.network.messages.*;
 import it.polimi.ingsw.network.messages.game.server2client.*;
 import it.polimi.ingsw.network.messages.generic.DisconnectionMessage;
@@ -58,7 +59,7 @@ public class VirtualView implements View, Observer {
 	}
 
 	@Override
-	public void askAction(ArrayList<Integer> availableAction) {
+	public void askAction(ArrayList<PlayerActions> availableAction) {
 		clientHandler.sendMessage(new ActionRequest(availableAction));
 	}
 

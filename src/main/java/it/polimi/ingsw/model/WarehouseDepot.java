@@ -50,10 +50,7 @@ public class WarehouseDepot {
 		extraDepotContents.add(new ArrayList<>());
 		extraDepotContents.add(new ArrayList<>());
 	}
-	
-	/**
-	 * debugging function for showing warehouse shelves content
-	 */
+
 	public void showDepot() {
 		StringBuilder string = new StringBuilder();
 		string.append("            ").append(Unicode.TOP_LEFT).append(Unicode.HORIZONTAL).append(Unicode.HORIZONTAL)
@@ -285,7 +282,6 @@ public class WarehouseDepot {
 	}
 	
 	
-	
 	/**
 	 * analyzes the integer array equivalent of a list of resources
 	 * @param pyramid the converted array
@@ -450,6 +446,7 @@ public class WarehouseDepot {
 	public ArrayList<Integer> getPositionsIncomingResources() {
 		return positionsIncomingResources;
 	}
+
 	public ArrayList<Resources> getIncomingResources() {
 		return incomingResources;
 	}

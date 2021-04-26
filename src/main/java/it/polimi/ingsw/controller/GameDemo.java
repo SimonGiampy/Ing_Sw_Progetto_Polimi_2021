@@ -2,10 +2,10 @@ package it.polimi.ingsw.controller;
 
 import it.polimi.ingsw.model.*;
 import it.polimi.ingsw.model.util.Colors;
+import it.polimi.ingsw.model.util.PlayerActions;
 import it.polimi.ingsw.model.util.Resources;
 import it.polimi.ingsw.exceptions.InvalidInputException;
 import it.polimi.ingsw.exceptions.InvalidUserRequestException;
-import it.polimi.ingsw.model.singleplayer.GameMechanicsSinglePlayer;
 import it.polimi.ingsw.model.singleplayer.Token;
 import it.polimi.ingsw.xml_parsers.XMLParser;
 
@@ -61,9 +61,9 @@ public class GameDemo {
 			Player currentPlayer = mechanics.getPlayer(indexCurrentPlayer); //first test with just one player
 			System.out.println("Player " + (indexCurrentPlayer + 1) +" is playing. You can do:");
 			
-			ArrayList<String> playerActions = currentPlayer.checkWhatThisPlayerCanDo();
+			ArrayList<PlayerActions> playerActions = currentPlayer.checkAvailableActions();
 			int x = 1;
-			for (String s: playerActions) {
+			for (PlayerActions s: playerActions) {
 				System.out.println(x + ": " + s);
 				x++;
 			}
@@ -84,13 +84,13 @@ public class GameDemo {
 
 
 			switch (playerActions.get(input - 1)) {
-				case "Market" -> processMarketInteraction(currentPlayer);
-				case "Buy Development Card" -> processBuyDevCard(currentPlayer);
-				case "Productions" -> processProduction(currentPlayer);
-				case "Activate Leader 1" -> processLeaderCardActivation(currentPlayer, 0);
-				case "Activate Leader 2" -> processLeaderCardActivation(currentPlayer, 1);
-				case "Discard Leader 1" -> currentPlayer.discardLeaderCard(0);
-				case "Discard Leader 2" -> currentPlayer.discardLeaderCard(1);
+				case MARKET -> processMarketInteraction(currentPlayer);
+				case BUY_CARD -> processBuyDevCard(currentPlayer);
+				case PRODUCTIONS -> processProduction(currentPlayer);
+				case PLAY_LEADER_1 -> processLeaderCardActivation(currentPlayer, 0);
+				case PLAY_LEADER_2-> processLeaderCardActivation(currentPlayer, 1);
+				case DISCARD_LEADER_1 -> currentPlayer.discardLeaderCard(0);
+				case DISCARD_LEADER_2 -> currentPlayer.discardLeaderCard(1);
 			}
 			
 			
@@ -105,18 +105,21 @@ public class GameDemo {
 		readInformation();
 		Player currentPlayer= mechanics.getPlayer(0);
 		currentPlayer.chooseTwoLeaders(1,4);
-		currentPlayer.checkWhatThisPlayerCanDo();
+		currentPlayer.checkAvailableActions();
 		Token currentToken;
 		for(int round = 0; round < 6; round++) {
 			//scanner.nextLine();
+			/*
 			System.out.println("Player 1 is playing. You can do:");
-			ArrayList<String> playerActions = currentPlayer.checkWhatThisPlayerCanDo();
+			ArrayList<String> playerActions = currentPlayer.checkAvailableActions();
 			int x = 1;
 			for (String s: playerActions) {
 				System.out.println(x + ": " + s);
 				x++;
 			}
 			x--;
+
+
 
 			System.out.println("What do you want to do?");
 			String playerInput = scanner.nextLine();
@@ -161,6 +164,8 @@ public class GameDemo {
 			currentToken.applyEffect();
 			currentPlayer.getPlayerFaithTrack().showFaithTrack(1);
 			mechanics.getLorenzoFaithTrack().showFaithTrack(0);
+
+			 */
 
 		}
 
@@ -291,7 +296,7 @@ public class GameDemo {
 		
 		depot.showIncomingDeck();
 		depot.showDepot();
-		System.out.print("write new move command (write help for a tutorial, write confirm for confirmation): ");
+		System.out.print("Write new move command (Type [help] for a tutorial, [confirm] for confirmation): ");
 		boolean checkGoingToWarehouse = false, checkGoingToDeck, ok ;
 		int from = 0;
 		String place = "";
@@ -322,7 +327,7 @@ public class GameDemo {
 				}
 				
 				if (!ok) { // user input does not match with the defined pattern
-					System.out.println("input request invalid, write again");
+					System.out.println("Input request invalid, write again");
 				}
 			}
 			

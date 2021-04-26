@@ -1,5 +1,6 @@
 package it.polimi.ingsw.network.messages.game.client2server;
 
+import it.polimi.ingsw.model.util.PlayerActions;
 import it.polimi.ingsw.network.messages.Message;
 import it.polimi.ingsw.network.messages.MessageType;
 
@@ -8,15 +9,15 @@ import it.polimi.ingsw.network.messages.MessageType;
  */
 public class ActionReply extends Message {
 
-	private final int selectedAction;
+	private final PlayerActions selectedAction;
 
 
-	public ActionReply(String nickname, int selectedAction) {
+	public ActionReply(String nickname, PlayerActions selectedAction) {
 		super(nickname, MessageType.ACTION_REPLY);
 		this.selectedAction = selectedAction;
 	}
 
-	public int getSelectedAction() {
+	public PlayerActions getSelectedAction() {
 		return selectedAction;
 	}
 }
