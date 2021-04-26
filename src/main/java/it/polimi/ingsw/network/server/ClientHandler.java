@@ -18,8 +18,8 @@ public class ClientHandler implements Runnable {
 	
 	private boolean connected;
 	
-	private ObjectOutputStream output;
-	private ObjectInputStream input;
+	private ObjectOutputStream outputStream;
+	private ObjectInputStream inputStream;
 	
 	
 	/**
@@ -34,8 +34,8 @@ public class ClientHandler implements Runnable {
 		this.connected = true;
 		
 		try {
-			this.output = new ObjectOutputStream(socket.getOutputStream());
-			this.input = new ObjectInputStream(socket.getInputStream());
+			this.outputStream = new ObjectOutputStream(socket.getOutputStream());
+			this.inputStream = new ObjectInputStream(socket.getInputStream());
 		} catch (IOException e) {
 			LOGGER.severe(e.getMessage());
 		}
@@ -48,7 +48,7 @@ public class ClientHandler implements Runnable {
 		lobbyLogin();
 		try {
 			while (!Thread.currentThread().isInterrupted()) {
-				Message message = (Message) input.readObject();
+				Message message = (Message) inputStream.readObject();
 				if (message != null) {
 					LOGGER.info("Received: " + message);
 					lobby.onMessageReceived(message);
@@ -74,7 +74,7 @@ public class ClientHandler implements Runnable {
 		while(!valid) {
 			try {
 				sendMessage(new LobbyList(server.getLobbiesDescription()));
-				message = (Message) input.readObject();
+				message = (Message) inputStream.readObject();
 				LOGGER.info("Received: " + message);
 				if (message.getMessageType() == MessageType.LOBBY_ACCESS) {
 					LobbyAccess lobbyAccess = (LobbyAccess) message;
@@ -97,11 +97,12 @@ public class ClientHandler implements Runnable {
 						}
 					}
 				}
-			} catch (ClassCastException | ClassNotFoundException ex) {
+			} catch (ClassNotFoundException ex) {
 				LOGGER.severe("Invalid stream from client: wrong message class");
 			} catch (IOException e) {
 				LOGGER.severe("Invalid IO from client");
 				disconnect();
+				return; //FIXME: probably this line of code is the key to solve the problem. Didn't test it yet
 			}
 		}
 	}
@@ -122,8 +123,7 @@ public class ClientHandler implements Runnable {
 			connected = false;
 			Thread.currentThread().interrupt();
 			
-			//TODO: this generates an error if the host quits before it chooses its nickname
-			lobby.onDisconnect(this);
+			if (lobby != null) lobby.onDisconnect(this);
 		}
 	}
 	
@@ -133,75 +133,20 @@ public class ClientHandler implements Runnable {
 	 */
 	public void sendMessage(Message message) {
 		try {
-			output.writeObject(message);
+			outputStream.writeObject(message);
 			LOGGER.info("Sent: " + message);
 		} catch (IOException e) {
 			LOGGER.severe(e.getMessage());
-			e.printStackTrace();
 			disconnect();
 		}
 	}
 	
-	public int readNumberOfPlayers() {
-		sendMessage(new PlayerNumberRequest());
-		try {
-			Message message = (Message) input.readObject();
-			if (message != null) {
-				LOGGER.info("Received: " + message);
-				if (message.getMessageType() == MessageType.PLAYER_NUMBER_REPLY) {
-					PlayerNumberReply mes = (PlayerNumberReply) message;
-					return mes.getPlayerNumber();
-				}
-			}
-		} catch (ClassCastException | ClassNotFoundException ex) {
-			LOGGER.severe("Invalid stream from client: wrong message class");
-		} catch (IOException e) {
-			LOGGER.severe("Invalid IO from client");
-			disconnect();
-		}
-		return 0;
-	}
-	
-	public String readNickname() {
-		try {
-			Message message = (Message) input.readObject();
-			if (message != null) {
-				LOGGER.info("Received: " + message);
-				if (message.getMessageType() == MessageType.NICKNAME_REPLY) {
-					NicknameReply nicknameReply = (NicknameReply) message;
-					return nicknameReply.getNicknameProposal();
-				}
-			}
-		} catch (ClassCastException | ClassNotFoundException ex) {
-			LOGGER.severe("Invalid stream from client: wrong message class");
-		} catch (IOException e) {
-			LOGGER.severe("Invalid IO from client");
-			disconnect();
-		}
-		return "cipolla";
-	}
-	
-	public String readGameConfig() {
-		try {
-			Message message = (Message) input.readObject();
-			if (message != null) {
-				LOGGER.info("Received: " + message);
-				if (message.getMessageType() == MessageType.GAME_CONFIG_REPLY) {
-					GameConfigReply configReply = (GameConfigReply) message;
-					return configReply.getGameConfiguration();
-				}
-			}
-			
-		} catch (ClassCastException | ClassNotFoundException ex) {
-			LOGGER.severe("Invalid stream from client: wrong message class");
-		} catch (IOException e) {
-			LOGGER.severe("Invalid IO from client");
-			disconnect();
-		}
-		return "cipolla"; //TODO: this should never be called
-	}
 	
 	public void setLobby(Lobby lobby) {
 		this.lobby = lobby;
+	}
+	
+	public ObjectInputStream getInputStream() {
+		return inputStream;
 	}
 }

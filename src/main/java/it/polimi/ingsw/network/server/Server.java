@@ -77,7 +77,7 @@ public class Server implements Runnable {
 	 * @param host the client that becomes game host and decides the match parameters (automatically joins the lobby)
 	 * @return the lobby just created
 	 */
-	public Lobby createLobby(ClientHandler host) {
+	public Lobby createLobby(ClientHandler host) throws IOException, ClassNotFoundException {
 		Lobby lobby = new Lobby(this, host);
 		lobby.setUpLobby();
 		synchronized (lobbies) {

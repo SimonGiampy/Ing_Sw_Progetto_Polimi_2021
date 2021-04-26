@@ -459,17 +459,18 @@ public class CLI extends ViewObservable implements View {
 	
 	@Override
 	public void showGenericMessage(String genericMessage) {
+		System.out.println("generic message: " + genericMessage);
 	}
 	
 	
 	@Override
 	public void showDisconnectionMessage(String nicknameDisconnected, String text) {
-	
+		System.out.println(nicknameDisconnected + " disconnected from the lobby: " + text);
 	}
 	
 	@Override
 	public void showError(String error) {
-	
+		System.out.println("error message: " + error);
 	}
 	
 	@Override

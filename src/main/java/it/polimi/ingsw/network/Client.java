@@ -43,7 +43,6 @@ public class Client extends Observable {
 					message = (Message) inputStream.readObject();
 					LOGGER.info("Received: " + message);
 				} catch (IOException | ClassNotFoundException e) {
-					e.printStackTrace();
 					LOGGER.severe("Error: disconnection caused by the server termination");
 					disconnect();
 					readExecutionQueue.shutdownNow();
@@ -58,7 +57,6 @@ public class Client extends Observable {
 			LOGGER.info("Sending: " + message);
 			outputStream.writeObject(message);
 		} catch (IOException e) {
-			e.printStackTrace();
 			disconnect();
 			LOGGER.severe("Error in sending message");
 		}

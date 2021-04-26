@@ -1,12 +1,14 @@
 package it.polimi.ingsw.network.server;
 
 import it.polimi.ingsw.controller.GameController;
+import it.polimi.ingsw.network.messages.MessageType;
 import it.polimi.ingsw.network.messages.generic.ErrorMessage;
-import it.polimi.ingsw.network.messages.login.GameConfigRequest;
+import it.polimi.ingsw.network.messages.login.*;
 import it.polimi.ingsw.network.messages.generic.GenericMessage;
 import it.polimi.ingsw.network.messages.Message;
 import it.polimi.ingsw.view.VirtualView;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -19,6 +21,7 @@ public class Lobby implements Runnable {
 	private final List<String> nicknames;
 	private int numberOfPlayers;
 	private boolean gameStarted;
+	private boolean gameConfigSet;
 	
 	private ClientHandler host;
 	private final Server server;
@@ -37,6 +40,7 @@ public class Lobby implements Runnable {
 		nicknames = Collections.synchronizedList(new ArrayList<>());
 		handlersList = Collections.synchronizedList(new ArrayList<>());
 		gameStarted = false;
+		gameConfigSet = false;
 		this.host = host;
 		this.server = server;
 		
@@ -47,11 +51,20 @@ public class Lobby implements Runnable {
 	 * Then the host connects to the lobby and joins it. After this method finishes its execution, the server shows the lobby to
 	 * the other clients that connect to the server
 	 */
-	public void setUpLobby() {
-		numberOfPlayers = host.readNumberOfPlayers();
-		gameController = new GameController(this, numberOfPlayers);
-		connectClient(host);
+	public void setUpLobby() throws IOException, ClassNotFoundException {
+		host.sendMessage(new PlayerNumberRequest());
+		Message message = (Message) host.getInputStream().readObject();
+		if (message != null) {
+			LOGGER.info("Received: " + message);
+			if (message.getMessageType() == MessageType.PLAYER_NUMBER_REPLY) {
+				PlayerNumberReply mes = (PlayerNumberReply) message;
+				numberOfPlayers = mes.getPlayerNumber();
+				gameController = new GameController(this, numberOfPlayers);
+				connectClient(host);
+			}
+		}
 	}
+	
 	
 	/**
 	 * method called from the client handler when this lobby isn't full. The client connects to the lobby.
@@ -69,30 +82,62 @@ public class Lobby implements Runnable {
 	 * The request of choosing which game config to be used is asynchronous, and directed to the game host
 	 * The game can't be started until the host doesn't choose with config file to use for the match
 	 */
-	public void setUpGameConfig() {
+	public void setUpGameConfig() throws IOException, ClassNotFoundException {
 		host.sendMessage(new GameConfigRequest());
-		String config = host.readGameConfig();
-		gameController.setGameConfig(config);
-		LOGGER.info("Game configuration has been read and applied to the lobby");
+		Message message = (Message) host.getInputStream().readObject();
+		String config;
+		if (message != null) {
+			LOGGER.info("Received: " + message);
+			if (message.getMessageType() == MessageType.GAME_CONFIG_REPLY) {
+				GameConfigReply mes = (GameConfigReply) message;
+				config = mes.getGameConfiguration();
+				gameController.setGameConfig(config);
+				gameConfigSet = true;
+				LOGGER.info("Game configuration has been read and applied to the lobby");
+			}
+		}
+		
+		if (clients.size() == numberOfPlayers && !gameStarted && gameConfigSet) {
+			server.startLobby(this);
+		}
 	}
 	
-	/** TODO: move in gameController if we want
+	/**
 	 * Method called by the ClientHandler, that adds itself to the lobby. Then the procedure for choosing a valid nickname is started
 	 * @param client that accesses this lobby after connecting
 	 */
-	public void join(ClientHandler client) {
+	public void join(ClientHandler client)  {
 		VirtualView view = new VirtualView(client);
-		String nick;
-		boolean valid;
+		String nick = null;
+		boolean valid = false;
 		do {
 			view.askNickname(); // asks for a nickname (message from the server to the client)
-			nick = client.readNickname();
-			synchronized (nicknames) {
-				valid = !nicknames.contains(nick); //checks if the nickname isn't already chosen by another client
+			//nick = client.readNickname();
+			Message message = null;
+			try {
+				message = (Message) client.getInputStream().readObject();
+			}  catch (ClassCastException | ClassNotFoundException ex) {
+				LOGGER.severe("Invalid class from stream from client");
+			} catch (IOException e) {
+				LOGGER.severe("Invalid IO from client caused by disconnection");
+				client.disconnect();
+				return;
 			}
-			view.showNicknameConfirmation(valid); // sends the login result to the client, otherwise
+			if (message != null) {
+				LOGGER.info("Received: " + message);
+				if (message.getMessageType() == MessageType.NICKNAME_REPLY) {
+					NicknameReply reply = (NicknameReply) message;
+					nick = reply.getNicknameProposal();
+					synchronized (nicknames) {
+						valid = !nicknames.contains(nick); //checks if the nickname isn't already chosen by another client
+					}
+					view.showNicknameConfirmation(valid); // sends the login result to the client, otherwise
+				}
+			}
+			
 		} while (!valid);
 		
+		assert nick != null;
 		synchronized (nicknames) {
 			nicknames.add(nick); // memorizes the accepted nickname
 		}
@@ -100,7 +145,7 @@ public class Lobby implements Runnable {
 		client.setLobby(this);
 		clients.add(new User(nick, client, view));
 		
-		if (clients.size() == numberOfPlayers) {
+		if (clients.size() == numberOfPlayers && !gameStarted && gameConfigSet) {
 			server.startLobby(this);
 		}
 		
@@ -127,6 +172,7 @@ public class Lobby implements Runnable {
 	public void run() {
 		LOGGER.info("Match started");
 		gameStarted = true;
+		broadcastMessage(new GenericMessage("Match started!"));
 		
 		HashMap<String, VirtualView> virtualViewHashMap = new HashMap<>();
 		for (User user: clients) {
@@ -160,12 +206,14 @@ public class Lobby implements Runnable {
 						broadcastMessage(new ErrorMessage("A player disconnected: Game ended!"));
 						handlersList.clear();
 						gameController.haltGame();
+						server.removeLobby(this);
 					} else {
 						if (handlersList.size() == 1) { // the host was the only one connected
 							handlersList.clear();
 							server.removeLobby(this);
 						} else { // there were guests connected
 							//broadcastMessage(new GenericMessage("The host left the lobby: new host is ?"));
+							//TODO: server in crashing loop when the host quits the lobby and there is one player in the lobby
 							User user = null;
 							for (User u: clients) {
 								if (u.getHandler().equals(host)) {
@@ -173,7 +221,10 @@ public class Lobby implements Runnable {
 								}
 							}
 							handlersList.remove(0); //removes host
-							nicknames.remove(user.getNickname());
+							if (user != null) {
+								nicknames.remove(user.getNickname());
+								clients.remove(user);
+							}
 							host = handlersList.get(0); //new host is the second client that entered the lobby
 						}
 					}
@@ -188,6 +239,7 @@ public class Lobby implements Runnable {
 						broadcastMessage(new ErrorMessage("A player disconnected: Game ended!"));
 						handlersList.clear();
 						gameController.haltGame();
+						server.removeLobby(this);
 					} else if (user != null) { // the client had already chosen a nickname but the game didn't start
 						LOGGER.info("Removed " + user.getNickname() + " from the connected players list");
 						nicknames.remove(user.getNickname());

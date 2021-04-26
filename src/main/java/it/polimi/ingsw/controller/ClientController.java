@@ -8,6 +8,7 @@ import it.polimi.ingsw.network.Client;
 import it.polimi.ingsw.network.messages.game.client2server.*;
 import it.polimi.ingsw.network.messages.game.server2client.*;
 import it.polimi.ingsw.network.messages.generic.DisconnectionMessage;
+import it.polimi.ingsw.network.messages.generic.ErrorMessage;
 import it.polimi.ingsw.network.messages.generic.GenericMessage;
 import it.polimi.ingsw.network.messages.login.*;
 import it.polimi.ingsw.observers.Observer;
@@ -95,6 +96,7 @@ public class ClientController implements ViewObserver, Observer {
 					view.showDisconnectionMessage(mess.getNicknameDisconnected(), mess.getMessage());
 				}
 				case GENERIC_MESSAGE -> view.showGenericMessage(((GenericMessage) message).getMessage());
+				case ERROR_MESSAGE -> view.showError(((ErrorMessage) message).getErrorMessage());
 			}
 		}
 	}
