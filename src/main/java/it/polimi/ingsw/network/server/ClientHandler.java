@@ -1,5 +1,6 @@
 package it.polimi.ingsw.network.server;
 
+import it.polimi.ingsw.network.Logger;
 import it.polimi.ingsw.network.messages.*;
 import it.polimi.ingsw.network.messages.login.*;
 
@@ -7,13 +8,11 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
-import java.util.logging.Logger;
 
 public class ClientHandler implements Runnable {
 	
 	private final Socket socket;
 	private final Server server;
-	public static final Logger LOGGER = Logger.getLogger(ClientHandler.class.getName());
 	private Lobby lobby;
 	
 	private boolean connected;
@@ -21,6 +20,7 @@ public class ClientHandler implements Runnable {
 	private ObjectOutputStream outputStream;
 	private ObjectInputStream inputStream;
 	
+	private static final Logger LOGGER = Logger.getLogger(ClientHandler.class.getName());
 	
 	/**
 	 * Constructor for the Server-side runnable that communicates between the Lobby and the Client.
@@ -37,42 +37,52 @@ public class ClientHandler implements Runnable {
 			this.outputStream = new ObjectOutputStream(socket.getOutputStream());
 			this.inputStream = new ObjectInputStream(socket.getInputStream());
 		} catch (IOException e) {
-			LOGGER.severe(e.getMessage());
+			LOGGER.error("Bad in/out stream from socket: " + e.getMessage());
 		}
 	}
 	
-	
+	/**
+	 * Initial phase is the login process, handled by this class and the lobby.
+	 * When the game starts, this runnable listens for new incoming messages
+	 */
 	@Override
 	public void run() {
 		LOGGER.info("Client connected from " + socket.getRemoteSocketAddress());
-		lobbyLogin();
+		lobbyLogin(); // login phase
 		try {
+			// reads the messages incoming from the client and forwards them to the lobby,
+			// which in turn forwards them to the game controller
 			while (!Thread.currentThread().isInterrupted()) {
 				Message message = (Message) inputStream.readObject();
 				if (message != null) {
 					LOGGER.info("Received: " + message);
-					lobby.onMessageReceived(message);
+					lobby.onMessageReceived(message); // message forwarding
 				}
 			}
 		} catch (ClassCastException | ClassNotFoundException ex) {
-			LOGGER.severe("Invalid class from stream from client");
+			LOGGER.error("Invalid class from stream from client: " + ex.getMessage());
 		} catch (IOException e) {
-			LOGGER.severe("Invalid IO from client caused by disconnection");
+			LOGGER.error("Invalid IO from client caused by disconnection: " + e.getMessage());
 			disconnect();
 		}
 		try {
 			socket.close();
 		} catch (IOException e) {
-			LOGGER.severe("Client " + socket.getRemoteSocketAddress() + " connection dropped.");
+			LOGGER.error("Client " + socket.getRemoteSocketAddress() + " connection dropped.");
 			disconnect();
 		}
 	}
 	
+	/**
+	 * Login phase: a client accesses a lobby (choosing it from a list of available lobbies). Then chooses a nickname.
+	 * In this method the server communicates with the client and handles the clients requests
+	 */
 	public void lobbyLogin() {
 		Message message;
 		boolean valid = false;
 		while(!valid) {
 			try {
+				//sends the list of available lobbies in the server to the client connected
 				sendMessage(new LobbyList(server.getLobbiesDescription()));
 				message = (Message) inputStream.readObject();
 				LOGGER.info("Received: " + message);
@@ -89,17 +99,18 @@ public class ClientHandler implements Runnable {
 						lobby = server.joinLobby(lobbyAccess.getLobbyNumber(), this);
 						if (lobby == null) { //if the lobby is full, send negative confirmation
 							sendMessage(new LoginConfirmation(false));
+							valid = false; // repeats the process
 						} else { //else send positive confirmation and adds the client to the lobby
 							sendMessage(new LoginConfirmation(true));
-							lobby.join(this);
+							lobby.join(this); // client chooses its nickname and completes the login process
 							valid = true;
 						}
 					}
 				}
 			} catch (ClassNotFoundException ex) {
-				LOGGER.severe("Invalid stream from client: wrong message class");
+				LOGGER.error("Invalid stream from client: wrong message class");
 			} catch (IOException e) {
-				LOGGER.severe("Invalid IO from client");
+				LOGGER.error("Invalid IO from client during login phase");
 				disconnect();
 				return;
 			}
@@ -113,17 +124,16 @@ public class ClientHandler implements Runnable {
 	public void disconnect() {
 		if (connected) {
 			try {
-				//this.inputStream.close();
-				//this.outputStream.close();
 				if (!socket.isClosed()) {
 					socket.close();
 				}
 			} catch (IOException e) {
-				LOGGER.severe(e.getMessage());
+				LOGGER.error("Error during socket closing: " + e.getMessage());
 			}
 			connected = false;
 			Thread.currentThread().interrupt();
 			
+			//disconnects the client handler from the lobby
 			if (lobby != null) lobby.onDisconnect(this);
 		}
 	}
@@ -135,10 +145,9 @@ public class ClientHandler implements Runnable {
 	public void sendMessage(Message message) {
 		try {
 			outputStream.writeObject(message);
-			//outputStream.reset();
 			LOGGER.info("Sent: " + message);
 		} catch (IOException e) {
-			LOGGER.severe("Error in client handler sending a message: " + e.getMessage());
+			LOGGER.error("Error in sending a message: " + e.getMessage());
 			disconnect();
 		}
 	}

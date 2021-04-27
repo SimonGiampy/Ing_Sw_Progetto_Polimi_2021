@@ -1,5 +1,7 @@
 package it.polimi.ingsw.network.server;
 
+import it.polimi.ingsw.network.Logger;
+
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -8,11 +10,11 @@ import java.util.List;
 import java.util.Collections;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.logging.Logger;
+
 
 public class Server implements Runnable {
 	
-	public static final Logger LOGGER = Logger.getLogger(Server.class.getName());
+	private static final Logger LOGGER = Logger.getLogger(Server.class.getName());
 	
 	private final List<Lobby> lobbies; // concurrent list for lobby accesses
 	private final ExecutorService lobbyStarter;
@@ -32,7 +34,7 @@ public class Server implements Runnable {
 			serverSocket = new ServerSocket(port); // creates a local socket connection
 			LOGGER.info("Socket lobby started on port " + port + ".");
 		} catch (IOException e) {
-			LOGGER.severe("Lobby could not start!");
+			LOGGER.error("Lobby could not start!");
 		}
 		lobbyStarter = Executors.newSingleThreadExecutor();
 	}
@@ -53,7 +55,7 @@ public class Server implements Runnable {
 				new Thread(clientHandler).start();
 				
 			} catch (IOException e) {
-				LOGGER.severe("Connection dropped");
+				LOGGER.error("Connection dropped");
 			}
 		}
 	}
@@ -76,6 +78,7 @@ public class Server implements Runnable {
 	 * Method called by the client handler for the creation of a new lobby
 	 * @param host the client that becomes game host and decides the match parameters (automatically joins the lobby)
 	 * @return the lobby just created
+	 * @throws IOException when there is an error in reading / writing messages in the socket
 	 */
 	public Lobby createLobby(ClientHandler host) throws IOException, ClassNotFoundException {
 		Lobby lobby = new Lobby(this, host);
@@ -89,7 +92,7 @@ public class Server implements Runnable {
 	/**
 	 * Method called by client handler for joining the selected lobby
 	 * @param number from 1 onwards, describing the lobby in the game to be accessed
-	 * @param client thta makes the request for accessing the lobby
+	 * @param client that makes the request for accessing the lobby
 	 * @return null if the client cannot access the selected lobby (because it is full)
 	 *      otherwise returns the Lobby if the client entered it
 	 */
@@ -111,35 +114,14 @@ public class Server implements Runnable {
 		lobbyStarter.execute(lobby);
 	}
 	
+	/**
+	 * removes a lobby from the list, making it invisible to the new clients. Method called when the lobby needs to be deleted
+	 * @param lobby to be deleted
+	 */
 	public void removeLobby(Lobby lobby) {
 		synchronized (lobbies) {
 			lobbies.remove(lobby);
 		}
 	}
 	
-	/*
-	//TODO: PROBABLY the lobby thread may be needed to be started from a server thread, and not by a client handler
-	protected class LobbyStarter implements Runnable {
-		
-		private ReentrantLock lock;
-		private Condition condition;
-		
-		private LobbyStarter() {
-			this.lock = new ReentrantLock();
-			this.condition = lock.newCondition();
-		}
-		
-		@Override
-		public void run() {
-			while (serverThread.isAlive()) {
-			
-			}
-		}
-		protected Condition getLock() {
-			return this.condition;
-		}
-		
-	}
-	
-	 */
 }

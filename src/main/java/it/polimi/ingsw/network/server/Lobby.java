@@ -1,9 +1,9 @@
 package it.polimi.ingsw.network.server;
 
 import it.polimi.ingsw.controller.GameController;
+import it.polimi.ingsw.network.Logger;
 import it.polimi.ingsw.network.messages.MessageType;
 import it.polimi.ingsw.network.messages.generic.DisconnectionMessage;
-import it.polimi.ingsw.network.messages.generic.ErrorMessage;
 import it.polimi.ingsw.network.messages.login.*;
 import it.polimi.ingsw.network.messages.generic.GenericMessage;
 import it.polimi.ingsw.network.messages.Message;
@@ -14,7 +14,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
-import java.util.logging.Logger;
 
 public class Lobby implements Runnable {
 
@@ -79,7 +78,8 @@ public class Lobby implements Runnable {
 	
 	
 	/**
-	 * Method called by the ClientHandler, that adds itself to the lobby. Then the procedure for choosing a valid nickname is started
+	 * Method called by the ClientHandler, that adds itself to the lobby. Then the procedure for choosing a valid nickname is started.
+	 * The client chooses a nickname, which must be unique in the lobby, so no other user is allowed to use their nickname
 	 * @param client that accesses this lobby after connecting
 	 */
 	public void join(ClientHandler client)  {
@@ -88,18 +88,17 @@ public class Lobby implements Runnable {
 		boolean valid = false;
 		do {
 			view.askNickname(); // asks for a nickname (message from the server to the client)
-			//nick = client.readNickname();
 			Message message = null;
 			try {
 				message = (Message) client.getInputStream().readObject();
 			}  catch (ClassCastException | ClassNotFoundException ex) {
-				LOGGER.severe("Invalid class from stream from client");
+				LOGGER.error("Invalid class from stream from client");
 			} catch (IOException e) {
-				LOGGER.severe("Invalid IO from client caused by disconnection");
+				LOGGER.error("Invalid IO from client caused by disconnection");
 				client.disconnect();
 				return;
 			}
-			if (message != null) {
+			if (message != null) { // checks if the nickname is valid or not
 				LOGGER.info("Received: " + message);
 				if (message.getMessageType() == MessageType.NICKNAME_REPLY) {
 					NicknameReply reply = (NicknameReply) message;
@@ -121,13 +120,12 @@ public class Lobby implements Runnable {
 		client.setLobby(this);
 		clients.add(new User(nick, client, view));
 		
-		if (clients.size() == numberOfPlayers && !gameStarted) {
+		if (clients.size() == numberOfPlayers && !gameStarted) { // starts the lobby when it's full
 			server.startLobby(this);
 		}
 		
 		// updates the other connected clients that a new user entered the game lobby
-		broadcastMessage(new GenericMessage(nick + " joined the lobby!"));
-		
+		broadcastMessage(new GenericMessage(nick + " joined the lobby!")); //TODO: except the one who just connected
 	}
 	
 	/**
@@ -144,7 +142,7 @@ public class Lobby implements Runnable {
 				GameConfigReply mes = (GameConfigReply) message;
 				config = mes.getGameConfiguration();
 				gameController.setGameConfig(config);
-				LOGGER.info("Game configuration has been read and applied to the lobby");
+				LOGGER.info("Game configuration has been read and applied to the lobby settings");
 			}
 			
 		}
@@ -160,14 +158,19 @@ public class Lobby implements Runnable {
 		try {
 			setUpGameConfig();
 		} catch (IOException e) {
-			LOGGER.severe("Lobby error in setting game config: " + e.getMessage());
+			LOGGER.error("Lobby error in setting game config: " + e.getMessage());
 		} catch (ClassNotFoundException e) {
-			LOGGER.severe(e.getMessage());
+			LOGGER.error(e.getMessage());
 		}
 		
 		LOGGER.info("Match started");
 		gameStarted = true;
 		broadcastMessage(new GenericMessage("Match started!"));
+		ArrayList<String> players = new ArrayList<>();
+		for (User user: clients) {
+			players.add(user.getNickname());
+		}
+		broadcastMessage(new LobbyShow(players)); // sends the players the nicknames of all the players
 		
 		HashMap<String, VirtualView> virtualViewHashMap = new HashMap<>();
 		for (User user: clients) {
@@ -175,7 +178,7 @@ public class Lobby implements Runnable {
 		}
 		gameController.setVirtualViews(virtualViewHashMap);
 		
-		//TODO: initialize game via the game controller and keep this thread alive as long as the game is going on
+		//TODO: initialize game via the game controller
 		
 	}
 	
@@ -189,7 +192,9 @@ public class Lobby implements Runnable {
 	
 	
 	/**
-	 * handle client disconnection before the match starts and after the match is started
+	 * handle client disconnection before the match starts and after the match is started.
+	 * In the case the disconnected client was the host, then the lobby automatically picks a new host and continue the login phase.
+	 *
 	 * @param client that gets disconnected from the lobby
 	 */
 	public synchronized void onDisconnect(ClientHandler client) {
@@ -203,7 +208,7 @@ public class Lobby implements Runnable {
 							user = u;
 						}
 					}
-					if (gameStarted) { // game was already started
+					if (gameStarted && user != null) { // game was already started
 						endGame(user);
 					} else if (handlersList.size() == 1) { // the host was the only one connected
 						handlersList.clear();
@@ -220,6 +225,7 @@ public class Lobby implements Runnable {
 						}
 						host = handlersList.get(1); //new host is the second client that entered the lobby
 						handlersList.remove(client); //removes host
+						host.sendMessage(new GenericMessage("You are the new lobby host."));
 					}
 					
 				} else { // a guest disconnected from the lobby
@@ -228,7 +234,7 @@ public class Lobby implements Runnable {
 							user = u;
 						}
 					}
-					if (gameStarted) { // if the game already started, halts it abruptly
+					if (gameStarted && user != null) { // if the game already started, halts it abruptly
 						endGame(user);
 					} else if (user != null) { // the client had already chosen a nickname but the game didn't start
 						LOGGER.info("Removed " + user.getNickname() + " from the connected players list");
@@ -256,10 +262,16 @@ public class Lobby implements Runnable {
 		}
 	}
 	
+	//TODO: add broadcast message with excluded optional handler
+	
 	public int getNumberOfPlayers() {
 		return numberOfPlayers;
 	}
 	
+	/**
+	 * uses the list of clients handlers
+	 * @return number of currently connected clients (that didn't necessarily choose a nickname)
+	 */
 	public int getConnectedClients() {
 		int num;
 		synchronized (handlersList) {
@@ -268,6 +280,10 @@ public class Lobby implements Runnable {
 		return num;
 	}
 	
+	/**
+	 * if a client disconnects from the lobby when the game already started, the lobby closes it abruptly
+	 * @param user disconnected from the lobby
+	 */
 	private void endGame(User user) {
 		broadcastMessage(new DisconnectionMessage(user.getNickname(), " disconnected from the lobby: Game ended!"));
 		handlersList.clear();

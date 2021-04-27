@@ -10,7 +10,6 @@ import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.logging.Logger;
 
 public class Client extends Observable {
 
@@ -20,22 +19,28 @@ public class Client extends Observable {
 	
 	private final ExecutorService readExecutionQueue;
 	
-	public static final Logger LOGGER = Logger.getLogger(Client.class.getName());
-
+	private static final Logger LOGGER = Logger.getLogger(Client.class.getName());
+	
+	/**
+	 * constructor created by the client main app
+	 * @param address address of the server to connect
+	 * @param port port of the server to connect
+	 */
 	public Client(String address, int port) {
-
 		try {
 			this.socket = new Socket(address, port);
 			LOGGER.info("Connected to server");
 			this.outputStream = new ObjectOutputStream(socket.getOutputStream());
 			this.inputStream = new ObjectInputStream(socket.getInputStream());
 		} catch (IOException e) {
-			e.printStackTrace();
+			LOGGER.error("Error in connecting to the server: " + e.getMessage());
 		}
 		readExecutionQueue = Executors.newSingleThreadExecutor();
 	}
-
 	
+	/**
+	 * runnable that reads incoming messages from the server. Notifies the observer for handling the message
+	 */
 	public void readMessage() {
 		readExecutionQueue.execute(() -> {
 			while (!readExecutionQueue.isShutdown()) {
@@ -44,46 +49,42 @@ public class Client extends Observable {
 					message = (Message) inputStream.readObject();
 					LOGGER.info("Received: " + message);
 				} catch (ClassNotFoundException e) {
-					LOGGER.severe("Error: wrong class read from stream");
-					e.printStackTrace();
-				} catch (EOFException ex) {
-					continue;
+					LOGGER.error("Error: wrong class read from stream");
 				} catch (IOException ex) {
-					LOGGER.severe("Error: disconnection caused by the server termination");
-					ex.printStackTrace();
+					LOGGER.error("Error: disconnection caused by the server termination: " + ex.getMessage());
 					disconnect();
 				}
 				notifyObserver(message);
 			}
 		});
 	}
-
+	
+	/**
+	 * sends a message from the client to the server
+	 * @param message to be sent
+	 */
 	public void sendMessage(Message message) {
 		try {
 			LOGGER.info("Sending: " + message);
 			outputStream.writeObject(message);
-			//outputStream.reset();
 		} catch (IOException e) {
+			LOGGER.error("Error in sending message: " + e.getMessage());
 			disconnect();
-			LOGGER.severe("Error in sending message");
 		}
 	}
 	
 	/**
-	 * Method called when an error occurs and the client disconnects from the server. The socket gets closed
+	 * Method called when an error occurs and the client disconnects from the server. The socket gets closed.
 	 */
 	public void disconnect() {
 		try {
-			//this.inputStream.close();
-			//this.outputStream.close();
 			if (!socket.isClosed()) {
 				readExecutionQueue.shutdownNow();
 				socket.close();
 			}
 			LOGGER.info("Client disconnected from the game");
 		} catch (IOException e) {
-			LOGGER.severe("Client-side disconnection cannot be completed");
-			e.printStackTrace();
+			LOGGER.error("Client-side disconnection cannot be completed: " + e.getMessage());
 		}
 	}
 
