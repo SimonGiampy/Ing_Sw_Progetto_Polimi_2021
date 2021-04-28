@@ -15,6 +15,7 @@ import it.polimi.ingsw.observers.Observer;
 import it.polimi.ingsw.observers.ViewObserver;
 import it.polimi.ingsw.view.View;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.concurrent.ExecutorService;
@@ -101,7 +102,12 @@ public class ClientController implements ViewObserver, Observer {
 	
 	@Override
 	public void onUpdateServerInfo(HashMap<String, String> serverInfo) {
-		client = new Client(serverInfo.get("address"), Integer.parseInt(serverInfo.get("port")));
+		try {
+			client = new Client(serverInfo.get("address"), Integer.parseInt(serverInfo.get("port")));
+		} catch (IOException e) {
+			view.connectionError();
+			return;
+		}
 		client.attach(this);
 		client.readMessage(); // Starts an asynchronous reading from the server.
 	}

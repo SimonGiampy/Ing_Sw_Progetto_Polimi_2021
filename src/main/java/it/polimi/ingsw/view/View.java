@@ -65,4 +65,6 @@ public interface View {
 
 	void showWinMessage(String winner);
 
+	void connectionError();
+
 }

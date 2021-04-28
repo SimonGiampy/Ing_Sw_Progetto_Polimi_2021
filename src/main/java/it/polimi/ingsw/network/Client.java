@@ -26,7 +26,7 @@ public class Client extends Observable {
 	 * @param address address of the server to connect
 	 * @param port port of the server to connect
 	 */
-	public Client(String address, int port) {
+	public Client(String address, int port) throws IOException {
 		try {
 			this.socket = new Socket(address, port);
 			LOGGER.info("Connected to server");
@@ -34,6 +34,7 @@ public class Client extends Observable {
 			this.inputStream = new ObjectInputStream(socket.getInputStream());
 		} catch (IOException e) {
 			LOGGER.error("Error in connecting to the server: " + e.getMessage());
+			throw e;
 		}
 		readExecutionQueue = Executors.newSingleThreadExecutor();
 	}
@@ -42,21 +43,23 @@ public class Client extends Observable {
 	 * runnable that reads incoming messages from the server. Notifies the observer for handling the message
 	 */
 	public void readMessage() {
-		readExecutionQueue.execute(() -> {
-			while (!readExecutionQueue.isShutdown()) {
-				Message message = null;
-				try {
-					message = (Message) inputStream.readObject();
-					LOGGER.info("Received: " + message);
-				} catch (ClassNotFoundException e) {
-					LOGGER.error("Error: wrong class read from stream");
-				} catch (IOException ex) {
-					LOGGER.error("Error: disconnection caused by the server termination: " + ex.getMessage());
-					disconnect();
+		if(socket != null) {
+			readExecutionQueue.execute(() -> {
+				while (!readExecutionQueue.isShutdown()) {
+					Message message = null;
+					try {
+						message = (Message) inputStream.readObject();
+						LOGGER.info("Received: " + message);
+					} catch (ClassNotFoundException e) {
+						LOGGER.error("Error: wrong class read from stream");
+					} catch (IOException ex) {
+						LOGGER.error("Error: disconnection caused by the server termination: " + ex.getMessage());
+						disconnect();
+					}
+					notifyObserver(message);
 				}
-				notifyObserver(message);
-			}
-		});
+			});
+		}
 	}
 	
 	/**

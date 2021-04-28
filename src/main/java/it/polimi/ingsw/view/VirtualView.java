@@ -166,6 +166,10 @@ public class VirtualView implements View, Observer {
 		clientHandler.sendMessage(new WinMessage(winner));
 	}
 
+	@Override
+	public void connectionError() {
+	}
+
 	public ClientHandler getClientHandler() {
 		return clientHandler;
 	}
