@@ -15,6 +15,7 @@ import it.polimi.ingsw.xml_parsers.XMLParser;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.stream.Collectors;
@@ -26,6 +27,11 @@ public class GameController {
 	private HashMap<String, VirtualView> virtualViewMap;
 	private Lobby lobby;
 	private ArrayList<String> nicknameList;
+	private Boolean[] gameReady;
+
+
+
+	private TurnController turnController;
 	
 	private int numberOfPlayers;
 	
@@ -33,6 +39,7 @@ public class GameController {
 		this.lobby = lobby;
 		this.numberOfPlayers = numberOfPlayers;
 		mechanics = new GameMechanicsMultiPlayer(this, numberOfPlayers);
+		gameReady= new Boolean[numberOfPlayers];
 	}
 
 	//TODO: fix game mechanics instantiation order
@@ -46,6 +53,10 @@ public class GameController {
 		nicknameList = new ArrayList<>(virtualViewMap.keySet());
 		Collections.shuffle(nicknameList);
 
+	}
+
+	public void setTurnController(TurnController turnController) {
+		this.turnController = turnController;
 	}
 	
 	public void setGameConfig(String path) {
@@ -70,6 +81,23 @@ public class GameController {
 
 	}
 
+	private void startGame(){
+		setGameState(GameState.GAME);
+		//need a broadcast message
+		turnController.newTurn();
+	}
+
+	public void startPreGame(){
+		//message only for 2/3/4 players
+
+		//broadcast message
+
+		boolean isAllTrue= Arrays.stream(gameReady).allMatch(val -> val);
+		if(isAllTrue){
+			startGame();
+		}
+	}
+
 	private void initState(Message receivedMessage){
 		switch (receivedMessage.getMessageType()){
 			case RESOURCES_LIST-> initialResourcesHandler((ResourcesList) receivedMessage);
@@ -86,7 +114,9 @@ public class GameController {
 	private void leaderSelectionHandler(LeaderSelection message){
 		int playerIndex= nicknameList.indexOf(message.getNickname());
 		mechanics.getPlayer(playerIndex).chooseTwoLeaders(message.getLeaderSelection().get(0),message.getLeaderSelection().get(1));
+		gameReady[playerIndex]=true;
 		//TODO: send update cards list
+
 	}
 
 	private void inGameState(Message receivedMessage){
@@ -110,9 +140,11 @@ public class GameController {
 				view.askBuyCardAction(new ArrayList<>
 					(mechanics.getGameDevCardsDeck().buyableCards(mechanics.getPlayer(playerIndex).gatherAllPlayersResources(),
 							mechanics.getPlayer(playerIndex).getPlayersCardManager())));
+
 			}
 			case PRODUCTIONS -> {
 				view.askProductionAction(mechanics.getPlayer(playerIndex).getPlayersCardManager().availableProduction());
+
 			}
 
 			case LEADER -> {
@@ -120,6 +152,7 @@ public class GameController {
 				leaderCards.add(new ReducedLeaderCard(mechanics.getPlayer(playerIndex).getLeaderCards()[0]));
 				leaderCards.add(new ReducedLeaderCard(mechanics.getPlayer(playerIndex).getLeaderCards()[1]));
 				view.askLeaderAction(leaderCards);
+
 			}
 		}
 
@@ -133,10 +166,11 @@ public class GameController {
 			e.printStackTrace();
 			//TODO: move some depot methods
 		}
+
+		turnController.setPhaseType(PhaseType.MAIN_ACTION);
 	}
 
 	private void buyCardHandler(BuyCard message){
-		VirtualView view;
 		int playerIndex= nicknameList.indexOf(message.getNickname());
 		/* // to move in cli
 		if (mechanics.getPlayer(playerIndex).getPlayersCardManager().checkStackLevel(message.getSlot())==message.getLevel()-1) {
@@ -147,7 +181,7 @@ public class GameController {
 		else
 		 */
 		 mechanics.getPlayer(playerIndex).buyNewDevCard(message.getLevel(),message.getColor(),message.getSlot());
-		 //TODO: phase turn
+		turnController.setPhaseType(PhaseType.MAIN_ACTION);
 	}
 
 	private void productionHandler(ProductionSelection message){
@@ -186,19 +220,27 @@ public class GameController {
 			}
 		}
 		mechanics.getPlayer(playerIndex).activateProduction(message.getSelectedProductions(),inputResources,outPutResources);
+		turnController.setPhaseType(PhaseType.MAIN_ACTION);
 	}
 
 
 
 	private void leaderActionHandler(LeaderAction message){
 		int playerIndex = nicknameList.indexOf(message.getNickname());
-		if(message.getAction()==1)
+		if(message.getAction()==1){
 			mechanics.getPlayer(playerIndex).activateLeaderCard(message.getSelectedLeader());
+			turnController.setPhaseType(PhaseType.LEADER_ACTION);
+		}
 
-		if(message.getAction()==2)
+		else if(message.getAction()==2){
 			mechanics.getPlayer(playerIndex).discardLeaderCard(message.getSelectedLeader());
+			turnController.setPhaseType(PhaseType.LEADER_ACTION);
+		}
 
-		//TODO: move phase end turn
+		else if(turnController.isMainActionDone()){
+			turnController.setPhaseType(PhaseType.END_TURN);
+		}
+
 	}
 
 
