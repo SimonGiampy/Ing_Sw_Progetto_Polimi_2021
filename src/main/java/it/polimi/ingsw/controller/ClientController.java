@@ -49,7 +49,7 @@ public class ClientController implements ViewObserver, Observer {
 				case NICKNAME_REQUEST -> view.askNickname();
 				case NICKNAME_CONFIRMATION -> view.showNicknameConfirmation(((NicknameConfirmation) message).isConfirmed());
 				case GAME_CONFIG_REQUEST -> view.askCustomGame();
-				case LOBBY_SHOW -> view.showLobby(((LobbyShow) message).getPlayers());
+				case LOBBY_SHOW -> view.showMatchInfo(((LobbyShow) message).getPlayers());
 				case RESOURCE_CHOICE -> {
 					ResourceChoice choice = (ResourceChoice) message;
 					switch (choice.getAction()) {
@@ -88,8 +88,7 @@ public class ClientController implements ViewObserver, Observer {
 				case ACTION_REQUEST -> view.askAction(((ActionRequest) message).getAvailableAction());
 				case CARDS_SHOW -> view.askBuyCardAction(((CardsShow) message).getCards());
 				case PRODUCTION_SHOW -> view.askProductionAction(((ProductionShow) message).getAvailableProduction());
-				case MATCH_INFO_SHOW -> view.showMatchInfo(((MatchInfoShow) message).getPlayers(),
-						((MatchInfoShow) message).getActivePlayer());
+				case MATCH_INFO_SHOW -> view.showMatchInfo(((MatchInfoShow) message).getPlayers());
 				case WIN_MESSAGE -> view.showWinMessage(((WinMessage) message).getWinner());
 				case DISCONNECTION_MESSAGE -> {
 					DisconnectionMessage mess = (DisconnectionMessage) message;

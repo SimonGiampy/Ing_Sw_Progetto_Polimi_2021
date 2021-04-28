@@ -59,11 +59,9 @@ public interface View {
 
 	void showStrongBox(ReducedStrongbox strongbox);
 
-	void showLobby(ArrayList<String> players);
+	void showMatchInfo(ArrayList<String> players);
 
 	void showLobbyList(ArrayList<String> lobbyList);
-
-	void showMatchInfo(ArrayList<String> players, String activePlayer);
 
 	void showWinMessage(String winner);
 

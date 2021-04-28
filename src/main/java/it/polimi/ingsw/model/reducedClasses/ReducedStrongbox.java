@@ -7,9 +7,13 @@ import java.io.Serializable;
 import java.util.ArrayList;
 
 public class ReducedStrongbox implements Serializable {
-	private ArrayList<Resources> content;
+	private final ArrayList<Resources> content;
 
 	public ReducedStrongbox(Strongbox strongbox){
 		content= strongbox.getContent();
+	}
+
+	public ArrayList<Resources> getContent() {
+		return content;
 	}
 }

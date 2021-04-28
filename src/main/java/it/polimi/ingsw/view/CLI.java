@@ -3,10 +3,7 @@ package it.polimi.ingsw.view;
 import it.polimi.ingsw.controller.ClientController;
 import it.polimi.ingsw.model.DevelopmentCard;
 import it.polimi.ingsw.model.reducedClasses.*;
-import it.polimi.ingsw.model.util.Colors;
-import it.polimi.ingsw.model.util.PlayerActions;
-import it.polimi.ingsw.model.util.Resources;
-import it.polimi.ingsw.model.util.Unicode;
+import it.polimi.ingsw.model.util.*;
 import it.polimi.ingsw.observers.ViewObservable;
 
 import java.util.ArrayList;
@@ -420,7 +417,7 @@ public class CLI extends ViewObservable implements View {
 	
 	@Override
 	public void askProductionAction(ArrayList<Integer> productionAvailable) {
-	
+
 	}
 	
 	@Override
@@ -577,9 +574,10 @@ public class CLI extends ViewObservable implements View {
 	}
 
 	/**
-	 * Support method for showFaithTrack, appends to the string builder the "-" lines that form the top and the bottom
+	 * Support method for showFaithTrack, appends to the string builder the "-" lines that form the top
 	 * of the track
 	 * @param string string builder containing all the representation of the track
+	 * @param faithTrack the reduced track
 	 */
 	private void appendTopFrame(StringBuilder string, ReducedFaithTrack faithTrack) {
 		int j = 0;
@@ -604,7 +602,12 @@ public class CLI extends ViewObservable implements View {
 		string.append(Unicode.TOP_RIGHT).append("\n").append(Unicode.RESET);
 	}
 
-
+	/**
+	 * Support method for showFaithTrack, appends to the string builder the "-" lines that form the bottom
+	 * of the track
+	 * @param string string builder containing all the representation of the track
+	 * @param faithTrack the reduced track
+	 */
 	private void appendBottomFrame(StringBuilder string, ReducedFaithTrack faithTrack) {
 		int j = 0;
 		String s = Unicode.BOTTOM_LEFT.toString();
@@ -659,36 +662,52 @@ public class CLI extends ViewObservable implements View {
 	
 	@Override
 	public void showPlayerCardsAndProduction(ReducedCardProductionManagement cardProductionsManagement) {
-	
+		for (int i = 0; i < 3; i++) {
+			if(cardProductionsManagement.getCards().get(i).size()>0)
+				cardProductionsManagement.getCards().get(i).peek().showCard();
+			else {
+				String string = Unicode.TOP_LEFT +
+						String.valueOf(Unicode.HORIZONTAL).repeat(26) +
+						Unicode.TOP_RIGHT + "\n\n" +
+						"  EMPTY\n  SLOT\n\n" +
+						Unicode.BOTTOM_LEFT +
+						String.valueOf(Unicode.HORIZONTAL).repeat(26) +
+						Unicode.BOTTOM_RIGHT + "\n";
+				System.out.println(string);
+			}
+		}
 	}
 	
 	@Override
 	public void showCardsDeck(ReducedDevelopmentCardsDeck deck) {
-	
+		for (int i = 0; i < 3; i++) {
+			for (int j = 0; j < 4; j++) {
+				if(deck.getCardStackStructure()[i][j].isEmpty())
+					System.out.println("EMPTY");
+				deck.getCardStackStructure()[i][j].get(0).showCard();
+			}
+			System.out.println("\n");
+		}
 	}
 	
 	@Override
 	public void showStrongBox(ReducedStrongbox strongbox) {
-	
+		ListSet.showListMultiplicityOnConsole(strongbox.getContent());
 	}
 	
 	@Override
-	public void showLobby(ArrayList<String> players) {
+	public void showMatchInfo(ArrayList<String> players) {
 		System.out.println("The match is starting. The players in the game are:");
 		for (String s: players) {
 			System.out.print(s + ", ");
 		}
 		System.out.print("\n");
 	}
-	
-	@Override
-	public void showMatchInfo(ArrayList<String> players, String activePlayer) {
-	
-	}
+
 	
 	@Override
 	public void showWinMessage(String winner) {
-	
+		System.out.println("Match ended! The winner is: " + winner);
 	}
 	
 	/**
