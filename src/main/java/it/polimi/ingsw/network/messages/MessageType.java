@@ -30,7 +30,8 @@ public enum MessageType {
 	RESOURCE_CHOICE,					// the server sends the number of free choice resources
 	CARDS_DECK_SHOW,					// the server sends cards deck
 	CARDS_SHOW,							// the server sends buyable cards to the player
-	DEPOT_SHOW,							// the server sends the depot to the player
+	DEPOT_CONFIRMATION,					// the server sends the current depot to the player, alongside with various reply parameters
+	DEPOT_SHOW,					        // the server asks the view to show the current depot
 	FAITH_TRACK_SHOW,					// the server sends the faith track to the player
 	PRODUCTION_SHOW,					// the server sends available production to the player
 	MARKET_SHOW,						// the server sends the market to the player

@@ -67,11 +67,13 @@ public interface ViewObserver {
 
 	/**
 	 * it sends a message to the server with the movement of a resource
-	 * @param where depot or deck. Indicates the place where to move the resources from
-	 * @param from positional number in the corresponding array of the place containing the resources
+	 * @param fromWhere depot or deck. Indicates where to get the resources to be arranged
+	 * @param toWhere depot or deck. Indicates the place where to place the resources
+	 * @param origin positional number in the corresponding array of the place containing the resources
 	 * @param destination positional number of the warehouse pyramid
+	 * @param confirmation flag indicating if the player wants to confirm their resources positioning
 	 */
-	void onUpdateDepotMove(String where, int from, int destination);
+	void onUpdateDepotMove(String fromWhere, String toWhere, int origin, int destination, boolean confirmation);
 
 	/**
 	 * it sends a message to the server with the bought card

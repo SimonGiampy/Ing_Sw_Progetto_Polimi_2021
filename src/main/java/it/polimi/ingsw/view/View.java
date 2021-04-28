@@ -25,8 +25,6 @@ public interface View {
 
 	void askMarketAction(ReducedMarket market);
 
-	void askDepotMove(ReducedWarehouseDepot depot);
-
 	void askBuyCardAction(ArrayList<DevelopmentCard> cardsAvailable);
 
 	void askProductionAction(ArrayList<Integer> productionAvailable);
@@ -46,12 +44,14 @@ public interface View {
 	void showError(String error);
 
 	void showFaithTrack(ReducedFaithTrack faithTrack);
-
-	void showDepot(ReducedWarehouseDepot depot);
+	
+	void replyDepot(ReducedWarehouseDepot depot, boolean initialMove, boolean confirmationAvailable, boolean inputValid);
 
 	void showLeaderCards(ArrayList<ReducedLeaderCard> availableLeaders);
 
 	void showMarket(ReducedMarket market);
+	
+	void showDepot(ReducedWarehouseDepot depot);
 
 	void showPlayerCardsAndProduction(ReducedCardProductionManagement cardProductionsManagement);
 

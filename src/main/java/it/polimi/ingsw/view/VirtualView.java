@@ -27,7 +27,6 @@ public class VirtualView implements View, Observer {
 		clientHandler.sendMessage(message);
 	}
 	
-	
 	@Override
 	public void askNumberOfPlayer() {
 		clientHandler.sendMessage(new PlayerNumberRequest());
@@ -69,8 +68,8 @@ public class VirtualView implements View, Observer {
 	}
 
 	@Override
-	public void askDepotMove(ReducedWarehouseDepot depot) {
-		clientHandler.sendMessage(new DepotShow(depot, 1));
+	public void replyDepot(ReducedWarehouseDepot depot, boolean initialMove, boolean confirmationAvailable, boolean inputValid) {
+		clientHandler.sendMessage(new DepotConfirmation(depot, initialMove, confirmationAvailable, inputValid));
 	}
 
 	@Override
@@ -140,7 +139,7 @@ public class VirtualView implements View, Observer {
 
 	@Override
 	public void showDepot(ReducedWarehouseDepot depot) {
-		clientHandler.sendMessage(new DepotShow(depot, 0));
+		clientHandler.sendMessage(new DepotShow(depot));
 	}
 
 	@Override

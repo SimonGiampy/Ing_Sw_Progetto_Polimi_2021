@@ -327,49 +327,46 @@ public class CLI extends ViewObservable implements View {
 	}
 	
 	@Override
-	public void askDepotMove(ReducedWarehouseDepot depot) {
+	public void replyDepot(ReducedWarehouseDepot depot, boolean initialMove, boolean confirmationAvailable, boolean inputValid) {
 		String read;
-		String where;
-		int from, destination = 0;
+		boolean confirming = false;
 
 		// regex pattern for reading input for moving the resources to the warehouse
-		String regexGoingToWarehouse = "move\s[1-" + depot.getIncomingResources().size() + "]\sfrom\s(deck|depot)\sto\s[1-6]";
+		String regexGoingToWarehouse = "((move\s[1-" + depot.getIncomingResources().size() + "]\sfrom\sdeck\sto\s[1-6])|" +
+				"(move\s[1-6]\sfrom\sdepot\sto\s[1-6]))";
 		String regexGoingToDeck = "move\s[1-6]\sto\sdeck"; //regex pattern for reading input for moving back to the deck
-
-		depot.showIncomingDeck();
-		depot.showDepot();
-		System.out.print("Write new move command (Type [help] for a tutorial, [confirm] for confirmation): ");
-		boolean checkGoingToWarehouse = false, checkGoingToDeck, check;
-		from = 0;
-		where = "";
+		
+		if (initialMove) { // confirmation cannot be available
+			System.out.println("Write commands to position the resources in the warehouse depot." +
+					" Type <help> for understanding the commands syntax");
+		} else if (confirmationAvailable) { // the player can confirm its actions
+			System.out.println("The current configuration is valid: you can confirm it by typing <confirm>.");
+		}
+		if (!inputValid) { // previous input was not valid
+			System.out.println("The positioning you requested is not valid: write a different move.");
+		}
+		
+		showDepot(depot); // shows the current configuration of the warehouse
+		
+		boolean checkGoingToWarehouse = false, checkGoingToDeck = false, check;
+		int origin = 0, destination = 0;
+		String fromWhere = "", toWhere = "";
+		
 		do {
 			read = scanner.nextLine().toLowerCase(); // user input
-			if (read.equals("confirm")) {
-				where = "confirm";
-				check = false;
+			if (read.equals("confirm") && confirmationAvailable) {
+				check = true;
+				confirming = true;
 			} else if (read.equals("help")) {
 				System.out.println("Syntax for moving resources from the deck or depot to the depot is: " +
 						"[move <position> from <deck/depot> to <destination>]");
-				System.out.println("Syntax for moving a resource from the warehouse to the deck is : [move <position> to deck]");
-				System.out.println("The positional number in the warehouse is between 1 and 6: from top to bottom, and from left to right");
+				System.out.println("Syntax for moving a resource origin the warehouse to the deck is : [move <position> to deck]");
+				System.out.println("The positional number in the warehouse is between 1 and 6: origin top to bottom, and origin left to right");
 				check = false;
 			} else {
 				checkGoingToWarehouse = Pattern.matches(regexGoingToWarehouse, read);
-				if (checkGoingToWarehouse) { // process request for moving resource from the deck to the warehouse
-					from = Character.getNumericValue(read.charAt(5));
-					if (read.charAt(14) == 'c') { //send from deck
-						where = "deck";
-					} else { // send from depot
-						where = "depot";
-					}
-					if (where.equals("deck") && from > depot.getIncomingResources().size()) {
-						check = false; // invalid input: position out of deck bounds (size of list)
-					} else check = !where.equals("depot") || from <= 6; // invalid input: position out of depot bounds (from 1 to 6)
-				} else { // sends the request
-					checkGoingToDeck = Pattern.matches(regexGoingToDeck, read);
-					check = checkGoingToDeck;
-				}
-
+				checkGoingToDeck = Pattern.matches(regexGoingToDeck, read);
+				check = checkGoingToDeck || checkGoingToWarehouse;
 				if (!check) { // user input does not match with the defined pattern
 					System.out.println("Input request invalid, write again");
 				}
@@ -377,21 +374,32 @@ public class CLI extends ViewObservable implements View {
 
 		} while (!check); // while the input is not valid
 
-		if (checkGoingToWarehouse) { // process request for moving to the warehouse
-			if (where.equals("deck")) {
+		if (checkGoingToWarehouse) { // sends the request for moving resource from the deck or depot to the warehouse
+			toWhere = "depot";
+			if (read.charAt(14) == 'c') { //send origin deck
+				fromWhere = "deck";
 				destination = Character.getNumericValue(read.charAt(20));
-			} else {
+			} else { // send origin depot
+				fromWhere = "depot";
 				destination = Character.getNumericValue(read.charAt(21));
 			}
+			origin = Character.getNumericValue(read.charAt(5));
+		} else if (checkGoingToDeck) { // sends the request for moving resources from the warehouse to the deck
+			origin = Character.getNumericValue(read.charAt(5));
+			fromWhere = "depot";
+			toWhere = "deck";
 		}
-
-		String finalWhere = where;
-		int finalFrom = from;
+		
+		String finalFromWhere = fromWhere;
+		String finalToWhere = toWhere;
+		int finalOrigin = origin;
 		int finalDestination = destination;
-
-		notifyObserver(obs -> obs.onUpdateDepotMove(finalWhere, finalFrom, finalDestination));
+		boolean finalConfirming = confirming;
+		// notifies the server with the choices of the player
+		notifyObserver(obs -> obs.onUpdateDepotMove(finalFromWhere, finalToWhere, finalOrigin, finalDestination, finalConfirming));
 
 	}
+	
 	
 	@Override
 	public void askBuyCardAction(ArrayList<DevelopmentCard> cardsAvailable) {
@@ -633,7 +641,36 @@ public class CLI extends ViewObservable implements View {
 	
 	@Override
 	public void showDepot(ReducedWarehouseDepot depot) {
-	
+		ArrayList<Resources> incomingResources = depot.getIncomingResources();
+		Resources[] pyr = depot.getDepot();
+		System.out.print("deck contains: \t");
+		for (int i = 1; i <= incomingResources.size(); i++) {
+			System.out.print(i + ": " + incomingResources.get(i - 1).toString() + "\t");
+		}
+		System.out.print("\n");
+		
+		String string = "            " + Unicode.TOP_LEFT + Unicode.HORIZONTAL + Unicode.HORIZONTAL +
+				Unicode.HORIZONTAL + Unicode.HORIZONTAL + Unicode.TOP_RIGHT + "\n" +
+				"            " + Unicode.VERTICAL + " " + pyr[0].toString() +
+				" " + Unicode.VERTICAL + "\n" +
+				"        " + Unicode.TOP_LEFT + Unicode.HORIZONTAL + Unicode.HORIZONTAL +
+				Unicode.HORIZONTAL + Unicode.BOTTOM_RIGHT + "    " +
+				Unicode.BOTTOM_LEFT + Unicode.HORIZONTAL + Unicode.HORIZONTAL +
+				Unicode.HORIZONTAL + Unicode.TOP_RIGHT + "\n" +
+				"        " + Unicode.VERTICAL + " " + pyr[1].toString() + "      " +
+				pyr[2].toString() + " " + Unicode.VERTICAL + "\n" +
+				"    " + Unicode.TOP_LEFT + Unicode.HORIZONTAL + Unicode.HORIZONTAL +
+				Unicode.HORIZONTAL + Unicode.BOTTOM_RIGHT + "            " +
+				Unicode.BOTTOM_LEFT + Unicode.HORIZONTAL + Unicode.HORIZONTAL +
+				Unicode.HORIZONTAL + Unicode.TOP_RIGHT + "\n" +
+				"    " + Unicode.VERTICAL + " " + pyr[3].toString() +
+				"      " + pyr[4].toString() + "  " + "    " + pyr[5].toString() +
+				" " + Unicode.VERTICAL + "\n" +
+				"    " + Unicode.BOTTOM_LEFT +
+				String.valueOf(Unicode.HORIZONTAL).repeat(20) + Unicode.BOTTOM_RIGHT + "\n";
+		System.out.println(string);
+		
+		//TODO: add show methods for showing additional depots
 	}
 
 	@Override

@@ -74,11 +74,10 @@ public class ClientController implements ViewObserver, Observer {
 					else
 						view.askMarketAction(((MarketShow) message).getMarket());
 				}
-				case DEPOT_SHOW -> {
-					if(((DepotShow) message).getAction() == 0)
-						view.showDepot(((DepotShow) message).getDepot());
-					else
-						view.askDepotMove(((DepotShow) message).getDepot());
+				case DEPOT_SHOW -> view.showDepot(((DepotShow) message).getDepot());
+				case DEPOT_CONFIRMATION -> {
+					DepotConfirmation c = (DepotConfirmation) message;
+					view.replyDepot(c.getDepot(), c.isInitialMove(), c.isConfirmationAvailable(), c.isMoveValid());
 				}
 				case STRONGBOX_SHOW -> view.showStrongBox(((StrongboxShow) message).getStrongbox());
 				case FAITH_TRACK_SHOW -> view.showFaithTrack(((FaithTrackShow) message).getFaithTrack());
@@ -150,8 +149,8 @@ public class ClientController implements ViewObserver, Observer {
 	}
 
 	@Override
-	public void onUpdateDepotMove(String where, int from, int destination) {
-		client.sendMessage(new DepotInteraction(nickname, where, from, destination));
+	public void onUpdateDepotMove(String fromWhere, String toWhere, int origin, int destination, boolean confirmation) {
+		client.sendMessage(new DepotInteraction(nickname, fromWhere, toWhere, origin, destination, confirmation));
 	}
 
 	@Override
