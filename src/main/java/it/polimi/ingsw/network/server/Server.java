@@ -102,11 +102,12 @@ public class Server implements Runnable {
 	 */
 	public Lobby joinLobby(int number, ClientHandler client) {
 		synchronized (lobbies) {
-			if (lobbies.get(number - 1).getConnectedClients() < lobbies.get(number - 1).getNumberOfPlayers()) {
+			if (lobbies.size() < number) {
+				return null;
+			} else if (lobbies.get(number - 1).getConnectedClients() < lobbies.get(number - 1).getNumberOfPlayers()) {
 				lobbies.get(number - 1).connectClient(client);
 				return lobbies.get(number - 1);
-			}
-			return null;
+			} else return null;
 		}
 	}
 	
