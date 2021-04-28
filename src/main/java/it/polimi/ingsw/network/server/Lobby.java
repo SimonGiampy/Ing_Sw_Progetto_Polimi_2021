@@ -125,7 +125,7 @@ public class Lobby implements Runnable {
 		}
 		
 		// updates the other connected clients that a new user entered the game lobby
-		broadcastMessage(new GenericMessage(nick + " joined the lobby!")); //TODO: except the one who just connected
+		broadcastMessage(new GenericMessage(nick + " joined the lobby!"), client);
 	}
 	
 	/**
@@ -214,16 +214,16 @@ public class Lobby implements Runnable {
 						handlersList.clear();
 						server.removeLobby(this);
 					} else { // there were guests connected
+						host = handlersList.get(1); //new host is the second client that entered the lobby
 						if (user != null) { // user chose its nickname before the host disconnected
 							nicknames.remove(user.getNickname());
 							clients.remove(user);
 							broadcastMessage(new DisconnectionMessage("",
-									"The host (" + user.getNickname() + ") left the lobby: new host role assigned."));
+									"The host (" + user.getNickname() + ") left the lobby: new host role assigned."), host);
 						} else { // the user didn't choose its nickname before the host disconnected
 							broadcastMessage(new DisconnectionMessage("",
-									"The host left the lobby: new host role assigned."));
+									"The host left the lobby: new host role assigned."), host);
 						}
-						host = handlersList.get(1); //new host is the second client that entered the lobby
 						handlersList.remove(client); //removes host
 						host.sendMessage(new GenericMessage("You are the new lobby host."));
 					}
@@ -262,7 +262,19 @@ public class Lobby implements Runnable {
 		}
 	}
 	
-	//TODO: add broadcast message with excluded optional handler
+	/**
+	 *  Message broadcast directed to all the connected users in the game, except the one with
+	 *  the specified handler in input
+	 * @param message to be broadcast
+	 * @param except the clientHandler who must not receive any message (it's usually the one who starts the event)
+	 */
+	public void broadcastMessage(Message message, ClientHandler except) {
+		for (User user: clients) {
+			if (!user.getHandler().equals(except)) {
+				user.getHandler().sendMessage(message);
+			}
+		}
+	}
 	
 	public int getNumberOfPlayers() {
 		return numberOfPlayers;

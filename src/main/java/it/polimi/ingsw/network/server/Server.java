@@ -60,7 +60,11 @@ public class Server implements Runnable {
 		}
 	}
 	
-	
+	/**
+	 * Generates a list of strings representing the list of lobbies present in the server.
+	 * The description includes the lobby number, the number of present players, and the players expected for playing
+	 * @return a list of descriptions of the lobbies.
+	 */
 	public ArrayList<String> getLobbiesDescription() {
 		ArrayList<String> lobbyDes = new ArrayList<>();
 		int i = 1;

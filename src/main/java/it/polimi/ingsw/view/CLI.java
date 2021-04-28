@@ -8,14 +8,15 @@ import it.polimi.ingsw.model.util.PlayerActions;
 import it.polimi.ingsw.model.util.Resources;
 import it.polimi.ingsw.observers.ViewObservable;
 
-import java.util.*;
-import java.util.concurrent.ExecutionException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Scanner;
 import java.util.regex.Pattern;
 
 public class CLI extends ViewObservable implements View {
 	
 	Scanner scanner;
-	private static final String STR_INPUT_CANCELED = "User input canceled.";
 	
 	public CLI() {
 		scanner = new Scanner(System.in);
@@ -51,19 +52,13 @@ public class CLI extends ViewObservable implements View {
 				"                                                                                                                           \n" +
 				"                                                                                                                           \n");
 		
-		try {
-			askServerInfo();
-		} catch (ExecutionException e) {
-			e.printStackTrace();
-		}
+		askServerInfo();
 	}
 	
 	/**
 	 * Asks the server address and port to the use
-	 *
-	 * @throws ExecutionException if the input stream thread is interrupted.
 	 */
-	public void askServerInfo() throws ExecutionException {
+	public void askServerInfo() {
 		HashMap<String, String> serverInfo = new HashMap<>();
 		String defaultAddress = "localhost";
 		String defaultPort = "25000";
@@ -316,38 +311,21 @@ public class CLI extends ViewObservable implements View {
 	@Override
 	public void askMarketAction(ReducedMarket market) {
 		String input;
-		String regex_which = "(COLUMN|COL|ROW)";
-		String which;
-		int where;
-		System.out.println("This is the Market in this moment! Choose row/column and an index!");
+		String regex = "((COL\s[1-4])|(ROW\s[1-3]))";
+		System.out.println("This is the Market in this moment!\n" +
+				"Syntax for using the market: [<row/col> <num>] where num indicates the row or column where to shift the marbles");
 		market.showMarket();
 		boolean check;
-		do{
-			System.out.println("Type row to select a row or type column to select a column");
-			input=scanner.nextLine().toUpperCase();
-			check=Pattern.matches(regex_which,input);
+		do {
+			input = scanner.nextLine().toUpperCase();
+			check = Pattern.matches(regex, input);
 			if(!check)
 				System.out.println("Input incorrect! Type again!");
-		}while (!check);
-
-		if (input.equals("COLUMN") || input.equals("COL"))
-			which="col";
-		else which="row";
-
-		do{
-			System.out.println("Type the index of the row/column");
-			input=scanner.nextLine();
-			where=Integer.parseInt(input);
-			if(which.equals("col"))
-				check=Pattern.matches("[1-4]",input);
-			else
-				check=Pattern.matches("[1-3]",input);
-			if(!check)
-				System.out.println("Input incorrect! Type again!");
-		}while (!check);
-
-		int finalWhere = where;
-		notifyObserver(obs->obs.onUpdateMarketAction(which, finalWhere));
+		} while (!check);
+		
+		String which = input.substring(0, 3);
+		int where = Character.getNumericValue(input.charAt(4));
+		notifyObserver(obs->obs.onUpdateMarketAction(which, where));
 	}
 	
 	@Override
@@ -457,7 +435,7 @@ public class CLI extends ViewObservable implements View {
 	
 	@Override
 	public void showGenericMessage(String genericMessage) {
-		System.out.println("generic message: " + genericMessage);
+		System.out.println("Message from the server: " + genericMessage);
 	}
 	
 	
@@ -468,7 +446,7 @@ public class CLI extends ViewObservable implements View {
 	
 	@Override
 	public void showError(String error) {
-		System.out.println("error message: " + error);
+		System.out.println("Error: " + error);
 	}
 	
 	@Override
@@ -512,7 +490,11 @@ public class CLI extends ViewObservable implements View {
 	
 	@Override
 	public void showLobby(ArrayList<String> players) {
-	
+		System.out.println("The match is starting. The players in the game are:");
+		for (String s: players) {
+			System.out.print(s + ", ");
+		}
+		System.out.print("\n");
 	}
 	
 	@Override

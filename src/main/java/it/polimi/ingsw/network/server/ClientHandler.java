@@ -9,13 +9,16 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 
+/**
+ * Server-side handling of connected players. A group of client handlers form a lobby
+ */
 public class ClientHandler implements Runnable {
 	
 	private final Socket socket;
 	private final Server server;
 	private Lobby lobby;
 	
-	private boolean connected;
+	private boolean connected; // true if connected to the lobby
 	
 	private ObjectOutputStream outputStream;
 	private ObjectInputStream inputStream;
