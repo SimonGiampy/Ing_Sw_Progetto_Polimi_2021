@@ -6,6 +6,7 @@ import it.polimi.ingsw.model.reducedClasses.*;
 import it.polimi.ingsw.model.util.Colors;
 import it.polimi.ingsw.model.util.PlayerActions;
 import it.polimi.ingsw.model.util.Resources;
+import it.polimi.ingsw.model.util.Unicode;
 import it.polimi.ingsw.observers.ViewObservable;
 
 import java.util.ArrayList;
@@ -314,7 +315,7 @@ public class CLI extends ViewObservable implements View {
 		String regex = "((COL\s[1-4])|(ROW\s[1-3]))";
 		System.out.println("This is the Market in this moment!\n" +
 				"Syntax for using the market: [<row/col> <num>] where num indicates the row or column where to shift the marbles");
-		market.showMarket();
+		showMarket(market);
 		boolean check;
 		do {
 			input = scanner.nextLine().toUpperCase();
@@ -448,10 +449,183 @@ public class CLI extends ViewObservable implements View {
 	public void showError(String error) {
 		System.out.println("Error: " + error);
 	}
-	
+
+	/**
+	 * Show all the track with the current position, the activated reports, the victory points for every tile
+	 * and the number that identifies the tiles
+	 */
 	@Override
 	public void showFaithTrack(ReducedFaithTrack faithTrack) {
-	
+
+		StringBuilder string = new StringBuilder();
+		StringBuilder markerColor = new StringBuilder();
+		//TODO: get this parameter from the controller based on the shown track is Lorenzo's or the player's one
+		int marker = 1;
+		if(marker == 1)
+			markerColor.append(Unicode.RED_BOLD);
+		else
+			markerColor.append(Unicode.BLACK_BOLD);
+		//Row for vatican reports
+		int count = 0;
+		for(int i = 0; i < faithTrack.getReportPoints().size(); i++) {
+			while (!faithTrack.getTrack().get(count).isPapalSpace()) {
+				string.append("      ");
+				count++;
+			}
+			/*if(i > lastReportClaimed){
+				string.append(Unicode.BLUE_BOLD).append("   ?  ");
+
+			 */
+				if(faithTrack.getVaticanReports().get(i)){
+					string.append(Unicode.GREEN_BOLD).append("  ").append(Unicode.TICK).append(" ").append(Unicode.RESET)
+							.append(faithTrack.getReportPoints().get(i));
+				}else{
+					string.append(Unicode.RED_BOLD).append("  ").append(Unicode.CROSS_REPORT).append(" ").append(Unicode.RESET)
+							.append(faithTrack.getReportPoints().get(i));
+				}
+				//✖ ✕ ✔ ✓
+				count++;
+			}
+			string.append("\n").append(Unicode.RESET);
+
+			//First row of "-"
+			appendTopFrame(string, faithTrack);
+
+			//Second row of "|", spaces and marker
+			int k = 0;
+			String currentColor = Unicode.RESET;
+			for(int i = 0; i < faithTrack.getTrack().size(); i++){
+				if (k < faithTrack.getReportPoints().size() && faithTrack.getTrack().get(i).isInsideVatican(k)) {
+					currentColor = Unicode.ANSI_YELLOW.toString();
+					k++;
+				}
+				if(faithTrack.getTrack().get(i).isPapalSpace()){
+					currentColor = Unicode.ANSI_RED.toString();
+				}
+				if(i > 1 && faithTrack.getTrack().get(i-2).isPapalSpace()){
+					currentColor = Unicode.RESET;
+				}
+				if(i == faithTrack.getCurrentPosition()){
+					string.append(currentColor).append(Unicode.VERTICAL).append(Unicode.WHITE_BACKGROUND_BRIGHT).append("  ");
+					string.append(markerColor).append(Unicode.CROSS_MARKER)
+							.append("  ").append(currentColor);
+				}
+				else{
+					string.append(currentColor).append(Unicode.VERTICAL).append("  ");
+					string.append("   ");
+				}
+			}
+			string.append(currentColor).append(Unicode.VERTICAL).append("\n").append(Unicode.RESET);
+
+			//Third row of "|", spaces and victory points (printed only in the tile where they change)
+			int currentVictoryPoints = -1;
+			int l = 0;
+			currentColor = Unicode.RESET;
+			for(int i = 0; i < faithTrack.getTrack().size(); i++){
+				if (l < faithTrack.getReportPoints().size() && faithTrack.getTrack().get(i).isInsideVatican(l)) {
+					currentColor = Unicode.ANSI_YELLOW.toString();
+					l++;
+				}
+				if(faithTrack.getTrack().get(i).isPapalSpace()){
+					currentColor = Unicode.ANSI_RED.toString();
+				}
+				if(i > 1 && faithTrack.getTrack().get(i-2).isPapalSpace()){
+					currentColor = Unicode.RESET;
+				}
+				string.append(currentColor).append(Unicode.VERTICAL);
+				if(i == faithTrack.getCurrentPosition()) {
+					string.append(Unicode.WHITE_BACKGROUND_BRIGHT);
+				}
+				string.append("  ");
+				if(faithTrack.getTrack().get(i).tilePoints() != currentVictoryPoints){
+					if(i == faithTrack.getCurrentPosition()) {
+						string.append(Unicode.BLACK_BOLD).append(faithTrack.getTrack().get(i).tilePoints())
+								.append(Unicode.WHITE_BACKGROUND_BRIGHT);
+					}else{
+						string.append(Unicode.RESET).append(faithTrack.getTrack().get(i).tilePoints());
+					}
+					if(faithTrack.getTrack().get(i).tilePoints() < 10){
+						string.append("  ");
+					}
+					else{
+						string.append(" ");
+					}
+					string.append(currentColor);
+					currentVictoryPoints = faithTrack.getTrack().get(i).tilePoints();
+				}else{
+					string.append("   ");
+				}
+				string.append(Unicode.RESET);
+			}
+			string.append(Unicode.ANSI_RED).append(Unicode.VERTICAL).append("\n").append(Unicode.RESET);
+
+			//Last row of "-"
+			appendBottomFrame(string, faithTrack);
+
+			//Number of the tiles
+			string.append(Unicode.RESET);
+			for(int i = 0; i < faithTrack.getTrack().size(); i++){
+				string.append("   ").append(i);
+				if(i < 10){
+					string.append("  ");
+				}
+				else{
+					string.append(" ");
+				}
+			}
+			System.out.println(string);
+	}
+
+	/**
+	 * Support method for showFaithTrack, appends to the string builder the "-" lines that form the top and the bottom
+	 * of the track
+	 * @param string string builder containing all the representation of the track
+	 */
+	private void appendTopFrame(StringBuilder string, ReducedFaithTrack faithTrack) {
+		int j = 0;
+		String s = Unicode.TOP_LEFT.toString();
+		for(int i = 0; i < faithTrack.getTrack().size(); i++){
+			if (j < faithTrack.getReportPoints().size() && faithTrack.getTrack().get(i).isInsideVatican(j)) {
+				string.append(Unicode.ANSI_YELLOW);
+				j++;
+			}
+			if(faithTrack.getTrack().get(i).isPapalSpace()){
+				string.append(Unicode.ANSI_RED);
+			}
+			if(i > 0 && faithTrack.getTrack().get(i-1).isPapalSpace()){
+				string.append(Unicode.T_SHAPE).append(Unicode.RESET).append(Unicode.HORIZONTAL).append(Unicode.HORIZONTAL)
+						.append(Unicode.HORIZONTAL).append(Unicode.HORIZONTAL).append(Unicode.HORIZONTAL);
+			}else {
+				string.append(s).append(Unicode.HORIZONTAL).append(Unicode.HORIZONTAL).append(Unicode.HORIZONTAL)
+						.append(Unicode.HORIZONTAL).append(Unicode.HORIZONTAL);
+			}
+			s = Unicode.T_SHAPE.toString();
+		}
+		string.append(Unicode.TOP_RIGHT).append("\n").append(Unicode.RESET);
+	}
+
+
+	private void appendBottomFrame(StringBuilder string, ReducedFaithTrack faithTrack) {
+		int j = 0;
+		String s = Unicode.BOTTOM_LEFT.toString();
+		for(int i = 0; i < faithTrack.getTrack().size(); i++){
+			if (j < faithTrack.getReportPoints().size() && faithTrack.getTrack().get(i).isInsideVatican(j)) {
+				string.append(Unicode.ANSI_YELLOW);
+				j++;
+			}
+			if(faithTrack.getTrack().get(i).isPapalSpace()){
+				string.append(Unicode.ANSI_RED);
+			}
+			if(i > 0 && faithTrack.getTrack().get(i-1).isPapalSpace()){
+				string.append(Unicode.REVERSE_T_SHAPE).append(Unicode.RESET).append(Unicode.HORIZONTAL).append(Unicode.HORIZONTAL)
+						.append(Unicode.HORIZONTAL).append(Unicode.HORIZONTAL).append(Unicode.HORIZONTAL);
+			}else {
+				string.append(s).append(Unicode.HORIZONTAL).append(Unicode.HORIZONTAL).append(Unicode.HORIZONTAL)
+						.append(Unicode.HORIZONTAL).append(Unicode.HORIZONTAL);
+			}
+			s = Unicode.REVERSE_T_SHAPE.toString();
+		}
+		string.append(Unicode.BOTTOM_RIGHT).append("\n").append(Unicode.RESET);
 	}
 	
 	@Override
@@ -470,7 +644,17 @@ public class CLI extends ViewObservable implements View {
 
 	@Override
 	public void showMarket(ReducedMarket market) {
-	
+		System.out.println("\033[0m" + "extra ball = " + market.getExtraBall() + "\uD83D\uDFE3");
+		for (int i = 0; i < 3; i++) { // rows
+			for (int j = 0; j < 4; j++) { // columns
+				System.out.print(market.getMarket()[i][j].colorCode + "\uD83D\uDFE3\t");
+			}
+			System.out.println(Unicode.RESET+"←");
+		}
+		for (int j = 0; j < 4; j++) {
+			System.out.print(" ↑\t");
+		}
+		System.out.print("\n");
 	}
 	
 	@Override
