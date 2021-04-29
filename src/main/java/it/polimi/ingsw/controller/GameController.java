@@ -4,6 +4,7 @@ import it.polimi.ingsw.exceptions.InvalidUserRequestException;
 import it.polimi.ingsw.model.*;
 import it.polimi.ingsw.model.reducedClasses.ReducedLeaderCard;
 import it.polimi.ingsw.model.reducedClasses.ReducedMarket;
+import it.polimi.ingsw.model.reducedClasses.ReducedWarehouseDepot;
 import it.polimi.ingsw.model.util.GameState;
 import it.polimi.ingsw.model.util.Resources;
 import it.polimi.ingsw.network.messages.*;
@@ -28,8 +29,8 @@ public class GameController {
 	private HashMap<String, VirtualView> virtualViewMap;
 	private Lobby lobby;
 	private ArrayList<String> nicknameList;
-	private final Boolean[] gameReady; //
-	private final Boolean[] initResources;
+	private final boolean[] gameReady; //
+	private final boolean[] initResources;
 
 
 	private TurnController turnController;
@@ -40,8 +41,8 @@ public class GameController {
 		this.lobby = lobby;
 		this.numberOfPlayers = numberOfPlayers;
 		mechanics = new GameMechanicsMultiPlayer(this, numberOfPlayers);
-		initResources= new Boolean[numberOfPlayers-1];
-		gameReady= new Boolean[numberOfPlayers];
+		initResources= new boolean[numberOfPlayers-1];
+		gameReady= new boolean[numberOfPlayers];
 	}
 
 	//TODO: fix game mechanics instantiation order
@@ -83,6 +84,14 @@ public class GameController {
 
 	}
 
+	private static boolean allTrue(boolean[] values){
+		for (boolean value : values) {
+			if (!value)
+				return false;
+		}
+		return true;
+	}
+
 	private void startGame(){
 		setGameState(GameState.GAME);
 		//need a broadcast message
@@ -90,6 +99,7 @@ public class GameController {
 	}
 
 	public void startPreGame(){
+		setTurnController(new TurnController(virtualViewMap,this,nicknameList,mechanics));
 		setGameState(GameState.INIT);
 		VirtualView vv= virtualViewMap.get(nicknameList.get(0));
 		vv.showGenericMessage("You are the first player! Wait for the others players");
@@ -116,16 +126,19 @@ public class GameController {
 	private void initialResourcesHandler(ResourcesList message){
 		int playerIndex= nicknameList.indexOf(message.getNickname());
 		mechanics.assignInitialAdvantage(message.getResourcesList(),playerIndex);
-		initResources[playerIndex]=true;
-		//TODO: send updated Depot or just a string
-		if(Arrays.stream(initResources).allMatch(val -> val)){
+		initResources[playerIndex-1]=true;
+		VirtualView view=virtualViewMap.get(message.getNickname());
+		view.showGenericMessage("This is your depot now!");
+		view.showDepot(new ReducedWarehouseDepot(mechanics.getPlayer(playerIndex).getPlayersWarehouseDepot()));
+
+		if(allTrue(initResources)){
 			for (int i = 0; i < numberOfPlayers; i++) {
 				ArrayList<ReducedLeaderCard> leaderCards = new ArrayList<>();
 				leaderCards.add(new ReducedLeaderCard(mechanics.getPlayer(i).getLeaderCards()[0]));
 				leaderCards.add(new ReducedLeaderCard(mechanics.getPlayer(i).getLeaderCards()[1]));
 				leaderCards.add(new ReducedLeaderCard(mechanics.getPlayer(i).getLeaderCards()[2]));
 				leaderCards.add(new ReducedLeaderCard(mechanics.getPlayer(i).getLeaderCards()[3]));
-				VirtualView view=virtualViewMap.get(nicknameList.get(i));
+				view=virtualViewMap.get(nicknameList.get(i));
 				view.askInitLeaders(leaderCards);
 			}
 		}
@@ -133,9 +146,15 @@ public class GameController {
 
 	private void leaderSelectionHandler(LeaderSelection message){
 		int playerIndex= nicknameList.indexOf(message.getNickname());
+		VirtualView view= virtualViewMap.get(message.getNickname());
 		mechanics.getPlayer(playerIndex).chooseTwoLeaders(message.getLeaderSelection().get(0),message.getLeaderSelection().get(1));
+		ArrayList<ReducedLeaderCard> leaderCards = new ArrayList<>();
+		view.showGenericMessage("Your Leader Cards now!");
+		leaderCards.add(new ReducedLeaderCard(mechanics.getPlayer(playerIndex).getLeaderCards()[0]));
+		leaderCards.add(new ReducedLeaderCard(mechanics.getPlayer(playerIndex).getLeaderCards()[1]));
+		view.showLeaderCards(leaderCards);
 		gameReady[playerIndex]=true;
-		if(Arrays.stream(gameReady).allMatch(val -> val))
+		if(allTrue(gameReady))
 			startGame();
 		//TODO: send update cards list
 

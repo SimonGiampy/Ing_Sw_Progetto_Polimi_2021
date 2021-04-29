@@ -1,6 +1,8 @@
 package it.polimi.ingsw.model.util;
 
-public enum Resources {
+import java.io.Serializable;
+
+public enum Resources implements Serializable {
 
 	COIN(Unicode.YELLOW_BRIGHT+"\uD83D\uDCB0"+Unicode.RESET), // 💰
 	SERVANT(Unicode.PURPLE_BOLD+"\uD83D\uDC64"+Unicode.RESET), // 🙇

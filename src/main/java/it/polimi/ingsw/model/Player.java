@@ -171,6 +171,7 @@ public class Player {
 		} catch (InvalidInputException e) {
 			e.printStackTrace();
 		}
+		actions.addAll(checkAvailableLeaderActions());
 		return actions;
 	}
 

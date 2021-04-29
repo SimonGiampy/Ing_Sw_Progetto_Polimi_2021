@@ -133,6 +133,7 @@ public class Lobby implements Runnable {
 	 * The game can't be started until the host doesn't choose with config file to use for the match
 	 */
 	public void setUpGameConfig() throws IOException, ClassNotFoundException {
+		/*
 		host.sendMessage(new GameConfigRequest());
 		Message message = (Message) host.getInputStream().readObject();
 		String config;
@@ -146,6 +147,9 @@ public class Lobby implements Runnable {
 			}
 			
 		}
+
+		 */
+		gameController.setGameConfig("standard"); //TODO: need to be fixed
 	}
 	
 	

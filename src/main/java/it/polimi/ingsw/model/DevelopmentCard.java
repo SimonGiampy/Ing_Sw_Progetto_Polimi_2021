@@ -5,12 +5,13 @@ import it.polimi.ingsw.model.util.ListSet;
 import it.polimi.ingsw.model.util.Resources;
 import it.polimi.ingsw.model.util.Unicode;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
  * this class handles single card management
  */
-public class DevelopmentCard {
+public class DevelopmentCard implements Serializable {
 	
 	private final int level,victoryPoints;
 	private final Colors color;

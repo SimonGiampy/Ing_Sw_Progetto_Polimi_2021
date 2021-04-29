@@ -63,11 +63,12 @@ public class ClientController implements ViewObserver, Observer {
 				case LEADER_SHOW -> {
 					LeaderShow show = (LeaderShow) message;
 					if(show.getAction() == 0)
-						view.askLeaderAction(show.getLeaderCards());
+						view.askInitLeaders(show.getLeaderCards());
 					else if(show.getAction() == 1)
 						view.showLeaderCards(show.getLeaderCards());
 					else
-						view.askInitLeaders(show.getLeaderCards());
+						view.askLeaderAction(show.getLeaderCards());
+
 				}
 				case MARKET_SHOW -> {
 					if(((MarketShow) message).getAction() == 0)

@@ -3,10 +3,12 @@ package it.polimi.ingsw.model;
 import it.polimi.ingsw.model.util.Colors;
 import it.polimi.ingsw.model.util.Unicode;
 
+import java.io.Serializable;
+
 /**
  * This class represent the requirement of a single card for the activation of a leader card
  */
-public class CardRequirement {
+public class CardRequirement implements Serializable {
 
 	private final Colors color;
 	private final int level;

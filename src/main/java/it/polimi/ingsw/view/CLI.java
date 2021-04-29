@@ -226,7 +226,7 @@ public class CLI extends ViewObservable implements View {
 			System.out.println("Card's number: " + (i + 1));
 			leaderCards.get(i).showLeader();
 		}
-			String regex= "[1-4],\s[1-4]";
+			String regex= "[1-4],[1-4]";
 			boolean checkRegex;
 			boolean checkArray=false;
 			String[] array;
@@ -643,7 +643,7 @@ public class CLI extends ViewObservable implements View {
 	public void showDepot(ReducedWarehouseDepot depot) {
 		ArrayList<Resources> incomingResources = depot.getIncomingResources();
 		Resources[] pyr = depot.getDepot();
-		System.out.print("deck contains: \t");
+		//System.out.print("deck contains: \t"); TODO: move this
 		for (int i = 1; i <= incomingResources.size(); i++) {
 			System.out.print(i + ": " + incomingResources.get(i - 1).toString() + "\t");
 		}

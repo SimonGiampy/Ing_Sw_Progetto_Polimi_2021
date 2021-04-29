@@ -2,10 +2,12 @@ package it.polimi.ingsw.model.abilities;
 
 import it.polimi.ingsw.model.Player;
 
+import java.io.Serializable;
+
 /**
  * Strategy Pattern for the activation of the special ability of a leader card
  */
-public interface AbilityEffectActivation {
+public interface AbilityEffectActivation extends Serializable {
 	
 	/**
 	 *  This method activates the special ability for a Leader Card. Once the special ability is activated, the other classes in the game model
