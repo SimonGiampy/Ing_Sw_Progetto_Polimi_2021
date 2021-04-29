@@ -8,6 +8,7 @@ import it.polimi.ingsw.model.util.GameState;
 import it.polimi.ingsw.model.util.Resources;
 import it.polimi.ingsw.network.messages.*;
 import it.polimi.ingsw.network.messages.game.client2server.*;
+import it.polimi.ingsw.network.messages.game.server2client.LeaderShow;
 import it.polimi.ingsw.network.messages.login.LobbyAccess;
 import it.polimi.ingsw.network.server.Lobby;
 import it.polimi.ingsw.view.VirtualView;
@@ -27,8 +28,8 @@ public class GameController {
 	private HashMap<String, VirtualView> virtualViewMap;
 	private Lobby lobby;
 	private ArrayList<String> nicknameList;
-	private Boolean[] gameReady;
-
+	private final Boolean[] gameReady; //
+	private final Boolean[] initResources;
 
 
 	private TurnController turnController;
@@ -39,6 +40,7 @@ public class GameController {
 		this.lobby = lobby;
 		this.numberOfPlayers = numberOfPlayers;
 		mechanics = new GameMechanicsMultiPlayer(this, numberOfPlayers);
+		initResources= new Boolean[numberOfPlayers-1];
 		gameReady= new Boolean[numberOfPlayers];
 	}
 
@@ -88,13 +90,19 @@ public class GameController {
 	}
 
 	public void startPreGame(){
-		//message only for 2/3/4 players
-
-		//broadcast message
-
-		boolean isAllTrue= Arrays.stream(gameReady).allMatch(val -> val);
-		if(isAllTrue){
-			startGame();
+		setGameState(GameState.INIT);
+		VirtualView vv= virtualViewMap.get(nicknameList.get(0));
+		vv.showGenericMessage("You are the first player! Wait for the others players");
+		if(numberOfPlayers==1)
+			initResources[0]=true;
+		else {
+			for (int i = 1; i < numberOfPlayers; i++) {
+				VirtualView view = virtualViewMap.get(nicknameList.get(i));
+				if (i == 3)
+					view.askInitResources(2);
+				else
+					view.askInitResources(1);
+			}
 		}
 	}
 
@@ -108,13 +116,27 @@ public class GameController {
 	private void initialResourcesHandler(ResourcesList message){
 		int playerIndex= nicknameList.indexOf(message.getNickname());
 		mechanics.assignInitialAdvantage(message.getResourcesList(),playerIndex);
+		initResources[playerIndex]=true;
 		//TODO: send updated Depot or just a string
+		if(Arrays.stream(initResources).allMatch(val -> val)){
+			for (int i = 0; i < numberOfPlayers; i++) {
+				ArrayList<ReducedLeaderCard> leaderCards = new ArrayList<>();
+				leaderCards.add(new ReducedLeaderCard(mechanics.getPlayer(i).getLeaderCards()[0]));
+				leaderCards.add(new ReducedLeaderCard(mechanics.getPlayer(i).getLeaderCards()[1]));
+				leaderCards.add(new ReducedLeaderCard(mechanics.getPlayer(i).getLeaderCards()[2]));
+				leaderCards.add(new ReducedLeaderCard(mechanics.getPlayer(i).getLeaderCards()[3]));
+				VirtualView view=virtualViewMap.get(nicknameList.get(i));
+				view.askInitLeaders(leaderCards);
+			}
+		}
 	}
 
 	private void leaderSelectionHandler(LeaderSelection message){
 		int playerIndex= nicknameList.indexOf(message.getNickname());
 		mechanics.getPlayer(playerIndex).chooseTwoLeaders(message.getLeaderSelection().get(0),message.getLeaderSelection().get(1));
 		gameReady[playerIndex]=true;
+		if(Arrays.stream(gameReady).allMatch(val -> val))
+			startGame();
 		//TODO: send update cards list
 
 	}

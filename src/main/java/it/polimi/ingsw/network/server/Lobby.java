@@ -177,7 +177,7 @@ public class Lobby implements Runnable {
 			virtualViewHashMap.put(user.getNickname(), user.getView());
 		}
 		gameController.setVirtualViews(virtualViewHashMap);
-		
+		gameController.startPreGame();
 		//TODO: initialize game via the game controller
 		
 	}
