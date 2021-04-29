@@ -22,8 +22,9 @@ public interface ViewObserver {
 	/**
 	 * it sends a message with to the server with the number of the lobby to access
 	 * @param lobbyNumber number of the lobby
+	 * @param idVersion the version of the lobby list received from the server
 	 */
-	void onUpdateLobbyAccess(int lobbyNumber);
+	void onUpdateLobbyAccess(int lobbyNumber, int idVersion);
 
 	/**
 	 * it sends a message to the server with the chosen nickname

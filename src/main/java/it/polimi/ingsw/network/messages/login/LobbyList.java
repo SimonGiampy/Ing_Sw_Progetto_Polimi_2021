@@ -11,10 +11,12 @@ import java.util.ArrayList;
 public class LobbyList extends Message {
 	
 	private final ArrayList<String> lobbies;
+	private final int idVersion;
 	
-	public LobbyList(ArrayList<String> lobbies) {
+	public LobbyList(ArrayList<String> lobbies, int idVersion) {
 		super("Server", MessageType.LOBBY_LIST);
 		this.lobbies = lobbies;
+		this.idVersion = idVersion;
 	}
 	
 	public String getLobby(int n) {
@@ -23,5 +25,9 @@ public class LobbyList extends Message {
 
 	public ArrayList<String> getLobbies() {
 		return lobbies;
+	}
+
+	public int getIdVersion() {
+		return idVersion;
 	}
 }

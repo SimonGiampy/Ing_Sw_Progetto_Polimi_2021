@@ -44,7 +44,7 @@ public class ClientController implements ViewObserver, Observer {
 	public void update(Message message) {
 		if (message != null) {
 			switch(message.getMessageType()) {
-				case LOBBY_LIST -> view.showLobbyList(((LobbyList) message).getLobbies());
+				case LOBBY_LIST -> view.showLobbyList(((LobbyList) message).getLobbies(), ((LobbyList) message).getIdVersion());
 				case LOGIN_CONFIRMATION -> view.showLoginConfirmation(((LoginConfirmation) message).isConfirmed());
 				case PLAYER_NUMBER_REQUEST -> view.askNumberOfPlayer();
 				case NICKNAME_REQUEST -> view.askNickname();
@@ -105,6 +105,7 @@ public class ClientController implements ViewObserver, Observer {
 		try {
 			client = new Client(serverInfo.get("address"), Integer.parseInt(serverInfo.get("port")));
 		} catch (IOException e) {
+			Client.LOGGER.error("Error in connecting to the server: " + e.getMessage());
 			view.connectionError();
 			return;
 		}
@@ -113,8 +114,8 @@ public class ClientController implements ViewObserver, Observer {
 	}
 
 	@Override
-	public void onUpdateLobbyAccess(int lobbyNumber) {
-		client.sendMessage(new LobbyAccess(lobbyNumber));
+	public void onUpdateLobbyAccess(int lobbyNumber, int idVersion) {
+		client.sendMessage(new LobbyAccess(lobbyNumber, idVersion));
 	}
 
 	@Override

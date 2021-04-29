@@ -61,7 +61,7 @@ public interface View {
 
 	void showMatchInfo(ArrayList<String> players);
 
-	void showLobbyList(ArrayList<String> lobbyList);
+	void showLobbyList(ArrayList<String> lobbyList, int idVersion);
 
 	void showWinMessage(String winner);
 

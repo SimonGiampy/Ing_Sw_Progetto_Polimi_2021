@@ -19,7 +19,7 @@ public class Client extends Observable {
 	
 	private final ExecutorService readExecutionQueue;
 	
-	private static final Logger LOGGER = Logger.getLogger(Client.class.getName());
+	public static final Logger LOGGER = Logger.getLogger(Client.class.getName());
 	
 	/**
 	 * constructor created by the client main app
@@ -27,15 +27,12 @@ public class Client extends Observable {
 	 * @param port port of the server to connect
 	 */
 	public Client(String address, int port) throws IOException {
-		try {
-			this.socket = new Socket(address, port);
-			LOGGER.info("Connected to server");
-			this.outputStream = new ObjectOutputStream(socket.getOutputStream());
-			this.inputStream = new ObjectInputStream(socket.getInputStream());
-		} catch (IOException e) {
-			LOGGER.error("Error in connecting to the server: " + e.getMessage());
-			throw e;
-		}
+
+		this.socket = new Socket(address, port);
+		LOGGER.info("Connected to server");
+		this.outputStream = new ObjectOutputStream(socket.getOutputStream());
+		this.inputStream = new ObjectInputStream(socket.getInputStream());
+
 		readExecutionQueue = Executors.newSingleThreadExecutor();
 	}
 	

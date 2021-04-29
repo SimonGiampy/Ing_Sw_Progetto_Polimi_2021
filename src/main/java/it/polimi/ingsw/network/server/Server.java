@@ -18,6 +18,7 @@ public class Server implements Runnable {
 	
 	private final List<Lobby> lobbies; // concurrent list for lobby accesses
 	private final ExecutorService lobbyStarter;
+	private int lobbyListVersion;
 	
 	private ServerSocket serverSocket;
 
@@ -29,6 +30,7 @@ public class Server implements Runnable {
 	 */
 	public Server(int port) {
 		lobbies = Collections.synchronizedList(new ArrayList<>());
+		lobbyListVersion = 0;
 		
 		try {
 			serverSocket = new ServerSocket(port); // creates a local socket connection
@@ -88,6 +90,7 @@ public class Server implements Runnable {
 		Lobby lobby = new Lobby(this, host);
 		lobby.setUpLobby();
 		synchronized (lobbies) {
+			lobbyListVersion++;
 			lobbies.add(lobby);
 		}
 		return lobby;
@@ -125,8 +128,12 @@ public class Server implements Runnable {
 	 */
 	public void removeLobby(Lobby lobby) {
 		synchronized (lobbies) {
+			lobbyListVersion++;
 			lobbies.remove(lobby);
 		}
 	}
-	
+
+	public int getLobbyListVersion() {
+		return lobbyListVersion;
+	}
 }

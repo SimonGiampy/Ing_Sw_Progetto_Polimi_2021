@@ -102,7 +102,7 @@ public class CLI extends ViewObservable implements View {
 	}
 	
 	@Override
-	public void showLobbyList(ArrayList<String> lobbyList) {
+	public void showLobbyList(ArrayList<String> lobbyList, int idVersion) {
 		int lobbyNumber;
 		boolean check;
 		String regex = "[0-" + lobbyList.size() + "]";
@@ -121,7 +121,7 @@ public class CLI extends ViewObservable implements View {
 		}while(!check);
 
 		lobbyNumber = Integer.parseInt(input);
-		notifyObserver(obs -> obs.onUpdateLobbyAccess(lobbyNumber));
+		notifyObserver(obs -> obs.onUpdateLobbyAccess(lobbyNumber, idVersion));
 	}
 	
 	@Override
