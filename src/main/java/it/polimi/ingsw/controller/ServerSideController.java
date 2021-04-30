@@ -85,6 +85,11 @@ public class ServerSideController {
 
 	}
 
+	/**
+	 * it checks if all values in a boolean array are true
+	 * @param values is the array of boolean
+	 * @return true if all values are true
+	 */
 	private static boolean allTrue(boolean[] values){
 		for (boolean value : values) {
 			if (!value)
@@ -93,18 +98,24 @@ public class ServerSideController {
 		return true;
 	}
 
+	/**
+	 * it starts the game (start a new turn)
+	 */
 	private void startGame(){
 		setGameState(GameState.GAME);
 		//need a broadcast message
 		turnController.newTurn();
 	}
 
+	/**
+	 * it starts the pregame (ask for initial resources)
+	 */
 	public void startPreGame(){
 		setTurnController(new TurnController(virtualViewMap,this,nicknameList,mechanics));
 		setGameState(GameState.INIT);
 		VirtualView vv= virtualViewMap.get(nicknameList.get(0));
 		vv.showGenericMessage("You are the first player! Wait!");
-		if(numberOfPlayers==1)
+		if(numberOfPlayers==1) //TODO: singleplayer
 			initResources[0]=true;
 		else {
 			for (int i = 1; i < numberOfPlayers; i++) {
@@ -117,6 +128,10 @@ public class ServerSideController {
 		}
 	}
 
+	/**
+	 * it handles messages while the game state is set a INIT
+	 * @param receivedMessage is the message received by the client
+	 */
 	private void initState(Message receivedMessage){
 		switch (receivedMessage.getMessageType()){
 			case RESOURCES_LIST-> initialResourcesHandler((ResourcesList) receivedMessage);
@@ -124,6 +139,11 @@ public class ServerSideController {
 		}
 	}
 
+	/**
+	 * it handles initial Resources phase, adds incoming resources to the depot and moves the marker in the faith track (only third and fourth player).
+	 * When all the players are ready,ask for leader cards selection
+	 * @param message is a message from the client
+	 */
 	private void initialResourcesHandler(ResourcesList message){
 		int playerIndex= nicknameList.indexOf(message.getNickname());
 		mechanics.assignInitialAdvantage(message.getResourcesList(),playerIndex);
@@ -149,6 +169,10 @@ public class ServerSideController {
 		}
 	}
 
+	/**
+	 * it handles initial leader cards selection, when all players are ready starts the game
+	 * @param message is a message from the client
+	 */
 	private void leaderSelectionHandler(LeaderSelection message){
 		int playerIndex= nicknameList.indexOf(message.getNickname());
 		VirtualView view= virtualViewMap.get(message.getNickname());
@@ -165,6 +189,10 @@ public class ServerSideController {
 
 	}
 
+	/**
+	 * it handles messages while the game state is set a GAME
+	 * @param receivedMessage is a message from the client
+	 */
 	private void inGameState(Message receivedMessage){
 		switch (receivedMessage.getMessageType()){
 			case ACTION_REPLY-> actionReplyHandler((ActionReply) receivedMessage);
@@ -175,6 +203,10 @@ public class ServerSideController {
 		}
 	}
 
+	/**
+	 * it handles action selection, sends the corresponding message to the client
+	 * @param message is a message from the client
+	 */
 	private void actionReplyHandler(ActionReply message){
 		VirtualView view= virtualViewMap.get(message.getNickname());
 		int playerIndex=nicknameList.indexOf(message.getNickname());
@@ -192,7 +224,6 @@ public class ServerSideController {
 				view.askProductionAction(mechanics.getPlayer(playerIndex).getPlayersCardManager().availableProduction());
 
 			}
-
 			case LEADER -> {
 				ArrayList<ReducedLeaderCard> leaderCards = new ArrayList<>();
 				leaderCards.add(new ReducedLeaderCard(mechanics.getPlayer(playerIndex).getLeaderCards()[0]));
@@ -204,6 +235,10 @@ public class ServerSideController {
 
 	}
 
+	/**
+	 * it handles market interaction
+	 * @param message is a message from the client
+	 */
 	private void marketInteractionHandler(InteractionWithMarket message){
 		int playerIndex= nicknameList.indexOf(message.getNickname());
 		try {
@@ -216,6 +251,10 @@ public class ServerSideController {
 		turnController.setPhaseType(PhaseType.MAIN_ACTION);
 	}
 
+	/**
+	 * it handles buy card interaction
+	 * @param message is a message from the client
+	 */
 	private void buyCardHandler(BuyCard message){
 		int playerIndex= nicknameList.indexOf(message.getNickname());
 		/* // to move in cli
@@ -230,6 +269,10 @@ public class ServerSideController {
 		turnController.setPhaseType(PhaseType.MAIN_ACTION);
 	}
 
+	/**
+	 * it handles production interaction
+	 * @param message is a message from the client
+	 */
 	private void productionHandler(ProductionSelection message){
 		int playerIndex= nicknameList.indexOf(message.getNickname());
 		int[] inputResources = new int[]{0,0,0,0};
@@ -269,8 +312,10 @@ public class ServerSideController {
 		turnController.setPhaseType(PhaseType.MAIN_ACTION);
 	}
 
-
-
+	/**
+	 * it handles leader card action
+	 * @param message is a message from the client
+	 */
 	private void leaderActionHandler(LeaderAction message){
 		int playerIndex = nicknameList.indexOf(message.getNickname());
 		if(message.getAction()==1){
