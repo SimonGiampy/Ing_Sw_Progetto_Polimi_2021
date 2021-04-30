@@ -223,7 +223,7 @@ public class CLI extends ViewObservable implements View {
 		System.out.println("These are your leader cards, select 2 of them! Type [index,index] of the two you want to keep");
 		for (int i = 0; i < leaderCards.size(); i++) {
 			System.out.println("Card's number: " + (i + 1));
-			leaderCards.get(i).showLeader();
+			showLeaderCard(leaderCards.get(i));
 		}
 			String regex= "[1-4],[1-4]";
 			boolean checkRegex;
@@ -259,7 +259,7 @@ public class CLI extends ViewObservable implements View {
 			System.out.println("Card's number: " + (i + 1));
 			if(availableLeaders.get(i).isPlayable())
 				System.out.println("PLAYABLE");
-			availableLeaders.get(i).showLeader();
+			showLeaderCard(availableLeaders.get(i));
 		}
 		System.out.println("Type [INDEX ACTION] to play or discard the leader card or [0] to do nothing and end the turn");
 		System.out.println("ACTION = 1 -> play, ACTION = 2 -> discard");
@@ -728,11 +728,11 @@ public class CLI extends ViewObservable implements View {
 		System.out.println("Your Leader Cards:");
 		for (int i = 0; i < availableLeaders.size(); i++) {
 			System.out.println("Card's number: " + (i + 1));
-			System.out.println(showLeaderCard(availableLeaders.get(i)));
+			showLeaderCard(availableLeaders.get(i));
 		}
 	}
 	
-	private String showLeaderCard(ReducedLeaderCard card) {
+	private void showLeaderCard(ReducedLeaderCard card) {
 		StringBuilder string = new StringBuilder();
 		if(card.isAbilitiesActivated()) string.append(Unicode.ANSI_GREEN);
 		string.append(Unicode.TOP_LEFT);
@@ -753,7 +753,7 @@ public class CLI extends ViewObservable implements View {
 		string.append(String.valueOf(Unicode.HORIZONTAL).repeat(Math.max(0, maxLength(card))));
 		string.append(Unicode.BOTTOM_RIGHT + "\n");
 		string.append(Unicode.RESET);
-		return string.toString();
+		System.out.println(string);
 	}
 
 	public int maxLength(ReducedLeaderCard card){

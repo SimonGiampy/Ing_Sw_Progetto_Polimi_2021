@@ -377,7 +377,7 @@ public class GameDemo {
 		
 
 		if (currentPlayer.isBuyMoveAvailable()) {
-			mechanics.getGameDevCardsDeck().showBuyableCards(currentPlayer.gatherAllPlayersResources(),currentPlayer.getPlayersCardManager());
+			//mechanics.getGameDevCardsDeck().showBuyableCards(currentPlayer.gatherAllPlayersResources(),currentPlayer.getPlayersCardManager());
 		}
 
 		currentPlayer.getPlayersWarehouseDepot().showDepot();
@@ -398,7 +398,7 @@ public class GameDemo {
 					String slot = scanner.nextLine();
 					if (Pattern.matches("[1-3]", slot)) {
 						currentPlayer.buyNewDevCard(level, Colors.valueOf(color.toUpperCase()), Integer.parseInt(slot));
-						currentPlayer.getPlayersCardManager().showCards();
+						//currentPlayer.getPlayersCardManager().showCards();
 						ok = true;
 					}
 				}

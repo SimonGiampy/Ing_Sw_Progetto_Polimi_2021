@@ -53,7 +53,7 @@ public class DevelopmentCardsDeckParserTest {
 		}
 
 		 */
-		deckCards.showDevelopmentCardsDeck();
+		//deckCards.showDevelopmentCardsDeck();
 
 	}
 	

@@ -121,7 +121,7 @@ public class DevelopmentCardsDeck {
 	public ArrayList<DevelopmentCard>[][] getCardStackStructure() {
 		return cardStackStructure;
 	}
-
+/*
 	public void showDevelopmentCardsDeck(){
 
 		for (int i = 0; i < 3; i++) {
@@ -144,7 +144,7 @@ public class DevelopmentCardsDeck {
 
 		}
 	}
-
+*/
 	public ArrayList<DevelopmentCard> buyableCards(ArrayList<Resources> playerResources, CardProductionsManagement playerCards){
 		ArrayList<DevelopmentCard> cards= new ArrayList<>();
 		for (int i = 0; i < 3; i++) {

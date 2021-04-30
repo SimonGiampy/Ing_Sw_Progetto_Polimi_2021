@@ -49,67 +49,6 @@ public class ReducedLeaderCard implements Serializable {
 		return playable;
 	}
 
-	public void showLeader(){
-		StringBuilder string= new StringBuilder();
-		appendTopFrame(string);
-		appendVictoryPoints(string);
-		appendFirstLine(string);
-		appendAbility(string);
-		appendBottomFrame(string);
-		System.out.println(string);
-	}
-
-	public int maxLength(){
-		int max=12;
-		int size= (int) (8+4*resourceRequirements.stream().distinct().count());
-		StringBuilder s= new StringBuilder();
-
-		if(s.append("  REQs "+ ListSet.showListMultiplicityOnConsole(resourceRequirements)).length()>resourceRequirements.stream().distinct().count()*15)
-			size=size+(s.length()-8-(int)resourceRequirements.stream().distinct().count()*15);
-		if(size>max)
-			max=size;
-		size= (int) (6+11*cardRequirements.stream().distinct().count());
-		if(size>max)
-			max=size;
-		for (AbilityEffectActivation abilityEffectActivation : effectsActivation) {
-			if (abilityEffectActivation.maxLength() > max)
-				max = abilityEffectActivation.maxLength();
-		}
-		return max;
-	}
-
-	public void appendTopFrame(StringBuilder string){
-		if(isAbilitiesActivated()) string.append(Unicode.ANSI_GREEN);
-		string.append(Unicode.TOP_LEFT);
-		string.append(String.valueOf(Unicode.HORIZONTAL).repeat(Math.max(0, maxLength())));
-		string.append(Unicode.TOP_RIGHT+"\n");
-		string.append(Unicode.RESET);
-	}
-
-	public void appendBottomFrame(StringBuilder string){
-		if(isAbilitiesActivated()) string.append(Unicode.ANSI_GREEN);
-		string.append(Unicode.BOTTOM_LEFT);
-		string.append(String.valueOf(Unicode.HORIZONTAL).repeat(Math.max(0, maxLength())));
-		string.append(Unicode.BOTTOM_RIGHT+"\n");
-		string.append(Unicode.RESET);
-	}
-
-	public void appendFirstLine(StringBuilder string){
-		if(resourceRequirements.size()!=0)
-			string.append("  REQs "+ListSet.showListMultiplicityOnConsole(resourceRequirements)+"\n");
-		if(cardRequirements.size()!=0)
-			string.append("  REQs "+ListSet.showListMultiplicityOnConsole(cardRequirements)+"\n");
-	}
-
-	public void appendAbility(StringBuilder string){
-		for (AbilityEffectActivation abilityEffectActivation : effectsActivation) {
-			abilityEffectActivation.appendPower(string);
-		}
-	}
-
-	public void appendVictoryPoints(StringBuilder string){
-		string.append(Unicode.RED_BOLD+"  LEADER "+Unicode.RESET+getVictoryPoints()+Resources.VICTORY_POINTS+"\n");
-	}
-
+	
 
 }
