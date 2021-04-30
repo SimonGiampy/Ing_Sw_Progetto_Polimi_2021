@@ -457,7 +457,6 @@ public class CLI extends ViewObservable implements View {
 	
 	@Override
 	public void askFreeOutput(int number) {
-		//TODO: complete the checks
 		ArrayList<Resources> resourcesList = new ArrayList<>();
 		ArrayList<Integer> resourcesNumber = new ArrayList<>();
 		String regex = "[1-" + number + "]X(COIN|SERVANT|STONE|SHIELD)";
@@ -467,22 +466,27 @@ public class CLI extends ViewObservable implements View {
 		String [] splitCommands;
 		String [] singleCommand;
 		boolean check = false;
-		boolean checkSingleCommand = false;
 		do {
 			input = scanner.nextLine().toUpperCase();
-			splitCommands= input.split(",");
-			for (String s : splitCommands) {
-				check = Pattern.matches(regex, s);
-				if (check) {
-					singleCommand = s.split("X");
-					if (singleCommand.length == 2) {
+			if(Pattern.matches(regex, input)){
+				singleCommand = input.split("X");
+				resourcesNumber.add(Integer.parseInt(singleCommand[0]));
+				resourcesList.add(Resources.valueOf(singleCommand[1]));
+				check = true;
+			} else {
+				splitCommands = input.split(",");
+				for (String s : splitCommands) {
+					if (Pattern.matches(regex, s)) {
+						singleCommand = s.split("X");
 						resourcesNumber.add(Integer.parseInt(singleCommand[0]));
 						resourcesList.add(Resources.valueOf(singleCommand[1]));
-					}
+					} else break;
+					check = true;
 				}
 			}
-			if(resourcesNumber.stream().mapToInt(i -> i).sum() > number) check = false;
-			if(!check) System.out.println("Input incorrect! Type again!");
+			if (resourcesNumber.stream().mapToInt(i -> i).sum() != number ||
+					resourcesList.stream().distinct().count() != resourcesNumber.size()) check = false;
+			if (!check) System.out.println("Input incorrect! Type again!");
 		}while(!check);
 
 		notifyObserver(obs -> obs.onUpdateResourceChoice(resourcesList, resourcesNumber));

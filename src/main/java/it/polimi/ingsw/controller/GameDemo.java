@@ -5,7 +5,6 @@ import it.polimi.ingsw.model.*;
 import it.polimi.ingsw.model.util.Colors;
 import it.polimi.ingsw.model.util.PlayerActions;
 import it.polimi.ingsw.model.util.Resources;
-import it.polimi.ingsw.exceptions.InvalidInputException;
 import it.polimi.ingsw.exceptions.InvalidUserRequestException;
 import it.polimi.ingsw.model.singleplayer.Token;
 import it.polimi.ingsw.xml_parsers.XMLParser;
@@ -62,7 +61,7 @@ public class GameDemo {
 			Player currentPlayer = mechanics.getPlayer(indexCurrentPlayer); //first test with just one player
 			System.out.println("Player " + (indexCurrentPlayer + 1) +" is playing. You can do:");
 			
-			ArrayList<PlayerActions> playerActions = currentPlayer.checkAvailableActions();
+			ArrayList<PlayerActions> playerActions = currentPlayer.checkAvailableNormalActions();
 			int x = 1;
 			for (PlayerActions s: playerActions) {
 				System.out.println(x + ": " + s);
@@ -106,7 +105,7 @@ public class GameDemo {
 		readInformation();
 		Player currentPlayer= mechanics.getPlayer(0);
 		currentPlayer.chooseTwoLeaders(1,4);
-		currentPlayer.checkAvailableActions();
+		currentPlayer.checkAvailableNormalActions();
 		Token currentToken;
 		for(int round = 0; round < 6; round++) {
 			//scanner.nextLine();

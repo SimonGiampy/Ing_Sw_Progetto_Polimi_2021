@@ -158,12 +158,18 @@ public class Player {
 		 */
 	}
 
+	public ArrayList<PlayerActions> checkAvailableActions(){
+		ArrayList<PlayerActions> actions = new ArrayList<>(checkAvailableNormalActions());
+		if(!checkAvailableLeaderActions().isEmpty())
+			actions.add(PlayerActions.LEADER);
+		return actions;
+	}
 
 	/**
 	 * Checks which actions the player can do in the current turn
 	 * @return a list of player actions that contains the available actions the player can do
 	 */
-	public ArrayList<PlayerActions> checkAvailableActions() {
+	public ArrayList<PlayerActions> checkAvailableNormalActions() {
 		ArrayList<PlayerActions> actions = new ArrayList<>();
 		actions.add(PlayerActions.MARKET);
 		if (isBuyMoveAvailable()) {
@@ -176,7 +182,6 @@ public class Player {
 		} catch (InvalidInputException e) {
 			e.printStackTrace();
 		}
-		actions.addAll(checkAvailableLeaderActions());
 		return actions;
 	}
 
