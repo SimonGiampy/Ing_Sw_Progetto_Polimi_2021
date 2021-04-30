@@ -1,6 +1,6 @@
 package it.polimi.ingsw.view;
 
-import it.polimi.ingsw.controller.ClientController;
+import it.polimi.ingsw.controller.ClientSideController;
 import it.polimi.ingsw.model.DevelopmentCard;
 import it.polimi.ingsw.model.reducedClasses.*;
 import it.polimi.ingsw.model.util.*;
@@ -70,7 +70,7 @@ public class CLI extends ViewObservable implements View {
 			if (address.equals("") || address.equals("localhost")) {
 				serverInfo.put("address", defaultAddress);
 				validInput = true;
-			} else if (ClientController.isValidIpAddress(address)) {
+			} else if (ClientSideController.isValidIpAddress(address)) {
 				serverInfo.put("address", address);
 				validInput = true;
 			} else {
@@ -88,7 +88,7 @@ public class CLI extends ViewObservable implements View {
 				serverInfo.put("port", defaultPort);
 				validInput = true;
 			} else {
-				if (ClientController.isValidPort(port)) {
+				if (ClientSideController.isValidPort(port)) {
 					serverInfo.put("port", port);
 					validInput = true;
 				} else {

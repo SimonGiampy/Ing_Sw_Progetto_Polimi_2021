@@ -23,7 +23,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.stream.Collectors;
 
-public class GameController {
+public class ServerSideController {
 
 	private GameMechanicsMultiPlayer mechanics;
 	private GameState gameState;
@@ -38,7 +38,7 @@ public class GameController {
 	
 	private int numberOfPlayers;
 	
-	public GameController(Lobby lobby, int numberOfPlayers) {
+	public ServerSideController(Lobby lobby, int numberOfPlayers) {
 		this.lobby = lobby;
 		this.numberOfPlayers = numberOfPlayers;
 		mechanics = new GameMechanicsMultiPlayer(this, numberOfPlayers);

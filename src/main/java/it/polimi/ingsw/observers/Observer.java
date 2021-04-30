@@ -2,7 +2,7 @@ package it.polimi.ingsw.observers;
 
 import it.polimi.ingsw.network.messages.Message;
 
-// implemented by ClientController,GameController, VirtualView
+// implemented by ClientSideController,ServerSideController, VirtualView
 public interface Observer {
 
 	/**

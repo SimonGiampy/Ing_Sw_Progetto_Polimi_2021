@@ -1,6 +1,6 @@
 package it.polimi.ingsw.network.server;
 
-import it.polimi.ingsw.controller.GameController;
+import it.polimi.ingsw.controller.ServerSideController;
 import it.polimi.ingsw.network.Logger;
 import it.polimi.ingsw.network.messages.MessageType;
 import it.polimi.ingsw.network.messages.generic.DisconnectionMessage;
@@ -25,7 +25,7 @@ public class Lobby implements Runnable {
 	private ClientHandler host;
 	private final Server server;
 	private final List<ClientHandler> handlersList;
-	private GameController gameController;
+	private ServerSideController serverSideController;
 	
 	public static final Logger LOGGER = Logger.getLogger(Lobby.class.getName());
 	
@@ -57,7 +57,7 @@ public class Lobby implements Runnable {
 			if (message.getMessageType() == MessageType.PLAYER_NUMBER_REPLY) {
 				PlayerNumberReply mes = (PlayerNumberReply) message;
 				numberOfPlayers = mes.getPlayerNumber();
-				gameController = new GameController(this, numberOfPlayers);
+				serverSideController = new ServerSideController(this, numberOfPlayers);
 				connectClient(host);
 			}
 		}
@@ -142,14 +142,14 @@ public class Lobby implements Runnable {
 			if (message.getMessageType() == MessageType.GAME_CONFIG_REPLY) {
 				GameConfigReply mes = (GameConfigReply) message;
 				config = mes.getGameConfiguration();
-				gameController.setGameConfig(config);
+				serverSideController.setGameConfig(config);
 				LOGGER.info("Game configuration has been read and applied to the lobby settings");
 			}
 			
 		}
 
 		 */
-		gameController.setGameConfig("standard"); //TODO: need to be fixed
+		serverSideController.setGameConfig("standard"); //TODO: need to be fixed
 	}
 	
 	
@@ -180,18 +180,18 @@ public class Lobby implements Runnable {
 		for (User user: clients) {
 			virtualViewHashMap.put(user.getNickname(), user.getView());
 		}
-		gameController.setVirtualViews(virtualViewHashMap);
-		gameController.startPreGame();
+		serverSideController.setVirtualViews(virtualViewHashMap);
+		serverSideController.startPreGame();
 		//TODO: initialize game via the game controller
 		
 	}
 	
 	/**
-	 * Forwards a received message from the client to the GameController
+	 * Forwards a received message from the client to the ServerSideController
 	 * @param message the message to be forwarded.
 	 */
 	public void onMessageReceived(Message message) {
-		gameController.onMessageReceived(message);
+		serverSideController.onMessageReceived(message);
 	}
 	
 	
@@ -303,7 +303,7 @@ public class Lobby implements Runnable {
 	private void endGame(User user) {
 		broadcastMessage(new DisconnectionMessage(user.getNickname(), " disconnected from the lobby: Game ended!"));
 		handlersList.clear();
-		gameController.haltGame();
+		serverSideController.haltGame();
 		server.removeLobby(this);
 	}
 	

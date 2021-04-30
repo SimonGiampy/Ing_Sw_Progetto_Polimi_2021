@@ -22,7 +22,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.regex.Pattern;
 
-public class ClientController implements ViewObserver, Observer {
+public class ClientSideController implements ViewObserver, Observer {
 
 	private Client client;
 	private final View view;
@@ -30,7 +30,7 @@ public class ClientController implements ViewObserver, Observer {
 	
 	private final ExecutorService taskQueue;
 
-	public ClientController(View view) {
+	public ClientSideController(View view) {
 		this.view = view;
 		taskQueue = Executors.newSingleThreadExecutor();
 	}

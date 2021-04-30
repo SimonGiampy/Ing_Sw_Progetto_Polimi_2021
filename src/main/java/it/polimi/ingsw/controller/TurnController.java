@@ -11,7 +11,7 @@ public class TurnController {
 
 	private final ArrayList<String> nicknameList;
 	private final HashMap<String, VirtualView> virtualViewMap;
-	private final GameController gameController;
+	private final ServerSideController serverSideController;
 	private boolean endOfTurn;
 
 
@@ -26,12 +26,12 @@ public class TurnController {
 
 	private String activePlayer;
 
-	public TurnController(HashMap<String,VirtualView> virtualViewMap, GameController gameController,
+	public TurnController(HashMap<String,VirtualView> virtualViewMap, ServerSideController serverSideController,
 						  ArrayList<String> nicknameList,GameMechanicsMultiPlayer mechanics){
 		this.nicknameList=nicknameList;
 		activePlayer=nicknameList.get(0);
 		this.virtualViewMap=virtualViewMap;
-		this.gameController=gameController;
+		this.serverSideController = serverSideController;
 		this.mechanics=mechanics;
 	}
 
