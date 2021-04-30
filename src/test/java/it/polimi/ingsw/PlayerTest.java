@@ -93,7 +93,7 @@ class PlayerTest {
 		assertFalse(player.isPlayableLeader2());
 		assertSame(player.getPlayerFaithTrack().getCurrentPosition(), 2);
 	}
-
+/*
 	@Test
 	void interactWithMarket() {
 		//This method is really hard to test because of the instantiation of player and the call to
@@ -116,6 +116,8 @@ class PlayerTest {
 		//assertEquals(outputStreamCaptor.toString(), );
 
 	}
+
+ */
 
 	@Test
 	void checkWhatThisPlayerCanDo() {

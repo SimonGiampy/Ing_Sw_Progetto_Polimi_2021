@@ -302,7 +302,7 @@ public class CLI extends ViewObservable implements View {
 			if(!check) System.out.println("Selected action is not correct! Type again");
 		} while (!check);
 		int index = Integer.parseInt(playerInput);
-		PlayerActions input = availableAction.get(index);
+		PlayerActions input = availableAction.get(index-1);
 		notifyObserver(obs -> obs.onUpdateAction(input));
 	}
 	
@@ -320,10 +320,33 @@ public class CLI extends ViewObservable implements View {
 			if(!check)
 				System.out.println("Input incorrect! Type again!");
 		} while (!check);
-		
+
 		String which = input.substring(0, 3);
 		int where = Character.getNumericValue(input.charAt(4));
-		notifyObserver(obs->obs.onUpdateMarketAction(which, where));
+
+		if(market.isWhiteMarble1() || market.isWhiteMarble2()){
+			if(market.isWhiteMarble1() && market.isWhiteMarble2()){
+				System.out.println("You have 2 Marbles Leader Activated!");
+				System.out.println("How many times do you want to use the first leader? ");
+				int quantity1 = scanner.nextInt();
+				System.out.println("How many times do you want to use the second leader? ");
+				int quantity2 = scanner.nextInt();
+				notifyObserver(obs->obs.onUpdateMarketAction(which, where,quantity1,quantity2));
+
+			}
+			else if(market.isWhiteMarble1()){
+				System.out.println("How many times do you want to use the first leader? ");
+				int quantity1 = scanner.nextInt();
+				notifyObserver(obs->obs.onUpdateMarketAction(which, where,quantity1,0));
+			}
+			else {
+				System.out.println("How many times do you want to use the second leader? ");
+				int quantity2 = scanner.nextInt();
+				notifyObserver(obs->obs.onUpdateMarketAction(which, where,0,quantity2));
+			}
+		}
+		else
+			notifyObserver(obs->obs.onUpdateMarketAction(which, where,0,0));
 	}
 	
 	@Override

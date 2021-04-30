@@ -1,5 +1,6 @@
 package it.polimi.ingsw.controller;
 
+
 import it.polimi.ingsw.model.*;
 import it.polimi.ingsw.model.util.Colors;
 import it.polimi.ingsw.model.util.PlayerActions;
@@ -219,7 +220,7 @@ public class GameDemo {
 		which = scanner.nextLine();
 		System.out.println("where do you want to shift the marbles (1-3) / (1-4)?");
 		where = Integer.parseInt(scanner.nextLine());
-
+/*
 		try {
 
 			currentPlayer.interactWithMarket(which, where);

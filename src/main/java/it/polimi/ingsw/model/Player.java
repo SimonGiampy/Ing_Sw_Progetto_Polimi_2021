@@ -118,29 +118,32 @@ public class Player {
 	 * @param which must be equal to row or col
 	 * @param where indicates the number of the row or the column to move
 	 */
-	public void interactWithMarket(String which, int where) throws InvalidUserRequestException {
+	public void interactWithMarket(String which, int where, int quantity1, int quantity2) throws InvalidUserRequestException {
 		Marbles[] output;
-		if (which.equals("col")) {
+		if (which.equals("COL")) {
 			output = commonMarket.shiftCol(where - 1);
 		} else {
 			output = commonMarket.shiftRow(where - 1);
 		}
-		
+		myResourceDeck.addResources(output,quantity1,quantity2);
+		myFaithTrack.moveMarker(myResourceDeck.getFaithPoint());
+		/*
 		if (Arrays.asList(output).contains(Marbles.WHITE)) { //needs to ask how to transform the white marbles
-			
+
 			if (myResourceDeck.isWhiteAbility2Activated()) { //both leaders activated
 				Scanner scanner = new Scanner(System.in);
 				System.out.println("How many times do you want to use the first leader? ");
 				int quantity1 = scanner.nextInt();
 				System.out.println("How many times do you want to use the second leader? ");
 				int quantity2 = scanner.nextInt();
-				
+
+
 				myResourceDeck.addResources(output, quantity1, quantity2);
 			} else if (myResourceDeck.isWhiteAbility1Activated()) { //only first leader activated
 				Scanner scanner = new Scanner(System.in);
 				System.out.println("How many times do you want to use the leader? ");
 				int quantity1 = scanner.nextInt();
-				
+
 				myResourceDeck.addResources(output, quantity1, 0);
 			} else { // no leaders activated
 				myResourceDeck.addResources(output,0,0);
@@ -151,6 +154,8 @@ public class Player {
 		
 		//moves the player's marker based on the faith points gained
 		myFaithTrack.moveMarker(myResourceDeck.getFaithPoint());
+
+		 */
 	}
 
 

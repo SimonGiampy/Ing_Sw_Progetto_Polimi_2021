@@ -152,8 +152,8 @@ public class ClientSideController implements ViewObserver, Observer {
 	}
 
 	@Override
-	public void onUpdateMarketAction(String which, int where) {
-		client.sendMessage(new InteractionWithMarket(nickname, which, where));
+	public void onUpdateMarketAction(String which, int where, int quantity1, int quantity2) {
+		client.sendMessage(new InteractionWithMarket(nickname, which, where,quantity1,quantity2));
 	}
 
 	@Override

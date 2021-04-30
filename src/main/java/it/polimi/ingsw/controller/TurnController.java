@@ -50,8 +50,9 @@ public class TurnController {
 		int currentPlayerIndex=nicknameList.indexOf(activePlayer);
 		if(currentPlayerIndex+1< mechanics.getNumberOfPlayers())
 			currentPlayerIndex=currentPlayerIndex+1;
-		else currentPlayerIndex=0;
-		activePlayer=nicknameList.get(0);
+		else
+			currentPlayerIndex=0;
+		activePlayer=nicknameList.get(currentPlayerIndex);
 	}
 
 	public void newTurn(){

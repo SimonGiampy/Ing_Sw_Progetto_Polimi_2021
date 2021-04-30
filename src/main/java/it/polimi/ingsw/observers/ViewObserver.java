@@ -64,7 +64,7 @@ public interface ViewObserver {
 	 * @param which is row or column
 	 * @param where is the index of the row/column selected
 	 */
-	void onUpdateMarketAction(String which, int where);
+	void onUpdateMarketAction(String which, int where, int quantity1, int quantity2);
 
 	/**
 	 * it sends a message to the server with the movement of a resource

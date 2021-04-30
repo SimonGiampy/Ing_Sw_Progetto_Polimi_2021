@@ -9,11 +9,16 @@ import it.polimi.ingsw.network.messages.MessageType;
 public class InteractionWithMarket extends Message {
 	private final String which;
 	private final int where;
+	private final int quantity1;
+	private final int quantity2;
 
-	public InteractionWithMarket(String nickname, String which, int where){
+	public InteractionWithMarket(String nickname, String which,int where, int quantity1, int quantity2){
 		super(nickname, MessageType.INTERACTION_WITH_MARKET);
 		this.which=which;
 		this.where=where;
+		this.quantity1=quantity1;
+		this.quantity2=quantity2;
+
 	}
 
 	public String getWhich() {
@@ -22,5 +27,13 @@ public class InteractionWithMarket extends Message {
 
 	public int getWhere() {
 		return where;
+	}
+
+	public int getQuantity1() {
+		return quantity1;
+	}
+
+	public int getQuantity2() {
+		return quantity2;
 	}
 }

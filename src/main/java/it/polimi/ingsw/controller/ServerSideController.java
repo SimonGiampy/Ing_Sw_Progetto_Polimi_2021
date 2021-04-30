@@ -13,6 +13,7 @@ import it.polimi.ingsw.network.messages.game.client2server.*;
 import it.polimi.ingsw.network.messages.game.server2client.LeaderShow;
 import it.polimi.ingsw.network.messages.login.LobbyAccess;
 import it.polimi.ingsw.network.server.Lobby;
+import it.polimi.ingsw.observers.ViewObserver;
 import it.polimi.ingsw.view.VirtualView;
 import it.polimi.ingsw.xml_parsers.XMLParser;
 
@@ -198,6 +199,7 @@ public class ServerSideController {
 			case ACTION_REPLY-> actionReplyHandler((ActionReply) receivedMessage);
 			case INTERACTION_WITH_MARKET-> marketInteractionHandler((InteractionWithMarket) receivedMessage);
 			case BUY_CARD-> buyCardHandler((BuyCard) receivedMessage);
+			case DEPOT_INTERACTION -> depotInteractionHandler((DepotInteraction) receivedMessage);
 			case PRODUCTION_SELECTION -> productionHandler((ProductionSelection) receivedMessage);
 			case LEADER_ACTION -> leaderActionHandler((LeaderAction) receivedMessage);
 		}
@@ -212,7 +214,7 @@ public class ServerSideController {
 		int playerIndex=nicknameList.indexOf(message.getNickname());
 		switch (message.getSelectedAction()){
 			case MARKET-> {
-				view.askMarketAction(new ReducedMarket(mechanics.getMarket()));
+				view.askMarketAction(new ReducedMarket(mechanics.getMarket(),mechanics.getPlayer(playerIndex).getPlayersResourceDeck()));
 			}
 			case BUY_CARD-> {
 				view.askBuyCardAction(new ArrayList<>
@@ -241,14 +243,28 @@ public class ServerSideController {
 	 */
 	private void marketInteractionHandler(InteractionWithMarket message){
 		int playerIndex= nicknameList.indexOf(message.getNickname());
+		VirtualView view= virtualViewMap.get(message.getNickname());
 		try {
-			mechanics.getPlayer(playerIndex).interactWithMarket(message.getWhich(),message.getWhere());
+			mechanics.getPlayer(playerIndex).interactWithMarket(message.getWhich(),message.getWhere(),message.getQuantity1(), message.getQuantity2());
+			view.replyDepot(new ReducedWarehouseDepot(mechanics.getPlayer(playerIndex).getPlayersWarehouseDepot()),true,false,true);
 		} catch (InvalidUserRequestException e) {
 			e.printStackTrace();
-			//TODO: move some depot methods
+
 		}
 
-		turnController.setPhaseType(PhaseType.MAIN_ACTION);
+		//turnController.setPhaseType(PhaseType.MAIN_ACTION); TODO: move this after depot interaction
+	}
+
+	private void depotInteractionHandler(DepotInteraction message){
+		int playerIndex= nicknameList.indexOf(message.getNickname());
+		VirtualView view= virtualViewMap.get(message.getNickname());
+		if(message.isConfirmed()){
+			//TODO: end turn and discard left resources
+		}
+		else {
+			// TODO: depot interaction
+
+		}
 	}
 
 	/**
