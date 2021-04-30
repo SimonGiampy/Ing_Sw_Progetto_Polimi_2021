@@ -166,8 +166,7 @@ public class CLI extends ViewObservable implements View {
 	
 	@Override
 	public void askCustomGame() {
-
-		System.out.println("Choose game configuration!, Type [standard] for standard game, [custom] for custom game!");
+		System.out.println("Choose game configuration!, Type [standard] for standard game, or the full path for a custom game!");
 		String input = scanner.nextLine();
 		notifyObserver(obs->obs.onUpdateGameConfiguration(input));
 		//TODO: check if the input file actually exists in the selected directory and is an xml file.

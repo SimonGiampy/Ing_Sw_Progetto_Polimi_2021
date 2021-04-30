@@ -11,9 +11,10 @@ import it.polimi.ingsw.model.util.Resources;
 import it.polimi.ingsw.network.messages.*;
 import it.polimi.ingsw.network.messages.game.client2server.*;
 import it.polimi.ingsw.network.messages.game.server2client.LeaderShow;
+import it.polimi.ingsw.network.messages.login.GameConfigReply;
+import it.polimi.ingsw.network.messages.login.GameConfigRequest;
 import it.polimi.ingsw.network.messages.login.LobbyAccess;
 import it.polimi.ingsw.network.server.Lobby;
-import it.polimi.ingsw.observers.ViewObserver;
 import it.polimi.ingsw.view.VirtualView;
 import it.polimi.ingsw.xml_parsers.XMLParser;
 
@@ -45,6 +46,7 @@ public class ServerSideController {
 		mechanics = new GameMechanicsMultiPlayer(this, numberOfPlayers);
 		initResources= new boolean[numberOfPlayers-1];
 		gameReady= new boolean[numberOfPlayers];
+		gameState = GameState.CONFIG;
 	}
 
 	//TODO: fix game mechanics instantiation order
@@ -57,11 +59,23 @@ public class ServerSideController {
 		this.virtualViewMap = virtualViewMap;
 		nicknameList = new ArrayList<>(virtualViewMap.keySet());
 		Collections.shuffle(nicknameList);
-
 	}
-
-	public void setTurnController(TurnController turnController) {
-		this.turnController = turnController;
+	
+	public void onMessageReceived(Message receivedMessage){
+		switch (gameState){
+			case CONFIG -> configHandler(receivedMessage);
+			case INIT -> initState(receivedMessage);
+			case GAME -> inGameState(receivedMessage);
+			case ENDGAME -> endGameState(receivedMessage);
+			default -> throw new IllegalStateException("Unexpected value: " + gameState);
+		}
+	}
+	
+	private void configHandler(Message config) {
+		if (config != null && config.getMessageType() == MessageType.GAME_CONFIG_REPLY) {
+			GameConfigReply gameConfigReply = (GameConfigReply) config;
+			setGameConfig(gameConfigReply.getGameConfiguration());
+		}
 	}
 	
 	public void setGameConfig(String path) {
@@ -71,19 +85,17 @@ public class ServerSideController {
 			File file = new File(classLoader.getResource(fileName).getFile());
 			path = file.getAbsolutePath();
 		}
-		readGameConfig(path);
-	}
-	
-	//TODO: must be called when game mechanics is ready
-	public void readGameConfig(String fullPath) {
-		XMLParser parser = new XMLParser(fullPath);
+		XMLParser parser = new XMLParser(path);
 		ArrayList<Tile> tiles = parser.readTiles();
 		ArrayList<Integer> report = parser.readReportPoints();
 		ArrayList<DevelopmentCard> devCards = parser.readDevCards();
 		ArrayList<LeaderCard> leaderCards = parser.readLeaderCards();
 		ProductionRules baseProduction = parser.parseBaseProductionFromXML();
 		mechanics.instantiateGame(devCards, leaderCards, baseProduction, tiles, report);
-
+		
+		Lobby.LOGGER.info("Game configuration has been read and applied to the lobby settings");
+		
+		startPreGame();
 	}
 
 	/**
@@ -103,7 +115,7 @@ public class ServerSideController {
 	 * it starts the game (start a new turn)
 	 */
 	private void startGame(){
-		setGameState(GameState.GAME);
+		gameState = GameState.GAME;
 		//need a broadcast message
 		turnController.newTurn();
 	}
@@ -112,9 +124,11 @@ public class ServerSideController {
 	 * it starts the pregame (ask for initial resources)
 	 */
 	public void startPreGame(){
-		setTurnController(new TurnController(virtualViewMap,this,nicknameList,mechanics));
-		setGameState(GameState.INIT);
-		VirtualView vv= virtualViewMap.get(nicknameList.get(0));
+		turnController = new TurnController(virtualViewMap, this, nicknameList, mechanics);
+		gameState = GameState.INIT;
+		lobby.matchStart();
+		
+		VirtualView vv = virtualViewMap.get(nicknameList.get(0));
 		vv.showGenericMessage("You are the first player! Wait!");
 		if(numberOfPlayers==1) //TODO: singleplayer
 			initResources[0]=true;
@@ -350,15 +364,9 @@ public class ServerSideController {
 
 	}
 
+	
 
-	private void loginState(Message receivedMessage){
-
-	}
-
-	private void loginHandler(LobbyAccess message){
-		message.getNickname();
-	}
-
+	
 	private void endGameState(Message receivedMessage) {
 
 	}
@@ -370,16 +378,7 @@ public class ServerSideController {
 	
 	}
 
-	public void onMessageReceived(Message receivedMessage){
-		VirtualView virtualView = virtualViewMap.get(receivedMessage.getNickname());
-		switch (gameState){
-			case LOGIN -> loginState(receivedMessage);
-			case INIT -> initState(receivedMessage);
-			case GAME -> inGameState(receivedMessage);
-			case ENDGAME-> endGameState(receivedMessage);
-			default -> throw new IllegalStateException("Unexpected value: " + gameState);
-		}
-	}
+	
 	
 
 	public void setGameState(GameState gameState) {

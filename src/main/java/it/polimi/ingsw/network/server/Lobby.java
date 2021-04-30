@@ -7,6 +7,7 @@ import it.polimi.ingsw.network.messages.generic.DisconnectionMessage;
 import it.polimi.ingsw.network.messages.login.*;
 import it.polimi.ingsw.network.messages.generic.GenericMessage;
 import it.polimi.ingsw.network.messages.Message;
+import it.polimi.ingsw.view.View;
 import it.polimi.ingsw.view.VirtualView;
 
 import java.io.IOException;
@@ -15,7 +16,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
-public class Lobby implements Runnable {
+public class Lobby {
 
 	private final ArrayList<User> clients;
 	private final List<String> nicknames;
@@ -128,61 +129,27 @@ public class Lobby implements Runnable {
 		broadcastMessage(new GenericMessage(nick + " joined the lobby!"), client);
 	}
 	
-	/**
-	 * The request of choosing which game config to be used is asynchronous, and directed to the game host
-	 * The game can't be started until the host doesn't choose with config file to use for the match
-	 */
-	public void setUpGameConfig() throws IOException, ClassNotFoundException {
-		/*
-		host.sendMessage(new GameConfigRequest());
-		Message message = (Message) host.getInputStream().readObject();
-		String config;
-		if (message != null) {
-			LOGGER.info("Received: " + message);
-			if (message.getMessageType() == MessageType.GAME_CONFIG_REPLY) {
-				GameConfigReply mes = (GameConfigReply) message;
-				config = mes.getGameConfiguration();
-				serverSideController.setGameConfig(config);
-				LOGGER.info("Game configuration has been read and applied to the lobby settings");
-			}
-			
-		}
-
-		 */
-		serverSideController.setGameConfig("standard"); //TODO: need to be fixed
-	}
-	
 	
 	/**
-	 * Runnable starts when the match starts
+	 * sets up the match parameters via the server side controller
 	 */
-	@Override
-	public void run() {
-		//ask the game configuration when all the players are ready and the match is about to start
-		try {
-			setUpGameConfig();
-		} catch (IOException e) {
-			LOGGER.error("Lobby error in setting game config: " + e.getMessage());
-		} catch (ClassNotFoundException e) {
-			LOGGER.error(e.getMessage());
-		}
-		
-		LOGGER.info("Match started");
-		gameStarted = true;
-		broadcastMessage(new GenericMessage("Match started!"));
-		ArrayList<String> players = new ArrayList<>();
-		for (User user: clients) {
-			players.add(user.getNickname());
-		}
-		broadcastMessage(new LobbyShow(players)); // sends the players the nicknames of all the players
-		
+	public void setUpMatch() {
+		// creates an hashmap of nicknames and relative virtual views
 		HashMap<String, VirtualView> virtualViewHashMap = new HashMap<>();
 		for (User user: clients) {
 			virtualViewHashMap.put(user.getNickname(), user.getView());
 		}
 		serverSideController.setVirtualViews(virtualViewHashMap);
-		serverSideController.startPreGame();
-		//TODO: initialize game via the game controller
+		
+		// sends a message to all the players containing a list of the nicknames the players in the match
+		ArrayList<String> players = new ArrayList<>();
+		for (User user: clients) {
+			players.add(user.getNickname());
+		}
+		broadcastMessage(new MatchInfo(players));
+		
+		//ask the game configuration when all the players are ready and the match is about to start
+		host.sendMessage(new GameConfigRequest());
 		
 	}
 	
@@ -268,6 +235,20 @@ public class Lobby implements Runnable {
 	
 	/**
 	 *  Message broadcast directed to all the connected users in the game, except the one with
+	 *  the specified virtual view in input
+	 * @param message to be broadcast
+	 * @param except the VirtualView who must not receive any message (it's usually the one who starts the event)
+	 */
+	public void broadcastMessage(Message message, View except) {
+		for (User user: clients) {
+			if (!user.getView().equals(except)) {
+				user.getHandler().sendMessage(message);
+			}
+		}
+	}
+	
+	/**
+	 *  Message broadcast directed to all the connected users in the game, except the one with
 	 *  the specified handler in input
 	 * @param message to be broadcast
 	 * @param except the clientHandler who must not receive any message (it's usually the one who starts the event)
@@ -294,6 +275,12 @@ public class Lobby implements Runnable {
 			num = handlersList.size();
 		}
 		return num;
+	}
+	
+	public void matchStart() {
+		LOGGER.info("Match started");
+		gameStarted = true;
+		broadcastMessage(new GenericMessage("Match started!"));
 	}
 	
 	/**

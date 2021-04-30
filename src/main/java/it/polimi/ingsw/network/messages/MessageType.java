@@ -24,8 +24,7 @@ public enum MessageType {
 	//Game logic messages
 
 	//Server to Client messages
-	LOBBY_SHOW,							// the server sends lobby's info (players nicknames and number of players)
-	MATCH_INFO_SHOW,					// the server sends match's info (players nicknames and current player)
+	MATCH_INFO,					// the server sends match's info (players nicknames)
 	ACTION_REQUEST,						// the server asks the player to choose the action in the turn
 	RESOURCE_CHOICE,					// the server sends the number of free choice resources
 	CARDS_DECK_SHOW,					// the server sends cards deck

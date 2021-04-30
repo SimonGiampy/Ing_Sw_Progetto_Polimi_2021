@@ -99,7 +99,7 @@ public class VirtualView implements View, Observer {
 
 	@Override
 	public void showLoginConfirmation(boolean lobbyAccessed) {
-		clientHandler.sendMessage(new LoginConfirmation(lobbyAccessed));
+		clientHandler.sendMessage(new LobbyConfirmation(lobbyAccessed));
 	}
 
 	@Override
@@ -154,7 +154,7 @@ public class VirtualView implements View, Observer {
 
 	@Override
 	public void showMatchInfo(ArrayList<String> players) {
-		clientHandler.sendMessage(new LobbyShow(players));
+		clientHandler.sendMessage(new MatchInfo(players));
 	}
 
 	public void showLobbyList(ArrayList<String> lobbyList, int idVersion){

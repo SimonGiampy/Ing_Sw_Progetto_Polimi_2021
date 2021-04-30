@@ -45,12 +45,12 @@ public class ClientSideController implements ViewObserver, Observer {
 		if (message != null) {
 			switch(message.getMessageType()) {
 				case LOBBY_LIST -> view.showLobbyList(((LobbyList) message).getLobbies(), ((LobbyList) message).getIdVersion());
-				case LOGIN_CONFIRMATION -> view.showLoginConfirmation(((LoginConfirmation) message).isConfirmed());
+				case LOGIN_CONFIRMATION -> view.showLoginConfirmation(((LobbyConfirmation) message).isConfirmed());
 				case PLAYER_NUMBER_REQUEST -> view.askNumberOfPlayer();
 				case NICKNAME_REQUEST -> view.askNickname();
 				case NICKNAME_CONFIRMATION -> view.showNicknameConfirmation(((NicknameConfirmation) message).isConfirmed());
 				case GAME_CONFIG_REQUEST -> view.askCustomGame();
-				case LOBBY_SHOW -> view.showMatchInfo(((LobbyShow) message).getPlayers());
+				case MATCH_INFO -> view.showMatchInfo(((MatchInfo) message).getPlayers());
 				case RESOURCE_CHOICE -> {
 					ResourceChoice choice = (ResourceChoice) message;
 					switch (choice.getAction()) {
@@ -89,7 +89,6 @@ public class ClientSideController implements ViewObserver, Observer {
 				case ACTION_REQUEST -> view.askAction(((ActionRequest) message).getAvailableAction());
 				case CARDS_SHOW -> view.askBuyCardAction(((CardsShow) message).getCards());
 				case PRODUCTION_SHOW -> view.askProductionAction(((ProductionShow) message).getAvailableProduction());
-				case MATCH_INFO_SHOW -> view.showMatchInfo(((MatchInfoShow) message).getPlayers());
 				case WIN_MESSAGE -> view.showWinMessage(((WinMessage) message).getWinner());
 				case DISCONNECTION_MESSAGE -> {
 					DisconnectionMessage mess = (DisconnectionMessage) message;

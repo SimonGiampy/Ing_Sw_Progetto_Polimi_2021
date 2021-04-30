@@ -6,7 +6,7 @@ import it.polimi.ingsw.network.messages.MessageType;
 /**
  * the server communicates if the lobby joining has been successful or not
  */
-public class LoginConfirmation extends Message {
+public class LobbyConfirmation extends Message {
 	
 	private final boolean confirmed;
 	
@@ -14,7 +14,7 @@ public class LoginConfirmation extends Message {
 		return confirmed;
 	}
 	
-	public LoginConfirmation(boolean confirm){
+	public LobbyConfirmation(boolean confirm){
 		super("Server", MessageType.LOGIN_CONFIRMATION);
 		this.confirmed = confirm;
 	}

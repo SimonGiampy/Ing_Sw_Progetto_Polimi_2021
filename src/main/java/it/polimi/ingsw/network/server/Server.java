@@ -8,7 +8,6 @@ import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Collections;
-import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 
@@ -17,7 +16,6 @@ public class Server implements Runnable {
 	private static final Logger LOGGER = Logger.getLogger(Server.class.getName());
 	
 	private final List<Lobby> lobbies; // concurrent list for lobby accesses
-	private final ExecutorService lobbyStarter;
 	private int lobbyListVersion;
 	
 	private ServerSocket serverSocket;
@@ -38,7 +36,6 @@ public class Server implements Runnable {
 		} catch (IOException e) {
 			LOGGER.error("Lobby could not start!");
 		}
-		lobbyStarter = Executors.newSingleThreadExecutor();
 	}
 	
 	/**
@@ -116,10 +113,10 @@ public class Server implements Runnable {
 	
 	/**
 	 * method called by the last client handler that chose the nickname after entering the lobby
-	 * @param lobby
+	 * @param lobby to be started
 	 */
 	public void startLobby(Lobby lobby) {
-		lobbyStarter.execute(lobby);
+		lobby.setUpMatch();
 	}
 	
 	/**

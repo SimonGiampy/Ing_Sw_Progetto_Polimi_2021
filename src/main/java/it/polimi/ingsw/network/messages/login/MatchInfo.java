@@ -1,4 +1,4 @@
-package it.polimi.ingsw.network.messages.game.server2client;
+package it.polimi.ingsw.network.messages.login;
 
 import it.polimi.ingsw.network.messages.Message;
 import it.polimi.ingsw.network.messages.MessageType;
@@ -6,20 +6,19 @@ import it.polimi.ingsw.network.messages.MessageType;
 import java.util.ArrayList;
 
 /**
- * the server sends match's info (players nicknames and current player)
+ * the server sends lobby's info (players nicknames)
  */
-public class MatchInfoShow extends Message {
+public class MatchInfo extends Message {
 
 	private final ArrayList<String> players;
 
-
-	public MatchInfoShow(ArrayList<String> players) {
-		super("lobby", MessageType.MATCH_INFO_SHOW);
+	public MatchInfo(ArrayList<String> players) {
+		super("server", MessageType.MATCH_INFO);
 		this.players = players;
 	}
 
 	public ArrayList<String> getPlayers() {
 		return players;
 	}
-
+	
 }

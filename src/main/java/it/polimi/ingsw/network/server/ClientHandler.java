@@ -89,7 +89,7 @@ public class ClientHandler implements Runnable {
 				sendMessage(new LobbyList(server.getLobbiesDescription(), server.getLobbyListVersion()));
 				message = (Message) inputStream.readObject();
 				LOGGER.info("Received: " + message);
-				if (message.getMessageType() == MessageType.LOBBY_ACCESS) {
+				if (message!= null && message.getMessageType() == MessageType.LOBBY_ACCESS) {
 					LobbyAccess lobbyAccess = (LobbyAccess) message;
 					
 					if (lobbyAccess.getLobbyNumber() == 0) { // client logs in as game host
@@ -102,15 +102,15 @@ public class ClientHandler implements Runnable {
 						if (server.getLobbyListVersion() == lobbyAccess.getIdVersion()) { // lobby list received is updated on the client
 							lobby = server.joinLobby(lobbyAccess.getLobbyNumber(), this);
 							if (lobby == null) { //if the lobby is full, send negative confirmation
-								sendMessage(new LoginConfirmation(false));
+								sendMessage(new LobbyConfirmation(false));
 								valid = false; // repeats the process
 							} else { //else send positive confirmation and adds the client to the lobby
-								sendMessage(new LoginConfirmation(true));
+								sendMessage(new LobbyConfirmation(true));
 								lobby.join(this); // client chooses its nickname and completes the login process
 								valid = true;
 							}
 						} else { // client's lobby list is not updated client side, so it's not valid
-							sendMessage(new LoginConfirmation(false));
+							sendMessage(new LobbyConfirmation(false));
 							valid = false; // repeats the process
 						}
 
@@ -154,6 +154,8 @@ public class ClientHandler implements Runnable {
 	public void sendMessage(Message message) {
 		try {
 			outputStream.writeObject(message);
+			
+			outputStream.reset();
 			LOGGER.info("Sent: " + message);
 		} catch (IOException e) {
 			LOGGER.error("Error in sending a message: " + e.getMessage());

@@ -43,17 +43,18 @@ public class Client extends Observable {
 		if(socket != null) {
 			readExecutionQueue.execute(() -> {
 				while (!readExecutionQueue.isShutdown()) {
-					Message message = null;
+					Message message;
 					try {
 						message = (Message) inputStream.readObject();
 						LOGGER.info("Received: " + message);
+						notifyObserver(message);
 					} catch (ClassNotFoundException e) {
 						LOGGER.error("Error: wrong class read from stream");
 					} catch (IOException ex) {
 						LOGGER.error("Error: disconnection caused by the server termination: " + ex.getMessage());
+						ex.printStackTrace();
 						disconnect();
 					}
-					notifyObserver(message);
 				}
 			});
 		}
@@ -67,6 +68,8 @@ public class Client extends Observable {
 		try {
 			LOGGER.info("Sending: " + message);
 			outputStream.writeObject(message);
+			
+			outputStream.reset();
 		} catch (IOException e) {
 			LOGGER.error("Error in sending message: " + e.getMessage());
 			disconnect();
