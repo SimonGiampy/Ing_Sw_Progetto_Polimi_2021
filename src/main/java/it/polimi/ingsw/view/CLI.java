@@ -2,14 +2,14 @@ package it.polimi.ingsw.view;
 
 import it.polimi.ingsw.controller.ClientSideController;
 import it.polimi.ingsw.model.DevelopmentCard;
+import it.polimi.ingsw.model.LeaderCard;
+import it.polimi.ingsw.model.abilities.AbilityEffectActivation;
 import it.polimi.ingsw.model.reducedClasses.*;
 import it.polimi.ingsw.model.util.*;
 import it.polimi.ingsw.observers.ViewObservable;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Scanner;
+import javax.naming.PartialResultException;
+import java.util.*;
 import java.util.regex.Pattern;
 
 public class CLI extends ViewObservable implements View {
@@ -221,7 +221,7 @@ public class CLI extends ViewObservable implements View {
 	
 	@Override
 	public void askInitLeaders(ArrayList<ReducedLeaderCard> leaderCards) {
-		System.out.println("These are your leader cards, select 2 of them! Type the index of the selected cards!");
+		System.out.println("These are your leader cards, select 2 of them! Type [index,index] of the two you want to keep");
 		for (int i = 0; i < leaderCards.size(); i++) {
 			System.out.println("Card's number: " + (i + 1));
 			leaderCards.get(i).showLeader();
@@ -453,12 +453,40 @@ public class CLI extends ViewObservable implements View {
 	
 	@Override
 	public void askFreeInput(int number) {
-	
+
 	}
 	
 	@Override
 	public void askFreeOutput(int number) {
-	
+		//TODO: complete the checks
+		ArrayList<Resources> resourcesList = new ArrayList<>();
+		ArrayList<Integer> resourcesNumber = new ArrayList<>();
+		String regex = "[1-" + number + "]X(COIN|SERVANT|STONE|SHIELD)";
+		System.out.println("You have " + number + " free choice resources in output");
+		System.out.println("Type [NUMBERxRESOURCE,NUMBERxRESOURCE,...] to select them (ex. [2xshield])");
+		String input;
+		String [] splitCommands;
+		String [] singleCommand;
+		boolean check = false;
+		boolean checkSingleCommand = false;
+		do {
+			input = scanner.nextLine().toUpperCase();
+			splitCommands= input.split(",");
+			for (String s : splitCommands) {
+				check = Pattern.matches(regex, s);
+				if (check) {
+					singleCommand = s.split("X");
+					if (singleCommand.length == 2) {
+						resourcesNumber.add(Integer.parseInt(singleCommand[0]));
+						resourcesList.add(Resources.valueOf(singleCommand[1]));
+					}
+				}
+			}
+			if(resourcesNumber.stream().mapToInt(i -> i).sum() > number) check = false;
+			if(!check) System.out.println("Input incorrect! Type again!");
+		}while(!check);
+
+		notifyObserver(obs -> obs.onUpdateResourceChoice(resourcesList, resourcesNumber));
 	}
 	
 	
@@ -701,13 +729,73 @@ public class CLI extends ViewObservable implements View {
 		System.out.println("Your Leader Cards:");
 		for (int i = 0; i < availableLeaders.size(); i++) {
 			System.out.println("Card's number: " + (i + 1));
-			availableLeaders.get(i).showLeader();
+			StringBuilder string= new StringBuilder();
+			appendTopFrame(string, availableLeaders.get(i));
+			appendVictoryPoints(string, availableLeaders.get(i));
+			appendFirstLine(string, availableLeaders.get(i));
+			appendAbility(string, availableLeaders.get(i));
+			appendBottomFrame(string, availableLeaders.get(i));
+			System.out.println(string);
 		}
+	}
+
+	public int maxLength(ReducedLeaderCard card){
+		int max=12;
+		int size= (int) (8+4*card.getResourceRequirements().stream().distinct().count());
+		StringBuilder s= new StringBuilder();
+
+		if(s.append("  REQs ").append(ListSet.showListMultiplicityOnConsole(card.getResourceRequirements()))
+				.length()>card.getResourceRequirements().stream().distinct().count()*15)
+			size=size+(s.length()-8-(int)card.getResourceRequirements().stream().distinct().count()*15);
+		if(size>max)
+			max=size;
+		size= (int) (6+11*card.getCardRequirements().stream().distinct().count());
+		if(size>max)
+			max=size;
+		for (AbilityEffectActivation abilityEffectActivation : card.getEffectsActivation()) {
+			if (abilityEffectActivation.maxLength() > max)
+				max = abilityEffectActivation.maxLength();
+		}
+		return max;
+	}
+
+	public void appendTopFrame(StringBuilder string, ReducedLeaderCard card){
+		if(card.isAbilitiesActivated()) string.append(Unicode.ANSI_GREEN);
+		string.append(Unicode.TOP_LEFT);
+		string.append(String.valueOf(Unicode.HORIZONTAL).repeat(Math.max(0, maxLength(card))));
+		string.append(Unicode.TOP_RIGHT + "\n");
+		string.append(Unicode.RESET);
+	}
+
+	public void appendBottomFrame(StringBuilder string, ReducedLeaderCard card){
+		if(card.isAbilitiesActivated()) string.append(Unicode.ANSI_GREEN);
+		string.append(Unicode.BOTTOM_LEFT);
+		string.append(String.valueOf(Unicode.HORIZONTAL).repeat(Math.max(0, maxLength(card))));
+		string.append(Unicode.BOTTOM_RIGHT + "\n");
+		string.append(Unicode.RESET);
+	}
+
+	public void appendFirstLine(StringBuilder string, ReducedLeaderCard card){
+		if(card.getResourceRequirements().size()!=0)
+			string.append("  REQs ").append(ListSet.showListMultiplicityOnConsole(card.getResourceRequirements())).append("\n");
+		if(card.getCardRequirements().size()!=0)
+			string.append("  REQs ").append(ListSet.showListMultiplicityOnConsole(card.getCardRequirements())).append("\n");
+	}
+
+	public void appendAbility(StringBuilder string, ReducedLeaderCard card){
+		for (AbilityEffectActivation abilityEffectActivation : card.getEffectsActivation()) {
+			abilityEffectActivation.appendPower(string);
+		}
+	}
+
+	public void appendVictoryPoints(StringBuilder string, ReducedLeaderCard card){
+		string.append(Unicode.RED_BOLD + "  LEADER " + Unicode.RESET).append(card.getVictoryPoints())
+				.append(Resources.VICTORY_POINTS).append("\n");
 	}
 
 	@Override
 	public void showMarket(ReducedMarket market) {
-		System.out.println("\033[0m" + "extra ball = " + market.getExtraBall() + "\uD83D\uDFE3");
+		System.out.println(Unicode.RESET + "Extra ball = " + market.getExtraBall().colorCode + "\uD83D\uDFE3");
 		for (int i = 0; i < 3; i++) { // rows
 			for (int j = 0; j < 4; j++) { // columns
 				System.out.print(market.getMarket()[i][j].colorCode + "\uD83D\uDFE3\t");
