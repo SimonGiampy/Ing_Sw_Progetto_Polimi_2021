@@ -45,7 +45,7 @@ public class ClientSideController implements ViewObserver, Observer {
 		if (message != null) {
 			switch(message.getMessageType()) {
 				case LOBBY_LIST -> view.showLobbyList(((LobbyList) message).getLobbies(), ((LobbyList) message).getIdVersion());
-				case LOGIN_CONFIRMATION -> view.showLoginConfirmation(((LobbyConfirmation) message).isConfirmed());
+				case LOGIN_CONFIRMATION -> view.showLobbyConfirmation(((LobbyConfirmation) message).isConfirmed());
 				case PLAYER_NUMBER_REQUEST -> view.askNumberOfPlayer();
 				case NICKNAME_REQUEST -> view.askNickname();
 				case NICKNAME_CONFIRMATION -> view.showNicknameConfirmation(((NicknameConfirmation) message).isConfirmed());

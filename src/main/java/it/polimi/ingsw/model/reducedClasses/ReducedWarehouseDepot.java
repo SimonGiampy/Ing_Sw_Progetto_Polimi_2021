@@ -19,6 +19,9 @@ public class ReducedWarehouseDepot implements Serializable {
 	// list of 2 lists of booleans, one for each leader. If the flag value is false, then the corresponding slot is empty,
 	// otherwise there is a resource occupying it
 	private final ArrayList<ArrayList<Boolean>> extraDepotContents;
+	
+	private final boolean leader1;
+	private final boolean leader2;
 
 	public ReducedWarehouseDepot(WarehouseDepot depot){
 		incomingResources=depot.getIncomingResources();
@@ -26,6 +29,8 @@ public class ReducedWarehouseDepot implements Serializable {
 		positionsIncomingResources= depot.getPositionsIncomingResources();
 		extraDepotResources=depot.getExtraDepotResources();
 		extraDepotContents=depot.getExtraDepotContents();
+		leader1 = depot.isLeaderActivated(0);
+		leader2 = depot.isLeaderActivated(0);
 	}
 
 	public ArrayList<Resources> getIncomingResources() {
@@ -47,5 +52,9 @@ public class ReducedWarehouseDepot implements Serializable {
 	public ArrayList<ArrayList<Boolean>> getExtraDepotContents() {
 		return extraDepotContents;
 	}
-
+	
+	public boolean isLeaderActivated(int which) {
+		if (which == 0) return leader1;
+		else return leader2;
+	}
 }

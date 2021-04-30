@@ -141,11 +141,7 @@ public class WarehouseDepotTest {
 		addDepot2.add(Resources.STONE);
 		depot.enableAdditionalDepot(addDepot2);
 		
-		try {
-			depot.moveResourcesToAdditionalDepots(1); // function to be tested
-		} catch (InvalidUserRequestException e) {
-			e.printStackTrace();
-		}
+		depot.moveResourcesToAdditionalDepots(); // function to be tested
 		
 		//lists of expected values to check
 		ArrayList<Boolean> expected1 = new ArrayList<>();
@@ -187,11 +183,7 @@ public class WarehouseDepotTest {
 		addDepot2.add(Resources.COIN);
 		depot.enableAdditionalDepot(addDepot2);
 		
-		try {
-			depot.moveResourcesToAdditionalDepots(2); // function to be tested
-		} catch (InvalidUserRequestException e) {
-			e.printStackTrace();
-		}
+		depot.moveResourcesToAdditionalDepots(); // function to be tested
 		
 		//lists of expected values to check
 		ArrayList<Boolean> expected1 = new ArrayList<>();
@@ -235,11 +227,7 @@ public class WarehouseDepotTest {
 		addDepot2.add(Resources.STONE);
 		depot.enableAdditionalDepot(addDepot2);
 		
-		try {
-			depot.moveResourcesToAdditionalDepots(2); // function to be tested
-		} catch (InvalidUserRequestException e) {
-			e.printStackTrace();
-		}
+		depot.moveResourcesToAdditionalDepots(); // function to be tested
 		
 		//lists of expected values to check
 		ArrayList<Boolean> expected1 = new ArrayList<>();
@@ -326,7 +314,7 @@ public class WarehouseDepotTest {
 				Resources.EMPTY, Resources.SERVANT, Resources.EMPTY};
 		depot.setDepotForDebugging(res);
 		try {
-			depot.moveResources("depot", 1, 6);
+			depot.moveResourcesToDepot("depot", 1, 6);
 		} catch (InvalidUserRequestException e) {
 			e.printStackTrace();
 		}
@@ -351,7 +339,7 @@ public class WarehouseDepotTest {
 		depot.addIncomingResources(list);
 		
 		try {
-			depot.moveResources("deck", 2, 1);
+			depot.moveResourcesToDepot("deck", 2, 1);
 			depot.moveResourcesBackToDeck(1);
 		} catch (InvalidUserRequestException e) {
 			e.printStackTrace();
@@ -371,6 +359,6 @@ public class WarehouseDepotTest {
 		Resources[] list = new Resources[] {Resources.COIN, Resources.SHIELD, Resources.COIN,
 				Resources.SHIELD, Resources.STONE, Resources.SERVANT};
 		depot.setDepotForDebugging(list);
-		depot.showDepot();
+		//depot.showDepot();
 	}
 }

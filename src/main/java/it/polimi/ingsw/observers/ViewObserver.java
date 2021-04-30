@@ -7,15 +7,14 @@ import it.polimi.ingsw.model.util.Resources;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-// implemented by Client Controller
-// TODO: add CustomGame method
-
+/**
+ * implemented by ClientSideController. Methods are called whenever the client needs to update the server with its reply
+ */
 public interface ViewObserver {
 	
 	/**
 	 * Create a new connection to the server with the updated info.
-	 *
-	 * @param serverInfo a map of server address and server port.
+	 * @param serverInfo an hashmap of server address and server port.
 	 */
 	void onUpdateServerInfo(HashMap<String, String> serverInfo);
 
@@ -37,7 +36,11 @@ public interface ViewObserver {
 	 * @param playerNumber is the number of players
 	 */
 	void onUpdatePlayersNumber(int playerNumber);
-
+	
+	/**
+	 * the client replies with the chosen game configuration (standard or custom path)
+	 * @param gameConfiguration full path of the xml file (or "standard")
+	 */
 	void onUpdateGameConfiguration(String gameConfiguration);
 
 	/**

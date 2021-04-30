@@ -3,10 +3,12 @@ package it.polimi.ingsw.view;
 import it.polimi.ingsw.model.*;
 import it.polimi.ingsw.model.reducedClasses.*;
 import it.polimi.ingsw.model.util.PlayerActions;
-import it.polimi.ingsw.model.util.Resources;
 
 import java.util.ArrayList;
 
+/**
+ * class implemented by CLI and GUI
+ */
 public interface View {
 	/**
 	 * it asks how many players the host of the lobby wants
@@ -87,7 +89,7 @@ public interface View {
 	 * it shows if the player has been admitted to the lobby
 	 * @param lobbyAccessed is true if player has been admitted to the lobby
 	 */
-	void showLoginConfirmation(boolean lobbyAccessed);
+	void showLobbyConfirmation(boolean lobbyAccessed);
 
 	/**
 	 * it shows a generic message
@@ -179,7 +181,7 @@ public interface View {
 	void showWinMessage(String winner);
 
 	/**
-	 *
+	 * shows an error message regarding a client's disconnection
 	 */
 	void connectionError();
 

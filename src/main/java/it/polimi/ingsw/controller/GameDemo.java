@@ -256,7 +256,7 @@ public class GameDemo {
 			try {
 				if (processNewWarehouseMove(depot)) {
 					depot.showIncomingDeck();
-					depot.showDepot();
+					//depot.showDepot();
 					System.out.println("Do you want to confirm (yes / no)? Resources in the deck will be automatically discarded");
 					in = scanner.nextLine();
 				} else {
@@ -295,7 +295,7 @@ public class GameDemo {
 		String regexGoingToDeck = "move\s[1-6]\sto\sdeck"; //regex pattern for reading input for moving back to the deck
 		
 		depot.showIncomingDeck();
-		depot.showDepot();
+		//depot.showDepot();
 		System.out.print("Write new move command (Type [help] for a tutorial, [confirm] for confirmation): ");
 		boolean checkGoingToWarehouse = false, checkGoingToDeck, ok ;
 		int from = 0;
@@ -335,9 +335,9 @@ public class GameDemo {
 		
 		if (checkGoingToWarehouse) { // process request for moving to the warehouse
 			if (place.equals("deck")) {
-				return depot.moveResources(place, from, Character.getNumericValue(read.charAt(20)));
+				return depot.moveResourcesToDepot(place, from, Character.getNumericValue(read.charAt(20)));
 			} else {
-				return depot.moveResources(place, from, Character.getNumericValue(read.charAt(21)));
+				return depot.moveResourcesToDepot(place, from, Character.getNumericValue(read.charAt(21)));
 			}
 		} else { // process request for moving from the warehouse to the deck
 			return depot.moveResourcesBackToDeck(Character.getNumericValue(read.charAt(5)));
@@ -379,7 +379,7 @@ public class GameDemo {
 			//mechanics.getGameDevCardsDeck().showBuyableCards(currentPlayer.gatherAllPlayersResources(),currentPlayer.getPlayersCardManager());
 		}
 
-		currentPlayer.getPlayersWarehouseDepot().showDepot();
+		//currentPlayer.getPlayersWarehouseDepot().showDepot();
 		System.out.println("strongbox contains: " + currentPlayer.getMyStrongbox().getContent().toString());
 
 		System.out.println("which card do you want to buy?");
@@ -418,7 +418,7 @@ public class GameDemo {
 		int[] selectedResourcesOutput = new int[]{0, 0, 0, 0};
 		System.out.print("Player Strongbox: ");
 		currentPlayer.getMyStrongbox().showStrongbox();
-		currentPlayer.getPlayersWarehouseDepot().showDepot();
+		//currentPlayer.getPlayersWarehouseDepot().showDepot();
 		currentPlayer.getPlayersCardManager().showAvailableProductions();
 		System.out.println("which production do you want to activate?");
 		listOfInt = scanner.nextLine();
@@ -435,7 +435,7 @@ public class GameDemo {
 			selectedResourcesOutput = playerInputToArray(listOfInt);
 		}
 		currentPlayer.activateProduction(playerProductionInput, selectedResourcesInput, selectedResourcesOutput);
-		currentPlayer.getPlayersWarehouseDepot().showDepot();
+		//currentPlayer.getPlayersWarehouseDepot().showDepot();
 		System.out.print("Player Strongbox after production(s): ");
 		currentPlayer.getMyStrongbox().showStrongbox();
 

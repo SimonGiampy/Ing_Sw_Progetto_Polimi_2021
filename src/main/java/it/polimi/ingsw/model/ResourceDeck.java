@@ -37,7 +37,7 @@ public class ResourceDeck {
 		playerDepot = depot;
 	}
 
-	/**
+	/** TODO: convert automatically the white marbles
 	 * Handles the case of a player playing two leader cards with the white marble ability, if this player
 	 * get white marbles from the market he can choose which resource to get
 	 * @param marblesFromMarket array of the marbles
@@ -50,11 +50,14 @@ public class ResourceDeck {
 		
 		//Throws exception if the total of the white marbles required to activate the leaders ability is different from
 		//      the number of white marbles to be processed with the leader card abilities
+		
+		/*
 		if (isWhiteAbility1Activated() || isWhiteAbility2Activated()) {
 			if ((quantityLeader1 * whiteMarblesInput1 + quantityLeader2 * whiteMarblesInput2) > whiteMarblesFromMarket) {
 				throw new InvalidUserRequestException("Invalid number of activations of leaders ability");
 			}
 		}
+		
 		
 		//Convert marble into resources based on their color
 		faithPoint = 0;
@@ -82,7 +85,7 @@ public class ResourceDeck {
 				}
 			}
 		}
-
+*/
 		playerDepot.addIncomingResources(getResourceList()); // sends the resources list from the market to the player warehouse depot
 	}
 

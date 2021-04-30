@@ -2,7 +2,6 @@ package it.polimi.ingsw.model;
 
 import it.polimi.ingsw.model.util.Resources;
 import it.polimi.ingsw.exceptions.InvalidUserRequestException;
-import it.polimi.ingsw.model.util.Unicode;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -50,50 +49,7 @@ public class WarehouseDepot {
 		extraDepotContents.add(new ArrayList<>());
 		extraDepotContents.add(new ArrayList<>());
 	}
-
-	public void showDepot() {
-		StringBuilder string = new StringBuilder();
-		string.append("            ").append(Unicode.TOP_LEFT).append(Unicode.HORIZONTAL).append(Unicode.HORIZONTAL)
-				.append(Unicode.HORIZONTAL).append(Unicode.HORIZONTAL).append(Unicode.TOP_RIGHT).append("\n");
-		string.append("            ").append(Unicode.VERTICAL).append(" ").append(depot[0].toString())
-				.append(" ").append(Unicode.VERTICAL).append("\n");
-		string.append("        ").append(Unicode.TOP_LEFT).append(Unicode.HORIZONTAL).append(Unicode.HORIZONTAL)
-				.append(Unicode.HORIZONTAL).append(Unicode.BOTTOM_RIGHT).append("    ")
-				.append(Unicode.BOTTOM_LEFT).append(Unicode.HORIZONTAL).append(Unicode.HORIZONTAL)
-				.append(Unicode.HORIZONTAL).append(Unicode.TOP_RIGHT).append("\n");
-		string.append("        ").append(Unicode.VERTICAL).append(" ").append(depot[1].toString()).append("      ")
-				.append(depot[2].toString()).append(" ").append(Unicode.VERTICAL).append("\n");
-		string.append("    ").append(Unicode.TOP_LEFT).append(Unicode.HORIZONTAL).append(Unicode.HORIZONTAL)
-				.append(Unicode.HORIZONTAL).append(Unicode.BOTTOM_RIGHT).append("            ")
-				.append(Unicode.BOTTOM_LEFT).append(Unicode.HORIZONTAL).append(Unicode.HORIZONTAL)
-				.append(Unicode.HORIZONTAL).append(Unicode.TOP_RIGHT).append("\n");
-		string.append("    ").append(Unicode.VERTICAL).append(" ").append(depot[3].toString())
-				.append("      ").append(depot[4].toString()).append("  ").append("    ").append(depot[5].toString())
-				.append(" ").append(Unicode.VERTICAL).append("\n");
-		string.append("    ").append(Unicode.BOTTOM_LEFT);
-		string.append(String.valueOf(Unicode.HORIZONTAL).repeat(20)).append(Unicode.BOTTOM_RIGHT).append("\n");
-		/*
-		string.append("Top:       " + "_|").append(depot[0].toString()).append("|_").append("\n");
-		string.append("Middle:  " + "_|").append(depot[1].toString()).append("  ")
-				.append(depot[2].toString()).append("|_").append("\n");
-		string.append("Bottom: " + "|").append(depot[3].toString())
-				.append("  ").append(depot[4].toString()).append("  ").append(depot[5].toString()).append("|").append("\n");
-
-		 */
-		System.out.println(string);
-
-	}
 	
-	/**
-	 * debugging function for showing deck resources
-	 */
-	public void showIncomingDeck() {
-		System.out.print("deck contains: \t");
-		for (int i = 1; i <= incomingResources.size(); i++) {
-			System.out.print(i + ": " + incomingResources.get(i - 1).toString() + "\t");
-		}
-		System.out.print("\n");
-	}
 	
 	/**
 	 * moves the resources around between the deck and the depot. It also checks the validity of the numbers in input
@@ -103,7 +59,7 @@ public class WarehouseDepot {
 	 * @return true if the present configuration of the warehouse is correct
 	 *         false if more moves are required
 	 */
-	public boolean moveResources(String where, int from, int destination) throws InvalidUserRequestException {
+	public boolean moveResourcesToDepot(String where, int from, int destination) throws InvalidUserRequestException {
 		//syntax: move <from> from <deck/depot> to <destination>
 		// moves a resource coming from the deck (input) or the same depot. The resource has a related positional number for input and output
 		// the destination is always in the depot (pyramid) where each position has a number associated (from 1 to 6)
@@ -114,11 +70,11 @@ public class WarehouseDepot {
 				positionsIncomingResources.add(destination);
 				incomingResources.remove(from - 1);
 			} else { // destination is occupied by another resource
-				throw new InvalidUserRequestException("move is not permitted");
+				throw new InvalidUserRequestException("Selected move is not permitted");
 			}
 		} else if (where.equals("depot")) { // resource coming from the depot
 			if (depot[from - 1] == Resources.EMPTY) { // resource moved must not be empty
-				throw new InvalidUserRequestException("move is not permitted");
+				throw new InvalidUserRequestException("Selected move is not permitted");
 			} else { //switches the positions in the pyramid
 				if (!(positionsIncomingResources.contains(from) && positionsIncomingResources.contains(destination))) {
 					if (positionsIncomingResources.contains(from)) { // updates the list with the new position
@@ -136,13 +92,8 @@ public class WarehouseDepot {
 			}
 		}
 		
-		// if the deck is empty and all the resources are in a correct place, then it returns true
-		if (isCombinationCorrect(getConvertedList(depot))) {
-			return true;
-		} else {
-			System.out.println("more moves needed"); // because the configuration is not complete yet
-			return false;
-		}
+		// if the deck is empty and all the resources are in a correct place, then it returns true otherwise false
+		return isCombinationCorrect();
 	}
 	
 	/**
@@ -152,25 +103,19 @@ public class WarehouseDepot {
 	 */
 	public boolean moveResourcesBackToDeck(int position) throws InvalidUserRequestException {
 		if (depot[position - 1] == Resources.EMPTY) { // cannot move an empty resource
-	        throw new InvalidUserRequestException("move is not permitted");
+	        throw new InvalidUserRequestException("Selected move is not permitted");
 		} else {
 			if (positionsIncomingResources.contains(position)) { // resource was in the deck before the insertion
 				incomingResources.add(depot[position - 1]);
 				depot[position - 1] = Resources.EMPTY;
 				positionsIncomingResources.remove((Integer) position);
 			} else { // the resource was not in the deck before the insertion
-				System.out.println("move is not permitted");
-				return false;
+				throw new InvalidUserRequestException("The selected resource was not in the resource deck before its insertion");
 			}
 		}
 		
-		// if the deck is empty and all the resources are in a correct place, then it returns true
-		if (isCombinationCorrect(getConvertedList(depot))) {
-			return true;
-		} else {
-			System.out.println("more moves needed"); // because the configuration is not complete yet
-			return false;
-		}
+		// if the deck is empty and all the resources are in a correct place, then it returns true, otherwise false
+		return isCombinationCorrect();
 	}
 	
 	
@@ -241,16 +186,10 @@ public class WarehouseDepot {
 	
 	/**
 	 * Moves the resources to both additional depots automatically, giving priority to the leader specified in input
-	 * @param priorityLeader the number of the leader card depot to prioritize when assigning resources (1 or 2)
 	 */
-	public void moveResourcesToAdditionalDepots(int priorityLeader) throws InvalidUserRequestException {
-		if (priorityLeader == 1) {
-			moveResourcesToLeaderDepot(0);
-			moveResourcesToLeaderDepot(1);
-		} else if (priorityLeader == 2) {
-			moveResourcesToLeaderDepot(1);
-			moveResourcesToLeaderDepot(0);
-		} else throw new InvalidUserRequestException("the number of the leader card to prioritize must be 1 or 2.");
+	public void moveResourcesToAdditionalDepots()  {
+		moveResourcesToLeaderDepot(0);
+		moveResourcesToLeaderDepot(1);
 		
 		//removes the empty spots in the incoming deck
 		incomingResources = removeEmptySpaces(incomingResources);
@@ -347,6 +286,14 @@ public class WarehouseDepot {
 	}
 	
 	/**
+	 * quick access to check correctness of depot
+	 * @return true if the combination is correct
+	 */
+	public boolean isCombinationCorrect() {
+		return isCombinationCorrect(getConvertedList(getDepot()));
+	}
+	
+	/**
 	 * returns the list of all the resources contained in the data structures
 	 * @return the list of all the resources in the warehouse depot and the additional depots for each player
 	 */
@@ -383,7 +330,7 @@ public class WarehouseDepot {
 	 * @param whichLeader first leader is 0; second leader is 1.
 	 * @return true if the leader has been activated, false otherwise
 	 */
-	private boolean isLeaderActivated(int whichLeader) {
+	public boolean isLeaderActivated(int whichLeader) {
 		return extraDepotResources.get(whichLeader).get(0) != Resources.EMPTY;
 	}
 	

@@ -98,7 +98,7 @@ public class VirtualView implements View, Observer {
 	}
 
 	@Override
-	public void showLoginConfirmation(boolean lobbyAccessed) {
+	public void showLobbyConfirmation(boolean lobbyAccessed) {
 		clientHandler.sendMessage(new LobbyConfirmation(lobbyAccessed));
 	}
 

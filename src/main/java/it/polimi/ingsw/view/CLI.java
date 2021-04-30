@@ -2,13 +2,11 @@ package it.polimi.ingsw.view;
 
 import it.polimi.ingsw.controller.ClientSideController;
 import it.polimi.ingsw.model.DevelopmentCard;
-import it.polimi.ingsw.model.LeaderCard;
 import it.polimi.ingsw.model.abilities.AbilityEffectActivation;
 import it.polimi.ingsw.model.reducedClasses.*;
 import it.polimi.ingsw.model.util.*;
 import it.polimi.ingsw.observers.ViewObservable;
 
-import javax.naming.PartialResultException;
 import java.util.*;
 import java.util.regex.Pattern;
 
@@ -127,13 +125,9 @@ public class CLI extends ViewObservable implements View {
 		lobbyNumber = Integer.parseInt(input);
 		notifyObserver(obs -> obs.onUpdateLobbyAccess(lobbyNumber, idVersion));
 	}
-
-	/**
-	 *
-	 * @param lobbyAccessed
-	 */
+	
 	@Override
-	public void showLoginConfirmation(boolean lobbyAccessed) {
+	public void showLobbyConfirmation(boolean lobbyAccessed) {
 		if(lobbyAccessed)
 			System.out.println("You joined the lobby!");
 		else
@@ -165,10 +159,11 @@ public class CLI extends ViewObservable implements View {
 	
 	@Override
 	public void showNicknameConfirmation(boolean nicknameAccepted) {
-		if(nicknameAccepted)
+		if(nicknameAccepted) {
 			System.out.println("Login confirmed! Waiting for the game to start");
-		else
+		} else {
 			System.out.println("Login failed! Your nickname is already taken");
+		}
 	}
 	
 	
@@ -257,38 +252,51 @@ public class CLI extends ViewObservable implements View {
 	
 	@Override
 	public void askLeaderAction(ArrayList<ReducedLeaderCard> availableLeaders) {
-		int selectedLeader, action;
+		int selectedLeader = 0, action = 0; //action: 0 = nothing, 1 = play leader, 2 discard leader
 		String input;
-		String[] splitInput;
-		String regex = "[1-" + availableLeaders.size() + "]" + "," + "[1-2]" ;
+		
 		boolean check;
 		System.out.println("Your Leader Cards:");
 		for (int i = 0; i < availableLeaders.size(); i++) {
-			System.out.println("Card's number: " + (i + 1));
+			System.out.print("Card's number: " + (i + 1));
 			if(availableLeaders.get(i).isPlayable())
-				System.out.println("PLAYABLE");
+				System.out.print(" PLAYABLE\n");
 			showLeaderCard(availableLeaders.get(i));
 		}
-		System.out.println("Type [INDEX,ACTION] to play or discard the leader card or [0] to do nothing and end the turn");
-		System.out.println("ACTION = 1 -> play, ACTION = 2 -> discard");
+		
+		System.out.println("Type <action> <number> use the leader card or [0] to do nothing and end the turn.");
+		System.out.println("The action can be 'play' or 'discard', where number is 1 or 2");
+		
+		String regex = "((play|discard)\s[1-" + availableLeaders.size() + "])|0";
 		do {
 			input = scanner.nextLine();
-			if (input.equals("0")) {
-				notifyObserver(obs-> obs.onUpdateLeaderAction(0, 0));
-				return;
+			check = Pattern.matches(regex, input);
+			if(!check) {
+				System.out.println("Input incorrect or selected action not available");
 			} else {
-				check = Pattern.matches(regex, input);
-				splitInput = input.split(",");
-				if(check && Integer.parseInt(splitInput[1]) == 1 && !(availableLeaders.get(Integer.parseInt(splitInput[0])).isPlayable()))
-					check = false;
+				if (input.equals("0")) {
+					selectedLeader = 0;
+					action = 0;
+				} else {
+					if (input.charAt(0) == 'p') { // plays the leader card
+						action = 1;
+						selectedLeader = Character.getNumericValue(input.charAt(5));
+						if (!availableLeaders.get(selectedLeader).isPlayable()) {
+							System.out.println("Selected leader card is not playable! Choose something else to do.");
+							check = false;
+						}
+					} else { // discards the leader card
+						action = 2;
+						selectedLeader = Character.getNumericValue(input.charAt(8));
+					}
+				}
 			}
-			if(!check) System.out.println("Input incorrect or selected action not available");
-		}while(!check);
-
-		selectedLeader = Integer.parseInt(splitInput[0]);
-		action = Integer.parseInt(splitInput[1]);
-
-		notifyObserver(obs-> obs.onUpdateLeaderAction(selectedLeader, action));
+		} while(!check);
+		
+		
+		int finalSelectedLeader = selectedLeader;
+		int finalAction = action;
+		notifyObserver(obs-> obs.onUpdateLeaderAction(finalSelectedLeader, finalAction));
 	}
 	
 	@Override
@@ -300,7 +308,7 @@ public class CLI extends ViewObservable implements View {
 		}
 		x--;
 		String playerInput;
-		String playerActionRegex = "[1-" + x + "]"; //stupid warning: DO NOT TOUCH
+		String playerActionRegex = "[1-" + x + "]";
 		boolean check;
 		System.out.println("What do you want to do?");
 		do {
@@ -330,30 +338,28 @@ public class CLI extends ViewObservable implements View {
 
 		String which = input.substring(0, 3);
 		int where = Character.getNumericValue(input.charAt(4));
-
-		if(market.isWhiteMarble1() || market.isWhiteMarble2()){
-			if(market.isWhiteMarble1() && market.isWhiteMarble2()){
-				System.out.println("You have 2 Marbles Leader Activated!");
-				System.out.println("How many times do you want to use the first leader? ");
-				int quantity1 = scanner.nextInt();
-				System.out.println("How many times do you want to use the second leader? ");
-				int quantity2 = scanner.nextInt();
-				notifyObserver(obs->obs.onUpdateMarketAction(which, where,quantity1,quantity2));
-
-			}
-			else if(market.isWhiteMarble1()){
-				System.out.println("How many times do you want to use the first leader? ");
-				int quantity1 = scanner.nextInt();
-				notifyObserver(obs->obs.onUpdateMarketAction(which, where,quantity1,0));
-			}
-			else {
-				System.out.println("How many times do you want to use the second leader? ");
-				int quantity2 = scanner.nextInt();
-				notifyObserver(obs->obs.onUpdateMarketAction(which, where,0,quantity2));
-			}
+/*      //TODO: complete with missing information from the user in the case of both leaders activated
+		int quantity1 = 0, quantity2 = 0;
+		
+		if (market.isWhiteMarble1() && market.isWhiteMarble2()) {
+			System.out.println("You have 2 Marbles Leader Activated!");
+			System.out.println("How many times do you want to use the first leader? ");
+			quantity1 = scanner.nextInt();
+			System.out.println("How many times do you want to use the second leader? ");
+			quantity2 = scanner.nextInt();
+			
+		} else if(market.isWhiteMarble1()) {
+			System.out.println("How many times do you want to use the first leader? ");
+			quantity1 = scanner.nextInt();
+			notifyObserver(obs->obs.onUpdateMarketAction(which, where,quantity1,0));
+		} else {
+			System.out.println("How many times do you want to use the second leader? ");
+			int quantity2 = scanner.nextInt();
+			notifyObserver(obs->obs.onUpdateMarketAction(which, where,0,quantity2));
 		}
-		else
-			notifyObserver(obs->obs.onUpdateMarketAction(which, where,0,0));
+		*/
+		notifyObserver(obs->obs.onUpdateMarketAction(which, where, 0, 0));
+ 
 	}
 	
 	@Override
@@ -455,12 +461,12 @@ public class CLI extends ViewObservable implements View {
 	
 	@Override
 	public void askProductionAction(ArrayList<Integer> productionAvailable) {
-
+		//TODO: missing function body
 	}
 	
 	@Override
 	public void askFreeInput(int number) {
-
+		//TODO: missing function body
 	}
 	
 	@Override
@@ -520,6 +526,7 @@ public class CLI extends ViewObservable implements View {
 	/**
 	 * Show all the track with the current position, the activated reports, the victory points for every tile
 	 * and the number that identifies the tiles
+	 * @param faithTrack to be shown on console
 	 */
 	@Override
 	public void showFaithTrack(ReducedFaithTrack faithTrack) {
@@ -644,8 +651,7 @@ public class CLI extends ViewObservable implements View {
 	}
 
 	/**
-	 * Support method for showFaithTrack, appends to the string builder the "-" lines that form the top
-	 * of the track
+	 * Support method for showFaithTrack, appends to the string builder the "-" lines that form the top of the track
 	 * @param string string builder containing all the representation of the track
 	 * @param faithTrack the reduced track
 	 */
@@ -673,8 +679,7 @@ public class CLI extends ViewObservable implements View {
 	}
 
 	/**
-	 * Support method for showFaithTrack, appends to the string builder the "-" lines that form the bottom
-	 * of the track
+	 * Support method for showFaithTrack, appends to the string builder the "-" lines that form the bottom of the track
 	 * @param string string builder containing all the representation of the track
 	 * @param faithTrack the reduced track
 	 */
@@ -705,12 +710,15 @@ public class CLI extends ViewObservable implements View {
 	public void showDepot(ReducedWarehouseDepot depot) {
 		ArrayList<Resources> incomingResources = depot.getIncomingResources();
 		Resources[] pyr = depot.getDepot();
-		//System.out.print("deck contains: \t"); TODO: move this
+		
+		// shows the incoming resource from the deck if there are any
+		if (incomingResources.size() > 0) System.out.print("Resource deck contains: \t");
 		for (int i = 1; i <= incomingResources.size(); i++) {
 			System.out.print(i + ": " + incomingResources.get(i - 1).toString() + "\t");
 		}
 		System.out.print("\n");
 		
+		// shows the pyramid with the resources in it
 		String string = "            " + Unicode.TOP_LEFT + Unicode.HORIZONTAL + Unicode.HORIZONTAL +
 				Unicode.HORIZONTAL + Unicode.HORIZONTAL + Unicode.TOP_RIGHT + "\n" +
 				"            " + Unicode.VERTICAL + " " + pyr[0].toString() +
@@ -732,7 +740,18 @@ public class CLI extends ViewObservable implements View {
 				String.valueOf(Unicode.HORIZONTAL).repeat(20) + Unicode.BOTTOM_RIGHT + "\n";
 		System.out.println(string);
 		
-		//TODO: add show methods for showing additional depots
+		// shows additional leaders if activated
+		for (int i = 0; i <= 1; i++) {
+			if (depot.isLeaderActivated(i)) {
+				System.out.print("Leader #" + (i+1) + "'s additional depot = ");
+				for (int r = 0; r <= depot.getExtraDepotResources().get(i).size(); r++) {
+					if (depot.getExtraDepotContents().get(i).get(r)) {
+						System.out.println(depot.getExtraDepotResources().get(i).get(r).toString() + "  ");
+					}
+				}
+				System.out.print("\n");
+			}
+		}
 	}
 
 	@Override
@@ -744,7 +763,11 @@ public class CLI extends ViewObservable implements View {
 		}
 	}
 	
-	private void showLeaderCard(ReducedLeaderCard card) {
+	/**
+	 * method that prints in output a leader card with its fancy formatting
+	 * @param card the card to be shown on console
+	 */
+	public void showLeaderCard(ReducedLeaderCard card) {
 		StringBuilder string = new StringBuilder();
 		if(card.isAbilitiesActivated()) string.append(Unicode.ANSI_GREEN);
 		string.append(Unicode.TOP_LEFT);
@@ -767,8 +790,13 @@ public class CLI extends ViewObservable implements View {
 		string.append(Unicode.RESET);
 		System.out.println(string);
 	}
-
-	public int maxLength(ReducedLeaderCard card){
+	
+	/**
+	 * utility method used for calculating leader card's width on the console output
+	 * @param card the leader card to be shown
+	 * @return the max lenght required
+	 */
+	private int maxLength(ReducedLeaderCard card){
 		int max=12;
 		int size= (int) (8+4*card.getResourceRequirements().stream().distinct().count());
 		StringBuilder s= new StringBuilder();
@@ -843,7 +871,11 @@ public class CLI extends ViewObservable implements View {
 		}
 	}
 	
-	private void showDevCard(DevelopmentCard card) {
+	/**
+	 * shows the development card on console with its fancy formatting
+	 * @param card the dev card to be shown on console
+	 */
+	public void showDevCard(DevelopmentCard card) {
 		StringBuilder string = new StringBuilder();
 		string.append(card.getColor().getColorCode()).append(Unicode.TOP_LEFT).append(String.valueOf(Unicode.HORIZONTAL).repeat(26))
 				.append(Unicode.TOP_RIGHT).append("\n").append(Unicode.RESET).append("  LVL ");

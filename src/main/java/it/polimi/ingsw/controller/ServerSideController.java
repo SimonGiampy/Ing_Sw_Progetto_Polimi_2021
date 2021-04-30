@@ -48,8 +48,7 @@ public class ServerSideController {
 		gameReady= new boolean[numberOfPlayers];
 		gameState = GameState.CONFIG;
 	}
-
-	//TODO: fix game mechanics instantiation order
+	
 	
 	/**
 	 * Method called just before the game starts, when all the players are ready to play
@@ -114,9 +113,8 @@ public class ServerSideController {
 	/**
 	 * it starts the game (start a new turn)
 	 */
-	private void startGame(){
+	private void startGame() {
 		gameState = GameState.GAME;
-		//need a broadcast message
 		turnController.newTurn();
 	}
 
@@ -234,19 +232,11 @@ public class ServerSideController {
 		VirtualView view= virtualViewMap.get(message.getNickname());
 		int playerIndex=nicknameList.indexOf(message.getNickname());
 		switch (message.getSelectedAction()){
-			case MARKET-> {
-				view.askMarketAction(new ReducedMarket(mechanics.getMarket(),mechanics.getPlayer(playerIndex).getPlayersResourceDeck()));
-			}
-			case BUY_CARD-> {
-				view.askBuyCardAction(new ArrayList<>
-					(mechanics.getGameDevCardsDeck().buyableCards(mechanics.getPlayer(playerIndex).gatherAllPlayersResources(),
-							mechanics.getPlayer(playerIndex).getPlayersCardManager())));
-
-			}
-			case PRODUCTIONS -> {
-				view.askProductionAction(mechanics.getPlayer(playerIndex).getPlayersCardManager().availableProduction());
-
-			}
+			case MARKET -> view.askMarketAction(new ReducedMarket(mechanics.getMarket(), mechanics.getPlayer(playerIndex).getPlayersResourceDeck()));
+			case BUY_CARD -> view.askBuyCardAction(new ArrayList<>
+				(mechanics.getGameDevCardsDeck().buyableCards(mechanics.getPlayer(playerIndex).gatherAllPlayersResources(),
+						mechanics.getPlayer(playerIndex).getPlayersCardManager())));
+			case PRODUCTIONS -> view.askProductionAction(mechanics.getPlayer(playerIndex).getPlayersCardManager().availableProduction());
 			case LEADER -> {
 				ArrayList<ReducedLeaderCard> leaderCards = new ArrayList<>();
 				leaderCards.add(new ReducedLeaderCard(mechanics.getPlayer(playerIndex).getLeaderCards()[0]));
@@ -260,31 +250,59 @@ public class ServerSideController {
 
 	/**
 	 * it handles market interaction
-	 * @param message is a message from the client
+	 * @param message interaction with market: initial market message
 	 */
 	private void marketInteractionHandler(InteractionWithMarket message){
-		int playerIndex= nicknameList.indexOf(message.getNickname());
-		VirtualView view= virtualViewMap.get(message.getNickname());
+		int playerIndex = nicknameList.indexOf(message.getNickname());
+		VirtualView view = virtualViewMap.get(message.getNickname());
 		try {
 			mechanics.getPlayer(playerIndex).interactWithMarket(message.getWhich(),message.getWhere(),message.getQuantity1(), message.getQuantity2());
-			view.replyDepot(new ReducedWarehouseDepot(mechanics.getPlayer(playerIndex).getPlayersWarehouseDepot()),true,false,true);
-		} catch (InvalidUserRequestException e) {
-			e.printStackTrace();
-
+		} catch (InvalidUserRequestException e) { //TODO: this should be unnecessary if the check happens on the client-side
+			return;
 		}
-
-		//turnController.setPhaseType(PhaseType.MAIN_ACTION); TODO: move this after depot interaction
+		//moves the resources automatically to the additional depots if possible
+		mechanics.getPlayer(playerIndex).getPlayersWarehouseDepot().moveResourcesToAdditionalDepots();
+		//sends confirmation of the completed action
+		view.replyDepot(new ReducedWarehouseDepot(mechanics.getPlayer(playerIndex).getPlayersWarehouseDepot()),true,false,true);
+		
 	}
-
+	
+	/**
+	 * handles the cycle of the interaction of the player with its warehouse depot
+	 * @param message depot interaction: a single move on the board
+	 */
 	private void depotInteractionHandler(DepotInteraction message){
-		int playerIndex= nicknameList.indexOf(message.getNickname());
-		VirtualView view= virtualViewMap.get(message.getNickname());
-		if(message.isConfirmed()){
-			//TODO: end turn and discard left resources
-		}
-		else {
-			// TODO: depot interaction
-
+		int playerIndex = nicknameList.indexOf(message.getNickname());
+		VirtualView view = virtualViewMap.get(message.getNickname());
+		
+		if(message.isConfirmed()){ //if the player confirmed its actions
+			int n = mechanics.getPlayer(playerIndex).getPlayersWarehouseDepot().discardResourcesAfterUserConfirmation();
+			for (int i = 0; i < numberOfPlayers && i != playerIndex; i++) {
+				mechanics.getPlayer(i).getPlayerFaithTrack().moveMarker(n);
+				virtualViewMap.get(nicknameList.get(i)).showFaithTrack(new ReducedFaithTrack(mechanics.getPlayer(i).getPlayerFaithTrack()));
+			}
+			turnController.setPhaseType(PhaseType.MAIN_ACTION); //next turn
+		} else {
+			//if the player did something else with its depot
+			WarehouseDepot depot = mechanics.getPlayer(playerIndex).getPlayersWarehouseDepot();
+			boolean confirmable = false;
+			if (message.getToWhere().equals("depot")) {
+				try {
+					confirmable = depot.moveResourcesToDepot(message.getFromWhere(), message.getOrigin(), message.getDestination());
+				} catch (InvalidUserRequestException e) {
+					view.replyDepot(new ReducedWarehouseDepot(depot), false, message.isConfirmed(), false);
+					return;
+				}
+			} else if (message.getToWhere().equals("deck")) {
+				try {
+					confirmable = depot.moveResourcesBackToDeck(message.getOrigin());
+				} catch (InvalidUserRequestException e) {
+					view.replyDepot(new ReducedWarehouseDepot(depot), false, message.isConfirmed(), false);
+					return;
+				}
+			}
+			//sends the client the result of their actions
+			view.replyDepot(new ReducedWarehouseDepot(depot), false, confirmable, true);
 		}
 	}
 
