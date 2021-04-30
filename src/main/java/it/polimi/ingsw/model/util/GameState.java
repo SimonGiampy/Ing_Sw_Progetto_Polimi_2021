@@ -2,9 +2,9 @@ package it.polimi.ingsw.model.util;
 
 public enum GameState {
 	
-	CONFIG,
-	INIT,
-	GAME,
-	ENDGAME
+	CONFIG, // When the game configuration file is about to be set
+	INIT, // When the players are choosing the starting resources and the leader cards
+	GAME, // Game phase
+	ENDGAME // When the game is about to end
 
 }

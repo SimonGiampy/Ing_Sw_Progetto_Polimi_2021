@@ -64,26 +64,7 @@ public class CardProductionsManagement {
 		cards.get(selectedStack-1).push(newCard);
 		productions[selectedStack-1]=cards.get(selectedStack-1).peek().getProductionRules();
 	}
-
-	/**
-	 * it shows card's information
- 	 */
-	public void showCards(){
-		for (int i = 0; i < 3; i++) {
-			if(cards.get(i).size()>0)
-				cards.get(i).peek().showCard();
-			else {
-				String string = Unicode.TOP_LEFT +
-						String.valueOf(Unicode.HORIZONTAL).repeat(26) +
-						Unicode.TOP_RIGHT + "\n\n" +
-						"  EMPTY\n  SLOT\n\n" +
-						Unicode.BOTTOM_LEFT +
-						String.valueOf(Unicode.HORIZONTAL).repeat(26) +
-						Unicode.BOTTOM_RIGHT + "\n";
-				System.out.println(string);
-			}
-		}
-	}
+	
 
 	/** *
 	 * it checks top card's level

@@ -430,7 +430,7 @@ public class CLI extends ViewObservable implements View {
 		System.out.println("Available Development Cards: ");
 		for(int i = 0; i < cardsAvailable.size(); i++){
 			System.out.println("Card's number: " + (i + 1));
-			cardsAvailable.get(i).showCard();
+			showDevCard(cardsAvailable.get(i));
 		}
 		System.out.println("Type the number of the one you want to buy");
 		boolean check;
@@ -728,14 +728,32 @@ public class CLI extends ViewObservable implements View {
 		System.out.println("Your Leader Cards:");
 		for (int i = 0; i < availableLeaders.size(); i++) {
 			System.out.println("Card's number: " + (i + 1));
-			StringBuilder string= new StringBuilder();
-			appendTopFrame(string, availableLeaders.get(i));
-			appendVictoryPoints(string, availableLeaders.get(i));
-			appendFirstLine(string, availableLeaders.get(i));
-			appendAbility(string, availableLeaders.get(i));
-			appendBottomFrame(string, availableLeaders.get(i));
-			System.out.println(string);
+			System.out.println(showLeaderCard(availableLeaders.get(i)));
 		}
+	}
+	
+	private String showLeaderCard(ReducedLeaderCard card) {
+		StringBuilder string = new StringBuilder();
+		if(card.isAbilitiesActivated()) string.append(Unicode.ANSI_GREEN);
+		string.append(Unicode.TOP_LEFT);
+		string.append(String.valueOf(Unicode.HORIZONTAL).repeat(Math.max(0, maxLength(card))));
+		string.append(Unicode.TOP_RIGHT + "\n");
+		string.append(Unicode.RESET);
+		string.append(Unicode.RED_BOLD + "  LEADER " + Unicode.RESET).append(card.getVictoryPoints())
+				.append(Resources.VICTORY_POINTS).append("\n");
+		if(card.getResourceRequirements().size()!=0)
+			string.append("  REQs ").append(ListSet.showListMultiplicityOnConsole(card.getResourceRequirements())).append("\n");
+		if(card.getCardRequirements().size()!=0)
+			string.append("  REQs ").append(ListSet.showListMultiplicityOnConsole(card.getCardRequirements())).append("\n");
+		for (AbilityEffectActivation abilityEffectActivation : card.getEffectsActivation()) {
+			abilityEffectActivation.appendPower(string);
+		}
+		if(card.isAbilitiesActivated()) string.append(Unicode.ANSI_GREEN);
+		string.append(Unicode.BOTTOM_LEFT);
+		string.append(String.valueOf(Unicode.HORIZONTAL).repeat(Math.max(0, maxLength(card))));
+		string.append(Unicode.BOTTOM_RIGHT + "\n");
+		string.append(Unicode.RESET);
+		return string.toString();
 	}
 
 	public int maxLength(ReducedLeaderCard card){
@@ -757,40 +775,7 @@ public class CLI extends ViewObservable implements View {
 		}
 		return max;
 	}
-
-	public void appendTopFrame(StringBuilder string, ReducedLeaderCard card){
-		if(card.isAbilitiesActivated()) string.append(Unicode.ANSI_GREEN);
-		string.append(Unicode.TOP_LEFT);
-		string.append(String.valueOf(Unicode.HORIZONTAL).repeat(Math.max(0, maxLength(card))));
-		string.append(Unicode.TOP_RIGHT + "\n");
-		string.append(Unicode.RESET);
-	}
-
-	public void appendBottomFrame(StringBuilder string, ReducedLeaderCard card){
-		if(card.isAbilitiesActivated()) string.append(Unicode.ANSI_GREEN);
-		string.append(Unicode.BOTTOM_LEFT);
-		string.append(String.valueOf(Unicode.HORIZONTAL).repeat(Math.max(0, maxLength(card))));
-		string.append(Unicode.BOTTOM_RIGHT + "\n");
-		string.append(Unicode.RESET);
-	}
-
-	public void appendFirstLine(StringBuilder string, ReducedLeaderCard card){
-		if(card.getResourceRequirements().size()!=0)
-			string.append("  REQs ").append(ListSet.showListMultiplicityOnConsole(card.getResourceRequirements())).append("\n");
-		if(card.getCardRequirements().size()!=0)
-			string.append("  REQs ").append(ListSet.showListMultiplicityOnConsole(card.getCardRequirements())).append("\n");
-	}
-
-	public void appendAbility(StringBuilder string, ReducedLeaderCard card){
-		for (AbilityEffectActivation abilityEffectActivation : card.getEffectsActivation()) {
-			abilityEffectActivation.appendPower(string);
-		}
-	}
-
-	public void appendVictoryPoints(StringBuilder string, ReducedLeaderCard card){
-		string.append(Unicode.RED_BOLD + "  LEADER " + Unicode.RESET).append(card.getVictoryPoints())
-				.append(Resources.VICTORY_POINTS).append("\n");
-	}
+	
 
 	@Override
 	public void showMarket(ReducedMarket market) {
@@ -811,7 +796,7 @@ public class CLI extends ViewObservable implements View {
 	public void showPlayerCardsAndProduction(ReducedCardProductionManagement cardProductionsManagement) {
 		for (int i = 0; i < 3; i++) {
 			if(cardProductionsManagement.getCards().get(i).size()>0)
-				cardProductionsManagement.getCards().get(i).peek().showCard();
+				showDevCard(cardProductionsManagement.getCards().get(i).peek());
 			else {
 				String string = Unicode.TOP_LEFT +
 						String.valueOf(Unicode.HORIZONTAL).repeat(26) +
@@ -829,12 +814,46 @@ public class CLI extends ViewObservable implements View {
 	public void showCardsDeck(ReducedDevelopmentCardsDeck deck) {
 		for (int i = 0; i < 3; i++) {
 			for (int j = 0; j < 4; j++) {
-				if(deck.getCardStackStructure()[i][j].isEmpty())
-					System.out.println("EMPTY");
-				deck.getCardStackStructure()[i][j].get(0).showCard();
+				if (deck.getCardStackStructure()[i][j].isEmpty()) { // shows empty card slot
+					String string = Unicode.TOP_LEFT +
+							String.valueOf(Unicode.HORIZONTAL).repeat(26) +
+							Unicode.TOP_RIGHT + "\n\n" +
+							"  EMPTY\n  SLOT\n\n" +
+							Unicode.BOTTOM_LEFT +
+							String.valueOf(Unicode.HORIZONTAL).repeat(26) +
+							Unicode.BOTTOM_RIGHT + "\n";
+					System.out.println(string);
+				} else {
+					showDevCard(deck.getCardStackStructure()[i][j].get(0));
+				}
 			}
 			System.out.println("\n");
 		}
+	}
+	
+	private void showDevCard(DevelopmentCard card) {
+		StringBuilder string = new StringBuilder();
+		string.append(card.getColor().getColorCode()).append(Unicode.TOP_LEFT).append(String.valueOf(Unicode.HORIZONTAL).repeat(26))
+				.append(Unicode.TOP_RIGHT).append("\n").append(Unicode.RESET).append("  LVL ");
+		
+		if(card.getLevel() == 1) {
+			string.append(Unicode.DOT + "    ");
+		} else if(card.getLevel() == 2) {
+			string.append(Unicode.DOT + " " + Unicode.DOT + "  ");
+		} else {
+			string.append(Unicode.DOT + " " + Unicode.DOT + " " + Unicode.DOT);
+		}
+		string.append(Unicode.RESET+"        ").append(card.getProductionRules().getFaithOutput())
+				.append(Unicode.RED_BOLD).append(Unicode.CROSS2).append(Unicode.RESET).append(" ")
+				.append(card.getVictoryPoints()).append(Resources.VICTORY_POINTS).append(" ").append("\n");
+		
+		string.append("  REQs ").append(ListSet.showListMultiplicityOnConsole(card.getResourcesRequirement())).append("\n");
+		string.append("  In : ").append(ListSet.showListMultiplicityOnConsole(card.getProductionRules().getInputCopy())).append("\n");
+		string.append("  Out: ").append(ListSet.showListMultiplicityOnConsole(card.getProductionRules().getOutputCopy())).append("\n");
+		string.append(card.getColor().getColorCode()).append(Unicode.BOTTOM_LEFT).append(String.valueOf(Unicode.HORIZONTAL).repeat(26))
+				.append(Unicode.BOTTOM_RIGHT).append("\n").append(Unicode.RESET);
+		
+		System.out.println(string);
 	}
 	
 	@Override
