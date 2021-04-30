@@ -10,20 +10,15 @@ import it.polimi.ingsw.model.util.GameState;
 import it.polimi.ingsw.model.util.Resources;
 import it.polimi.ingsw.network.messages.*;
 import it.polimi.ingsw.network.messages.game.client2server.*;
-import it.polimi.ingsw.network.messages.game.server2client.LeaderShow;
 import it.polimi.ingsw.network.messages.login.GameConfigReply;
-import it.polimi.ingsw.network.messages.login.GameConfigRequest;
-import it.polimi.ingsw.network.messages.login.LobbyAccess;
 import it.polimi.ingsw.network.server.Lobby;
 import it.polimi.ingsw.view.VirtualView;
 import it.polimi.ingsw.xml_parsers.XMLParser;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.stream.Collectors;
 
 public class ServerSideController {
 
@@ -34,6 +29,7 @@ public class ServerSideController {
 	private ArrayList<String> nicknameList;
 	private final boolean[] gameReady; //
 	private final boolean[] initResources;
+	private boolean endGame;
 
 
 	private TurnController turnController;
@@ -44,7 +40,11 @@ public class ServerSideController {
 		this.lobby = lobby;
 		this.numberOfPlayers = numberOfPlayers;
 		mechanics = new GameMechanicsMultiPlayer(this, numberOfPlayers);
-		initResources= new boolean[numberOfPlayers-1];
+		if(numberOfPlayers==1){
+			initResources= new boolean[1];
+		}
+		else
+			initResources= new boolean[numberOfPlayers-1];
 		gameReady= new boolean[numberOfPlayers];
 		gameState = GameState.CONFIG;
 	}
@@ -130,8 +130,11 @@ public class ServerSideController {
 		
 		VirtualView vv = virtualViewMap.get(nicknameList.get(0));
 		vv.showGenericMessage("You are the first player! Wait!");
-		if(numberOfPlayers==1) //TODO: singleplayer
+		if(numberOfPlayers==1) {
 			initResources[0]=true;
+			controllerAskLeaders();
+		}
+
 		else {
 			for (int i = 1; i < numberOfPlayers; i++) {
 				VirtualView view = virtualViewMap.get(nicknameList.get(i));
@@ -154,6 +157,18 @@ public class ServerSideController {
 		}
 	}
 
+	private void controllerAskLeaders(){
+		for (int i = 0; i < numberOfPlayers; i++) {
+			ArrayList<ReducedLeaderCard> leaderCards = new ArrayList<>();
+			leaderCards.add(new ReducedLeaderCard(mechanics.getPlayer(i).getLeaderCards()[0]));
+			leaderCards.add(new ReducedLeaderCard(mechanics.getPlayer(i).getLeaderCards()[1]));
+			leaderCards.add(new ReducedLeaderCard(mechanics.getPlayer(i).getLeaderCards()[2]));
+			leaderCards.add(new ReducedLeaderCard(mechanics.getPlayer(i).getLeaderCards()[3]));
+			VirtualView view = virtualViewMap.get(nicknameList.get(i));
+			view.askInitLeaders(leaderCards);
+		}
+	}
+
 	/**
 	 * it handles initial Resources phase, adds incoming resources to the depot and moves the marker in the faith track (only third and fourth player).
 	 * When all the players are ready,ask for leader cards selection
@@ -172,15 +187,7 @@ public class ServerSideController {
 		}
 
 		if(allTrue(initResources)){
-			for (int i = 0; i < numberOfPlayers; i++) {
-				ArrayList<ReducedLeaderCard> leaderCards = new ArrayList<>();
-				leaderCards.add(new ReducedLeaderCard(mechanics.getPlayer(i).getLeaderCards()[0]));
-				leaderCards.add(new ReducedLeaderCard(mechanics.getPlayer(i).getLeaderCards()[1]));
-				leaderCards.add(new ReducedLeaderCard(mechanics.getPlayer(i).getLeaderCards()[2]));
-				leaderCards.add(new ReducedLeaderCard(mechanics.getPlayer(i).getLeaderCards()[3]));
-				view=virtualViewMap.get(nicknameList.get(i));
-				view.askInitLeaders(leaderCards);
-			}
+			controllerAskLeaders();
 		}
 	}
 
