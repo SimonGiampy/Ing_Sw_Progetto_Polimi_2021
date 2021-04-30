@@ -68,7 +68,10 @@ public class TurnController {
 	public void turnAskAction(){
 		VirtualView view = virtualViewMap.get(activePlayer);
 		int playerIndex= nicknameList.indexOf(activePlayer);
-		view.askAction(mechanics.getPlayer(playerIndex).checkAvailableActions());
+		if(leaderAction)
+			view.askAction(mechanics.getPlayer(playerIndex).checkAvailableNormalActions());
+		else
+			view.askAction(mechanics.getPlayer(playerIndex).checkAvailableActions());
 	}
 
 	public void setEndOfTurn(boolean endOfTurn) {

@@ -13,8 +13,6 @@ public class ReducedMarket implements Serializable {
 	private Marbles extraBall;
 	private boolean whiteMarble1;
 
-
-
 	private boolean whiteMarble2;
 
 	public ReducedMarket(Market market, ResourceDeck deck){

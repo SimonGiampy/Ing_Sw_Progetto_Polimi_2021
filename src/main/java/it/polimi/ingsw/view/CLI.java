@@ -15,11 +15,14 @@ import java.util.regex.Pattern;
 public class CLI extends ViewObservable implements View {
 	
 	Scanner scanner;
-	
+
 	public CLI() {
 		scanner = new Scanner(System.in);
 	}
-	
+
+	/**
+	 * it initializes CLI
+	 */
 	public void initialize() {
 		System.out.println("\n" +
 				" ,ggg, ,ggg,_,ggg,                                                                                                         \n" +
@@ -100,7 +103,8 @@ public class CLI extends ViewObservable implements View {
 		
 		notifyObserver(obs -> obs.onUpdateServerInfo(serverInfo));
 	}
-	
+
+
 	@Override
 	public void showLobbyList(ArrayList<String> lobbyList, int idVersion) {
 		int lobbyNumber;
@@ -123,7 +127,11 @@ public class CLI extends ViewObservable implements View {
 		lobbyNumber = Integer.parseInt(input);
 		notifyObserver(obs -> obs.onUpdateLobbyAccess(lobbyNumber, idVersion));
 	}
-	
+
+	/**
+	 *
+	 * @param lobbyAccessed
+	 */
 	@Override
 	public void showLoginConfirmation(boolean lobbyAccessed) {
 		if(lobbyAccessed)
@@ -252,7 +260,7 @@ public class CLI extends ViewObservable implements View {
 		int selectedLeader, action;
 		String input;
 		String[] splitInput;
-		String regex = "[1-" + availableLeaders.size() + "]" + "\s" + "[1-2]" ;
+		String regex = "[1-" + availableLeaders.size() + "]" + "," + "[1-2]" ;
 		boolean check;
 		System.out.println("Your Leader Cards:");
 		for (int i = 0; i < availableLeaders.size(); i++) {
@@ -261,7 +269,7 @@ public class CLI extends ViewObservable implements View {
 				System.out.println("PLAYABLE");
 			showLeaderCard(availableLeaders.get(i));
 		}
-		System.out.println("Type [INDEX ACTION] to play or discard the leader card or [0] to do nothing and end the turn");
+		System.out.println("Type [INDEX,ACTION] to play or discard the leader card or [0] to do nothing and end the turn");
 		System.out.println("ACTION = 1 -> play, ACTION = 2 -> discard");
 		do {
 			input = scanner.nextLine();
@@ -270,8 +278,8 @@ public class CLI extends ViewObservable implements View {
 				return;
 			} else {
 				check = Pattern.matches(regex, input);
-				splitInput = input.split("\s");
-				if(Integer.parseInt(splitInput[1]) == 1 && !(availableLeaders.get(Integer.parseInt(splitInput[0])).isPlayable()))
+				splitInput = input.split(",");
+				if(check && Integer.parseInt(splitInput[1]) == 1 && !(availableLeaders.get(Integer.parseInt(splitInput[0])).isPlayable()))
 					check = false;
 			}
 			if(!check) System.out.println("Input incorrect or selected action not available");
