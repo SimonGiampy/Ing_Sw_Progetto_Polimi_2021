@@ -2,6 +2,7 @@ package it.polimi.ingsw.controller;
 
 import it.polimi.ingsw.exceptions.InvalidUserRequestException;
 import it.polimi.ingsw.model.*;
+import it.polimi.ingsw.model.reducedClasses.ReducedFaithTrack;
 import it.polimi.ingsw.model.reducedClasses.ReducedLeaderCard;
 import it.polimi.ingsw.model.reducedClasses.ReducedMarket;
 import it.polimi.ingsw.model.reducedClasses.ReducedWarehouseDepot;
@@ -102,7 +103,7 @@ public class GameController {
 		setTurnController(new TurnController(virtualViewMap,this,nicknameList,mechanics));
 		setGameState(GameState.INIT);
 		VirtualView vv= virtualViewMap.get(nicknameList.get(0));
-		vv.showGenericMessage("You are the first player! Wait for the others players");
+		vv.showGenericMessage("You are the first player! Wait!");
 		if(numberOfPlayers==1)
 			initResources[0]=true;
 		else {
@@ -130,6 +131,10 @@ public class GameController {
 		VirtualView view=virtualViewMap.get(message.getNickname());
 		view.showGenericMessage("This is your depot now!");
 		view.showDepot(new ReducedWarehouseDepot(mechanics.getPlayer(playerIndex).getPlayersWarehouseDepot()));
+		if(playerIndex==2 || playerIndex==3){
+			view.showGenericMessage("This is your Faith Track now!");
+			view.showFaithTrack(new ReducedFaithTrack(mechanics.getPlayer(playerIndex).getPlayerFaithTrack()));
+		}
 
 		if(allTrue(initResources)){
 			for (int i = 0; i < numberOfPlayers; i++) {
