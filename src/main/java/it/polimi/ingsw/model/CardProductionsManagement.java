@@ -17,6 +17,7 @@ public class CardProductionsManagement {
 	private final boolean[] numberOfProduction;
 	private final ProductionRules[] productions;
 	private ArrayList<Integer> selectedInput;
+	private int[] inputResources;
 
 	/**
 	 * default constructor
@@ -244,6 +245,7 @@ public class CardProductionsManagement {
 	 * @return the number of ? in input
 	 */
 	public int numberOfInputEmptyResources(int selectedStack){
+		System.out.println(selectedStack);
 		return productions[selectedStack-1].numberOfInputEmptyResources();
 	}
 
@@ -361,6 +363,14 @@ public class CardProductionsManagement {
 
 	public void setSelectedInput(ArrayList<Integer> selectedInput) {
 		this.selectedInput = selectedInput;
+	}
+
+	public int[] getInputResources() {
+		return inputResources;
+	}
+
+	public void setInputResources(int[] inputResources) {
+		this.inputResources = inputResources;
 	}
 }
 

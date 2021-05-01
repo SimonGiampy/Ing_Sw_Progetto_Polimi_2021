@@ -459,10 +459,13 @@ public class GameDemo {
 			listOfInt = scanner.nextLine();
 			selectedResourcesOutput = playerInputToArray(listOfInt);
 		}
+		/*
 		currentPlayer.activateProduction(playerProductionInput, selectedResourcesInput, selectedResourcesOutput);
 		//currentPlayer.getPlayersWarehouseDepot().showDepot();
 		System.out.print("Player Strongbox after production(s): ");
 		currentPlayer.getMyStrongbox().showStrongbox();
 
+
+		 */
 	}
 }

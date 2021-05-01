@@ -528,7 +528,7 @@ public class CLI extends ViewObservable implements View {
 	
 	@Override
 	public void askFreeInput(int number) {
-		//TODO: missing function body
+		System.out.println("sei un pirla");
 	}
 	
 	@Override

@@ -1,5 +1,6 @@
 package it.polimi.ingsw.controller;
 
+import it.polimi.ingsw.exceptions.InvalidInputException;
 import it.polimi.ingsw.exceptions.InvalidUserRequestException;
 import it.polimi.ingsw.model.*;
 import it.polimi.ingsw.model.reducedClasses.ReducedFaithTrack;
@@ -225,7 +226,7 @@ public class ServerSideController {
 				if (((ResourcesList)receivedMessage).getFlag()==1)
 					freeInputHandler((ResourcesList)receivedMessage);
 				else
-					freeOutputHandler();
+					freeOutputHandler((ResourcesList) receivedMessage);
 
 			}
 		}
@@ -365,102 +366,83 @@ public class ServerSideController {
 		int playerIndex = nicknameList.indexOf(message.getNickname());
 		VirtualView view = virtualViewMap.get(message.getNickname());
 		CardProductionsManagement cardProductionsManagement = mechanics.getPlayer(playerIndex).getPlayersCardManager();
-		if (cardProductionsManagement.isSelectedProductionAvailable(message.getSelectedProductions())) {
-			cardProductionsManagement.setSelectedInput(message.getSelectedProductions());
-			if (cardProductionsManagement.numberOfInputEmptySelectedProduction(message.getSelectedProductions()) > 0)
-				view.askFreeInput(cardProductionsManagement.numberOfInputEmptySelectedProduction(message.getSelectedProductions()));
-			else if (cardProductionsManagement.numberOfOutputEmptySelectedProduction(message.getSelectedProductions()) > 0)
-				view.askFreeOutput(cardProductionsManagement.numberOfOutputEmptySelectedProduction(message.getSelectedProductions()));
-			else {
-				int[] inputResources = new int[]{0,0,0,0};
-				int[] outPutResources= new int[]{0,0,0,0};
-				mechanics.getPlayer(playerIndex).activateProduction(message.getSelectedProductions(),inputResources,outPutResources);
+		cardProductionsManagement.setSelectedInput(message.getSelectedProductions());
+		if (cardProductionsManagement.numberOfInputEmptySelectedProduction(message.getSelectedProductions()) > 0)
+			view.askFreeInput(cardProductionsManagement.numberOfInputEmptySelectedProduction(message.getSelectedProductions()));
+		else if (cardProductionsManagement.numberOfOutputEmptySelectedProduction(message.getSelectedProductions()) > 0)
+			view.askFreeOutput(cardProductionsManagement.numberOfOutputEmptySelectedProduction(message.getSelectedProductions()));
+		else {
+			try {
+				int[] inputResources = new int[]{0, 0, 0, 0};
+				int[] outPutResources = new int[]{0, 0, 0, 0};
+				mechanics.getPlayer(playerIndex).activateProduction(message.getSelectedProductions(), inputResources, outPutResources);
 				turnController.setTurnPhase(TurnPhase.MAIN_ACTION);
-			}
-		} else
-			view.askProductionAction(cardProductionsManagement.availableProduction());
 
-		/*
-		int[] inputResources = new int[]{0,0,0,0};
-		int[] outPutResources= new int[]{0,0,0,0};
-		if(message.getResourcesInputNumber() != null)
-			for (int i = 0; i < message.getResourcesInputList().size(); i++) {
-				if(message.getResourcesInputList().get(i)==Resources.COIN){
-					inputResources[0]=message.getResourcesInputNumber().get(i);
-				}
-				if(message.getResourcesInputList().get(i)==Resources.SERVANT){
-					inputResources[1]=message.getResourcesInputNumber().get(i);
-				}
-				if(message.getResourcesInputList().get(i)==Resources.SHIELD){
-					inputResources[2]=message.getResourcesInputNumber().get(i);
-				}
-				if(message.getResourcesInputList().get(i)==Resources.STONE){
-					inputResources[3]=message.getResourcesInputNumber().get(i);
-				}
-			}
-		if(message.getResourcesOutputNumber()!=null){
-			for (int i = 0; i < message.getResourcesOutputList().size(); i++) {
-				if(message.getResourcesOutputList().get(i)==Resources.COIN){
-					outPutResources[0]=message.getResourcesOutputNumber().get(i);
-				}
-				if(message.getResourcesOutputList().get(i)==Resources.SERVANT){
-					outPutResources[1]=message.getResourcesOutputNumber().get(i);
-				}
-				if(message.getResourcesOutputList().get(i)==Resources.SHIELD){
-					outPutResources[2]=message.getResourcesOutputNumber().get(i);
-				}
-				if(message.getResourcesOutputList().get(i)==Resources.STONE){
-					outPutResources[3]=message.getResourcesOutputNumber().get(i);
-				}
+			} catch (InvalidInputException e) {
+				view.askProductionAction(cardProductionsManagement.availableProduction());
 			}
 		}
-		mechanics.getPlayer(playerIndex).activateProduction(message.getSelectedProductions(),inputResources,outPutResources);
-		turnController.setTurnPhase(TurnPhase.MAIN_ACTION);
+	}
+
+
+	private void freeInputHandler(ResourcesList message){
+		int playerIndex = nicknameList.indexOf(message.getNickname());
+		VirtualView view = virtualViewMap.get(message.getNickname());
+		CardProductionsManagement cardProductionsManagement = mechanics.getPlayer(playerIndex).getPlayersCardManager();
+		if(cardProductionsManagement.numberOfOutputEmptySelectedProduction(cardProductionsManagement.getSelectedInput())>0) {
+			cardProductionsManagement.setInputResources(putResources(message));
+			view.askFreeOutput(cardProductionsManagement.numberOfOutputEmptySelectedProduction(cardProductionsManagement.getSelectedInput()));
+		}
+		else{
+			try {
+				int[] outputResources= new int[]{0,0,0,0};
+				mechanics.getPlayer(playerIndex).activateProduction(cardProductionsManagement.getSelectedInput(), putResources(message),outputResources);
+				turnController.setTurnPhase(TurnPhase.MAIN_ACTION);
+		}
+			catch (InvalidInputException e){
+				view.askFreeInput(cardProductionsManagement.numberOfInputEmptySelectedProduction(cardProductionsManagement.getSelectedInput()));
+			}
+		}
+
+	}
+
+	private int[] putResources(ResourcesList message){
+		int[] outputResources= new int[]{0,0,0,0};
+		for (int i = 0; i < message.getResourcesList().size(); i++) {
+			if(message.getResourcesList().get(i)==Resources.COIN){
+				outputResources[0]=message.getResourcesNumber().get(i);
+			}
+			if(message.getResourcesList().get(i)==Resources.SERVANT){
+				outputResources[1]=message.getResourcesNumber().get(i);
+			}
+			if(message.getResourcesList().get(i)==Resources.SHIELD){
+				outputResources[2]=message.getResourcesNumber().get(i);
+			}
+			if(message.getResourcesList().get(i)==Resources.STONE){
+				outputResources[3]=message.getResourcesNumber().get(i);
+			}
+		}
+		return outputResources;
+	}
+	private void freeOutputHandler(ResourcesList message){
+		int playerIndex = nicknameList.indexOf(message.getNickname());
+		VirtualView view = virtualViewMap.get(message.getNickname());
+		CardProductionsManagement cardProductionsManagement = mechanics.getPlayer(playerIndex).getPlayersCardManager();
+		try {
+			mechanics.getPlayer(playerIndex).activateProduction(cardProductionsManagement.getSelectedInput(),
+					cardProductionsManagement.getInputResources(), putResources(message));
+			turnController.setTurnPhase(TurnPhase.MAIN_ACTION);
+		} catch (InvalidInputException e) {
+			e.printStackTrace();
+		}
+
+
 	}
 
 	/**
 	 * The client chooses what to do with its leader cards
 	 * @param message is a message from the client
 	 */
-	}
-
-	private void freeInputHandler(ResourcesList message){
-		int playerIndex = nicknameList.indexOf(message.getNickname());
-		VirtualView view = virtualViewMap.get(message.getNickname());
-		CardProductionsManagement cardProductionsManagement = mechanics.getPlayer(playerIndex).getPlayersCardManager();
-		int[] inputResources = new int[]{0,0,0,0};
-		for (int i = 0; i < message.getResourcesList().size(); i++) {
-			if(message.getResourcesList().get(i)==Resources.COIN){
-				inputResources[0]=message.getResourcesNumber().get(i);
-			}
-			if(message.getResourcesList().get(i)==Resources.SERVANT){
-				inputResources[1]=message.getResourcesNumber().get(i);
-			}
-			if(message.getResourcesList().get(i)==Resources.SHIELD){
-				inputResources[2]=message.getResourcesNumber().get(i);
-			}
-			if(message.getResourcesList().get(i)==Resources.STONE){
-				inputResources[3]=message.getResourcesNumber().get(i);
-			}
-		}
-		if(cardProductionsManagement.numberOfOutputEmptySelectedProduction(cardProductionsManagement.getSelectedInput())>0)
-			view.askFreeOutput(cardProductionsManagement.numberOfOutputEmptySelectedProduction(cardProductionsManagement.getSelectedInput()));
-		else{
-			try {
-				int[] outputResources= new int[]{0,0,0,0};
-				mechanics.getPlayer(playerIndex).activateProduction(cardProductionsManagement.getSelectedInput(), inputResources,outputResources);
-				turnController.setTurnPhase(TurnPhase.MAIN_ACTION);
-		}
-			catch (Exception e){
-
-			}
-		}
-
-	}
-
-	private void freeOutputHandler(){
-
-	}
 	private void leaderActionHandler(LeaderAction message){
 		int playerIndex = nicknameList.indexOf(message.getNickname());
 		if(message.getAction()==1) { // play leader
@@ -474,6 +456,8 @@ public class ServerSideController {
 		} else if(turnController.isMainActionDone()){ // nothing, next turn
 			turnController.setTurnPhase(TurnPhase.END_TURN);
 		}
+
+		else turnController.turnAskAction();
 
 	}
 
