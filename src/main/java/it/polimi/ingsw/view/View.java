@@ -2,7 +2,9 @@ package it.polimi.ingsw.view;
 
 import it.polimi.ingsw.model.*;
 import it.polimi.ingsw.model.reducedClasses.*;
+import it.polimi.ingsw.model.util.Colors;
 import it.polimi.ingsw.model.util.PlayerActions;
+import it.polimi.ingsw.model.util.TokenType;
 
 import java.util.ArrayList;
 
@@ -185,5 +187,7 @@ public interface View {
 	 * shows an error message regarding a client's disconnection
 	 */
 	void connectionError();
+
+	void showToken(TokenType token, Colors color);
 
 }

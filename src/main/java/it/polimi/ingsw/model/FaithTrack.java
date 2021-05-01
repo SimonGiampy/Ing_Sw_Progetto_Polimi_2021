@@ -6,9 +6,9 @@ import java.util.ArrayList;
 
 public class FaithTrack {
 	
-	private ArrayList<Boolean> vaticanReports;
+	private final ArrayList<Boolean> vaticanReports;
 	private Integer currentPosition;
-	private ArrayList<Tile> track;
+	private final ArrayList<Tile> track;
 	private final ArrayList<Integer> reportPoints;
 	
 	/**

@@ -1,9 +1,7 @@
 package it.polimi.ingsw.model;
 
 import it.polimi.ingsw.model.util.Colors;
-import it.polimi.ingsw.model.util.ListSet;
 import it.polimi.ingsw.model.util.Resources;
-import it.polimi.ingsw.model.util.Unicode;
 
 import java.io.Serializable;
 import java.util.ArrayList;

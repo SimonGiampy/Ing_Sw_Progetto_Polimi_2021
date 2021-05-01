@@ -2,8 +2,9 @@ package it.polimi.ingsw.model.singleplayer;
 
 import it.polimi.ingsw.model.util.Colors;
 import it.polimi.ingsw.model.DevelopmentCardsDeck;
+import it.polimi.ingsw.model.util.TokenType;
 
-public class DiscardToken implements Token{
+public class DiscardToken extends Token{
 
 	private final int cardsNumber;
 	private final Colors color;
@@ -16,6 +17,7 @@ public class DiscardToken implements Token{
 	 * @param cardsDeck deck of development cards
 	 */
 	public DiscardToken(int cardsNumber, Colors color, DevelopmentCardsDeck cardsDeck){
+		super(TokenType.DISCARD_TOKEN);
 		this.cardsNumber = cardsNumber;
 		this.color = color;
 		this.cardsDeck = cardsDeck;
@@ -31,8 +33,5 @@ public class DiscardToken implements Token{
 			cardsDeck.claimCard(cardsDeck.lowestCardLevelAvailable(color), color);
 		return false;
 	}
-	@Override
-	public void showToken(){
-		System.out.println("Discard token");
-	}
+
 }

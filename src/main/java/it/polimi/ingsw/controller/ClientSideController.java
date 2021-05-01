@@ -96,6 +96,8 @@ public class ClientSideController implements ViewObserver, Observer {
 				}
 				case GENERIC_MESSAGE -> view.showGenericMessage(((GenericMessage) message).getMessage());
 				case ERROR_MESSAGE -> view.showError(((ErrorMessage) message).getErrorMessage());
+
+				case TOKEN_SHOW -> view.showToken(((TokenShow) message).getTokenType(), ((TokenShow) message).getColor());
 			}
 		}
 	}

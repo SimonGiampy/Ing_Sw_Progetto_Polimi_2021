@@ -200,7 +200,7 @@ public class CLI extends ViewObservable implements View {
 			System.out.println("Type [RESOURCE] to select. For different type of resources " +
 					"separate them with a space (Example: [stone servant])");
 			input = scanner.nextLine().toUpperCase();
-			String[] selection = input.split(" ");
+			String[] selection;
 			do {
 				input = scanner.nextLine().toUpperCase();
 				selection = input.split("\s");
@@ -929,6 +929,17 @@ public class CLI extends ViewObservable implements View {
 			System.out.print(s + ", ");
 		}
 		System.out.print("\n");
+	}
+
+	@Override
+	public void showToken(TokenType token, Colors color){
+		if(token==TokenType.DISCARD_TOKEN)
+			System.out.println("Discard Token activated: 2 "+color+" cards are discarded from the deck!");
+		else if(token==TokenType.BLACK_CROSS_TOKEN)
+			System.out.println("Black Cross Token activated: Lorenzo marker has moved 2 position forward!");
+		else
+			System.out.println("Black Cross Token with shuffle activated: Lorenzo marker has moved 1 position forward! " +
+					"The stack will be shuffled!");
 	}
 
 	

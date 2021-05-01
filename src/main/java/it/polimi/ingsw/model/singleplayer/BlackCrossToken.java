@@ -1,11 +1,13 @@
 package it.polimi.ingsw.model.singleplayer;
 
 import it.polimi.ingsw.model.FaithTrack;
+import it.polimi.ingsw.model.util.TokenType;
 
-public class BlackCrossToken implements Token{
+public class BlackCrossToken extends Token{
 
 	private final int tileNumber;
 	private final FaithTrack lorenzoTrack;
+
 
 	/**
 	 * Initialize the attributes
@@ -14,6 +16,7 @@ public class BlackCrossToken implements Token{
 	 */
 	protected BlackCrossToken(int tileNumber, FaithTrack lorenzoTrack){
 
+		super(TokenType.BLACK_CROSS_TOKEN);
 		this.tileNumber = tileNumber;
 		this.lorenzoTrack = lorenzoTrack;
 
@@ -27,9 +30,5 @@ public class BlackCrossToken implements Token{
 	public boolean applyEffect(){
 		lorenzoTrack.moveMarker(tileNumber);
 		return false;
-	}
-	@Override
-	public void showToken(){
-		System.out.println("Black Cross Token +2 for Lorenzo");
 	}
 }

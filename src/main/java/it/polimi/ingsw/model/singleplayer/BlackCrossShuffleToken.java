@@ -1,8 +1,9 @@
 package it.polimi.ingsw.model.singleplayer;
 
 import it.polimi.ingsw.model.FaithTrack;
+import it.polimi.ingsw.model.util.TokenType;
 
-public class BlackCrossShuffleToken implements Token{
+public class BlackCrossShuffleToken extends Token{
 
 	private final int tileNumber;
 	private final FaithTrack lorenzoTrack;
@@ -13,6 +14,7 @@ public class BlackCrossShuffleToken implements Token{
 	 * @param lorenzoTrack faith track of Lorenzo
 	 */
 	public BlackCrossShuffleToken(int tileNumber, FaithTrack lorenzoTrack) {
+		super(TokenType.BLACK_CROSS_SHUFFLE_TOKEN);
 		this.tileNumber = tileNumber;
 		this.lorenzoTrack = lorenzoTrack;
 	}
@@ -25,10 +27,5 @@ public class BlackCrossShuffleToken implements Token{
 	public boolean applyEffect(){
 		lorenzoTrack.moveMarker(tileNumber);
 		return true;
-	}
-
-	@Override
-	public void showToken(){
-		System.out.println("Black Cross Shuffle Token +1 for Lorenzo");
 	}
 }
