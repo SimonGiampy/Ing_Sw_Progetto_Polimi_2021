@@ -1,6 +1,7 @@
 package it.polimi.ingsw.network;
 
 import it.polimi.ingsw.network.messages.Message;
+import it.polimi.ingsw.network.messages.MessageType;
 import it.polimi.ingsw.network.messages.generic.PingMessage;
 import it.polimi.ingsw.observers.Observable;
 
@@ -32,7 +33,6 @@ public class Client extends Observable {
 	public Client(String address, int port) throws IOException {
 
 		this.socket = new Socket(address, port);
-		this.socket.setSoTimeout(4000);
 		LOGGER.info("Connected to server");
 		this.outputStream = new ObjectOutputStream(socket.getOutputStream());
 		this.inputStream = new ObjectInputStream(socket.getInputStream());
@@ -70,7 +70,10 @@ public class Client extends Observable {
 	 */
 	public void sendMessage(Message message) {
 		try {
-			LOGGER.info("Sending: " + message);
+			if (message.getMessageType() != MessageType.PING) {
+				LOGGER.info("Sending: " + message);
+			}
+			
 			outputStream.writeObject(message);
 			outputStream.reset();
 		} catch (IOException e) {

@@ -153,26 +153,37 @@ public class GameMechanicsMultiPlayer {
 	public int getStartingPlayer() {
 		return startingPlayer;
 	}
-
-	//TODO: modify and move this winner method
-	public void winner() {
-		ArrayList<Player> winnerPlayers;
-		Player winner;
-		winner = Arrays.stream(players).max(Comparator.comparing(Player::totalScore)).orElse(null);
-		Player finalWinner = winner;
-		winnerPlayers=Arrays.stream(players).filter(i -> i.totalScore() == finalWinner.totalScore()).collect(Collectors.toCollection(ArrayList::new));
-		if (winnerPlayers.size()==1){
-			System.out.println("The Winner is Player " + finalWinner.getPlayerIndex()); //+winner.
-		}
-		else if (winnerPlayers.size()>1) {
-			winner = winnerPlayers.stream().max(Comparator.comparing(Player::numberOfResources)).orElse(null);
-			Player finalWinner1 = winner;
-			winnerPlayers = Arrays.stream(players).filter(i -> i.totalScore() == finalWinner1.totalScore()).collect(Collectors.toCollection(ArrayList::new));
-			if(winnerPlayers.size()==1){
-				System.out.println("The Winner is Player "+ finalWinner.getPlayerIndex());
+	
+	/**
+	 * calculates the winner of the match, by calculating the points
+	 * @return the index of the winning player. returns -1 if there is a draw
+	 */
+	public int winner() {
+		ArrayList<Player> winners1 = new ArrayList<>();
+		ArrayList<Player> winners2 = new ArrayList<>();
+		int maxScore = 0, maxRes = 0;
+		for (int i = 0; i < numberOfPlayers; i++) {
+			if (getPlayer(i).totalScore() > maxScore) {
+				maxScore = getPlayer(i).totalScore();
 			}
-			else System.out.println("Draw");
+			if (getPlayer(i).numberOfResources() > maxRes) {
+				maxRes = getPlayer(i).numberOfResources();
+			}
 		}
+		for (int i = 0; i < numberOfPlayers; i++) {
+			if (getPlayer(i).totalScore() == maxScore) {
+				winners1.add(getPlayer(i));
+			}
+			if (getPlayer(i).numberOfResources() == maxRes) {
+				winners2.add(getPlayer(i));
+			}
+		}
+		if (winners1.size() == 1){
+			return winners1.get(0).getPlayerIndex(); // calculation based on the total points gained
+		} else if (winners2.size() == 1) {
+			return winners1.get(0).getPlayerIndex(); // calculation based on the number of resources
+		} else return -1; // draw
+		
 	}
 
 	public FaithTrack getLorenzoFaithTrack() {

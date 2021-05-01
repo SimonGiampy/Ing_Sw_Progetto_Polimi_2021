@@ -96,7 +96,7 @@ public class GameMechanicsSinglePlayer extends GameMechanicsMultiPlayer {
 	 * Checks if the single player game is finished and show the total score
 	 */
 	@Override
-	public void winner(){
+	public int winner(){
 		if(getPlayer().isEndgameStarted()){
 			System.out.println("Congratulations! You won against Lorenzo");
 			System.out.println("Score: " +getPlayer().totalScore() + "Victory Points");
@@ -107,6 +107,7 @@ public class GameMechanicsSinglePlayer extends GameMechanicsMultiPlayer {
 			System.out.println("Game Over!\nLorenzo won!");
 			System.out.println("Your score: "+ getPlayer().totalScore());
 		}
+		return 0; //TODO: return an integer representing who is the winner of the game; move sys out in the CLI
 	}
 
 	public FaithTrack getLorenzoFaithTrack() {

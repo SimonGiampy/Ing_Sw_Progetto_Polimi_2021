@@ -87,9 +87,15 @@ public class ClientHandler implements Runnable {
 			try {
 				//sends the list of available lobbies in the server to the client connected
 				sendMessage(new LobbyList(server.getLobbiesDescription(), server.getLobbyListVersion()));
-				message = (Message) inputStream.readObject();
+				boolean answer = false;
+				do {
+					message = (Message) inputStream.readObject();
+					if (message != null && message.getMessageType() != MessageType.PING) {
+						answer = true;
+					}
+				} while (!answer);
 				LOGGER.info("Received: " + message);
-				if (message!= null && message.getMessageType() == MessageType.LOBBY_ACCESS) {
+				if (message.getMessageType() == MessageType.LOBBY_ACCESS) {
 					LobbyAccess lobbyAccess = (LobbyAccess) message;
 					
 					if (lobbyAccess.getLobbyNumber() == 0) { // client logs in as game host

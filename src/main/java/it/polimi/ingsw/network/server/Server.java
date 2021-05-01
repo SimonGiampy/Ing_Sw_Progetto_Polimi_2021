@@ -42,9 +42,7 @@ public class Server implements Runnable {
 	 */
 	@Override
 	public void run() {
-		serverThread = Thread.currentThread();
-		
-		while (!serverThread.isInterrupted()) {
+		while (!Thread.currentThread().isInterrupted()) {
 			try {
 				// accepts new client connections
 				Socket client = serverSocket.accept();

@@ -52,15 +52,20 @@ public class Lobby {
 	 */
 	public void setUpLobby() throws IOException, ClassNotFoundException {
 		host.sendMessage(new PlayerNumberRequest());
-		Message message = (Message) host.getInputStream().readObject();
-		if (message != null) {
-			LOGGER.info("Received: " + message);
-			if (message.getMessageType() == MessageType.PLAYER_NUMBER_REPLY) {
-				PlayerNumberReply mes = (PlayerNumberReply) message;
-				numberOfPlayers = mes.getPlayerNumber();
-				serverSideController = new ServerSideController(this, numberOfPlayers);
-				connectClient(host);
+		boolean answer = false;
+		Message message;
+		do {
+			message = (Message) host.getInputStream().readObject();
+			if (message != null && message.getMessageType() != MessageType.PING) {
+				answer = true;
 			}
+		} while (!answer);
+		LOGGER.info("Received: " + message);
+		if (message.getMessageType() == MessageType.PLAYER_NUMBER_REPLY) {
+			PlayerNumberReply mes = (PlayerNumberReply) message;
+			numberOfPlayers = mes.getPlayerNumber();
+			serverSideController = new ServerSideController(this, numberOfPlayers);
+			connectClient(host);
 		}
 	}
 	
@@ -89,17 +94,17 @@ public class Lobby {
 		boolean valid = false;
 		do {
 			view.askNickname(); // asks for a nickname (message from the server to the client)
-			Message message = null;
+			Message message;
 			try {
-				message = (Message) client.getInputStream().readObject();
-			}  catch (ClassCastException | ClassNotFoundException ex) {
-				LOGGER.error("Invalid class from stream from client");
-			} catch (IOException e) {
-				LOGGER.error("Invalid IO from client caused by disconnection");
-				client.disconnect();
-				return;
-			}
-			if (message != null) { // checks if the nickname is valid or not
+				boolean answer = false;
+				do {
+					message = (Message) client.getInputStream().readObject();
+					if (message != null && message.getMessageType() != MessageType.PING) {
+						answer = true;
+					}
+				} while (!answer);
+				
+				// checks if the nickname is valid or not
 				LOGGER.info("Received: " + message);
 				if (message.getMessageType() == MessageType.NICKNAME_REPLY) {
 					NicknameReply reply = (NicknameReply) message;
@@ -109,6 +114,13 @@ public class Lobby {
 					}
 					view.showNicknameConfirmation(valid); // sends the login result to the client, otherwise
 				}
+				
+			}  catch (ClassCastException | ClassNotFoundException ex) {
+				LOGGER.error("Invalid class from stream from client");
+			} catch (IOException e) {
+				LOGGER.error("Invalid IO from client caused by disconnection");
+				client.disconnect();
+				return;
 			}
 			
 		} while (!valid);
@@ -164,8 +176,7 @@ public class Lobby {
 	
 	/**
 	 * handle client disconnection before the match starts and after the match is started.
-	 * In the case the disconnected client was the host, then the lobby automatically picks a new host and continue the login phase.
-	 *
+	 * In the case the disconnected client was the host, then the lobby automatically picks a new host and continue the login phase
 	 * @param client that gets disconnected from the lobby
 	 */
 	public synchronized void onDisconnect(ClientHandler client) {
