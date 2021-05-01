@@ -490,11 +490,42 @@ public class CLI extends ViewObservable implements View {
 	@Override
 	public void askProductionAction(ArrayList<Productions> productionAvailable) {
 		System.out.println("These are your available production! Remember that not necessarily all productions can be activated at the same time!");
+		
+		StringBuilder regexBuilder = new StringBuilder();
+		regexBuilder.append("(");
 		for (int i = 0; i < productionAvailable.size(); i++) {
-			System.out.println((i+1) + ": "+productionAvailable.get(i));
+			System.out.println((i+1) + ": " + productionAvailable.get(i).toString());
+			
+			if (i == productionAvailable.size() - 1) {
+				regexBuilder.append((i + 1));
+			} else {
+				regexBuilder.append((i + 1) + "|");
+			}
 		}
-		ArrayList<Integer> selection= new ArrayList<>(); // need to be fixed
-
+		String regex = regexBuilder.append(")").toString();
+		
+		System.out.println("Write the list of productions you want to use in this turn, as a list of integers separated by spaces." +
+						" For example type: '1, 3, 4'");
+		boolean check = true;
+		String input;
+		String[] x;
+		do {
+			input = scanner.nextLine();
+			x = input.split(",");
+			for (String s : x) {
+				if (!Pattern.matches(regex, s)) {
+					check = false;
+				}
+			}
+			if (!check) {
+				System.out.println("Input is not valid, type again.");
+			}
+		} while (!check);
+		
+		ArrayList<Integer> selection = new ArrayList<>();
+		for (String s: x) {
+			selection.add(Integer.parseInt(s));
+		}
 		notifyObserver(obs -> obs.onUpdateProductionAction(selection));
 
 	}

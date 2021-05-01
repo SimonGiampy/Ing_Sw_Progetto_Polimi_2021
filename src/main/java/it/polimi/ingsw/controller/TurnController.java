@@ -50,7 +50,7 @@ public class TurnController {
 	/**
 	 * set next active player
 	 */
-	public void next(){
+	public void nextTurn(){
 		int currentPlayerIndex=nicknameList.indexOf(activePlayer);
 		if(currentPlayerIndex+1< mechanics.getNumberOfPlayers())
 			currentPlayerIndex=currentPlayerIndex+1;
@@ -59,7 +59,7 @@ public class TurnController {
 		activePlayer=nicknameList.get(currentPlayerIndex);
 	}
 
-	public void newTurn(){
+	public void startTurn(){
 		setEndOfTurn(false);
 		setLeaderAction(false);
 		setMainActionDone(false);
@@ -111,8 +111,8 @@ public class TurnController {
 			setMainActionDone(true);
 			if(leaderAction){
 				tokenActivation();
-				next();
-				newTurn();
+				nextTurn();
+				startTurn();
 			}
 			else {
 				turnAskLeaderAction();
@@ -123,16 +123,16 @@ public class TurnController {
 			setLeaderAction(true);
 			if(MainActionDone){
 				tokenActivation();
-				next();
-				newTurn();
+				nextTurn();
+				startTurn();
 			}
 			else turnAskAction();
 		}
 
 		else if (turnPhase == TurnPhase.END_TURN){
 			tokenActivation();
-			next();
-			newTurn();
+			nextTurn();
+			startTurn();
 		}
 
 	}

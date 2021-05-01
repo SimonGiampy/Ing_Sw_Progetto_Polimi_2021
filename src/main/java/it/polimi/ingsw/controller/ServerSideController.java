@@ -116,7 +116,7 @@ public class ServerSideController {
 		gameState = GameState.GAME;
 		Resources[] resources={Resources.COIN,Resources.STONE,Resources.STONE,Resources.SHIELD,Resources.SHIELD,Resources.SHIELD};
 		mechanics.getPlayer(0).getPlayersWarehouseDepot().setDepotForDebugging(resources);
-		turnController.newTurn();
+		turnController.startTurn();
 	}
 
 	/**
