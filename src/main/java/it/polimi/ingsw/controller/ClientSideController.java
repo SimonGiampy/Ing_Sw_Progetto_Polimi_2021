@@ -169,16 +169,13 @@ public class ClientSideController implements ViewObserver, Observer {
 	}
 
 	@Override
-	public void onUpdateProductionAction(ArrayList<Integer> selectedProduction, ArrayList<Resources> resourcesInputList, ArrayList<Integer> resourcesInputNumber,
-										 ArrayList<Resources> resourcesOutputList, ArrayList<Integer> resourcesOutputNumber) {
-		client.sendMessage(new ProductionSelection( nickname, selectedProduction,
-				resourcesInputList,  resourcesInputNumber,
-				 resourcesOutputList,  resourcesOutputNumber));
+	public void onUpdateProductionAction(ArrayList<Integer> selectedProduction) {
+		client.sendMessage(new ProductionSelection( nickname, selectedProduction));
 	}
 
 	@Override
-	public void onUpdateResourceChoice(ArrayList<Resources> resourcesList, ArrayList<Integer> resourcesNumber) {
-		client.sendMessage(new ResourcesList(nickname, resourcesList, resourcesNumber));
+	public void onUpdateResourceChoice(ArrayList<Resources> resourcesList, ArrayList<Integer> resourcesNumber, int flag) {
+		client.sendMessage(new ResourcesList(nickname, resourcesList, resourcesNumber,flag));
 	}
 
 	@Override

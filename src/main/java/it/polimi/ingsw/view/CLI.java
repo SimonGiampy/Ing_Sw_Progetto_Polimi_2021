@@ -226,7 +226,7 @@ public class CLI extends ViewObservable implements View {
 			resourcesList.add(Resources.valueOf(selection[1]));
 		}
 
-		notifyObserver(obs -> obs.onUpdateResourceChoice(resourcesList, resourcesNumber));
+		notifyObserver(obs -> obs.onUpdateResourceChoice(resourcesList, resourcesNumber,0));
 	}
 	
 	@Override
@@ -488,8 +488,15 @@ public class CLI extends ViewObservable implements View {
 	}
 	
 	@Override
-	public void askProductionAction(ArrayList<Integer> productionAvailable) {
-		//TODO: missing function body
+	public void askProductionAction(ArrayList<Productions> productionAvailable) {
+		System.out.println("These are your available production! Remember that not necessarily all productions can be activated at the same time!");
+		for (int i = 0; i < productionAvailable.size(); i++) {
+			System.out.println((i+1) + ": "+productionAvailable.get(i));
+		}
+		ArrayList<Integer> selection= new ArrayList<>(); // need to be fixed
+
+		notifyObserver(obs -> obs.onUpdateProductionAction(selection));
+
 	}
 	
 	@Override
@@ -531,7 +538,7 @@ public class CLI extends ViewObservable implements View {
 			if (!check) System.out.println("Input incorrect! Type again!");
 		}while(!check);
 
-		notifyObserver(obs -> obs.onUpdateResourceChoice(resourcesList, resourcesNumber));
+		notifyObserver(obs -> obs.onUpdateResourceChoice(resourcesList, resourcesNumber,0));
 	}
 	
 	

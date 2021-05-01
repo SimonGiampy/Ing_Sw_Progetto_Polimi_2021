@@ -90,15 +90,14 @@ public interface ViewObserver {
 	 * it sends a message to the server with the selected production input
 	 * @param selectedProduction is an arraylist of index of the selected production
 	 */
-	void onUpdateProductionAction(ArrayList<Integer> selectedProduction, ArrayList<Resources> resourcesInputList, ArrayList<Integer> resourcesInputNumber,
-										 ArrayList<Resources> resourcesOutputList, ArrayList<Integer> resourcesOutputNumber);
+	void onUpdateProductionAction(ArrayList<Integer> selectedProduction);
 
 	/**
 	 * it sends a message to the server with the selected free choice resources
 	 * @param resourcesList list of the resources
 	 * @param resourcesNumber how much of each one
 	 */
-	void onUpdateResourceChoice(ArrayList<Resources> resourcesList, ArrayList<Integer> resourcesNumber);
+	void onUpdateResourceChoice(ArrayList<Resources> resourcesList, ArrayList<Integer> resourcesNumber,int flag);
 
 	/**
 	 * it handles a disconnection wanted by the user

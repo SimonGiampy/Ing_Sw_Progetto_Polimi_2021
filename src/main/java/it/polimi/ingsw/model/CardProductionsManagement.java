@@ -16,6 +16,7 @@ public class CardProductionsManagement {
 	private final WarehouseDepot myWarehouseDepot;
 	private final boolean[] numberOfProduction;
 	private final ProductionRules[] productions;
+	private ArrayList<Integer> selectedInput;
 
 	/**
 	 * default constructor
@@ -325,11 +326,11 @@ public class CardProductionsManagement {
 		}
 	}
 
-	public ArrayList<Integer> availableProduction(){
-		ArrayList<Integer> list= new ArrayList<>();
+	public ArrayList<Productions> availableProduction(){
+		ArrayList<Productions> list= new ArrayList<>();
 		for (int i = 0; i < 6; i++) {
 			if(numberOfProduction[i] && isSingleProductionAvailable(i+1))
-				list.add(i+1);
+				list.add(Productions.values()[i]);
 		}
 		return list;
 	}
@@ -352,6 +353,14 @@ public class CardProductionsManagement {
 
 	public ProductionRules[] getProductions() {
 		return productions;
+	}
+
+	public ArrayList<Integer> getSelectedInput() {
+		return selectedInput;
+	}
+
+	public void setSelectedInput(ArrayList<Integer> selectedInput) {
+		this.selectedInput = selectedInput;
 	}
 }
 

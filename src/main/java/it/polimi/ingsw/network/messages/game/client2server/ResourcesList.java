@@ -12,11 +12,13 @@ import java.util.ArrayList;
 public class ResourcesList extends Message {
 	private final ArrayList<Resources> resourcesList;
 	private final ArrayList<Integer> resourcesNumber;
+	private final int flag; //0 init, 1 input, 2 output
 
-	public ResourcesList(String nickname, ArrayList<Resources> resourcesList, ArrayList<Integer> resourcesNumber){
+	public ResourcesList(String nickname, ArrayList<Resources> resourcesList, ArrayList<Integer> resourcesNumber, int flag){
 		super(nickname, MessageType.RESOURCES_LIST);
 		this.resourcesList=resourcesList;
 		this.resourcesNumber=resourcesNumber;
+		this.flag=flag;
 	}
 
 	public ArrayList<Resources> getResourcesList() {
@@ -25,5 +27,9 @@ public class ResourcesList extends Message {
 
 	public ArrayList<Integer> getResourcesNumber() {
 		return resourcesNumber;
+	}
+
+	public int getFlag() {
+		return flag;
 	}
 }

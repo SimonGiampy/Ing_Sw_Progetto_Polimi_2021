@@ -220,6 +220,13 @@ public class ServerSideController {
 			case DEPOT_INTERACTION -> depotInteractionHandler((DepotInteraction) receivedMessage);
 			case PRODUCTION_SELECTION -> productionHandler((ProductionSelection) receivedMessage);
 			case LEADER_ACTION -> leaderActionHandler((LeaderAction) receivedMessage);
+			case RESOURCE_CHOICE ->{
+				if (((ResourcesList)receivedMessage).getFlag()==1)
+					freeInputHandler((ResourcesList)receivedMessage);
+				else
+					freeOutputHandler();
+
+			}
 		}
 	}
 
@@ -328,8 +335,26 @@ public class ServerSideController {
 	 * it handles production interaction
 	 * @param message is a message from the client
 	 */
-	private void productionHandler(ProductionSelection message){
-		int playerIndex= nicknameList.indexOf(message.getNickname());
+	private void productionHandler(ProductionSelection message) {
+		int playerIndex = nicknameList.indexOf(message.getNickname());
+		VirtualView view = virtualViewMap.get(message.getNickname());
+		CardProductionsManagement cardProductionsManagement = mechanics.getPlayer(playerIndex).getPlayersCardManager();
+		if (cardProductionsManagement.isSelectedProductionAvailable(message.getSelectedProductions())) {
+			cardProductionsManagement.setSelectedInput(message.getSelectedProductions());
+			if (cardProductionsManagement.numberOfInputEmptySelectedProduction(message.getSelectedProductions()) > 0)
+				view.askFreeInput(cardProductionsManagement.numberOfInputEmptySelectedProduction(message.getSelectedProductions()));
+			else if (cardProductionsManagement.numberOfOutputEmptySelectedProduction(message.getSelectedProductions()) > 0)
+				view.askFreeOutput(cardProductionsManagement.numberOfOutputEmptySelectedProduction(message.getSelectedProductions()));
+			else {
+				int[] inputResources = new int[]{0,0,0,0};
+				int[] outPutResources= new int[]{0,0,0,0};
+				mechanics.getPlayer(playerIndex).activateProduction(message.getSelectedProductions(),inputResources,outPutResources);
+				turnController.setTurnPhase(TurnPhase.MAIN_ACTION);
+			}
+		} else
+			view.askProductionAction(cardProductionsManagement.availableProduction());
+
+		/*
 		int[] inputResources = new int[]{0,0,0,0};
 		int[] outPutResources= new int[]{0,0,0,0};
 		if(message.getResourcesInputNumber() != null)
@@ -371,6 +396,45 @@ public class ServerSideController {
 	 * The client chooses what to do with its leader cards
 	 * @param message is a message from the client
 	 */
+	}
+
+	private void freeInputHandler(ResourcesList message){
+		int playerIndex = nicknameList.indexOf(message.getNickname());
+		VirtualView view = virtualViewMap.get(message.getNickname());
+		CardProductionsManagement cardProductionsManagement = mechanics.getPlayer(playerIndex).getPlayersCardManager();
+		int[] inputResources = new int[]{0,0,0,0};
+		for (int i = 0; i < message.getResourcesList().size(); i++) {
+			if(message.getResourcesList().get(i)==Resources.COIN){
+				inputResources[0]=message.getResourcesNumber().get(i);
+			}
+			if(message.getResourcesList().get(i)==Resources.SERVANT){
+				inputResources[1]=message.getResourcesNumber().get(i);
+			}
+			if(message.getResourcesList().get(i)==Resources.SHIELD){
+				inputResources[2]=message.getResourcesNumber().get(i);
+			}
+			if(message.getResourcesList().get(i)==Resources.STONE){
+				inputResources[3]=message.getResourcesNumber().get(i);
+			}
+		}
+		if(cardProductionsManagement.numberOfOutputEmptySelectedProduction(cardProductionsManagement.getSelectedInput())>0)
+			view.askFreeOutput(cardProductionsManagement.numberOfOutputEmptySelectedProduction(cardProductionsManagement.getSelectedInput()));
+		else{
+			try {
+				int[] outputResources= new int[]{0,0,0,0};
+				mechanics.getPlayer(playerIndex).activateProduction(cardProductionsManagement.getSelectedInput(), inputResources,outputResources);
+				turnController.setTurnPhase(TurnPhase.MAIN_ACTION);
+		}
+			catch (Exception e){
+
+			}
+		}
+
+	}
+
+	private void freeOutputHandler(){
+
+	}
 	private void leaderActionHandler(LeaderAction message){
 		int playerIndex = nicknameList.indexOf(message.getNickname());
 		if(message.getAction()==1) { // play leader

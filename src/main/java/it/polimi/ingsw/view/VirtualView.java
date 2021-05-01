@@ -5,6 +5,7 @@ import it.polimi.ingsw.model.reducedClasses.*;
 import it.polimi.ingsw.model.singleplayer.Token;
 import it.polimi.ingsw.model.util.Colors;
 import it.polimi.ingsw.model.util.PlayerActions;
+import it.polimi.ingsw.model.util.Productions;
 import it.polimi.ingsw.model.util.TokenType;
 import it.polimi.ingsw.network.messages.*;
 import it.polimi.ingsw.network.messages.game.server2client.*;
@@ -81,7 +82,7 @@ public class VirtualView implements View, Observer {
 	}
 
 	@Override
-	public void askProductionAction(ArrayList<Integer> productionAvailable) {
+	public void askProductionAction(ArrayList<Productions> productionAvailable) {
 		clientHandler.sendMessage(new ProductionsAvailable(productionAvailable));
 	}
 

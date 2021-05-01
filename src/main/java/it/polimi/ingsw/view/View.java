@@ -4,6 +4,7 @@ import it.polimi.ingsw.model.*;
 import it.polimi.ingsw.model.reducedClasses.*;
 import it.polimi.ingsw.model.util.Colors;
 import it.polimi.ingsw.model.util.PlayerActions;
+import it.polimi.ingsw.model.util.Productions;
 import it.polimi.ingsw.model.util.TokenType;
 
 import java.util.ArrayList;
@@ -68,7 +69,7 @@ public interface View {
 	 * TODO: to be fixed
 	 * @param productionAvailable
 	 */
-	void askProductionAction(ArrayList<Integer> productionAvailable);
+	void askProductionAction(ArrayList<Productions> productionAvailable);
 
 	/**
 	 * it asks which free choice resources the player wants in input
