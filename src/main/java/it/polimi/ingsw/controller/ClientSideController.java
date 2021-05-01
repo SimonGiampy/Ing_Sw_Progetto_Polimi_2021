@@ -76,6 +76,11 @@ public class ClientSideController implements ViewObserver, Observer {
 					else
 						view.askMarketAction(((MarketShow) message).getMarket());
 				}
+				case WHITE_MARBLE_REQUEST -> {
+					WhiteMarbleRequest m = (WhiteMarbleRequest) message;
+					view.askWhiteMarbleChoice(m.getFromWhiteMarble1(), m.getFromWhiteMarble2(),
+							m.getWhiteMarblesInput1(), m.getWhiteMarblesInput2(), m.getHowMany());
+				}
 				case DEPOT_SHOW -> view.showDepot(((DepotShow) message).getDepot());
 				case DEPOT_CONFIRMATION -> {
 					DepotReply c = (DepotReply) message;
@@ -154,8 +159,13 @@ public class ClientSideController implements ViewObserver, Observer {
 	}
 
 	@Override
-	public void onUpdateMarketAction(String which, int where, int quantity1, int quantity2) {
-		client.sendMessage(new MarketInteraction(nickname, which, where,quantity1,quantity2));
+	public void onUpdateMarketAction(String which, int where) {
+		client.sendMessage(new MarketInteraction(nickname, which, where));
+	}
+
+	@Override
+	public void onUpdateWhiteMarbleChoice(int quantity1, int quantity2) {
+		client.sendMessage(new WhiteMarbleReply(nickname, quantity1, quantity2));
 	}
 
 	@Override

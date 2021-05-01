@@ -67,8 +67,14 @@ public interface ViewObserver {
 	 * @param which is row or column
 	 * @param where is the index of the row/column selected
 	 */
-	void onUpdateMarketAction(String which, int where, int quantity1, int quantity2);
+	void onUpdateMarketAction(String which, int where);
 
+	/**
+	 * it sends the number of times of activation of every white marble leader
+	 * @param quantity1 number of activations of first leader
+	 * @param quantity2 number of activations of second leader
+	 */
+	void onUpdateWhiteMarbleChoice(int quantity1, int quantity2);
 	/**
 	 * it sends a message to the server with the movement of a resource
 	 * @param fromWhere depot or deck. Indicates where to get the resources to be arranged

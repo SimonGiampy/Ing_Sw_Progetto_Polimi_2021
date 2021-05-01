@@ -6,6 +6,7 @@ import it.polimi.ingsw.model.singleplayer.Token;
 import it.polimi.ingsw.model.util.Colors;
 import it.polimi.ingsw.model.util.PlayerActions;
 import it.polimi.ingsw.model.util.Productions;
+import it.polimi.ingsw.model.util.Resources;
 import it.polimi.ingsw.model.util.TokenType;
 import it.polimi.ingsw.network.messages.*;
 import it.polimi.ingsw.network.messages.game.server2client.*;
@@ -69,6 +70,13 @@ public class VirtualView implements View, Observer {
 	@Override
 	public void askMarketAction(ReducedMarket market) {
 		clientHandler.sendMessage(new MarketShow(market, 1));
+	}
+
+	@Override
+	public void askWhiteMarbleChoice(ArrayList<Resources> fromWhiteMarble1, ArrayList<Resources> fromWhiteMarble2,
+									 int whiteMarblesInput1, int whiteMarblesInput2, int howMany) {
+		clientHandler.sendMessage(new WhiteMarbleRequest( fromWhiteMarble1,  fromWhiteMarble2, whiteMarblesInput1,
+				whiteMarblesInput2, howMany));
 	}
 
 	@Override

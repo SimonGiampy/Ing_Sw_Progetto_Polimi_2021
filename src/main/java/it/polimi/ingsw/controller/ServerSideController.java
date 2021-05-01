@@ -215,7 +215,8 @@ public class ServerSideController {
 	private void inGameState(Message receivedMessage){
 		switch (receivedMessage.getMessageType()){
 			case ACTION_REPLY-> actionReplyHandler((ActionReply) receivedMessage);
-			case INTERACTION_WITH_MARKET-> marketInteractionHandler((MarketInteraction) receivedMessage);
+			case INTERACTION_WITH_MARKET-> marketInteraction((MarketInteraction) receivedMessage);
+			case WHITE_MARBLE_REPLY -> marketConvert((WhiteMarbleReply) receivedMessage);
 			case BUY_CARD-> buyCardHandler((BuyCard) receivedMessage);
 			case DEPOT_INTERACTION -> depotInteractionHandler((DepotInteraction) receivedMessage);
 			case PRODUCTION_SELECTION -> productionHandler((ProductionSelection) receivedMessage);
@@ -238,7 +239,7 @@ public class ServerSideController {
 		VirtualView view= virtualViewMap.get(message.getNickname());
 		int playerIndex=nicknameList.indexOf(message.getNickname());
 		switch (message.getSelectedAction()){
-			case MARKET -> view.askMarketAction(new ReducedMarket(mechanics.getMarket(), mechanics.getPlayer(playerIndex).getPlayersResourceDeck()));
+			case MARKET -> view.askMarketAction(new ReducedMarket(mechanics.getMarket()));
 			case BUY_CARD -> view.askBuyCardAction(new ArrayList<>
 				(mechanics.getGameDevCardsDeck().buyableCards(mechanics.getPlayer(playerIndex).gatherAllPlayersResources(),
 						mechanics.getPlayer(playerIndex).getPlayersCardManager())), false);
@@ -248,29 +249,54 @@ public class ServerSideController {
 				leaderCards.add(new ReducedLeaderCard(mechanics.getPlayer(playerIndex).getLeaderCards()[0]));
 				leaderCards.add(new ReducedLeaderCard(mechanics.getPlayer(playerIndex).getLeaderCards()[1]));
 				view.askLeaderAction(leaderCards);
-
 			}
 		}
 
+	}
+
+	private void marketInteraction(MarketInteraction message){
+		int playerIndex = nicknameList.indexOf(message.getNickname());
+		VirtualView view = virtualViewMap.get(message.getNickname());
+
+		mechanics.getPlayer(playerIndex).interactWithMarket(message.getWhich(),message.getWhere());
+		ResourceDeck deck = mechanics.getPlayer(playerIndex).getPlayersResourceDeck();
+
+		if(deck.isWhiteAbility1Activated() && deck.getWhiteMarblesTaken() > 0) {
+			if (deck.isWhiteAbility2Activated()) {
+				view.askWhiteMarbleChoice(deck.getFromWhiteMarble1(), deck.getFromWhiteMarble2(), deck.getWhiteMarblesInput1(),
+						deck.getWhiteMarblesInput2(), deck.getWhiteMarblesTaken());
+			}
+			else{
+				marketConvert(new WhiteMarbleReply(message.getNickname(), deck.getRightNumberOfActivations(), 0));
+			}
+		}
+		else{
+			marketConvert(new WhiteMarbleReply(message.getNickname(),0,0));
+		}
 	}
 
 	/**
 	 * it handles market interaction
 	 * @param message interaction with market: initial market message
 	 */
-	private void marketInteractionHandler(MarketInteraction message){
+	private void marketConvert(WhiteMarbleReply message){
 		int playerIndex = nicknameList.indexOf(message.getNickname());
 		VirtualView view = virtualViewMap.get(message.getNickname());
+		ResourceDeck deck = mechanics.getPlayer(playerIndex).getPlayersResourceDeck();
+
 		try {
-			mechanics.getPlayer(playerIndex).interactWithMarket(message.getWhich(),message.getWhere(),message.getQuantity1(), message.getQuantity2());
-		} catch (InvalidUserRequestException e) { //TODO: this should be unnecessary if the check happens on the client-side
+			mechanics.getPlayer(playerIndex).convertMarketOutput(message.getLeader1(), message.getLeader2());
+		} catch (InvalidUserRequestException e) {
+			view.askWhiteMarbleChoice(deck.getFromWhiteMarble1(), deck.getFromWhiteMarble2(), deck.getWhiteMarblesInput1(),
+					deck.getWhiteMarblesInput2(), deck.getWhiteMarblesTaken());
 			return;
 		}
+
 		//moves the resources automatically to the additional depots if possible
 		mechanics.getPlayer(playerIndex).getPlayersWarehouseDepot().moveResourcesToAdditionalDepots();
 		//sends confirmation of the completed action
-		view.replyDepot(new ReducedWarehouseDepot(mechanics.getPlayer(playerIndex).getPlayersWarehouseDepot()),true,false,true);
-		
+		view.replyDepot(new ReducedWarehouseDepot(mechanics.getPlayer(playerIndex).getPlayersWarehouseDepot()),
+				true,false,true);
 	}
 	
 	/**

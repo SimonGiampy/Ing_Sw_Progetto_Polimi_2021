@@ -12,16 +12,16 @@ public class WhiteMarbleRequest extends Message {
 	private final ArrayList<Resources> fromWhiteMarble2;
 	private final int whiteMarblesInput1;
 	private final int whiteMarblesInput2;
-	private final int howMuch;
+	private final int howMany;
 
 	public WhiteMarbleRequest(ArrayList<Resources> fromWhiteMarble1, ArrayList<Resources> fromWhiteMarble2,
-							  int whiteMarblesInput1, int whiteMarblesInput2, int howMuch) {
-		super("Server", MessageType.WHITE_MARBLE_CHOICE);
+							  int whiteMarblesInput1, int whiteMarblesInput2, int howMany) {
+		super("Server", MessageType.WHITE_MARBLE_REQUEST);
 		this.fromWhiteMarble1 = fromWhiteMarble1;
 		this.fromWhiteMarble2 = fromWhiteMarble2;
 		this.whiteMarblesInput1 = whiteMarblesInput1;
 		this.whiteMarblesInput2 = whiteMarblesInput2;
-		this.howMuch = howMuch;
+		this.howMany = howMany;
 	}
 
 	public ArrayList<Resources> getFromWhiteMarble1() {
@@ -40,7 +40,7 @@ public class WhiteMarbleRequest extends Message {
 		return whiteMarblesInput2;
 	}
 
-	public int getHowMuch() {
-		return howMuch;
+	public int getHowMany() {
+		return howMany;
 	}
 }

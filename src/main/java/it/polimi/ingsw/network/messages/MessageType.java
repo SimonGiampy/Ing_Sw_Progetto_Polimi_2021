@@ -37,7 +37,7 @@ public enum MessageType {
 	STRONGBOX_SHOW,						// the server sends the strongbox to the player
 	LEADER_SHOW,						// the server sends leader cards to the player
 	PLAYER_CARDS_AND_PRODUCTION_SHOW,	// the server sends cards and productions to the player
-	WHITE_MARBLE_CHOICE,				// the server asks into which resource it has to transform the white marbles
+	WHITE_MARBLE_REQUEST,				// the server asks into which resource it has to transform the white marbles
 	WIN_MESSAGE,						// the server sends the winner of the game
 
 

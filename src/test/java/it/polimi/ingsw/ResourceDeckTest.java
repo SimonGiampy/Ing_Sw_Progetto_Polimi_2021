@@ -29,11 +29,12 @@ public class ResourceDeckTest {
 		ArrayList<Resources> fromWhiteMarble1 = new ArrayList<>();
 		fromWhiteMarble1.add(Resources.COIN);
 		fromWhiteMarble1.add(Resources.SERVANT);
+		deck.setMarblesFromMarket(marbles);
 		
 		try {
 			deck.setFromWhiteMarble(fromWhiteMarble1, 1);
 			
-			deck.addResources(marbles, 3, 0); //correct input, doesn't throw exception
+			deck.addResources(3, 0); //correct input, doesn't throw exception
 			
 		} catch (InvalidInputException e) {
 			e.printStackTrace();
@@ -60,12 +61,13 @@ public class ResourceDeckTest {
 		ArrayList<Resources> fromWhiteMarble2 = new ArrayList<>();
 		fromWhiteMarble2.add(Resources.STONE);
 		fromWhiteMarble2.add(Resources.STONE);
-		
+		deck.setMarblesFromMarket(marbles);
+
 		try {
 			deck.setFromWhiteMarble(fromWhiteMarble1, 1);
 			deck.setFromWhiteMarble(fromWhiteMarble2, 2);
 			
-			deck.addResources(marbles, 1, 1); //correct input, doesn't throw exception
+			deck.addResources(1, 1); //correct input, doesn't throw exception
 			
 		} catch (InvalidInputException e) {
 			e.printStackTrace();
@@ -94,12 +96,13 @@ public class ResourceDeckTest {
 		fromWhiteMarble2.add(Resources.STONE);
 		fromWhiteMarble2.add(Resources.STONE);
 		fromWhiteMarble2.add(Resources.STONE);
+		deck.setMarblesFromMarket(marbles);
 		
 		try {
 			deck.setFromWhiteMarble(fromWhiteMarble1, 3);
 			deck.setFromWhiteMarble(fromWhiteMarble2, 2);
 			
-			deck.addResources(marbles, 1, 0); //correct input, doesn't throw any exception
+			deck.addResources(1, 0); //correct input, doesn't throw any exception
 			
 		} catch (InvalidInputException e) {
 			e.printStackTrace();
@@ -121,17 +124,18 @@ public class ResourceDeckTest {
 		ArrayList<Resources> fromWhiteMarble2 = new ArrayList<>();
 		fromWhiteMarble2.add(Resources.COIN);
 		fromWhiteMarble2.add(Resources.SERVANT);
+		deck.setMarblesFromMarket(marbles);
 
 		deck.setFromWhiteMarble(fromWhiteMarble1, 1);
 		deck.setFromWhiteMarble(fromWhiteMarble2, 2);
 
 		Exception exception = assertThrows(InvalidUserRequestException.class,
-				() -> deck.addResources(marbles,1,2));
+				() -> deck.addResources(1,2));
 		String message = exception.getMessage();
 		assertEquals("Invalid number of activations of leaders ability", message);
 
 		try {
-			deck.addResources(marbles,1,0);
+			deck.addResources(1,0);
 			ArrayList<Resources> resourceList = deck.getResourceList();
 			ArrayList<Resources> expectedList = new ArrayList<>();
 			expectedList.add(Resources.COIN);

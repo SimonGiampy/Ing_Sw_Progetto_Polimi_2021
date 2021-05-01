@@ -11,15 +11,10 @@ public class ReducedMarket implements Serializable {
 
 	private final Marbles[][] market;
 	private Marbles extraBall;
-	private boolean whiteMarble1;
 
-	private boolean whiteMarble2;
-
-	public ReducedMarket(Market market, ResourceDeck deck){
+	public ReducedMarket(Market market){
 		this.market=market.getMarket();
 		extraBall=market.getExtraBall();
-		whiteMarble1=deck.isWhiteAbility1Activated();
-		whiteMarble2=deck.isWhiteAbility2Activated();
 	}
 
 	public Marbles[][] getMarket() {
@@ -30,11 +25,4 @@ public class ReducedMarket implements Serializable {
 		return extraBall;
 	}
 
-	public boolean isWhiteMarble1() {
-		return whiteMarble1;
-	}
-
-	public boolean isWhiteMarble2() {
-		return whiteMarble2;
-	}
 }

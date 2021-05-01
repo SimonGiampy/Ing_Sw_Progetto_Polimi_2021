@@ -2,10 +2,7 @@ package it.polimi.ingsw.view;
 
 import it.polimi.ingsw.model.*;
 import it.polimi.ingsw.model.reducedClasses.*;
-import it.polimi.ingsw.model.util.Colors;
-import it.polimi.ingsw.model.util.PlayerActions;
-import it.polimi.ingsw.model.util.Productions;
-import it.polimi.ingsw.model.util.TokenType;
+import it.polimi.ingsw.model.util.*;
 
 import java.util.ArrayList;
 
@@ -57,6 +54,17 @@ public interface View {
 	 * @param market is the market
 	 */
 	void askMarketAction(ReducedMarket market);
+
+	/**
+	 * it asks which leader to use to convert the white marbles obtained
+	 * @param fromWhiteMarble1 output first leader
+	 * @param fromWhiteMarble2 output second leader
+	 * @param whiteMarblesInput1 white marbles input first leader
+	 * @param whiteMarblesInput2 white marbles input second leader
+	 * @param howMany number of white marbles taken from the market
+	 */
+	void askWhiteMarbleChoice(ArrayList<Resources> fromWhiteMarble1, ArrayList<Resources> fromWhiteMarble2,
+							  int whiteMarblesInput1, int whiteMarblesInput2, int howMany);
 
 	/**
 	 * it asks which card the player want to buy

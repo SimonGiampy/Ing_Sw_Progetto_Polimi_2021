@@ -349,30 +349,34 @@ public class CLI extends ViewObservable implements View {
 
 		String which = input.substring(0, 3);
 		int where = Character.getNumericValue(input.charAt(4));
-/*      //TODO: complete with missing information from the user in the case of both leaders activated
-		int quantity1 = 0, quantity2 = 0;
-		
-		if (market.isWhiteMarble1() && market.isWhiteMarble2()) {
-			System.out.println("You have 2 Marbles Leader Activated!");
-			System.out.println("How many times do you want to use the first leader? ");
-			quantity1 = scanner.nextInt();
-			System.out.println("How many times do you want to use the second leader? ");
-			quantity2 = scanner.nextInt();
-			
-		} else if(market.isWhiteMarble1()) {
-			System.out.println("How many times do you want to use the first leader? ");
-			quantity1 = scanner.nextInt();
-			notifyObserver(obs->obs.onUpdateMarketAction(which, where,quantity1,0));
-		} else {
-			System.out.println("How many times do you want to use the second leader? ");
-			int quantity2 = scanner.nextInt();
-			notifyObserver(obs->obs.onUpdateMarketAction(which, where,0,quantity2));
-		}
-		*/
-		notifyObserver(obs->obs.onUpdateMarketAction(which, where, 0, 0));
+		notifyObserver(obs->obs.onUpdateMarketAction(which, where));
  
 	}
-	
+
+	@Override
+	public void askWhiteMarbleChoice(ArrayList<Resources> fromWhiteMarble1, ArrayList<Resources> fromWhiteMarble2,
+									 int whiteMarblesInput1, int whiteMarblesInput2, int howMany) {
+		String marble = Marbles.WHITE + "\uD83D\uDFE3" + Unicode.RESET;
+		String regex = "[1-4],[1-4]";
+		System.out.println("You have two White Marbles leaders activated: ");
+		System.out.print("1. " + marble.repeat(whiteMarblesInput1) + "-->" + fromWhiteMarble1);
+		System.out.print("2. " + marble.repeat(whiteMarblesInput2) + "-->" + fromWhiteMarble2);
+		System.out.println("You have obtained " + howMany + "white marbles from the market, choose how many times to activate" +
+				"each leader (You can't discard white marbles if it's possible to convert them)");
+		System.out.println("Type [quantity1,quantity2] (ex. [1,1])");
+		String input;
+		boolean check;
+		do{
+			input = scanner.nextLine();
+			check = Pattern.matches(regex, input);
+			if(!check) System.out.println("Input incorrect! Type again");
+		}while(!check);
+
+		int quantity1 = input.charAt(0),  quantity2 = input.charAt(2);
+
+		notifyObserver(obs->obs.onUpdateWhiteMarbleChoice(quantity1 ,quantity2));
+	}
+
 	@Override
 	public void replyDepot(ReducedWarehouseDepot depot, boolean initialMove, boolean confirmationAvailable, boolean inputValid) {
 		String read;

@@ -112,22 +112,23 @@ public class Player {
 		}
 		myFaithTrack.moveMarker(1);
 	}
-	
-	/**
-	 * prototype function that sends the command to the market
-	 * @param which must be equal to row or col
-	 * @param where indicates the number of the row or the column to move
-	 */
-	public void interactWithMarket(String which, int where, int quantity1, int quantity2) throws InvalidUserRequestException {
+
+	public void interactWithMarket(String which, int where){
 		Marbles[] output;
 		if (which.equals("COL")) {
 			output = commonMarket.shiftCol(where - 1);
 		} else {
 			output = commonMarket.shiftRow(where - 1);
 		}
-		myResourceDeck.addResources(output,quantity1,quantity2);
+		myResourceDeck.setMarblesFromMarket(output);
 		myFaithTrack.moveMarker(myResourceDeck.getFaithPoint());
+	}
 	
+	/**
+	 * prototype function that sends the command to the market
+	 */
+	public void convertMarketOutput(int quantity1, int quantity2) throws InvalidUserRequestException {
+		myResourceDeck.addResources(quantity1 ,quantity2);
 	}
 
 	public ArrayList<PlayerActions> checkAvailableActions(){
