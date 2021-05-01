@@ -53,9 +53,9 @@ public class GameMechanicsMultiPlayer {
 		for (int i = 0; i < numberOfPlayers * 4; i++) {
 			gameLeaders[i / 4][i % 4] = allLeaderCards.get(i);
 		}
-		
+		boolean single = numberOfPlayers == 1;
 		for (int i = 0; i < numberOfPlayers; i++) {
-			playersTracks[i] = new FaithTrack(xmlTiles, reportPoints);
+			playersTracks[i] = new FaithTrack(xmlTiles, reportPoints, single);
 			players[i] = instantiatePlayer(gameLeaders[i], playersTracks[i], rules, i);
 		}
 		
@@ -107,7 +107,7 @@ public class GameMechanicsMultiPlayer {
 		return matrixDeck;
 	}
 
-	//TODO: modify this method so it communicates with game controller
+	
 	public void assignInitialAdvantage(ArrayList<Resources> resources, int playerIndex) {
 		if (playerIndex==1)
 			players[playerIndex].getPlayersWarehouseDepot().assignInitialResources(resources.get(0));
@@ -119,31 +119,6 @@ public class GameMechanicsMultiPlayer {
 			players[playerIndex].getPlayersWarehouseDepot().assignInitialResources(resources.get(0),resources.get(1));
 			players[playerIndex].getPlayerFaithTrack().moveMarker(1);
 		}
-
-		/*
-		// add starting resources and faith points to the players
-		int round = (startingPlayer + 1) % numberOfPlayers;
-		if (numberOfPlayers >= 2) {
-			Resources[] resources = gameDemo.requestInitialResource(round,1);
-			
-			players[round].getPlayersWarehouseDepot().assignInitialResources(resources[0]); //needs to be changed into the chosen resource
-		}
-		round = (round + 1) % numberOfPlayers;
-		if (numberOfPlayers >= 3) {
-			Resources[] resources = gameDemo.requestInitialResource(round,1);
-			
-			players[round].getPlayersWarehouseDepot().assignInitialResources(resources[0]); //needs to be changed into the chosen resource
-			players[round].getPlayerFaithTrack().moveMarker(1);
-		}
-		round = (round + 1) % numberOfPlayers;
-		if (numberOfPlayers == 4) {
-			Resources[] resources = gameDemo.requestInitialResource(round,2);
-			players[round].getPlayersWarehouseDepot().assignInitialResources(resources[0], resources[1]); //needs to be changed into the chosen
-			// resource
-			players[round].getPlayerFaithTrack().moveMarker(1);
-		}
-
-		 */
 	}
 
 	
@@ -179,6 +154,7 @@ public class GameMechanicsMultiPlayer {
 		return startingPlayer;
 	}
 
+	//TODO: modify and move this winner method
 	public void winner() {
 		ArrayList<Player> winnerPlayers;
 		Player winner;

@@ -22,7 +22,7 @@ class FaithTrackTest {
 		XMLParser parser = new XMLParser(fullPath);
 		ArrayList<Tile> tilesTrack = parser.readTiles();
 		ArrayList<Integer> reportPoints = parser.readReportPoints();
-		FaithTrack faithTrack = new FaithTrack(tilesTrack, reportPoints);
+		FaithTrack faithTrack = new FaithTrack(tilesTrack, reportPoints, false);
 		ArrayList<Tile> track = faithTrack.getTrack();
 
 		faithTrack.moveMarker(3);
@@ -42,9 +42,9 @@ class FaithTrackTest {
 		XMLParser parser = new XMLParser(fullPath);
 		ArrayList<Tile> tilesTrack = parser.readTiles();
 		ArrayList<Integer> reportPoints = parser.readReportPoints();
-		FaithTrack faithTrack = new FaithTrack(tilesTrack, reportPoints);
+		FaithTrack faithTrack = new FaithTrack(tilesTrack, reportPoints, false);
 		ArrayList<Tile> track = faithTrack.getTrack();
-		FaithTrack faithTrack2 = new FaithTrack(tilesTrack, reportPoints);
+		FaithTrack faithTrack2 = new FaithTrack(tilesTrack, reportPoints, false);
 		ArrayList<Tile> track2 = faithTrack2.getTrack();
 
 		int i = 0;
@@ -78,7 +78,7 @@ class FaithTrackTest {
 		XMLParser parser = new XMLParser(fullPath);
 		ArrayList<Tile> tilesTrack = parser.readTiles();
 		ArrayList<Integer> reportPoints = parser.readReportPoints();
-		FaithTrack faithTrack = new FaithTrack(tilesTrack, reportPoints);
+		FaithTrack faithTrack = new FaithTrack(tilesTrack, reportPoints, false);
 		ArrayList<Tile> track = faithTrack.getTrack();
 
 		int i = 0;
@@ -108,7 +108,7 @@ class FaithTrackTest {
 		XMLParser parser = new XMLParser(fullPath);
 		ArrayList<Tile> tilesTrack = parser.readTiles();
 		ArrayList<Integer> reportPoints = parser.readReportPoints();
-		FaithTrack faithTrack = new FaithTrack(tilesTrack, reportPoints);
+		FaithTrack faithTrack = new FaithTrack(tilesTrack, reportPoints, false);
 
 		while(faithTrack.getCurrentPosition() < faithTrack.getTrack().size()){
 			faithTrack.moveMarker(1);

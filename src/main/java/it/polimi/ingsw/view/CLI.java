@@ -171,9 +171,17 @@ public class CLI extends ViewObservable implements View {
 	public void askCustomGame() {
 		System.out.println("Choose game configuration!, Type [standard] for standard game, or the full path for a custom game!");
 		String input = scanner.nextLine();
+		boolean check = true;
+		do {
+			if (!input.equals("standard")) {
+				if (!input.endsWith(".xml")) {
+					System.out.println("Invalid file extension: XML file expected");
+					check = false;
+				}
+			}
+		} while (!check);
+		// assumes that the selected file has a correct schema and is a valid configuration file
 		notifyObserver(obs->obs.onUpdateGameConfiguration(input));
-		//TODO: check if the input file actually exists in the selected directory and is an xml file.
-		//  We assume that if the file is an xml file, is a valid schema for the configuration
 	}
 	
 	@Override
@@ -259,8 +267,11 @@ public class CLI extends ViewObservable implements View {
 		System.out.println("Your Leader Cards:");
 		for (int i = 0; i < availableLeaders.size(); i++) {
 			System.out.print("Card's number: " + (i + 1));
-			if(availableLeaders.get(i).isPlayable())
+			if (availableLeaders.get(i).isPlayable()) {
 				System.out.print(" PLAYABLE\n");
+			} else {
+				System.out.print("\n");
+			}
 			showLeaderCard(availableLeaders.get(i));
 		}
 		
@@ -550,12 +561,11 @@ public class CLI extends ViewObservable implements View {
 
 		StringBuilder string = new StringBuilder();
 		StringBuilder markerColor = new StringBuilder();
-		//TODO: get this parameter from the controller based on the shown track is Lorenzo's or the player's one
-		int marker = 1;
-		if(marker == 1)
-			markerColor.append(Unicode.RED_BOLD);
-		else
-			markerColor.append(Unicode.BLACK_BOLD);
+		
+		boolean lorenzo = faithTrack.isSinglePlayer();
+		if(!lorenzo) markerColor.append(Unicode.RED_BOLD);
+		else markerColor.append(Unicode.BLACK_BOLD);
+		
 		//Row for vatican reports
 		int count = 0;
 		for(int i = 0; i < faithTrack.getReportPoints().size(); i++) {

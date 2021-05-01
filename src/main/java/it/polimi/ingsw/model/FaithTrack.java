@@ -11,18 +11,22 @@ public class FaithTrack {
 	private final ArrayList<Tile> track;
 	private final ArrayList<Integer> reportPoints;
 	
+	private final boolean singlePlayer;
+	
 	/**
 	 * Constructor that initializes the entire faith track
 	 * @param tiles all the tiles contained in the faith track
 	 * @param reportPoints the points gained from each report
+	 * @param singlePlayer flag indicating if this is a single player match
 	 */
-	public FaithTrack(ArrayList<Tile> tiles, ArrayList<Integer> reportPoints) {
+	public FaithTrack(ArrayList<Tile> tiles, ArrayList<Integer> reportPoints, boolean singlePlayer) {
 		track = tiles;
 		currentPosition = 0;
 		vaticanReports = new ArrayList<>();
 		for(Integer ignored : reportPoints)
 			vaticanReports.add(false);
 		this.reportPoints = reportPoints;
+		this.singlePlayer = singlePlayer;
 	}
 
 	
@@ -79,10 +83,10 @@ public class FaithTrack {
 		return currentPosition == track.size();
 	}
 
-	/**
+/*	*//**
 	 * Show all the track with the current position, the activated reports, the victory points for every tile
 	 * and the number that identifies the tiles
-	 */
+	 *//*
 	public void showFaithTrack(int marker){
 
 		StringBuilder string = new StringBuilder();
@@ -99,10 +103,10 @@ public class FaithTrack {
 				string.append("      ");
 				count++;
 			}
-			/*if(i > lastReportClaimed){
+			*//*if(i > lastReportClaimed){
 				string.append(Unicode.BLUE_BOLD).append("   ?  ");
 
-			 */
+			 *//*
 			if(vaticanReports.get(i)){
 				string.append(Unicode.GREEN_BOLD).append("  ").append(Unicode.TICK).append(" ").append(Unicode.RESET)
 						.append(reportPoints.get(i));
@@ -203,11 +207,11 @@ public class FaithTrack {
 
 	}
 
-	/**
+	*//**
 	 * Support method for showFaithTrack, appends to the string builder the "-" lines that form the top and the bottom
 	 * of the track
 	 * @param string string builder containing all the representation of the track
-	 */
+	 *//*
 	private void appendTopFrame(StringBuilder string) {
 		int j = 0;
 		String s = Unicode.TOP_LEFT.toString();
@@ -253,8 +257,9 @@ public class FaithTrack {
 			s = Unicode.REVERSE_T_SHAPE.toString();
 		}
 		string.append(Unicode.BOTTOM_RIGHT).append("\n").append(Unicode.RESET);
-	}
+	}*/
 
+	
 	/**
 	 * Shows a legend to help the understanding of the graphic representation of the track
 	 */
@@ -292,6 +297,8 @@ public class FaithTrack {
 	public ArrayList<Boolean> getVaticanReports() {
 		return vaticanReports;
 	}
-
-
+	
+	public boolean isSinglePlayer() {
+		return singlePlayer;
+	}
 }

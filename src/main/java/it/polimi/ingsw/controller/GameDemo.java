@@ -189,6 +189,31 @@ public class GameDemo {
 			out[1] = Resources.valueOf(ress[1]);
 		}
 		
+		/*
+		// add starting resources and faith points to the players
+		int round = (startingPlayer + 1) % numberOfPlayers;
+		if (numberOfPlayers >= 2) {
+			Resources[] resources = gameDemo.requestInitialResource(round,1);
+			
+			players[round].getPlayersWarehouseDepot().assignInitialResources(resources[0]); //needs to be changed into the chosen resource
+		}
+		round = (round + 1) % numberOfPlayers;
+		if (numberOfPlayers >= 3) {
+			Resources[] resources = gameDemo.requestInitialResource(round,1);
+			
+			players[round].getPlayersWarehouseDepot().assignInitialResources(resources[0]); //needs to be changed into the chosen resource
+			players[round].getPlayerFaithTrack().moveMarker(1);
+		}
+		round = (round + 1) % numberOfPlayers;
+		if (numberOfPlayers == 4) {
+			Resources[] resources = gameDemo.requestInitialResource(round,2);
+			players[round].getPlayersWarehouseDepot().assignInitialResources(resources[0], resources[1]); //needs to be changed into the chosen
+			// resource
+			players[round].getPlayerFaithTrack().moveMarker(1);
+		}
+
+		 */
+		
 		return out;
 	}
 

@@ -57,7 +57,7 @@ class PlayerTest {
 		}
 
 		for (int i = 0; i < numberOfPlayers; i++) {
-			playersTracks[i] = new FaithTrack(tiles, report);
+			playersTracks[i] = new FaithTrack(tiles, report, false);
 			players[i] = mechanics.instantiatePlayer(gameLeaders[i], playersTracks[i], baseProduction, i);
 		}
 

@@ -24,8 +24,8 @@ public class FaithTrackParserTest {
 		XMLParser parser = new XMLParser(fullPath);
 		ArrayList<Tile> tilesTrack = parser.readTiles();
 		ArrayList<Integer> reportPoints = parser.readReportPoints();
-		FaithTrack faithTrack = new FaithTrack(tilesTrack, reportPoints);
-		FaithTrack faithTrack2 = new FaithTrack(tilesTrack, reportPoints);
+		FaithTrack faithTrack = new FaithTrack(tilesTrack, reportPoints, false);
+		FaithTrack faithTrack2 = new FaithTrack(tilesTrack, reportPoints, false);
 		ArrayList<Tile> track = faithTrack.getTrack();
 		ArrayList<Boolean> vaticanReports = faithTrack.getVaticanReports();
 
@@ -37,9 +37,9 @@ public class FaithTrackParserTest {
 		faithTrack.moveMarker(11);
 		faithTrack.checkVaticanReport(1);
 		faithTrack2.checkVaticanReport(1);
-		faithTrack.showFaithTrack(0);
+		//faithTrack.showFaithTrack(0);
 		System.out.print("\n");
-		faithTrack2.showFaithTrack(1);
+		//faithTrack2.showFaithTrack(1);
 		faithTrack.helpMe();
 		/*
 		for (int i = 0; i < track.size(); i++) {

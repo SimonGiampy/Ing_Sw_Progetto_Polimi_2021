@@ -44,7 +44,7 @@ public class GameMechanicsSinglePlayer extends GameMechanicsMultiPlayer {
 	public void instantiateGame(ArrayList<DevelopmentCard> allDevelopmentCards, ArrayList<LeaderCard> allLeaderCards, ProductionRules rules,
 								ArrayList<Tile> xmlTiles, ArrayList<Integer> reportPoints) {
 
-		lorenzoFaithTrack = new FaithTrack(xmlTiles, reportPoints);
+		lorenzoFaithTrack = new FaithTrack(xmlTiles, reportPoints, true);
 
 		super.instantiateGame(allDevelopmentCards, allLeaderCards, rules, xmlTiles, reportPoints);
 

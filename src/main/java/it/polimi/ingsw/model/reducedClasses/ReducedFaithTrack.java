@@ -11,12 +11,15 @@ public class ReducedFaithTrack implements Serializable {
 	private Integer currentPosition;
 	private ArrayList<Tile> track;
 	private final ArrayList<Integer> reportPoints;
+	
+	private final boolean singlePlayer;
 
 	public ReducedFaithTrack(FaithTrack track){
-		vaticanReports=track.getVaticanReports();
-		currentPosition=track.getCurrentPosition();
-		this.track=track.getTrack();
-		reportPoints=track.getReportPoints();
+		this.vaticanReports = track.getVaticanReports();
+		this.currentPosition = track.getCurrentPosition();
+		this.track = track.getTrack();
+		this.reportPoints = track.getReportPoints();
+		this.singlePlayer = track.isSinglePlayer();
 	}
 
 
@@ -34,5 +37,9 @@ public class ReducedFaithTrack implements Serializable {
 
 	public ArrayList<Integer> getReportPoints() {
 		return reportPoints;
+	}
+	
+	public boolean isSinglePlayer() {
+		return singlePlayer;
 	}
 }
