@@ -6,6 +6,7 @@ import it.polimi.ingsw.model.reducedClasses.ReducedFaithTrack;
 import it.polimi.ingsw.model.reducedClasses.ReducedLeaderCard;
 import it.polimi.ingsw.model.reducedClasses.ReducedMarket;
 import it.polimi.ingsw.model.reducedClasses.ReducedWarehouseDepot;
+import it.polimi.ingsw.model.singleplayer.GameMechanicsSinglePlayer;
 import it.polimi.ingsw.model.util.GameState;
 import it.polimi.ingsw.model.util.Resources;
 import it.polimi.ingsw.network.messages.*;
@@ -39,7 +40,10 @@ public class ServerSideController {
 	public ServerSideController(Lobby lobby, int numberOfPlayers) {
 		this.lobby = lobby;
 		this.numberOfPlayers = numberOfPlayers;
-		mechanics = new GameMechanicsMultiPlayer(this, numberOfPlayers);
+		if(numberOfPlayers==1)
+			mechanics=new GameMechanicsSinglePlayer(this,numberOfPlayers);
+		else
+			mechanics = new GameMechanicsMultiPlayer(this, numberOfPlayers);
 		initResources= new boolean[numberOfPlayers-1];
 		gameReady= new boolean[numberOfPlayers];
 		gameState = GameState.CONFIG;
@@ -111,6 +115,8 @@ public class ServerSideController {
 	 */
 	private void startGame() {
 		gameState = GameState.GAME;
+		Resources[] resources={Resources.COIN,Resources.STONE,Resources.STONE,Resources.SHIELD,Resources.SHIELD,Resources.SHIELD};
+		mechanics.getPlayer(0).getPlayersWarehouseDepot().setDepotForDebugging(resources);
 		turnController.newTurn();
 	}
 

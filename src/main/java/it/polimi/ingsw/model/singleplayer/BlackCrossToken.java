@@ -16,7 +16,7 @@ public class BlackCrossToken extends Token{
 	 */
 	protected BlackCrossToken(int tileNumber, FaithTrack lorenzoTrack){
 
-		super(TokenType.BLACK_CROSS_TOKEN);
+		super(TokenType.BLACK_CROSS_TOKEN,null);
 		this.tileNumber = tileNumber;
 		this.lorenzoTrack = lorenzoTrack;
 

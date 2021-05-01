@@ -17,7 +17,7 @@ public class DiscardToken extends Token{
 	 * @param cardsDeck deck of development cards
 	 */
 	public DiscardToken(int cardsNumber, Colors color, DevelopmentCardsDeck cardsDeck){
-		super(TokenType.DISCARD_TOKEN);
+		super(TokenType.DISCARD_TOKEN,color);
 		this.cardsNumber = cardsNumber;
 		this.color = color;
 		this.cardsDeck = cardsDeck;
@@ -29,7 +29,7 @@ public class DiscardToken extends Token{
 	 */
 	@Override
 	public boolean applyEffect() {
-		for(int i = 0; i < cardsNumber || cardsDeck.lowestCardLevelAvailable(color) > 0; i++)
+		for(int i = 0; i < 2; i++)
 			cardsDeck.claimCard(cardsDeck.lowestCardLevelAvailable(color), color);
 		return false;
 	}

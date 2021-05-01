@@ -934,11 +934,11 @@ public class CLI extends ViewObservable implements View {
 	
 	@Override
 	public void showMatchInfo(ArrayList<String> players) {
-		System.out.println("The match is starting. The players in the game are:");
-		for (String s: players) {
-			System.out.print(s + ", ");
+		System.out.println("The match is starting. The players in the game are: ");
+		for (int i = 0; i < players.size() - 1; i++) {
+			System.out.print(players.get(i) + ", ");
 		}
-		System.out.print("\n");
+		System.out.print(players.get(players.size() - 1) + ".\n");
 	}
 
 	@Override

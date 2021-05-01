@@ -107,7 +107,7 @@ public class GameMechanicsMultiPlayer {
 		return matrixDeck;
 	}
 
-	
+
 	public void assignInitialAdvantage(ArrayList<Resources> resources, int playerIndex) {
 		if (playerIndex==1)
 			players[playerIndex].getPlayersWarehouseDepot().assignInitialResources(resources.get(0));
@@ -183,4 +183,6 @@ public class GameMechanicsMultiPlayer {
 		return null;
 	}
 
+	public void shuffleTokenDeck() {
+	}
 }

@@ -14,7 +14,7 @@ public class BlackCrossShuffleToken extends Token{
 	 * @param lorenzoTrack faith track of Lorenzo
 	 */
 	public BlackCrossShuffleToken(int tileNumber, FaithTrack lorenzoTrack) {
-		super(TokenType.BLACK_CROSS_SHUFFLE_TOKEN);
+		super(TokenType.BLACK_CROSS_SHUFFLE_TOKEN,null);
 		this.tileNumber = tileNumber;
 		this.lorenzoTrack = lorenzoTrack;
 	}

@@ -1,7 +1,11 @@
 package it.polimi.ingsw.controller;
 
 import it.polimi.ingsw.model.GameMechanicsMultiPlayer;
+import it.polimi.ingsw.model.reducedClasses.ReducedDevelopmentCardsDeck;
+import it.polimi.ingsw.model.reducedClasses.ReducedFaithTrack;
 import it.polimi.ingsw.model.reducedClasses.ReducedLeaderCard;
+import it.polimi.ingsw.model.singleplayer.Token;
+import it.polimi.ingsw.model.util.TokenType;
 import it.polimi.ingsw.view.VirtualView;
 
 import java.util.ArrayList;
@@ -86,12 +90,27 @@ public class TurnController {
 		return phaseType;
 	}
 
+	private void tokenActivation(){
+		VirtualView view = virtualViewMap.get(activePlayer);
+		if(nicknameList.size()==1){
+			Token currentToken= mechanics.revealTop();
+			currentToken.applyEffect();
+			view.showToken(currentToken.getTokenType(),currentToken.getColor());
+			if(currentToken.getTokenType()==TokenType.DISCARD_TOKEN)
+				view.showCardsDeck(new ReducedDevelopmentCardsDeck(mechanics.getGameDevCardsDeck()));
+			else
+				view.showFaithTrack( new ReducedFaithTrack(mechanics.getLorenzoFaithTrack()));
+			if(currentToken.applyEffect())
+				mechanics.shuffleTokenDeck();
+		}
+	}
+
 	public void setPhaseType(PhaseType phaseType) {
 		this.phaseType = phaseType;
-
 		if(phaseType == PhaseType.MAIN_ACTION){
 			setMainActionDone(true);
 			if(leaderAction){
+				tokenActivation();
 				next();
 				newTurn();
 			}
@@ -103,6 +122,7 @@ public class TurnController {
 		else if (phaseType==PhaseType.LEADER_ACTION){
 			setLeaderAction(true);
 			if(MainActionDone){
+				tokenActivation();
 				next();
 				newTurn();
 			}
@@ -110,6 +130,7 @@ public class TurnController {
 		}
 
 		else if (phaseType==PhaseType.END_TURN){
+			tokenActivation();
 			next();
 			newTurn();
 		}

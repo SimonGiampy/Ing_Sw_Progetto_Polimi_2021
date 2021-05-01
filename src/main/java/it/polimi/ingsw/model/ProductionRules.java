@@ -3,13 +3,14 @@ package it.polimi.ingsw.model;
 import it.polimi.ingsw.model.util.ListSet;
 import it.polimi.ingsw.model.util.Resources;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.stream.Collectors;
 
 /**
  * this is class handles production rules of a card
  */
-public class ProductionRules {
+public class ProductionRules implements Serializable {
 	
 	private  final ArrayList<Resources> input;
 	private  final ArrayList<Resources> output;

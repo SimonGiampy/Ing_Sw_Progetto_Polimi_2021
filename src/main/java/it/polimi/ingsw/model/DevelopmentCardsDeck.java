@@ -98,6 +98,7 @@ public class DevelopmentCardsDeck {
 	 */
 	public DevelopmentCard claimCard(int level, Colors color) {
 		int row = level - 1, column = color.getColorNumber();
+		//System.out.println(cardStackStructure[row][column].size());
 		return cardStackStructure[row][column].remove(0);
 	}
 	
