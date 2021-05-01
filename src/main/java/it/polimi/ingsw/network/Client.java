@@ -1,6 +1,7 @@
 package it.polimi.ingsw.network;
 
 import it.polimi.ingsw.network.messages.Message;
+import it.polimi.ingsw.network.messages.generic.PingMessage;
 import it.polimi.ingsw.observers.Observable;
 
 import java.io.IOException;
@@ -9,6 +10,8 @@ import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 public class Client extends Observable {
 
@@ -17,6 +20,7 @@ public class Client extends Observable {
 	private ObjectInputStream inputStream;
 	
 	private final ExecutorService readExecutionQueue;
+	private final ScheduledExecutorService pinger;
 	
 	public static final Logger LOGGER = Logger.getLogger(Client.class.getName());
 	
@@ -28,11 +32,13 @@ public class Client extends Observable {
 	public Client(String address, int port) throws IOException {
 
 		this.socket = new Socket(address, port);
+		this.socket.setSoTimeout(4000);
 		LOGGER.info("Connected to server");
 		this.outputStream = new ObjectOutputStream(socket.getOutputStream());
 		this.inputStream = new ObjectInputStream(socket.getInputStream());
 
 		readExecutionQueue = Executors.newSingleThreadExecutor();
+		pinger = Executors.newSingleThreadScheduledExecutor();
 	}
 	
 	/**
@@ -74,12 +80,26 @@ public class Client extends Observable {
 	}
 	
 	/**
+	 * Enable a heartbeat (ping messages) between client and server sockets to keep the connection alive
+	 * @param enabled set this argument to {@code true} to enable the heartbeat.
+	 *                set to {@code false} to kill the heartbeat.
+	 */
+	public void enablePinger(boolean enabled) {
+		if (enabled) {
+			pinger.scheduleAtFixedRate(() -> sendMessage(new PingMessage()), 0, 2000, TimeUnit.MILLISECONDS);
+		} else {
+			pinger.shutdownNow();
+		}
+	}
+	
+	/**
 	 * Method called when an error occurs and the client disconnects from the server. The socket gets closed.
 	 */
 	public void disconnect() {
 		try {
 			if (!socket.isClosed()) {
 				readExecutionQueue.shutdownNow();
+				enablePinger(false);
 				socket.close();
 			}
 			LOGGER.info("Client disconnected from the game");

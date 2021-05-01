@@ -7,7 +7,6 @@ import it.polimi.ingsw.model.reducedClasses.ReducedLeaderCard;
 import it.polimi.ingsw.model.reducedClasses.ReducedMarket;
 import it.polimi.ingsw.model.reducedClasses.ReducedWarehouseDepot;
 import it.polimi.ingsw.model.singleplayer.GameMechanicsSinglePlayer;
-import it.polimi.ingsw.model.util.GameState;
 import it.polimi.ingsw.model.util.Resources;
 import it.polimi.ingsw.network.messages.*;
 import it.polimi.ingsw.network.messages.game.client2server.*;
@@ -281,7 +280,7 @@ public class ServerSideController {
 				mechanics.getPlayer(i).getPlayerFaithTrack().moveMarker(n);
 				virtualViewMap.get(nicknameList.get(i)).showFaithTrack(new ReducedFaithTrack(mechanics.getPlayer(i).getPlayerFaithTrack()));
 			}
-			turnController.setPhaseType(PhaseType.MAIN_ACTION); //next turn
+			turnController.setTurnPhase(TurnPhase.MAIN_ACTION); //next turn
 		} else {
 			//if the player did something else with its depot
 			WarehouseDepot depot = mechanics.getPlayer(playerIndex).getPlayersWarehouseDepot();
@@ -317,7 +316,7 @@ public class ServerSideController {
 		CardProductionsManagement management = mechanics.getPlayer(playerIndex).getPlayersCardManager();
 		if (management.checkStackLevel(message.getSlot()) == message.getLevel() - 1) { // correct
 			mechanics.getPlayer(playerIndex).buyNewDevCard(message.getLevel(),message.getColor(),message.getSlot());
-			turnController.setPhaseType(PhaseType.MAIN_ACTION);
+			turnController.setTurnPhase(TurnPhase.MAIN_ACTION);
 		} else { //incorrect
 			view.askBuyCardAction(mechanics.getGameDevCardsDeck().buyableCards(mechanics.getPlayer(playerIndex).gatherAllPlayersResources(),
 					management), true);
@@ -365,7 +364,7 @@ public class ServerSideController {
 			}
 		}
 		mechanics.getPlayer(playerIndex).activateProduction(message.getSelectedProductions(),inputResources,outPutResources);
-		turnController.setPhaseType(PhaseType.MAIN_ACTION);
+		turnController.setTurnPhase(TurnPhase.MAIN_ACTION);
 	}
 
 	/**
@@ -376,14 +375,14 @@ public class ServerSideController {
 		int playerIndex = nicknameList.indexOf(message.getNickname());
 		if(message.getAction()==1) { // play leader
 			mechanics.getPlayer(playerIndex).activateLeaderCard(message.getSelectedLeader());
-			turnController.setPhaseType(PhaseType.LEADER_ACTION);
+			turnController.setTurnPhase(TurnPhase.LEADER_ACTION);
 			
 		} else if(message.getAction()==2){ // discard leader
 			mechanics.getPlayer(playerIndex).discardLeaderCard(message.getSelectedLeader());
-			turnController.setPhaseType(PhaseType.LEADER_ACTION);
+			turnController.setTurnPhase(TurnPhase.LEADER_ACTION);
 			
 		} else if(turnController.isMainActionDone()){ // nothing, next turn
-			turnController.setPhaseType(PhaseType.END_TURN);
+			turnController.setTurnPhase(TurnPhase.END_TURN);
 		}
 
 	}

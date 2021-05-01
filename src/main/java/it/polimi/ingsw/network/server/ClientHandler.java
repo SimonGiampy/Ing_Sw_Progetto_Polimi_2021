@@ -57,7 +57,7 @@ public class ClientHandler implements Runnable {
 			// which in turn forwards them to the game controller
 			while (!Thread.currentThread().isInterrupted()) {
 				Message message = (Message) inputStream.readObject();
-				if (message != null) {
+				if (message != null && message.getMessageType() != MessageType.PING) {
 					LOGGER.info("Received: " + message);
 					lobby.onMessageReceived(message); // message forwarding
 				}

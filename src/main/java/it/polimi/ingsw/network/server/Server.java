@@ -48,7 +48,7 @@ public class Server implements Runnable {
 			try {
 				// accepts new client connections
 				Socket client = serverSocket.accept();
-				
+				client.setSoTimeout(4000);
 				ClientHandler clientHandler = new ClientHandler(this, client); // creation of the client handler
 				new Thread(clientHandler).start();
 				

@@ -21,7 +21,7 @@ public class TurnController {
 
 
 	private boolean MainActionDone;
-	private PhaseType phaseType;
+	private TurnPhase turnPhase;
 
 
 
@@ -66,7 +66,7 @@ public class TurnController {
 		VirtualView view= virtualViewMap.get(activePlayer);
 		view.showGenericMessage("It's your turn!");
 		turnAskAction();
-		setPhaseType(PhaseType.SELECTING_ACTION);
+		setTurnPhase(TurnPhase.SELECTING_ACTION);
 	}
 
 	public void turnAskAction(){
@@ -86,8 +86,8 @@ public class TurnController {
 		this.leaderAction = leaderAction;
 	}
 
-	public PhaseType getPhaseType() {
-		return phaseType;
+	public TurnPhase getPhaseType() {
+		return turnPhase;
 	}
 
 	private void tokenActivation(){
@@ -105,9 +105,9 @@ public class TurnController {
 		}
 	}
 
-	public void setPhaseType(PhaseType phaseType) {
-		this.phaseType = phaseType;
-		if(phaseType == PhaseType.MAIN_ACTION){
+	public void setTurnPhase(TurnPhase turnPhase) {
+		this.turnPhase = turnPhase;
+		if(turnPhase == TurnPhase.MAIN_ACTION){
 			setMainActionDone(true);
 			if(leaderAction){
 				tokenActivation();
@@ -119,7 +119,7 @@ public class TurnController {
 				setEndOfTurn(true);
 			}
 		}
-		else if (phaseType==PhaseType.LEADER_ACTION){
+		else if (turnPhase == TurnPhase.LEADER_ACTION){
 			setLeaderAction(true);
 			if(MainActionDone){
 				tokenActivation();
@@ -129,7 +129,7 @@ public class TurnController {
 			else turnAskAction();
 		}
 
-		else if (phaseType==PhaseType.END_TURN){
+		else if (turnPhase == TurnPhase.END_TURN){
 			tokenActivation();
 			next();
 			newTurn();

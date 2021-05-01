@@ -1,6 +1,6 @@
 package it.polimi.ingsw.controller;
 
-public enum PhaseType {
+public enum TurnPhase {
 
 	SELECTING_ACTION,
 	LEADER_ACTION,

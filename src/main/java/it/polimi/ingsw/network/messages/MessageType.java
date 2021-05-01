@@ -56,6 +56,7 @@ public enum MessageType {
 	ERROR_MESSAGE,						// the server sends an error message
 	GENERIC_MESSAGE,					// the server sends a generic message
 	DISCONNECTION_MESSAGE,				// the server sends info about a disconnection
+	PING,                               // client sends ping messages for keeping the connection alive
 
 	//Single player message
 	TOKEN_SHOW

@@ -113,6 +113,7 @@ public class ClientSideController implements ViewObserver, Observer {
 		}
 		client.attach(this);
 		client.readMessage(); // Starts an asynchronous reading from the server.
+		client.enablePinger(true);
 	}
 
 	@Override
