@@ -296,7 +296,7 @@ public class ServerSideController {
 		mechanics.getPlayer(playerIndex).getPlayersWarehouseDepot().moveResourcesToAdditionalDepots();
 		//sends confirmation of the completed action
 		view.replyDepot(new ReducedWarehouseDepot(mechanics.getPlayer(playerIndex).getPlayersWarehouseDepot()),
-				true,false,true);
+				true,true,true);
 	}
 	
 	/**

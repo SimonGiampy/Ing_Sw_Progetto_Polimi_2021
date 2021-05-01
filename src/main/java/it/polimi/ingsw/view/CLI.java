@@ -495,18 +495,10 @@ public class CLI extends ViewObservable implements View {
 	public void askProductionAction(ArrayList<Productions> productionAvailable) {
 		System.out.println("These are your available production! Remember that not necessarily all productions can be activated at the same time!");
 		
-		StringBuilder regexBuilder = new StringBuilder();
-		regexBuilder.append("(");
 		for (int i = 0; i < productionAvailable.size(); i++) {
 			System.out.println((i+1) + ": " + productionAvailable.get(i).toString());
-			
-			if (i == productionAvailable.size() - 1) {
-				regexBuilder.append((i + 1));
-			} else {
-				regexBuilder.append((i + 1) + "|");
-			}
 		}
-		String regex = regexBuilder.append(")").toString();
+		String regex = "[1-" + productionAvailable.size() + "]";
 		
 		System.out.println("Write the list of productions you want to use in this turn, as a list of integers separated by spaces." +
 						" For example type: '1, 3, 4'");
@@ -528,7 +520,7 @@ public class CLI extends ViewObservable implements View {
 		
 		ArrayList<Integer> selection = new ArrayList<>();
 		for (String s: x) {
-			selection.add(Integer.parseInt(s));
+			selection.add(productionAvailable.get(Integer.parseInt(s) - 1).ordinal() + 1);
 		}
 		notifyObserver(obs -> obs.onUpdateProductionAction(selection));
 
