@@ -9,12 +9,12 @@ import it.polimi.ingsw.network.messages.MessageType;
 
 import java.util.ArrayList;
 
-public class LeaderShow extends Message {
+public class LeaderInteractions extends Message {
 
 	private final ArrayList<ReducedLeaderCard> leaderCards;
 	private final int action; //0: choose 2 leaders, 1: just show, 2: ask play or discard
 
-	public LeaderShow(ArrayList<ReducedLeaderCard> leaderCards, int action){
+	public LeaderInteractions(ArrayList<ReducedLeaderCard> leaderCards, int action){
 		super("Server", MessageType.LEADER_SHOW);
 		this.leaderCards=leaderCards;
 		this.action = action;

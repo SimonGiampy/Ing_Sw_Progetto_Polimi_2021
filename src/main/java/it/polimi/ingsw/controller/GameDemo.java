@@ -255,7 +255,7 @@ public class GameDemo {
 		do {
 			try {
 				if (processNewWarehouseMove(depot)) {
-					depot.showIncomingDeck();
+					//depot.showIncomingDeck();
 					//depot.showDepot();
 					System.out.println("Do you want to confirm (yes / no)? Resources in the deck will be automatically discarded");
 					in = scanner.nextLine();
@@ -294,7 +294,7 @@ public class GameDemo {
 		String regexGoingToWarehouse = "move\s[1-" + deckSize + "]\sfrom\s(deck|depot)\sto\s[1-6]";
 		String regexGoingToDeck = "move\s[1-6]\sto\sdeck"; //regex pattern for reading input for moving back to the deck
 		
-		depot.showIncomingDeck();
+		//depot.showIncomingDeck();
 		//depot.showDepot();
 		System.out.print("Write new move command (Type [help] for a tutorial, [confirm] for confirmation): ");
 		boolean checkGoingToWarehouse = false, checkGoingToDeck, ok ;

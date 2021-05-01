@@ -7,14 +7,14 @@ import it.polimi.ingsw.network.messages.MessageType;
 /**
  *  the server sends the depot to the player, and information regarding the status of the player's previous interaction
  */
-public class DepotConfirmation extends Message {
+public class DepotReply extends Message {
 
 	private final ReducedWarehouseDepot depot;
 	private final boolean initialMove; // signals the view to show the instructions and syntax
 	private final boolean confirmationAvailable; //signals the view that the server accepts confirmation
 	private final boolean validMove; //signals if the server validated and applied the requested move
 
-	public DepotConfirmation(ReducedWarehouseDepot depot, boolean initialMove, boolean confirmationAvailable, boolean validMove){
+	public DepotReply(ReducedWarehouseDepot depot, boolean initialMove, boolean confirmationAvailable, boolean validMove){
 		super("server", MessageType.DEPOT_CONFIRMATION);
 		this.depot = depot;
 		this.initialMove = initialMove;

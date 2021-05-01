@@ -269,7 +269,7 @@ public class CLI extends ViewObservable implements View {
 		
 		String regex = "((play|discard)\s[1-" + availableLeaders.size() + "])|0";
 		do {
-			input = scanner.nextLine();
+			input = scanner.nextLine().toLowerCase();
 			check = Pattern.matches(regex, input);
 			if(!check) {
 				System.out.println("Input incorrect or selected action not available");
@@ -438,25 +438,42 @@ public class CLI extends ViewObservable implements View {
 	
 	
 	@Override
-	public void askBuyCardAction(ArrayList<DevelopmentCard> cardsAvailable) {
+	public void askBuyCardAction(ArrayList<DevelopmentCard> cardsAvailable, boolean wrongSlot) {
 		String input;
+		
+		if (wrongSlot) {
+			System.out.println("You can't place that development card in the slot you chose!" +
+					" Retype the card number and choose a different slot.");
+		}
+		
 		String regex = "[1" + cardsAvailable.size() + "]";
 		System.out.println("Available Development Cards: ");
 		for(int i = 0; i < cardsAvailable.size(); i++){
 			System.out.println("Card's number: " + (i + 1));
 			showDevCard(cardsAvailable.get(i));
 		}
-		System.out.println("Type the number of the one you want to buy");
+		System.out.println("Type the number of the development card you want to buy");
 		boolean check;
 		do {
 			input = scanner.nextLine();
 			check = Pattern.matches(regex, input);
 			if(!check) System.out.println("Invalid input! Type again");
-		}while(!check);
+		} while(!check);
 
-		Colors color = cardsAvailable.get(Integer.parseInt(input) - 1).getColor();
-		int level = cardsAvailable.get(Integer.parseInt(input) - 1).getLevel();
-		notifyObserver(obs -> obs.onUpdateBuyCardAction(color, level, 1)); //TODO: ask for slot
+		int num = Integer.parseInt(input) - 1;
+		Colors color = cardsAvailable.get(num).getColor();
+		int level = cardsAvailable.get(num).getLevel();
+		
+		System.out.println("Type the slot where you want to put the selected card");
+		String regex2 = "[1-3]";
+		do {
+			input = scanner.nextLine();
+			check = Pattern.matches(regex2, input);
+			if(!check) System.out.println("Invalid input! Type again");
+		} while(!check);
+		
+		int slot = Integer.parseInt(input);
+		notifyObserver(obs -> obs.onUpdateBuyCardAction(color, level, slot));
 	}
 	
 	@Override

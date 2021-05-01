@@ -6,13 +6,13 @@ import it.polimi.ingsw.network.messages.MessageType;
 /**
  * the client sends market interaction info (which,where)
  */
-public class InteractionWithMarket extends Message {
+public class MarketInteraction extends Message {
 	private final String which;
 	private final int where;
 	private final int quantity1;
 	private final int quantity2;
 
-	public InteractionWithMarket(String nickname, String which,int where, int quantity1, int quantity2){
+	public MarketInteraction(String nickname, String which, int where, int quantity1, int quantity2){
 		super(nickname, MessageType.INTERACTION_WITH_MARKET);
 		this.which=which;
 		this.where=where;

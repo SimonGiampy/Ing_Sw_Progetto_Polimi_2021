@@ -70,10 +70,8 @@ public class DevelopmentCardsDeck {
 	 * @return arraylist of required resources
 	 */
 	public ArrayList<Resources> getPriceDevCard(int level, Colors color){
-
 		int row = level - 1, column = color.getColorNumber();
 		return cardStackStructure[row][column].get(0).getResourcesRequirement();
-
 	}
 	
 	
@@ -121,30 +119,13 @@ public class DevelopmentCardsDeck {
 	public ArrayList<DevelopmentCard>[][] getCardStackStructure() {
 		return cardStackStructure;
 	}
-/*
-	public void showDevelopmentCardsDeck(){
-
-		for (int i = 0; i < 3; i++) {
-			for (int j = 0; j < 4; j++) {
-				if(cardStackStructure[i][j].isEmpty())
-					System.out.println("EMPTY");
-				cardStackStructure[i][j].get(0).showCard();
-			}
-			System.out.println("\n");
-		}
-	}
-
-	public void showBuyableCards(ArrayList<Resources> playerResources, CardProductionsManagement playerCards){
-		for (int i = 0; i < 3; i++) {
-			for (int j = 0; j < 4; j++) {
-				if(!cardStackStructure[i][j].isEmpty() &&
-						isSelectedDevCardBuyable(cardStackStructure[i][j].get(0).getLevel(),cardStackStructure[i][j].get(0).getColor(),playerResources,playerCards))
-					cardStackStructure[i][j].get(0).showCard();
-			}
-
-		}
-	}
-*/
+	
+	/**
+	 * returns a list of the development cards that a certain player can buy
+	 * @param playerResources list of resources the player has
+	 * @param playerCards card management instance
+	 * @return a list of the buyable development cards
+	 */
 	public ArrayList<DevelopmentCard> buyableCards(ArrayList<Resources> playerResources, CardProductionsManagement playerCards){
 		ArrayList<DevelopmentCard> cards= new ArrayList<>();
 		for (int i = 0; i < 3; i++) {

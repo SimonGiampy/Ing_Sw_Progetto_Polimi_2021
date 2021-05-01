@@ -61,7 +61,7 @@ public class ClientSideController implements ViewObserver, Observer {
 					}
 				}
 				case LEADER_SHOW -> {
-					LeaderShow show = (LeaderShow) message;
+					LeaderInteractions show = (LeaderInteractions) message;
 					if(show.getAction() == 0)
 						view.askInitLeaders(show.getLeaderCards());
 					else if(show.getAction() == 1)
@@ -78,7 +78,7 @@ public class ClientSideController implements ViewObserver, Observer {
 				}
 				case DEPOT_SHOW -> view.showDepot(((DepotShow) message).getDepot());
 				case DEPOT_CONFIRMATION -> {
-					DepotConfirmation c = (DepotConfirmation) message;
+					DepotReply c = (DepotReply) message;
 					view.replyDepot(c.getDepot(), c.isInitialMove(), c.isConfirmationAvailable(), c.isMoveValid());
 				}
 				case STRONGBOX_SHOW -> view.showStrongBox(((StrongboxShow) message).getStrongbox());
@@ -87,8 +87,8 @@ public class ClientSideController implements ViewObserver, Observer {
 				case PLAYER_CARDS_AND_PRODUCTION_SHOW ->
 						view.showPlayerCardsAndProduction(((PlayerCardsAndProductionShow) message).getCardProductionManagement());
 				case ACTION_REQUEST -> view.askAction(((ActionRequest) message).getAvailableAction());
-				case CARDS_SHOW -> view.askBuyCardAction(((CardsShow) message).getCards());
-				case PRODUCTION_SHOW -> view.askProductionAction(((ProductionShow) message).getAvailableProduction());
+				case CARDS_SHOW -> view.askBuyCardAction(((BuyableDevCards) message).getCards(), ((BuyableDevCards) message).isWrongSlot());
+				case PRODUCTION_SHOW -> view.askProductionAction(((ProductionsAvailable) message).getAvailableProduction());
 				case WIN_MESSAGE -> view.showWinMessage(((WinMessage) message).getWinner());
 				case DISCONNECTION_MESSAGE -> {
 					DisconnectionMessage mess = (DisconnectionMessage) message;
@@ -152,7 +152,7 @@ public class ClientSideController implements ViewObserver, Observer {
 
 	@Override
 	public void onUpdateMarketAction(String which, int where, int quantity1, int quantity2) {
-		client.sendMessage(new InteractionWithMarket(nickname, which, where,quantity1,quantity2));
+		client.sendMessage(new MarketInteraction(nickname, which, where,quantity1,quantity2));
 	}
 
 	@Override

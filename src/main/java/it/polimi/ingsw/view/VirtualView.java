@@ -49,12 +49,12 @@ public class VirtualView implements View, Observer {
 
 	@Override
 	public void askInitLeaders(ArrayList<ReducedLeaderCard> leaderCards) {
-		clientHandler.sendMessage(new LeaderShow(leaderCards, 0));
+		clientHandler.sendMessage(new LeaderInteractions(leaderCards, 0));
 	}
 
 	@Override
 	public void askLeaderAction(ArrayList<ReducedLeaderCard> availableLeaders) {
-		clientHandler.sendMessage(new LeaderShow(availableLeaders, 2));
+		clientHandler.sendMessage(new LeaderInteractions(availableLeaders, 2));
 	}
 
 	@Override
@@ -69,17 +69,17 @@ public class VirtualView implements View, Observer {
 
 	@Override
 	public void replyDepot(ReducedWarehouseDepot depot, boolean initialMove, boolean confirmationAvailable, boolean inputValid) {
-		clientHandler.sendMessage(new DepotConfirmation(depot, initialMove, confirmationAvailable, inputValid));
+		clientHandler.sendMessage(new DepotReply(depot, initialMove, confirmationAvailable, inputValid));
 	}
 
 	@Override
-	public void askBuyCardAction(ArrayList<DevelopmentCard> cardsAvailable) {
-		clientHandler.sendMessage(new CardsShow(cardsAvailable));
+	public void askBuyCardAction(ArrayList<DevelopmentCard> cardsAvailable, boolean wrongSlot) {
+		clientHandler.sendMessage(new BuyableDevCards(cardsAvailable, wrongSlot));
 	}
 
 	@Override
 	public void askProductionAction(ArrayList<Integer> productionAvailable) {
-		clientHandler.sendMessage(new ProductionShow(productionAvailable));
+		clientHandler.sendMessage(new ProductionsAvailable(productionAvailable));
 	}
 
 	@Override
@@ -144,7 +144,7 @@ public class VirtualView implements View, Observer {
 
 	@Override
 	public void showLeaderCards(ArrayList<ReducedLeaderCard> availableLeaders) {
-		clientHandler.sendMessage(new LeaderShow(availableLeaders, 1));
+		clientHandler.sendMessage(new LeaderInteractions(availableLeaders, 1));
 	}
 
 	@Override

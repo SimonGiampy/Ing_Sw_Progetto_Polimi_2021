@@ -40,11 +40,7 @@ public class ServerSideController {
 		this.lobby = lobby;
 		this.numberOfPlayers = numberOfPlayers;
 		mechanics = new GameMechanicsMultiPlayer(this, numberOfPlayers);
-		if(numberOfPlayers==1){
-			initResources= new boolean[1];
-		}
-		else
-			initResources= new boolean[numberOfPlayers-1];
+		initResources= new boolean[numberOfPlayers-1];
 		gameReady= new boolean[numberOfPlayers];
 		gameState = GameState.CONFIG;
 	}
@@ -129,7 +125,6 @@ public class ServerSideController {
 		VirtualView vv = virtualViewMap.get(nicknameList.get(0));
 		vv.showGenericMessage("You are the first player! Wait!");
 		if(numberOfPlayers==1) {
-			initResources[0]=true;
 			controllerAskLeaders();
 		}
 
@@ -205,7 +200,6 @@ public class ServerSideController {
 		gameReady[playerIndex]=true;
 		if(allTrue(gameReady))
 			startGame();
-		//TODO: send update cards list
 
 	}
 
@@ -216,7 +210,7 @@ public class ServerSideController {
 	private void inGameState(Message receivedMessage){
 		switch (receivedMessage.getMessageType()){
 			case ACTION_REPLY-> actionReplyHandler((ActionReply) receivedMessage);
-			case INTERACTION_WITH_MARKET-> marketInteractionHandler((InteractionWithMarket) receivedMessage);
+			case INTERACTION_WITH_MARKET-> marketInteractionHandler((MarketInteraction) receivedMessage);
 			case BUY_CARD-> buyCardHandler((BuyCard) receivedMessage);
 			case DEPOT_INTERACTION -> depotInteractionHandler((DepotInteraction) receivedMessage);
 			case PRODUCTION_SELECTION -> productionHandler((ProductionSelection) receivedMessage);
@@ -235,7 +229,7 @@ public class ServerSideController {
 			case MARKET -> view.askMarketAction(new ReducedMarket(mechanics.getMarket(), mechanics.getPlayer(playerIndex).getPlayersResourceDeck()));
 			case BUY_CARD -> view.askBuyCardAction(new ArrayList<>
 				(mechanics.getGameDevCardsDeck().buyableCards(mechanics.getPlayer(playerIndex).gatherAllPlayersResources(),
-						mechanics.getPlayer(playerIndex).getPlayersCardManager())));
+						mechanics.getPlayer(playerIndex).getPlayersCardManager())), false);
 			case PRODUCTIONS -> view.askProductionAction(mechanics.getPlayer(playerIndex).getPlayersCardManager().availableProduction());
 			case LEADER -> {
 				ArrayList<ReducedLeaderCard> leaderCards = new ArrayList<>();
@@ -252,7 +246,7 @@ public class ServerSideController {
 	 * it handles market interaction
 	 * @param message interaction with market: initial market message
 	 */
-	private void marketInteractionHandler(InteractionWithMarket message){
+	private void marketInteractionHandler(MarketInteraction message){
 		int playerIndex = nicknameList.indexOf(message.getNickname());
 		VirtualView view = virtualViewMap.get(message.getNickname());
 		try {
@@ -307,21 +301,22 @@ public class ServerSideController {
 	}
 
 	/**
-	 * it handles buy card interaction
-	 * @param message is a message from the client
+	 * Checks if the selected card from the client is buyable. If it is buyable, then it places the card in the selected slot, otherwise
+	 *      it replies telling the client that the slot was wrong.
+	 * @param message buy card message containing the parameters of the chosen card
 	 */
 	private void buyCardHandler(BuyCard message){
-		int playerIndex= nicknameList.indexOf(message.getNickname());
-		/* // to move in cli
-		if (mechanics.getPlayer(playerIndex).getPlayersCardManager().checkStackLevel(message.getSlot())==message.getLevel()-1) {
-
-			view = virtualViewMap.get(message.getNickname());
-			//view.askBuyCardAction(); TODO: need a method to take only available cards to send
+		int playerIndex = nicknameList.indexOf(message.getNickname());
+		VirtualView view = virtualViewMap.get(message.getNickname());
+		CardProductionsManagement management = mechanics.getPlayer(playerIndex).getPlayersCardManager();
+		if (management.checkStackLevel(message.getSlot()) == message.getLevel() - 1) { // correct
+			mechanics.getPlayer(playerIndex).buyNewDevCard(message.getLevel(),message.getColor(),message.getSlot());
+			turnController.setPhaseType(PhaseType.MAIN_ACTION);
+		} else { //incorrect
+			view.askBuyCardAction(mechanics.getGameDevCardsDeck().buyableCards(mechanics.getPlayer(playerIndex).gatherAllPlayersResources(),
+					management), true);
 		}
-		else
-		 */
-		 mechanics.getPlayer(playerIndex).buyNewDevCard(message.getLevel(),message.getColor(),message.getSlot());
-		turnController.setPhaseType(PhaseType.MAIN_ACTION);
+		
 	}
 
 	/**
@@ -368,22 +363,20 @@ public class ServerSideController {
 	}
 
 	/**
-	 * it handles leader card action
+	 * The client chooses what to do with its leader cards
 	 * @param message is a message from the client
 	 */
 	private void leaderActionHandler(LeaderAction message){
 		int playerIndex = nicknameList.indexOf(message.getNickname());
-		if(message.getAction()==1){
+		if(message.getAction()==1) { // play leader
 			mechanics.getPlayer(playerIndex).activateLeaderCard(message.getSelectedLeader());
 			turnController.setPhaseType(PhaseType.LEADER_ACTION);
-		}
-
-		else if(message.getAction()==2){
+			
+		} else if(message.getAction()==2){ // discard leader
 			mechanics.getPlayer(playerIndex).discardLeaderCard(message.getSelectedLeader());
 			turnController.setPhaseType(PhaseType.LEADER_ACTION);
-		}
-
-		else if(turnController.isMainActionDone()){
+			
+		} else if(turnController.isMainActionDone()){ // nothing, next turn
 			turnController.setPhaseType(PhaseType.END_TURN);
 		}
 

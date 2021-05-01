@@ -58,8 +58,9 @@ public interface View {
 	/**
 	 * it asks which card the player want to buy
 	 * @param cardsAvailable is a list of available card
+	 * @param wrongSlot if the chosen slot was incorrect
 	 */
-	void askBuyCardAction(ArrayList<DevelopmentCard> cardsAvailable);
+	void askBuyCardAction(ArrayList<DevelopmentCard> cardsAvailable, boolean wrongSlot);
 
 	/**
 	 * TODO: to be fixed
