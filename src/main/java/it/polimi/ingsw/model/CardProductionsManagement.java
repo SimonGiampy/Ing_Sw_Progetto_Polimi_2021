@@ -33,7 +33,7 @@ public class CardProductionsManagement {
 
 	}
 
-	/** TODO: Testing?
+	/**
 	 * it adds a new leader card to available productions
 	 * @param input is a list of required resources to activate production
 	 * @param faithOutput is the number of faith points
@@ -93,7 +93,7 @@ public class CardProductionsManagement {
 		return productions[selectedProduction-1].produce();
 	}
 
-	/** TODO: Testing
+	/**
 	 * it activates all selected production
 	 * @param playerInput is a list of selected production
 	 * @param inputResources is a list of resources selected by the player
@@ -172,7 +172,7 @@ public class CardProductionsManagement {
 		return allSelectedProduction.isProductionAvailable(playerResources);
 	}
 
-	/** TODO: Testing
+	/**
 	 * it takes resources from Depot and Strongbox
 	 * @param playerInput is a list of selected production
 	 * @param inputResources is an array of number of Resources [#COIN,#SERVANT,#SHIELD,#STONE]
@@ -200,7 +200,7 @@ public class CardProductionsManagement {
 		// else throw new InvalidUserRequestException("invalid input resources");
 	}
 
-	/** TODO: Testing
+	/**
 	 * it checks if one of card's productions is available
 	 * @return true if at least one of card's production is available
 	 */
@@ -354,11 +354,6 @@ public class CardProductionsManagement {
 		return productions;
 	}
 }
-
-
-
-
-
 
 
 

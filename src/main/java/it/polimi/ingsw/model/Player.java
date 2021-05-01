@@ -127,35 +127,7 @@ public class Player {
 		}
 		myResourceDeck.addResources(output,quantity1,quantity2);
 		myFaithTrack.moveMarker(myResourceDeck.getFaithPoint());
-		/*
-		if (Arrays.asList(output).contains(Marbles.WHITE)) { //needs to ask how to transform the white marbles
-
-			if (myResourceDeck.isWhiteAbility2Activated()) { //both leaders activated
-				Scanner scanner = new Scanner(System.in);
-				System.out.println("How many times do you want to use the first leader? ");
-				int quantity1 = scanner.nextInt();
-				System.out.println("How many times do you want to use the second leader? ");
-				int quantity2 = scanner.nextInt();
-
-
-				myResourceDeck.addResources(output, quantity1, quantity2);
-			} else if (myResourceDeck.isWhiteAbility1Activated()) { //only first leader activated
-				Scanner scanner = new Scanner(System.in);
-				System.out.println("How many times do you want to use the leader? ");
-				int quantity1 = scanner.nextInt();
-
-				myResourceDeck.addResources(output, quantity1, 0);
-			} else { // no leaders activated
-				myResourceDeck.addResources(output,0,0);
-			}
-		} else { //no white marbles present in the selected line in the market
-			myResourceDeck.addResources(output,0,0);
-		}
-		
-		//moves the player's marker based on the faith points gained
-		myFaithTrack.moveMarker(myResourceDeck.getFaithPoint());
-
-		 */
+	
 	}
 
 	public ArrayList<PlayerActions> checkAvailableActions(){
@@ -262,12 +234,7 @@ public class Player {
 	 * @param selectedSlot number of the slot where the player wants to put the card
 	 */
 	public void buyNewDevCard(int level, Colors color, int selectedSlot) {
-		/*TODO: move this check
-		//Check if the player has enough resources and at least one eligible slot for the card
-		if (!commonCardsDeck.isSelectedDevCardBuyable(level, color, gatherAllPlayersResources(), cardManager))
-			throw new InvalidInputException("Card requirements not satisfied");
-		 */
-
+		
 		//Get the price, which is the sum of all the resources needed for buying the dev card
 		ArrayList <Resources> price = commonCardsDeck.getPriceDevCard(level, color);
 
@@ -305,7 +272,8 @@ public class Player {
 	 * @throws InvalidInputException when the production cannot be executed
 	 */
 	public void activateProduction(ArrayList<Integer> playerInput,int[] resourcesInput, int[] resourcesOutput)/*throws InvalidInputException*/{
-		/*if (!cardManager.checkPlayerInput(playerInput)) // this check is in the client
+		/* TODO: move this check in client side
+		if (!cardManager.checkPlayerInput(playerInput)) // this check is in the client
 			throw new InvalidInputException("Production input not correct");
 		if (!cardManager.isSelectedProductionAvailable(playerInput))
 			throw new InvalidInputException("Selected production not available");
