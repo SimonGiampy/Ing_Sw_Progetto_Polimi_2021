@@ -20,6 +20,8 @@ public class TurnController {
 	private final ServerSideController serverSideController;
 	private boolean endOfTurn;
 	private boolean endOfGame;
+	private boolean endgameStarted;
+	private int remainingTurn;
 
 
 
@@ -40,6 +42,7 @@ public class TurnController {
 		this.virtualViewMap=virtualViewMap;
 		this.serverSideController = serverSideController;
 		this.mechanics=mechanics;
+		endgameStarted=false;
 	}
 
 	public String getActivePlayer() {
@@ -106,7 +109,7 @@ public class TurnController {
 				view.showFaithTrack( new ReducedFaithTrack(mechanicsSinglePlayer.getLorenzoFaithTrack()));
 
 			if(currentToken.isEndGame())
-				endTurn();
+				endOfGame=true;
 
 			else if (currentToken.applyEffect())
 				mechanicsSinglePlayer.shuffleTokenDeck();
@@ -141,9 +144,16 @@ public class TurnController {
 
 	private void endTurn(){
 		tokenActivation();
-		StringBuilder winner = new StringBuilder();
+		endgame(); //activated only if endgame started
+		sendWinner(); // activated only if the game is over. stop the game
+		nextTurn();
+		startTurn();
+	}
+
+	private void sendWinner(){
 		if (endOfGame){
-			 int[] winnerInfo= mechanics.winner();
+			StringBuilder winner = new StringBuilder();
+			int[] winnerInfo= mechanics.winner();
 			if(winnerInfo[1]==-1)
 				winner.append("Lorenzo");
 			else
@@ -152,13 +162,33 @@ public class TurnController {
 					if(i!=winnerInfo.length-1)
 						winner.append(", ");
 				}
-				String stringWinner=winner.toString();
-			 serverSideController.getLobby().broadcastMessage(new WinMessage(stringWinner));
-			 //TODO: add end of game, closing socket
+			String stringWinner=winner.toString();
+			serverSideController.getLobby().broadcastMessage(new WinMessage(stringWinner));
+			//TODO: add end of game, closing socket
 		}
-		else
-		nextTurn();
-		startTurn();
+
+	}
+
+	public void endgame(){
+		boolean check=false;
+		for (int i = 0; i < nicknameList.size(); i++) {
+			if(mechanics.getPlayer(i).isEndgameStarted()) {
+				check = true;
+				break;
+			}
+		}
+		if(check && !endgameStarted){
+			endgameStarted=true;
+			remainingTurn=nicknameList.size()-nicknameList.indexOf(activePlayer)-1;
+			if(remainingTurn==0)
+				endOfGame=true;
+		}
+		else if(endgameStarted && remainingTurn>0){
+			remainingTurn--;
+		}
+
+		else if(endgameStarted && remainingTurn==0)
+			endOfGame=true;
 	}
 
 	public void turnAskLeaderAction(){
@@ -186,5 +216,11 @@ public class TurnController {
 		this.endOfGame = endOfGame;
 	}
 
+	public void setEndgameStarted(boolean endgameStarted) {
+		this.endgameStarted = endgameStarted;
+	}
 
+	public void setRemainingTurn(int remainingTurn) {
+		this.remainingTurn = remainingTurn;
+	}
 }

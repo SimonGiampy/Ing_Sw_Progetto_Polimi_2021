@@ -243,7 +243,10 @@ public class ServerSideController {
 			case BUY_CARD -> view.askBuyCardAction(new ArrayList<>
 				(mechanics.getGameDevCardsDeck().buyableCards(mechanics.getPlayer(playerIndex).gatherAllPlayersResources(),
 						mechanics.getPlayer(playerIndex).getPlayersCardManager())), false);
-			case PRODUCTIONS -> view.askProductionAction(mechanics.getPlayer(playerIndex).getPlayersCardManager().availableProduction());
+			case PRODUCTIONS -> {
+				sendBoxes(view,playerIndex); //it sends player boxes before production
+				view.askProductionAction(mechanics.getPlayer(playerIndex).getPlayersCardManager().availableProduction());
+			}
 			case LEADER -> {
 				ArrayList<ReducedLeaderCard> leaderCards = new ArrayList<>();
 				leaderCards.add(new ReducedLeaderCard(mechanics.getPlayer(playerIndex).getLeaderCards()[0]));
@@ -349,6 +352,7 @@ public class ServerSideController {
 		CardProductionsManagement management = mechanics.getPlayer(playerIndex).getPlayersCardManager();
 		if (management.checkStackLevel(message.getSlot()) == message.getLevel() - 1) { // correct
 			mechanics.getPlayer(playerIndex).buyNewDevCard(message.getLevel(),message.getColor(),message.getSlot());
+
 			turnController.setTurnPhase(TurnPhase.MAIN_ACTION);
 		} else { //incorrect
 			view.askBuyCardAction(mechanics.getGameDevCardsDeck().buyableCards(mechanics.getPlayer(playerIndex).gatherAllPlayersResources(),
@@ -364,29 +368,30 @@ public class ServerSideController {
 	private void productionHandler(ProductionSelection message) {
 		int playerIndex = nicknameList.indexOf(message.getNickname());
 		VirtualView view = virtualViewMap.get(message.getNickname());
-		sendBoxes(view,playerIndex); //it sends player boxes before production
 
 		CardProductionsManagement cardProductionsManagement = mechanics.getPlayer(playerIndex).getPlayersCardManager();
-		cardProductionsManagement.setSelectedInput(message.getSelectedProductions());
+		if(cardProductionsManagement.isSelectedProductionAvailable(message.getSelectedProductions())) {
+			cardProductionsManagement.setSelectedInput(message.getSelectedProductions());
 
-		if (cardProductionsManagement.numberOfFreeChoicesInInputProductions(message.getSelectedProductions()) > 0)
-			view.askFreeInput(cardProductionsManagement.numberOfFreeChoicesInInputProductions(message.getSelectedProductions()));
+			if (cardProductionsManagement.numberOfFreeChoicesInInputProductions(message.getSelectedProductions()) > 0)
+				view.askFreeInput(cardProductionsManagement.numberOfFreeChoicesInInputProductions(message.getSelectedProductions()));
 
-		else if (cardProductionsManagement.numberOfFreeChoicesInOutputProductions(message.getSelectedProductions()) > 0)
-			view.askFreeOutput(cardProductionsManagement.numberOfFreeChoicesInOutputProductions(message.getSelectedProductions()));
+			else if (cardProductionsManagement.numberOfFreeChoicesInOutputProductions(message.getSelectedProductions()) > 0)
+				view.askFreeOutput(cardProductionsManagement.numberOfFreeChoicesInOutputProductions(message.getSelectedProductions()));
 
-		else {
-			try {
-				int[] inputResources = new int[]{0, 0, 0, 0};
-				int[] outPutResources = new int[]{0, 0, 0, 0};
-				mechanics.getPlayer(playerIndex).activateProduction(message.getSelectedProductions(), inputResources, outPutResources);
-				sendBoxes(view,playerIndex);
-				turnController.setTurnPhase(TurnPhase.MAIN_ACTION);
+			else {
+				try {
+					int[] inputResources = new int[]{0, 0, 0, 0};
+					int[] outPutResources = new int[]{0, 0, 0, 0};
+					mechanics.getPlayer(playerIndex).activateProduction(message.getSelectedProductions(), inputResources, outPutResources);
+					sendBoxes(view, playerIndex);
+					turnController.setTurnPhase(TurnPhase.MAIN_ACTION);
 
-			} catch (InvalidInputException e) {
-				view.askProductionAction(cardProductionsManagement.availableProduction());
+				} catch (InvalidInputException e) {
+					view.askProductionAction(cardProductionsManagement.availableProduction());
+				}
 			}
-		}
+		} else view.askProductionAction(cardProductionsManagement.availableProduction());
 	}
 
 	private void sendBoxes(VirtualView view, int playerIndex){
@@ -475,8 +480,6 @@ public class ServerSideController {
 		else turnController.turnAskAction();
 
 	}
-
-	
 
 	
 	private void endGameState(Message receivedMessage) {
