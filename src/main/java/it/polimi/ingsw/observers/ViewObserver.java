@@ -2,6 +2,7 @@ package it.polimi.ingsw.observers;
 
 import it.polimi.ingsw.model.util.Colors;
 import it.polimi.ingsw.model.util.PlayerActions;
+import it.polimi.ingsw.model.util.Productions;
 import it.polimi.ingsw.model.util.Resources;
 
 import java.util.ArrayList;
@@ -96,7 +97,7 @@ public interface ViewObserver {
 	 * it sends a message to the server with the selected production input
 	 * @param selectedProduction is an arraylist of index of the selected production
 	 */
-	void onUpdateProductionAction(ArrayList<Integer> selectedProduction);
+	void onUpdateProductionAction(ArrayList<Productions> selectedProduction);
 
 	/**
 	 * it sends a message to the server with the selected free choice resources

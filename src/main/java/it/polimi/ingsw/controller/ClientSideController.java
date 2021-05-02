@@ -2,6 +2,7 @@ package it.polimi.ingsw.controller;
 
 import it.polimi.ingsw.model.util.Colors;
 import it.polimi.ingsw.model.util.PlayerActions;
+import it.polimi.ingsw.model.util.Productions;
 import it.polimi.ingsw.model.util.Resources;
 import it.polimi.ingsw.network.messages.*;
 import it.polimi.ingsw.network.Client;
@@ -179,7 +180,7 @@ public class ClientSideController implements ViewObserver, Observer {
 	}
 
 	@Override
-	public void onUpdateProductionAction(ArrayList<Integer> selectedProduction) {
+	public void onUpdateProductionAction(ArrayList<Productions> selectedProduction) {
 		client.sendMessage(new ProductionSelection( nickname, selectedProduction));
 	}
 

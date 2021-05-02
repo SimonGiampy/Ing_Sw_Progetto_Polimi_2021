@@ -444,11 +444,11 @@ public class GameDemo {
 		System.out.print("Player Strongbox: ");
 		currentPlayer.getMyStrongbox().showStrongbox();
 		//currentPlayer.getPlayersWarehouseDepot().showDepot();
-		currentPlayer.getPlayersCardManager().showAvailableProductions();
+		//currentPlayer.getPlayersCardManager().showAvailableProductions();
 		System.out.println("which production do you want to activate?");
 		listOfInt = scanner.nextLine();
 		playerProductionInput = playerInputToArraylist(listOfInt);
-
+/*
 		if (currentPlayer.getPlayersCardManager().numberOfInputEmptySelectedProduction(playerProductionInput) > 0) {
 			System.out.println("which resources do you want to put in input? #COIN,#SERVANT,#SHIELD,#STONE");
 			listOfInt = scanner.nextLine();
@@ -459,6 +459,8 @@ public class GameDemo {
 			listOfInt = scanner.nextLine();
 			selectedResourcesOutput = playerInputToArray(listOfInt);
 		}
+		
+ */
 		/*
 		currentPlayer.activateProduction(playerProductionInput, selectedResourcesInput, selectedResourcesOutput);
 		//currentPlayer.getPlayersWarehouseDepot().showDepot();

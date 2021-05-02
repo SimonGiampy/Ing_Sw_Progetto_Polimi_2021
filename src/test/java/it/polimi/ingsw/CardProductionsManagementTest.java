@@ -60,7 +60,7 @@ public class CardProductionsManagementTest {
 		ArrayList<CardRequirement> test= cardProductionsManagement.getPlayerCardsRequirements();
 		assertEquals(test.toString(),cardRequirementsTest.toString());
 	}
-
+/*
 	@Test // test for isSelectedProductionAvailable Active 1,2,4 Available 1,2,4 but individually only
 	public void isSelectedProductionAvailable_1() throws InvalidUserRequestException {
 		cardProductionsManagement.addCard(developmentCard1,1);
@@ -165,6 +165,6 @@ public class CardProductionsManagementTest {
 		ArrayList<Integer> inputTest=new ArrayList<>();
 	}
 
-
+*/
 
 }

@@ -5,19 +5,20 @@ import it.polimi.ingsw.model.util.Productions;
 import it.polimi.ingsw.model.util.Resources;
 import it.polimi.ingsw.exceptions.InvalidInputException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Stack;
 import java.util.stream.Collectors;
 
-/** TODO: fix comments in this class
+/**
  * this class handles player's cards and productions management
  */
 public class CardProductionsManagement {
 	private final ArrayList<Stack<DevelopmentCard>> cards;
 	private final Strongbox myStrongbox;
 	private final WarehouseDepot myWarehouseDepot;
-	private final boolean[] numberOfProduction;
-	private final ProductionRules[] productions;
-	private ArrayList<Integer> selectedInput;
+	private final HashMap<Productions, Boolean> presentProductions;
+	private final HashMap<Productions, ProductionRules> productions;
+	private ArrayList<Productions> selectedInput;
 	private int[] inputResources;
 
 	/**
@@ -30,10 +31,19 @@ public class CardProductionsManagement {
 		cards.add(new Stack<>());
 		myStrongbox = playerStrongbox;
 		myWarehouseDepot = playerWarehouseDepot;
-		numberOfProduction = new boolean[]{false,false,false,true,false,false};
-		productions= new ProductionRules[6];
-		productions[3]=baseProductionRules;
-
+		
+		
+		presentProductions = new HashMap<>(6);
+		presentProductions.put(Productions.BASE_PRODUCTION, true);
+		presentProductions.put(Productions.STACK_1_CARD_PRODUCTION, false);
+		presentProductions.put(Productions.STACK_2_CARD_PRODUCTION, false);
+		presentProductions.put(Productions.STACK_3_CARD_PRODUCTION, false);
+		presentProductions.put(Productions.LEADER_CARD_1_PRODUCTION, false);
+		presentProductions.put(Productions.LEADER_CARD_2_PRODUCTION, false);
+		
+		productions = new HashMap<>(6);
+		productions.put(Productions.BASE_PRODUCTION, baseProductionRules);
+		
 	}
 
 	/**
@@ -42,27 +52,29 @@ public class CardProductionsManagement {
 	 * @param faithOutput is the number of faith points
 	 */
 	public void addLeaderCard(ArrayList<Resources> input, ArrayList<Resources> output, int faithOutput){
-		if (!numberOfProduction[4]) {
-			numberOfProduction[4] = true;
-			productions[4]=new ProductionRules(input,output,faithOutput);
-		}
-		else {
-			numberOfProduction[5] = true;
-			productions[5]= new ProductionRules(input, output, faithOutput);
+		if (!presentProductions.get(Productions.LEADER_CARD_1_PRODUCTION)) { // activates first leader
+			presentProductions.put(Productions.LEADER_CARD_1_PRODUCTION, true);
+			productions.put(Productions.LEADER_CARD_1_PRODUCTION, new ProductionRules(input,output,faithOutput));
+		} else { // activates second leader
+			presentProductions.put(Productions.LEADER_CARD_2_PRODUCTION, true);
+			productions.put(Productions.LEADER_CARD_2_PRODUCTION, new ProductionRules(input, output, faithOutput));
 		}
 	}
-
+	
 
 	/**
-	 * it adds a new card on the selected stack
+	 * it adds a new card on the selected stack (1, 2 or 3)
 	 * @param newCard is the card to insert
 	 * @param selectedStack is the number of the selected stack
 	 */
-	public void addCard(DevelopmentCard newCard,int selectedStack) {
-		if(cards.get(selectedStack-1).size()==0)
-			numberOfProduction[selectedStack-1]=true;
+	public void addCard(DevelopmentCard newCard, int selectedStack) {
+		Productions prod = Productions.values()[selectedStack - 1];
+		if (cards.get(selectedStack-1).size() == 0) {
+			presentProductions.put(prod, true);
+		}
+		
 		cards.get(selectedStack-1).push(newCard);
-		productions[selectedStack-1]=cards.get(selectedStack-1).peek().getProductionRules();
+		productions.put(prod, cards.get(selectedStack-1).peek().getProductionRules());
 	}
 	
 
@@ -72,7 +84,7 @@ public class CardProductionsManagement {
 	 * @return top card's level of the selected stack
 	 */
 	public int checkStackLevel(int selectedStack) {
-		return  cards.get(selectedStack-1).size();
+		return cards.get(selectedStack-1).size();
 	}
 
 	/**
@@ -89,28 +101,29 @@ public class CardProductionsManagement {
 	}
 
 	/**
-	 * it activates production
+	 * it activates the chosen production
 	 * @param selectedProduction is the number of the selected stack
 	 */
-	public ArrayList<Resources> activateSingleProduction(int selectedProduction){
-		return productions[selectedProduction-1].produce();
+	public ArrayList<Resources> activateSingleProduction(Productions selectedProduction){
+		return productions.get(selectedProduction).produce();
 	}
 
 	/**
-	 * it activates all selected production
-	 * @param playerInput is a list of selected production
-	 * @param inputResources is a list of resources selected by the player
+	 * it activates all the productions selected by the player
+	 * @param playerInput is a list of selected productions
+	 * @param outputResources is a list of resources selected by the player
 	 * @return the number of faith points of the selected productions
 	 */
-	public int activateSelectedProduction(ArrayList<Integer> playerInput,int[] inputResources){
+	public int activateSelectedProduction(ArrayList<Productions> playerInput, int[] outputResources){
 		ArrayList<Resources> selectedProduction= new ArrayList<>();
-		int totalFaithPoints=0;
-		for (Integer integer : playerInput) {
-			selectedProduction.addAll(activateSingleProduction(integer));
-			totalFaithPoints=returnFaithPoints(integer);
+		int totalFaithPoints = 0;
+		for (Productions prod : playerInput) {
+			selectedProduction.addAll(activateSingleProduction(prod));
+			totalFaithPoints = returnFaithPoints(prod);
 		}
+		
 		for (int i = 0; i < 4; i++) {
-			for (int j = 0; j < inputResources[i]; j++) {
+			for (int j = 0; j < outputResources[i]; j++) {
 				selectedProduction.add(Resources.values()[i]);
 			}
 		}
@@ -121,12 +134,12 @@ public class CardProductionsManagement {
 
 
 	/**
-	 * it returns the number of faith points
-	 * @param selectedStack is the number of the selected stack
+	 * it returns the number of faith points from a production
+	 * @param prod production
 	 * @return the number of faith points
 	 */
-	public int returnFaithPoints(int selectedStack){
-		return productions[selectedStack-1].getFaithOutput();
+	public int returnFaithPoints(Productions prod){
+		return productions.get(prod).getFaithOutput();
 	}
 
 	/**
@@ -140,36 +153,36 @@ public class CardProductionsManagement {
 	}
 
 	/**
-	 *
-	 * @param selectedStack is the number of the selected stack
+	 * checks if the selected production is available
+	 * @param prod production
 	 * @return true if the card's production is available
 	 */
-	public boolean isSingleProductionAvailable(int selectedStack) {
-		ArrayList<Resources> playerResources= myStrongbox.getContent();
+	public boolean isSingleProductionAvailable(Productions prod) {
+		ArrayList<Resources> playerResources = myStrongbox.getContent();
 		playerResources.addAll(myWarehouseDepot.gatherAllResources());
-		return productions[selectedStack-1].isProductionAvailable(playerResources);
+		return productions.get(prod).isProductionAvailable(playerResources);
 	}
 
 	/**
 	 * it gets the selected production input
-	 * @param selectedStack is the number of the selected stack
+	 * @param p is the production corresponding to the selected card stack
 	 * @return an Arraylist of production's input
 	 */
-	public ArrayList<Resources> getProductionInput(int selectedStack){
-		return productions[selectedStack-1].getInputCopy();
+	public ArrayList<Resources> getProductionInput(Productions p) {
+		return productions.get(p).getInputCopy();
 	}
 
 	/**
 	 * it checks if all selected productions (valid) are available
-	 * @param playerInput is a list of selected production
+	 * @param playerInput is a list of selected productions
 	 * @return true if all productions can be started at the same time
 	 */
-	public boolean isSelectedProductionAvailable(ArrayList<Integer> playerInput){
+	public boolean isSelectedProductionAvailable(ArrayList<Productions> playerInput){
 		ArrayList<Resources> playerResources= myStrongbox.getContent();
 		playerResources.addAll(myWarehouseDepot.gatherAllResources());
-		ArrayList<Resources> productionInput= new ArrayList<>();
-		for (Integer integer : playerInput) {
-			productionInput.addAll(getProductionInput(integer));
+		ArrayList<Resources> productionInput = new ArrayList<>();
+		for (Productions prod : playerInput) {
+			productionInput.addAll(getProductionInput(prod));
 		}
 		ProductionRules allSelectedProduction = new ProductionRules(productionInput, new ArrayList<>(),0);
 		return allSelectedProduction.isProductionAvailable(playerResources);
@@ -180,23 +193,29 @@ public class CardProductionsManagement {
 	 * @param playerInput is a list of selected production
 	 * @param inputResources is an array of number of Resources [#COIN,#SERVANT,#SHIELD,#STONE]
 	 */
-	public void takeSelectedResources(ArrayList<Integer> playerInput, int[] inputResources) /*throws InvalidUserRequestException*/ {
+	public void takeSelectedResources(ArrayList<Productions> playerInput, int[] inputResources)  {
 		ArrayList<Resources> playerResources= myWarehouseDepot.gatherAllResources();
 		playerResources.addAll(myStrongbox.getContent());
 		ArrayList<Resources> remainingResources;
-		ArrayList<Resources> filteredProduction=filteredProduction(playerInput,inputResources);
-			remainingResources = myWarehouseDepot.payResources(filteredProduction);
-			myStrongbox.retrieveResources(remainingResources);
+		ArrayList<Resources> filteredProduction = filteredProduction(playerInput, inputResources);
+		remainingResources = myWarehouseDepot.payResources(filteredProduction);
+		myStrongbox.retrieveResources(remainingResources);
 	}
-
-	private ArrayList<Resources> filteredProduction(ArrayList<Integer> playerInput, int[] inputResources){
-		ArrayList<Resources> playerResources= myWarehouseDepot.gatherAllResources();
+	
+	/**
+	 * filters out the free choices from the list of productions chosen by the player
+	 * @param playerInput list of productions
+	 * @param inputResources resources going to the strongbox
+	 * @return the result of the filter
+	 */
+	private ArrayList<Resources> filteredProduction(ArrayList<Productions> playerInput, int[] inputResources){
+		ArrayList<Resources> playerResources = myWarehouseDepot.gatherAllResources();
 		playerResources.addAll(myStrongbox.getContent());
-		ArrayList<Resources> productionInput= new ArrayList<>();
-		for (Integer integer : playerInput) {
-			productionInput.addAll(getProductionInput(integer));
+		ArrayList<Resources> productionInput = new ArrayList<>();
+		for (Productions prod : playerInput) {
+			productionInput.addAll(getProductionInput(prod));
 		}
-		ArrayList<Resources> filteredProduction = productionInput.stream().filter(i->i!=Resources.FREE_CHOICE)
+		ArrayList<Resources> filteredProduction = productionInput.stream().filter(i -> i != Resources.FREE_CHOICE)
 				.collect(Collectors.toCollection(ArrayList::new));
 		for (int i = 0; i < 4; i++) {
 			for (int j = 0; j < inputResources[i]; j++) {
@@ -206,11 +225,11 @@ public class CardProductionsManagement {
 		return filteredProduction;
 	}
 
-	public boolean checkFreeInput(ArrayList<Integer> playerInput, int[] inputResources){
-		ArrayList<Resources> playerResources= myWarehouseDepot.gatherAllResources();
+	public boolean checkFreeInput(ArrayList<Productions> playerInput, int[] inputResources){
+		ArrayList<Resources> playerResources = myWarehouseDepot.gatherAllResources();
 		playerResources.addAll(myStrongbox.getContent());
 
-		ArrayList<Resources> filteredProduction=filteredProduction(playerInput,inputResources);
+		ArrayList<Resources> filteredProduction = filteredProduction(playerInput, inputResources);
 		ProductionRules allSelectedProduction= new ProductionRules(filteredProduction,new ArrayList<>(),0);
 
 		return allSelectedProduction.isProductionAvailable(playerResources);
@@ -221,12 +240,14 @@ public class CardProductionsManagement {
 	 * @return true if at least one of card's production is available
 	 */
 	public boolean isAtLeastOneProductionAvailable() throws InvalidInputException {
-		return  (checkStackLevel(1)>0 && isSingleProductionAvailable(1)) ||
-				(checkStackLevel(2)>0 && isSingleProductionAvailable(2)) ||
-				(checkStackLevel(3)>0 && isSingleProductionAvailable(3)) ||
-				isSingleProductionAvailable(4) ||
-				(numberOfProduction[4] && isSingleProductionAvailable(5)) ||
-				(numberOfProduction[5] && isSingleProductionAvailable(6));
+		return  (checkStackLevel(1) >0 && isSingleProductionAvailable(Productions.STACK_1_CARD_PRODUCTION)) ||
+				(checkStackLevel(2) >0 && isSingleProductionAvailable(Productions.STACK_2_CARD_PRODUCTION)) ||
+				(checkStackLevel(3) >0 && isSingleProductionAvailable(Productions.STACK_3_CARD_PRODUCTION)) ||
+				isSingleProductionAvailable(Productions.BASE_PRODUCTION) ||
+				(presentProductions.get(Productions.LEADER_CARD_1_PRODUCTION) &&
+						isSingleProductionAvailable(Productions.LEADER_CARD_1_PRODUCTION)) ||
+				(presentProductions.get(Productions.LEADER_CARD_2_PRODUCTION)
+						&& isSingleProductionAvailable(Productions.LEADER_CARD_2_PRODUCTION));
 	}
 
 	/**
@@ -234,90 +255,57 @@ public class CardProductionsManagement {
 	 * @return the number of the cards
 	 */
 	public int numberOfCards(){
-		return cards.get(0).size()+cards.get(1).size()+cards.get(2).size();
+		return cards.get(0).size() + cards.get(1).size() + cards.get(2).size();
 	}
+	
 
 	/**
-	 * Checks if the input is correct (no values out of 1-6 and no duplicates) and selected production are activated
-	 * @param playerInput number of the selected productions
-	 * @return true if the input is correct and the productions available
-	 */
-	public boolean checkPlayerInput(ArrayList<Integer> playerInput){
-		if (playerInput.size() != playerInput.stream().distinct().count() || playerInput.stream().anyMatch(i -> i>6 || i<1))
-			return false;
-		for (Integer integer : playerInput) {
-			int input = integer - 1;
-			if (!numberOfProduction[input])
-				return false;
-		}
-		return true;
-	}
-
-	/**
-	 * it calculates the number of input ? selected production
-	 * @param selectedStack is the number of the selected production
-	 * @return the number of ? in input
-	 */
-	public int numberOfInputEmptyResources(int selectedStack){
-		System.out.println(selectedStack);
-		return productions[selectedStack-1].numberOfInputEmptyResources();
-	}
-
-	/**
-	 *  it calculates the number of input ? selected (by the player) productions
+	 *  it calculates the number of input ? (free choices) selected (by the player) productions
 	 * @param playerInput is a list of production selected by the player
 	 * @return the number of all ? in input
 	 */
-	public int numberOfInputEmptySelectedProduction(ArrayList<Integer> playerInput){
-		int totalNumber=0;
-		for (Integer integer : playerInput) {
-			totalNumber = totalNumber + numberOfInputEmptyResources(integer);
+	public int numberOfFreeChoicesInInputProductions(ArrayList<Productions> playerInput){
+		int totalNumber = 0;
+		for (Productions prod : playerInput) {
+			totalNumber = totalNumber +  productions.get(prod).numberOfFreeChoicesInput();
+		}
+		return totalNumber;
+	}
+	
+	/**
+	 *  it calculates the number of input ? (free choices) selected (by the player) productions
+	 * @param playerInput is a list of production selected by the player
+	 * @return the number of all ? in input
+	 */
+	public int numberOfFreeChoicesInOutputProductions(ArrayList<Productions> playerInput){
+		int totalNumber = 0;
+		for (Productions prod : playerInput) {
+			totalNumber = totalNumber +  productions.get(prod).numberOfFreeChoicesOutput();
 		}
 		return totalNumber;
 	}
 
-	/**
+	/** TODO: remove unnecessary input parameter
 	 * it checks if the resources selected by the player to put in input are correct
 	 * @param playerInput is a list of production selected by the player
 	 * @param inputResources is an array of multiplicity of each resource selected by the player
 	 * @return true if the sum of all resources selected by the player is equal to production's number of ? in input
 	 */
-	public boolean isNumberOfSelectedInputEmptyResourcesEnough(ArrayList<Integer> playerInput, int[] inputResources){
-		int totalNumber= numberOfInputEmptySelectedProduction(playerInput);
+	public boolean isNumberOfSelectedInputEmptyResourcesEnough(ArrayList<Productions> playerInput, int[] inputResources){
+		//int totalNumber = numberOfInputEmptySelectedProduction(playerInput);
 		ArrayList<Resources> playerResources= myWarehouseDepot.gatherAllResources();
 		playerResources.addAll(myStrongbox.getContent());
-		ArrayList<Resources> filteredProduction= new ArrayList<>();
+		ArrayList<Resources> filteredProduction = new ArrayList<>();
 			for (int i = 0; i < 4; i++) {
 				for (int j = 0; j < inputResources[i]; j++) {
 					filteredProduction.add(Resources.values()[i]);
 				}
 			}
 
-		return ListSet.subset(playerResources,filteredProduction);
+		return ListSet.subset(playerResources, filteredProduction);
 		//return totalNumber==inputResources[0]+inputResources[1]+inputResources[2]+inputResources[3];
 	}
-
-	/**
-	 * it calculates the number of output ? selected production
-	 * @param selectedStack is the number of the selected production
-	 * @return the number of ? in output
-	 */
-	public int numberOfOutputEmptyResources(int selectedStack) {
-		return productions[selectedStack-1].numberOfOutputEmptyResources();
-	}
-
-	/**
-	 * it calculates the number of input ? selected (by the player) productions
-	 * @param playerInput is a list of production selected by the player
-	 * @return the number of all ? in input
-	 */
-	public int numberOfOutputEmptySelectedProduction(ArrayList<Integer> playerInput){
-		int totalNumber=0;
-		for (Integer integer : playerInput) {
-			totalNumber = totalNumber + numberOfOutputEmptyResources(integer);
-		}
-		return totalNumber;
-	}
+	
 
 	/**
 	 * it checks if the resources selected by the player to put in output are correct
@@ -325,67 +313,35 @@ public class CardProductionsManagement {
 	 * @param outputResources is an array of multiplicity of each resource selected by the player
 	 * @return true if the sum of all resources selected by the player is equal to production's number of ? in output
 	 */
-	public boolean isNumberOfSelectedOutputEmptyResourcesEnough(ArrayList<Integer> playerInput,int[] outputResources){
-		int totalNumber=numberOfOutputEmptySelectedProduction(playerInput);
+	public boolean isNumberOfSelectedOutputEmptyResourcesEnough(ArrayList<Productions> playerInput, int[] outputResources){
+		int totalNumber = numberOfFreeChoicesInInputProductions(playerInput);
 		return totalNumber == outputResources[0]+outputResources[1]+outputResources[2]+outputResources[3];
 	}
-
+	
 	/**
-	 * it shows selected production's information
-	 * @param selectedStack is the number of selected production
+	 * calculates the available productions
+	 * @return a list of productions
 	 */
-	public void showSingleProduction(int selectedStack){
-		productions[selectedStack-1].showProductionRulesInformation();
-	}
-
-	/**
-	 *  it shows available productions
-	 */
-	public void showAvailableProductions(){
-		System.out.println("Production Available:");
-		for (int i = 0; i < 6; i++) {
-			if(numberOfProduction[i] && isSingleProductionAvailable(i+1)){
-				System.out.print(i+1+": ");
-				System.out.println(Productions.values()[i]);
-				showSingleProduction(i+1);
-			}
-		}
-	}
-
-	public ArrayList<Productions> availableProduction(){
-		ArrayList<Productions> list= new ArrayList<>();
-		for (int i = 0; i < 6; i++) {
-			if(numberOfProduction[i] && isSingleProductionAvailable(i+1))
-				list.add(Productions.values()[i]);
+	public ArrayList<Productions> availableProduction() {
+		ArrayList<Productions> list = new ArrayList<>();
+		for (Productions p: Productions.values()) {
+			if(presentProductions.get(p) && isSingleProductionAvailable(p))
+				list.add(p);
 		}
 		return list;
 	}
+	
+	
 
 	public ArrayList<Stack<DevelopmentCard>> getCards() {
 		return cards;
 	}
-
-	public Strongbox getMyStrongbox() {
-		return myStrongbox;
-	}
-
-	public WarehouseDepot getMyWarehouseDepot() {
-		return myWarehouseDepot;
-	}
-
-	public boolean[] getNumberOfProduction() {
-		return numberOfProduction;
-	}
-
-	public ProductionRules[] getProductions() {
-		return productions;
-	}
-
-	public ArrayList<Integer> getSelectedInput() {
+	
+	public ArrayList<Productions> getSelectedInput() {
 		return selectedInput;
 	}
 
-	public void setSelectedInput(ArrayList<Integer> selectedInput) {
+	public void setSelectedInput(ArrayList<Productions> selectedInput) {
 		this.selectedInput = selectedInput;
 	}
 

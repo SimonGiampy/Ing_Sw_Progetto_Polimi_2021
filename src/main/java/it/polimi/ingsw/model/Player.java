@@ -1,9 +1,6 @@
 package it.polimi.ingsw.model;
 
-import it.polimi.ingsw.model.util.Colors;
-import it.polimi.ingsw.model.util.Marbles;
-import it.polimi.ingsw.model.util.PlayerActions;
-import it.polimi.ingsw.model.util.Resources;
+import it.polimi.ingsw.model.util.*;
 import it.polimi.ingsw.exceptions.InvalidDevCardSlotException;
 import it.polimi.ingsw.exceptions.InvalidInputException;
 import it.polimi.ingsw.exceptions.InvalidUserRequestException;
@@ -272,7 +269,8 @@ public class Player {
 	 *                       When the production does not have ?, the caller set it to [0,0,0,0].
 	 * @throws InvalidInputException when the production cannot be executed
 	 */
-	public void activateProduction(ArrayList<Integer> playerInput,int[] resourcesInput, int[] resourcesOutput) throws InvalidInputException/*throws InvalidInputException*/{
+	public void activateProduction(ArrayList<Productions> playerInput, int[] resourcesInput, int[] resourcesOutput)
+			throws InvalidInputException {
 		/* TODO: move this check in client side
 		if (!cardManager.checkPlayerInput(playerInput)) // this check is in the client
 			throw new InvalidInputException("Production input not correct");
@@ -287,7 +285,7 @@ public class Player {
 		//System.out.println(Arrays.toString(resourcesOutput));
 		cardManager.takeSelectedResources(playerInput,resourcesInput);
 		myFaithTrack.moveMarker(cardManager.activateSelectedProduction(playerInput,resourcesOutput));
-		System.out.println(getMyStrongbox().getContent());
+		//System.out.println(getMyStrongbox().getContent());
 	}
 
 

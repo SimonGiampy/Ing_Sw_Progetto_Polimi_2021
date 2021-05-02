@@ -15,7 +15,6 @@ import it.polimi.ingsw.xml_parsers.XMLParser;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 
@@ -370,11 +369,11 @@ public class ServerSideController {
 		CardProductionsManagement cardProductionsManagement = mechanics.getPlayer(playerIndex).getPlayersCardManager();
 		cardProductionsManagement.setSelectedInput(message.getSelectedProductions());
 
-		if (cardProductionsManagement.numberOfInputEmptySelectedProduction(message.getSelectedProductions()) > 0)
-			view.askFreeInput(cardProductionsManagement.numberOfInputEmptySelectedProduction(message.getSelectedProductions()));
+		if (cardProductionsManagement.numberOfFreeChoicesInInputProductions(message.getSelectedProductions()) > 0)
+			view.askFreeInput(cardProductionsManagement.numberOfFreeChoicesInInputProductions(message.getSelectedProductions()));
 
-		else if (cardProductionsManagement.numberOfOutputEmptySelectedProduction(message.getSelectedProductions()) > 0)
-			view.askFreeOutput(cardProductionsManagement.numberOfOutputEmptySelectedProduction(message.getSelectedProductions()));
+		else if (cardProductionsManagement.numberOfFreeChoicesInOutputProductions(message.getSelectedProductions()) > 0)
+			view.askFreeOutput(cardProductionsManagement.numberOfFreeChoicesInOutputProductions(message.getSelectedProductions()));
 
 		else {
 			try {
@@ -402,9 +401,9 @@ public class ServerSideController {
 		VirtualView view = virtualViewMap.get(message.getNickname());
 		CardProductionsManagement cardProductionsManagement = mechanics.getPlayer(playerIndex).getPlayersCardManager();
 		if(cardProductionsManagement.checkFreeInput(cardProductionsManagement.getSelectedInput(),putResources(message))) {
-			if (cardProductionsManagement.numberOfOutputEmptySelectedProduction(cardProductionsManagement.getSelectedInput()) > 0) {
+			if (cardProductionsManagement.numberOfFreeChoicesInOutputProductions(cardProductionsManagement.getSelectedInput()) > 0) {
 					cardProductionsManagement.setInputResources(putResources(message));
-					view.askFreeOutput(cardProductionsManagement.numberOfOutputEmptySelectedProduction(cardProductionsManagement.getSelectedInput()));
+					view.askFreeOutput(cardProductionsManagement.numberOfFreeChoicesInOutputProductions(cardProductionsManagement.getSelectedInput()));
 			} else {
 				try {
 					int[] outputResources = new int[]{0, 0, 0, 0};
@@ -412,11 +411,11 @@ public class ServerSideController {
 					sendBoxes(view,playerIndex);
 					turnController.setTurnPhase(TurnPhase.MAIN_ACTION);
 				} catch (InvalidInputException e) {
-					view.askFreeInput(cardProductionsManagement.numberOfInputEmptySelectedProduction(cardProductionsManagement.getSelectedInput()));
+					view.askFreeInput(cardProductionsManagement.numberOfFreeChoicesInInputProductions(cardProductionsManagement.getSelectedInput()));
 				}
 			}
 		}
-		else view.askFreeInput(cardProductionsManagement.numberOfInputEmptySelectedProduction(cardProductionsManagement.getSelectedInput()));
+		else view.askFreeInput(cardProductionsManagement.numberOfFreeChoicesInInputProductions(cardProductionsManagement.getSelectedInput()));
 
 	}
 

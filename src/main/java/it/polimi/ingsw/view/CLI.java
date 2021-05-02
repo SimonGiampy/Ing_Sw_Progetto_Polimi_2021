@@ -518,9 +518,9 @@ public class CLI extends ViewObservable implements View {
 			}
 		} while (!check);
 		
-		ArrayList<Integer> selection = new ArrayList<>();
+		ArrayList<Productions> selection = new ArrayList<>();
 		for (String s: x) {
-			selection.add(productionAvailable.get(Integer.parseInt(s) - 1).ordinal() + 1);
+			selection.add(productionAvailable.get(Integer.parseInt(s) - 1));
 		}
 		notifyObserver(obs -> obs.onUpdateProductionAction(selection));
 

@@ -120,7 +120,7 @@ public class ProductionRulesTest {
 		inputProduction.add(Resources.FREE_CHOICE);
 		inputProduction.add(Resources.STONE);
 		ProductionRules productionRules = new ProductionRules(inputProduction,outputProduction,1);
-		assertEquals(1,productionRules.numberOfInputEmptyResources());
+		assertEquals(1,productionRules.numberOfFreeChoicesInput());
 	}
 	@Test
 	public void numberOfInputEmptyResources_2(){
@@ -128,7 +128,7 @@ public class ProductionRulesTest {
 		ArrayList<Resources> outputProduction= new ArrayList<>();
 		ArrayList<Resources> playerResources= new ArrayList<>();
 		ProductionRules productionRules = new ProductionRules(inputProduction,outputProduction,1);
-		assertEquals(0,productionRules.numberOfInputEmptyResources());
+		assertEquals(0,productionRules.numberOfFreeChoicesInput());
 
 	}
 }

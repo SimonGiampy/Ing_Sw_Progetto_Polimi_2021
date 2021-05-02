@@ -79,17 +79,20 @@ public class ProductionRules implements Serializable {
 	 *
 	 * @return the number of ? production values (indicated with EMPTY flag)
 	 */
-	public int numberOfOutputEmptyResources(){
-		return (int) output.stream().filter(i -> i==Resources.FREE_CHOICE).count();
+	public int numberOfFreeChoicesOutput(){
+		return ListSet.count(output, Resources.FREE_CHOICE);
 	}
-	public int numberOfInputEmptyResources(){
-		return (int) input.stream().filter(i -> i==Resources.FREE_CHOICE).count();
+	public int numberOfFreeChoicesInput(){
+		return ListSet.count(input, Resources.FREE_CHOICE);
 	}
-
+	
+	//TODO: delete this
+	/*
 	public void showProductionRulesInformation(){
 		ListSet.listMultiplicityToString(input);
 		ListSet.listMultiplicityToString(output);
-		//TODO: delete this line
+		
 		System.out.println("Faith points output: "+getFaithOutput());
 	}
+	 */
 }

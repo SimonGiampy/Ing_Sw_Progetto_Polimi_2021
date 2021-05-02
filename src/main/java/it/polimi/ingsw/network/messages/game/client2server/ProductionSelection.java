@@ -1,6 +1,6 @@
 package it.polimi.ingsw.network.messages.game.client2server;
 
-import it.polimi.ingsw.model.util.Resources;
+import it.polimi.ingsw.model.util.Productions;
 import it.polimi.ingsw.network.messages.Message;
 import it.polimi.ingsw.network.messages.MessageType;
 
@@ -11,17 +11,14 @@ import java.util.ArrayList;
  */
 public class ProductionSelection extends Message {
 
-	private final ArrayList<Integer> selectedProductions;
+	private final ArrayList<Productions> selectedProductions;
 
-
-	public ProductionSelection(String nickname, ArrayList<Integer> selectedProductions) {
+	public ProductionSelection(String nickname, ArrayList<Productions> selectedProductions) {
 		super(nickname, MessageType.PRODUCTION_SELECTION);
 		this.selectedProductions = selectedProductions;
-
-
 	}
 
-	public ArrayList<Integer> getSelectedProductions() {
+	public ArrayList<Productions> getSelectedProductions() {
 		return selectedProductions;
 	}
 }
