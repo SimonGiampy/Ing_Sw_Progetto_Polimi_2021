@@ -158,7 +158,7 @@ public class GameMechanicsMultiPlayer {
 	 * calculates the winner of the match, by calculating the points
 	 * @return the index of the winning player. returns -1 if there is a draw
 	 */
-	public int winner() {
+	public int[] winner() {
 		ArrayList<Player> winners1 = new ArrayList<>();
 		ArrayList<Player> winners2 = new ArrayList<>();
 		int maxScore = 0, maxRes = 0;
@@ -179,10 +179,24 @@ public class GameMechanicsMultiPlayer {
 			}
 		}
 		if (winners1.size() == 1){
-			return winners1.get(0).getPlayerIndex(); // calculation based on the total points gained
+			int[] winner=new int[2];
+			winner[0]=winners1.get(0).totalScore();
+			winner[1]=winners1.get(0).getPlayerIndex();
+			return winner; // calculation based on the total points gained
 		} else if (winners2.size() == 1) {
-			return winners1.get(0).getPlayerIndex(); // calculation based on the number of resources
-		} else return -1; // draw
+			int[] winner=new int[2];
+			winner[0]=winners1.get(0).totalScore();
+			winner[1]=winners1.get(0).getPlayerIndex();
+			return winner; // calculation based on the number of resources
+		} else {
+			int[] winner= new int[winners2.size()+1];
+			winner[0]=winners2.get(0).totalScore();
+			for (int i = 0; i < winners2.size(); i++) {
+				winner[i+1]=winners2.get(i).getPlayerIndex();
+			}
+			return winner; //draw
+
+		}
 		
 	}
 

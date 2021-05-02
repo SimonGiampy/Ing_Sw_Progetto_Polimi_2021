@@ -29,6 +29,7 @@ public class BlackCrossToken extends Token{
 	@Override
 	public boolean applyEffect(){
 		lorenzoTrack.moveMarker(tileNumber);
+		setEndGame(lorenzoTrack.isTrackFinished());
 		return false;
 	}
 }

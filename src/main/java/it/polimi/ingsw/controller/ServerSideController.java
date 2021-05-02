@@ -24,6 +24,9 @@ public class ServerSideController {
 	private GameMechanicsMultiPlayer mechanics;
 	private GameState gameState;
 	private HashMap<String, VirtualView> virtualViewMap;
+
+
+
 	private Lobby lobby;
 	private ArrayList<String> nicknameList;
 	private final boolean[] gameReady; //
@@ -487,9 +490,9 @@ public class ServerSideController {
 	public void haltGame() {
 	
 	}
-
-	
-	
+	public Lobby getLobby() {
+		return lobby;
+	}
 
 	public void setGameState(GameState gameState) {
 		this.gameState = gameState;

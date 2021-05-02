@@ -6,6 +6,7 @@ import it.polimi.ingsw.model.reducedClasses.ReducedFaithTrack;
 import it.polimi.ingsw.model.reducedClasses.ReducedLeaderCard;
 import it.polimi.ingsw.model.singleplayer.Token;
 import it.polimi.ingsw.model.util.TokenType;
+import it.polimi.ingsw.network.messages.game.server2client.WinMessage;
 import it.polimi.ingsw.view.VirtualView;
 
 import java.util.ArrayList;
@@ -17,6 +18,7 @@ public class TurnController {
 	private final HashMap<String, VirtualView> virtualViewMap;
 	private final ServerSideController serverSideController;
 	private boolean endOfTurn;
+	private boolean endOfGame;
 
 
 
@@ -100,7 +102,11 @@ public class TurnController {
 				view.showCardsDeck(new ReducedDevelopmentCardsDeck(mechanics.getGameDevCardsDeck()));
 			else
 				view.showFaithTrack( new ReducedFaithTrack(mechanics.getLorenzoFaithTrack()));
-			if(currentToken.applyEffect())
+
+			if(currentToken.isEndGame())
+				endTurn();
+
+			else if (currentToken.applyEffect())
 				mechanics.shuffleTokenDeck();
 		}
 	}
@@ -110,9 +116,7 @@ public class TurnController {
 		if(turnPhase == TurnPhase.MAIN_ACTION){
 			setMainActionDone(true);
 			if(leaderAction){
-				tokenActivation();
-				nextTurn();
-				startTurn();
+				endTurn();
 			}
 			else {
 				turnAskLeaderAction();
@@ -122,19 +126,37 @@ public class TurnController {
 		else if (turnPhase == TurnPhase.LEADER_ACTION){
 			setLeaderAction(true);
 			if(MainActionDone){
-				tokenActivation();
-				nextTurn();
-				startTurn();
+				endTurn();
 			}
 			else turnAskAction();
 		}
 
 		else if (turnPhase == TurnPhase.END_TURN){
-			tokenActivation();
-			nextTurn();
-			startTurn();
+			endTurn();
 		}
 
+	}
+
+	private void endTurn(){
+		tokenActivation();
+		StringBuilder winner = new StringBuilder();
+		if (endOfGame){
+			 int[] winnerInfo= mechanics.winner();
+			if(winnerInfo[1]==-1)
+				winner.append("Lorenzo");
+			else
+				for (int i = 1; i < winnerInfo.length; i++) {
+					winner.append(nicknameList.get(winnerInfo[i]));
+					if(i!=winnerInfo.length-1)
+						winner.append(", ");
+				}
+				String stringWinner=winner.toString();
+			 serverSideController.getLobby().broadcastMessage(new WinMessage(stringWinner));
+			 //TODO: add end of game, closing socket
+		}
+		else
+		nextTurn();
+		startTurn();
 	}
 
 	public void turnAskLeaderAction(){
@@ -153,4 +175,14 @@ public class TurnController {
 	public boolean isMainActionDone() {
 		return MainActionDone;
 	}
+
+	public boolean isEndOfGame() {
+		return endOfGame;
+	}
+
+	public void setEndOfGame(boolean endOfGame) {
+		this.endOfGame = endOfGame;
+	}
+
+
 }

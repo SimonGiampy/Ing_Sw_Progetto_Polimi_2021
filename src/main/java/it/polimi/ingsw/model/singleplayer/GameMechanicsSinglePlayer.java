@@ -96,18 +96,24 @@ public class GameMechanicsSinglePlayer extends GameMechanicsMultiPlayer {
 	 * Checks if the single player game is finished and show the total score
 	 */
 	@Override
-	public int winner(){
+	public int[] winner(){
+		int[] winner= new int[2];
 		if(getPlayer().isEndgameStarted()){
-			System.out.println("Congratulations! You won against Lorenzo");
-			System.out.println("Score: " +getPlayer().totalScore() + "Victory Points");
+			winner[0]=getPlayer().totalScore();
+			return winner;
+			//System.out.println("Congratulations! You won against Lorenzo");
+			//System.out.println("Score: " +getPlayer().totalScore() + "Victory Points");
 		}else if(lorenzoFaithTrack.isTrackFinished() || super.getGameDevCardsDeck().getCardStackStructure()[2][0].isEmpty()
 				|| super.getGameDevCardsDeck().getCardStackStructure()[2][1].isEmpty()
 				|| super.getGameDevCardsDeck().getCardStackStructure()[2][2].isEmpty()
 				|| super.getGameDevCardsDeck().getCardStackStructure()[2][3].isEmpty()){
-			System.out.println("Game Over!\nLorenzo won!");
-			System.out.println("Your score: "+ getPlayer().totalScore());
+
+			winner[0]=getPlayer().totalScore();
+			winner[1]=-1;
+			//System.out.println("Game Over!\nLorenzo won!");
+			//System.out.println("Your score: "+ getPlayer().totalScore());
 		}
-		return 0; //TODO: return an integer representing who is the winner of the game; move sys out in the CLI
+		return winner; //TODO: return an integer representing who is the winner of the game; move sys out in the CLI
 	}
 
 	public FaithTrack getLorenzoFaithTrack() {

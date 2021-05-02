@@ -9,6 +9,7 @@ import it.polimi.ingsw.network.messages.MessageType;
 public class WinMessage extends Message {
 
 	private final String winner;
+	//private final int points;
 
 	public WinMessage(String winner) {
 		super("lobby", MessageType.WIN_MESSAGE);

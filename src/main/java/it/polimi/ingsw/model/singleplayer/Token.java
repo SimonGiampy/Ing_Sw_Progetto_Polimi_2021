@@ -7,10 +7,12 @@ public abstract class Token {
 
 	private final TokenType tokenType;
 	private final Colors color;
+	private boolean endGame;
 
 	public Token(TokenType tokenType, Colors color){
 		this.tokenType=tokenType;
 		this.color=color;
+		this.endGame=false;
 	}
 	/**
 	 * Apply the effect of the drawn token
@@ -24,5 +26,13 @@ public abstract class Token {
 
 	public Colors getColor() {
 		return color;
+	}
+
+	public boolean isEndGame() {
+		return endGame;
+	}
+
+	public void setEndGame(boolean endGame) {
+		this.endGame = endGame;
 	}
 }
