@@ -30,7 +30,7 @@ public class DiscardToken extends Token{
 	@Override
 	public boolean applyEffect() {
 		for(int i = 0; i < 2; i++)
-			cardsDeck.claimCard(cardsDeck.lowestCardLevelAvailable(color), color);
+			cardsDeck.discard2Cards(color);
 		return false;
 	}
 

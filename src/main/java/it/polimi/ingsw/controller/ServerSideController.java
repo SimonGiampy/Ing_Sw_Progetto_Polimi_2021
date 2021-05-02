@@ -362,27 +362,36 @@ public class ServerSideController {
 	private void productionHandler(ProductionSelection message) {
 		int playerIndex = nicknameList.indexOf(message.getNickname());
 		VirtualView view = virtualViewMap.get(message.getNickname());
-		view.showGenericMessage("Your Boxes!");
-		view.showDepot(new ReducedWarehouseDepot(mechanics.getPlayer(playerIndex).getPlayersWarehouseDepot()));
-		view.showStrongBox(new ReducedStrongbox(mechanics.getPlayer(playerIndex).getMyStrongbox()));
+		sendBoxes(view,playerIndex); //it sends player boxes before production
 
 		CardProductionsManagement cardProductionsManagement = mechanics.getPlayer(playerIndex).getPlayersCardManager();
 		cardProductionsManagement.setSelectedInput(message.getSelectedProductions());
+
 		if (cardProductionsManagement.numberOfInputEmptySelectedProduction(message.getSelectedProductions()) > 0)
 			view.askFreeInput(cardProductionsManagement.numberOfInputEmptySelectedProduction(message.getSelectedProductions()));
+
 		else if (cardProductionsManagement.numberOfOutputEmptySelectedProduction(message.getSelectedProductions()) > 0)
 			view.askFreeOutput(cardProductionsManagement.numberOfOutputEmptySelectedProduction(message.getSelectedProductions()));
+
 		else {
 			try {
 				int[] inputResources = new int[]{0, 0, 0, 0};
 				int[] outPutResources = new int[]{0, 0, 0, 0};
 				mechanics.getPlayer(playerIndex).activateProduction(message.getSelectedProductions(), inputResources, outPutResources);
+				sendBoxes(view,playerIndex);
 				turnController.setTurnPhase(TurnPhase.MAIN_ACTION);
 
 			} catch (InvalidInputException e) {
 				view.askProductionAction(cardProductionsManagement.availableProduction());
 			}
 		}
+	}
+
+	private void sendBoxes(VirtualView view, int playerIndex){
+		view.showGenericMessage("Your Boxes now!");
+		view.showDepot(new ReducedWarehouseDepot(mechanics.getPlayer(playerIndex).getPlayersWarehouseDepot()));
+		view.showStrongBox(new ReducedStrongbox(mechanics.getPlayer(playerIndex).getMyStrongbox()));
+
 	}
 
 	private void freeInputHandler(ResourcesList message){
@@ -397,6 +406,7 @@ public class ServerSideController {
 				try {
 					int[] outputResources = new int[]{0, 0, 0, 0};
 					mechanics.getPlayer(playerIndex).activateProduction(cardProductionsManagement.getSelectedInput(), putResources(message), outputResources);
+					sendBoxes(view,playerIndex);
 					turnController.setTurnPhase(TurnPhase.MAIN_ACTION);
 				} catch (InvalidInputException e) {
 					view.askFreeInput(cardProductionsManagement.numberOfInputEmptySelectedProduction(cardProductionsManagement.getSelectedInput()));
@@ -433,8 +443,7 @@ public class ServerSideController {
 			mechanics.getPlayer(playerIndex).activateProduction(cardProductionsManagement.getSelectedInput(),
 					cardProductionsManagement.getInputResources(), putResources(message));
 
-			view.showGenericMessage("Your Strongbox after production(s)!");
-			view.showStrongBox(new ReducedStrongbox(cardProductionsManagement.getMyStrongbox()));
+			sendBoxes(view,playerIndex);
 			turnController.setTurnPhase(TurnPhase.MAIN_ACTION);
 		} catch (InvalidInputException e) {
 			e.printStackTrace();

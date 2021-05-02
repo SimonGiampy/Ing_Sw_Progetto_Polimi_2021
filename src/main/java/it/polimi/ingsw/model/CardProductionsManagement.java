@@ -115,9 +115,7 @@ public class CardProductionsManagement {
 			}
 		}
 		selectedProduction = selectedProduction.stream().filter(i -> i != Resources.FREE_CHOICE).collect(Collectors.toCollection(ArrayList::new));
-		//System.out.println(selectedProduction);
 		myStrongbox.storeResources(selectedProduction);
-		//System.out.println(myStrongbox.getContent().toString());
 		return totalFaithPoints;
 	}
 
@@ -185,8 +183,16 @@ public class CardProductionsManagement {
 	public void takeSelectedResources(ArrayList<Integer> playerInput, int[] inputResources) /*throws InvalidUserRequestException*/ {
 		ArrayList<Resources> playerResources= myWarehouseDepot.gatherAllResources();
 		playerResources.addAll(myStrongbox.getContent());
-		ArrayList<Resources> productionInput= new ArrayList<>();
 		ArrayList<Resources> remainingResources;
+		ArrayList<Resources> filteredProduction=filteredProduction(playerInput,inputResources);
+			remainingResources = myWarehouseDepot.payResources(filteredProduction);
+			myStrongbox.retrieveResources(remainingResources);
+	}
+
+	private ArrayList<Resources> filteredProduction(ArrayList<Integer> playerInput, int[] inputResources){
+		ArrayList<Resources> playerResources= myWarehouseDepot.gatherAllResources();
+		playerResources.addAll(myStrongbox.getContent());
+		ArrayList<Resources> productionInput= new ArrayList<>();
 		for (Integer integer : playerInput) {
 			productionInput.addAll(getProductionInput(integer));
 		}
@@ -197,30 +203,16 @@ public class CardProductionsManagement {
 				filteredProduction.add(Resources.values()[i]);
 			}
 		}
-		ProductionRules allSelectedProduction= new ProductionRules(filteredProduction,new ArrayList<>(),0);
-		if (allSelectedProduction.isProductionAvailable(playerResources)){
-			remainingResources = myWarehouseDepot.payResources(filteredProduction);
-			myStrongbox.retrieveResources(remainingResources);
-		}
-
+		return filteredProduction;
 	}
 
 	public boolean checkFreeInput(ArrayList<Integer> playerInput, int[] inputResources){
 		ArrayList<Resources> playerResources= myWarehouseDepot.gatherAllResources();
 		playerResources.addAll(myStrongbox.getContent());
-		ArrayList<Resources> productionInput= new ArrayList<>();
-		ArrayList<Resources> remainingResources;
-		for (Integer integer : playerInput) {
-			productionInput.addAll(getProductionInput(integer));
-		}
-		ArrayList<Resources> filteredProduction = productionInput.stream().filter(i->i!=Resources.FREE_CHOICE)
-				.collect(Collectors.toCollection(ArrayList::new));
-		for (int i = 0; i < 4; i++) {
-			for (int j = 0; j < inputResources[i]; j++) {
-				filteredProduction.add(Resources.values()[i]);
-			}
-		}
+
+		ArrayList<Resources> filteredProduction=filteredProduction(playerInput,inputResources);
 		ProductionRules allSelectedProduction= new ProductionRules(filteredProduction,new ArrayList<>(),0);
+
 		return allSelectedProduction.isProductionAvailable(playerResources);
 	}
 

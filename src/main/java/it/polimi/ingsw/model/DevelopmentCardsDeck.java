@@ -103,9 +103,26 @@ public class DevelopmentCardsDeck {
 	}
 	
 	/**
+	 * Used in the SinglePlayer version of the game for discarding 2 cards (token)
+	 * @param color the color of the 2 cards to discard
+	 * @return true if there aren't 2 cards of the indicated color left in the deck
+	 */
+	public boolean discard2Cards(Colors color) {
+		for (int i = 0; i < 2; i++) {
+			if (lowestCardLevelAvailable(color) == 0) {
+				return true;
+			} else {
+				int row = lowestCardLevelAvailable(color) - 1;
+				cardStackStructure[row][color.getColorNumber()].remove(0);
+			}
+		}
+		return false;
+	}
+
+	/**
 	 * finds the card with the lowest level present in the deck, given the color
 	 * @param color chosen color
-	 * @return the lowest level available
+	 * @return the lowest level available; 0 if there aren't any cards of that color left in the deck
 	 */
 	public int lowestCardLevelAvailable(Colors color) {
 		int colorN = color.getColorNumber();
