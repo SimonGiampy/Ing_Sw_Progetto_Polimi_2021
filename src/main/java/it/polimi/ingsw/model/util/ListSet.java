@@ -89,7 +89,7 @@ public class ListSet {
 	 * @param list a generic input list
 	 * @param <T> generic type
 	 */
-	public static <T> String showListMultiplicityOnConsole(ArrayList<T> list) {
+	public static <T> String listMultiplicityToString(ArrayList<T> list) {
 		HashMap<T, Integer> setMap = new HashMap<>(10);
 		for (T obj: list) {
 			setMap.put(obj, setMap.getOrDefault(obj, 0) + 1);

@@ -43,7 +43,7 @@ public class AdditionalDepotAbility implements AbilityEffectActivation {
 	@Override
 	public void appendPower(StringBuilder string){
 		string.append("  Additional Depot:\n");
-		string.append("  "+ListSet.showListMultiplicityOnConsole(abilityResource)+"\n");
+		string.append("  "+ListSet.listMultiplicityToString(abilityResource)+"\n");
 	}
 
 	@Override

@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.Stack;
 import java.util.stream.Collectors;
 
-/**
+/** TODO: fix comments in this class
  * this class handles player's cards and productions management
  */
 public class CardProductionsManagement {

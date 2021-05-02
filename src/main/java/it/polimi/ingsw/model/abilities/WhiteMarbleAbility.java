@@ -41,7 +41,7 @@ public class WhiteMarbleAbility implements AbilityEffectActivation {
 			string.append("\uD83D\uDFE3 ");
 		}
 		string.append("= ");
-		string.append(ListSet.showListMultiplicityOnConsole(abilityResources)+"\n");
+		string.append(ListSet.listMultiplicityToString(abilityResources)+"\n");
 	}
 
 	@Override

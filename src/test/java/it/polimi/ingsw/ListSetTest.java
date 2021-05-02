@@ -14,6 +14,8 @@ class ListSetTest {
 	ArrayList<Resources> subList;
 	ArrayList<Resources> set;
 	
+	ArrayList<Resources> setWithSingleRes;
+	
 	/**
 	 * instantiation of the list of resources to check the 2 functions
 	 */
@@ -34,6 +36,9 @@ class ListSetTest {
 		set.add(Resources.COIN);
 		set.add(Resources.STONE);
 		set.add(Resources.STONE);
+		
+		setWithSingleRes = new ArrayList<>();
+		setWithSingleRes.add(Resources.COIN);
 	}
 	
 	
@@ -49,5 +54,10 @@ class ListSetTest {
 		set = ListSet.removeSubSet(subList, set);
 		System.out.println("remainder = " + set.toString());
 		assertTrue(set.isEmpty());
+	}
+	
+	@Test
+	void singleElement() {
+		System.out.println(ListSet.listMultiplicityToString(setWithSingleRes));
 	}
 }

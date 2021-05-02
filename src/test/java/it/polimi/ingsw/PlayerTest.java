@@ -69,21 +69,21 @@ class PlayerTest {
 
 		LeaderCard[] cards = player.getLeaderCards();
 		for(int i = 0; i < 4; i++){
-			cards[i].showLeader();
+			//cards[i].showLeader();
 		}
 		player.chooseTwoLeaders(2,4);
 		assertSame(player.getLeaderCards()[0], cards[1]);
 		assertSame(player.getLeaderCards()[1], cards[3]);
-		player.getLeaderCards()[0].showLeader();
-		player.getLeaderCards()[1].showLeader();
+		//player.getLeaderCards()[0].showLeader();
+		//player.getLeaderCards()[1].showLeader();
 	}
 
 	@Test
 	void discardLeaderCard() {
 
 		player.chooseTwoLeaders(2,4);
-		player.getLeaderCards()[0].showLeader();
-		player.getLeaderCards()[1].showLeader();
+		//player.getLeaderCards()[0].showLeader();
+		//player.getLeaderCards()[1].showLeader();
 
 		player.discardLeaderCard(1);
 		assertFalse(player.isPlayableLeader1());

@@ -87,8 +87,9 @@ public class ProductionRules implements Serializable {
 	}
 
 	public void showProductionRulesInformation(){
-		ListSet.showListMultiplicityOnConsole(input);
-		ListSet.showListMultiplicityOnConsole(output);
+		ListSet.listMultiplicityToString(input);
+		ListSet.listMultiplicityToString(output);
+		//TODO: delete this line
 		System.out.println("Faith points output: "+getFaithOutput());
 	}
 }

@@ -37,8 +37,8 @@ public class ExtraProductionAbility implements AbilityEffectActivation {
 
 	@Override
 	public void appendPower(StringBuilder string) {
-		string.append("  In : ").append(ListSet.showListMultiplicityOnConsole(inputResources)).append("\n");
-		string.append("  Out: ").append(ListSet.showListMultiplicityOnConsole(outputResources)).append("\n");
+		string.append("  In : ").append(ListSet.listMultiplicityToString(inputResources)).append("\n");
+		string.append("  Out: ").append(ListSet.listMultiplicityToString(outputResources)).append("\n");
 		string.append("       "+faithPointsOutput+ Unicode.RED_BOLD+Unicode.CROSS2+Unicode.RESET+"\n");
 	}
 

@@ -34,7 +34,7 @@ public class DiscountAbility implements AbilityEffectActivation {
 	@Override
 	public void appendPower(StringBuilder string) {
 		string.append("  Discount Ability:\n");
-		string.append("  "+ListSet.showListMultiplicityOnConsole(singleDiscounts)+"\n");
+		string.append("  "+ListSet.listMultiplicityToString(singleDiscounts)+"\n");
 	}
 
 	@Override

@@ -37,7 +37,7 @@ public class LeaderCardParserTest {
 		}
 		System.out.println("\n\n");
 		for (int i = 0; i < 16; i++) {
-			leaderCards.get(i).showLeader();
+			//leaderCards.get(i).showLeader();
 		}
 
 	}

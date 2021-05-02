@@ -50,23 +50,6 @@ public class Market {
 	}
 	
 	/**
-	 * debugging function that shows the content of the market
-	 */
-	public void showMarket() {
-		System.out.println("\033[0m" + "extra ball = " + extraBall.colorCode + "\uD83D\uDFE3");
-		for (int i = 0; i < 3; i++) { // rows
-			for (int j = 0; j < 4; j++) { // columns
-				System.out.print(market[i][j].colorCode + "\uD83D\uDFE3\t");
-			}
-			System.out.println(Unicode.RESET+"←");
-		}
-		for (int j = 0; j < 4; j++) {
-			System.out.print(" ↑\t");
-		}
-		System.out.print("\n");
-	}
-	
-	/**
 	 * getter for the extra ball that is not present in the matrix
 	 * @return the other ball
 	 */

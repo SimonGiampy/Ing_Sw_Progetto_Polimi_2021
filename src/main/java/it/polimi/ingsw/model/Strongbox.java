@@ -43,6 +43,6 @@ public class Strongbox {
 	}
 
 	public void showStrongbox() {
-		ListSet.showListMultiplicityOnConsole(content);
+		ListSet.listMultiplicityToString(content);
 	}
 }

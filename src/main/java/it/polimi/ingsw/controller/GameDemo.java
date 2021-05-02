@@ -239,7 +239,7 @@ public class GameDemo {
 
 		String which; // row/column for market (input)
 		int where; //selected row/selected column (input)
-		mechanics.getMarket().showMarket();
+		//mechanics.getMarket().showMarket();
 		System.out.println("where do you want to shift the marbles (row / col)?");
 		which = scanner.nextLine();
 		System.out.println("where do you want to shift the marbles (1-3) / (1-4)?");
@@ -269,7 +269,7 @@ public class GameDemo {
 			}
 			 */
 
-		mechanics.getMarket().showMarket();
+		//mechanics.getMarket().showMarket();
 		System.out.println(currentPlayer.getPlayersResourceDeck().getResourceList().toString());
 
 

@@ -838,9 +838,9 @@ public class CLI extends ViewObservable implements View {
 		string.append(Unicode.RED_BOLD + "  LEADER " + Unicode.RESET).append(card.getVictoryPoints())
 				.append(Resources.VICTORY_POINTS).append("\n");
 		if(card.getResourceRequirements().size()!=0)
-			string.append("  REQs ").append(ListSet.showListMultiplicityOnConsole(card.getResourceRequirements())).append("\n");
+			string.append("  REQs ").append(ListSet.listMultiplicityToString(card.getResourceRequirements())).append("\n");
 		if(card.getCardRequirements().size()!=0)
-			string.append("  REQs ").append(ListSet.showListMultiplicityOnConsole(card.getCardRequirements())).append("\n");
+			string.append("  REQs ").append(ListSet.listMultiplicityToString(card.getCardRequirements())).append("\n");
 		for (AbilityEffectActivation abilityEffectActivation : card.getEffectsActivation()) {
 			abilityEffectActivation.appendPower(string);
 		}
@@ -862,7 +862,7 @@ public class CLI extends ViewObservable implements View {
 		int size= (int) (8+4*card.getResourceRequirements().stream().distinct().count());
 		StringBuilder s= new StringBuilder();
 
-		if(s.append("  REQs ").append(ListSet.showListMultiplicityOnConsole(card.getResourceRequirements()))
+		if(s.append("  REQs ").append(ListSet.listMultiplicityToString(card.getResourceRequirements()))
 				.length()>card.getResourceRequirements().stream().distinct().count()*15)
 			size=size+(s.length()-8-(int)card.getResourceRequirements().stream().distinct().count()*15);
 		if(size>max)
@@ -952,9 +952,9 @@ public class CLI extends ViewObservable implements View {
 				.append(Unicode.RED_BOLD).append(Unicode.CROSS2).append(Unicode.RESET).append(" ")
 				.append(card.getVictoryPoints()).append(Resources.VICTORY_POINTS).append(" ").append("\n");
 		
-		string.append("  REQs ").append(ListSet.showListMultiplicityOnConsole(card.getResourcesRequirement())).append("\n");
-		string.append("  In : ").append(ListSet.showListMultiplicityOnConsole(card.getProductionRules().getInputCopy())).append("\n");
-		string.append("  Out: ").append(ListSet.showListMultiplicityOnConsole(card.getProductionRules().getOutputCopy())).append("\n");
+		string.append("  REQs ").append(ListSet.listMultiplicityToString(card.getResourcesRequirement())).append("\n");
+		string.append("  In : ").append(ListSet.listMultiplicityToString(card.getProductionRules().getInputCopy())).append("\n");
+		string.append("  Out: ").append(ListSet.listMultiplicityToString(card.getProductionRules().getOutputCopy())).append("\n");
 		string.append(card.getColor().getColorCode()).append(Unicode.BOTTOM_LEFT).append(String.valueOf(Unicode.HORIZONTAL).repeat(26))
 				.append(Unicode.BOTTOM_RIGHT).append("\n").append(Unicode.RESET);
 		
@@ -963,7 +963,7 @@ public class CLI extends ViewObservable implements View {
 	
 	@Override
 	public void showStrongBox(ReducedStrongbox strongbox) {
-		ListSet.showListMultiplicityOnConsole(strongbox.getContent());
+		System.out.println(ListSet.listMultiplicityToString(strongbox.getContent()));
 	}
 	
 	@Override
