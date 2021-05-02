@@ -23,9 +23,7 @@ public class ServerSideController {
 	private GameMechanicsMultiPlayer mechanics;
 	private GameState gameState;
 	private HashMap<String, VirtualView> virtualViewMap;
-
-
-
+	
 	private Lobby lobby;
 	private ArrayList<String> nicknameList;
 	private final boolean[] gameReady; //
@@ -40,10 +38,12 @@ public class ServerSideController {
 	public ServerSideController(Lobby lobby, int numberOfPlayers) {
 		this.lobby = lobby;
 		this.numberOfPlayers = numberOfPlayers;
-		if(numberOfPlayers==1)
-			mechanics=new GameMechanicsSinglePlayer(this,numberOfPlayers);
-		else
+		if(numberOfPlayers==1) {
+			mechanics = new GameMechanicsSinglePlayer(this,numberOfPlayers);
+		} else {
 			mechanics = new GameMechanicsMultiPlayer(this, numberOfPlayers);
+		}
+		
 		initResources= new boolean[numberOfPlayers-1];
 		gameReady= new boolean[numberOfPlayers];
 		gameState = GameState.CONFIG;

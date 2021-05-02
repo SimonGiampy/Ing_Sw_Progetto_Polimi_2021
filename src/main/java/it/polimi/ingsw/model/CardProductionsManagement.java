@@ -291,6 +291,7 @@ public class CardProductionsManagement {
 	 * @param inputResources is an array of multiplicity of each resource selected by the player
 	 * @return true if the sum of all resources selected by the player is equal to production's number of ? in input
 	 */
+	/*
 	public boolean isNumberOfSelectedInputEmptyResourcesEnough(ArrayList<Productions> playerInput, int[] inputResources){
 		//int totalNumber = numberOfInputEmptySelectedProduction(playerInput);
 		ArrayList<Resources> playerResources= myWarehouseDepot.gatherAllResources();
@@ -305,7 +306,7 @@ public class CardProductionsManagement {
 		return ListSet.subset(playerResources, filteredProduction);
 		//return totalNumber==inputResources[0]+inputResources[1]+inputResources[2]+inputResources[3];
 	}
-	
+	*/
 
 	/**
 	 * it checks if the resources selected by the player to put in output are correct

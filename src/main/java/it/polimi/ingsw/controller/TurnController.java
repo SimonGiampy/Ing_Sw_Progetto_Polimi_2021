@@ -4,6 +4,7 @@ import it.polimi.ingsw.model.GameMechanicsMultiPlayer;
 import it.polimi.ingsw.model.reducedClasses.ReducedDevelopmentCardsDeck;
 import it.polimi.ingsw.model.reducedClasses.ReducedFaithTrack;
 import it.polimi.ingsw.model.reducedClasses.ReducedLeaderCard;
+import it.polimi.ingsw.model.singleplayer.GameMechanicsSinglePlayer;
 import it.polimi.ingsw.model.singleplayer.Token;
 import it.polimi.ingsw.model.util.TokenType;
 import it.polimi.ingsw.network.messages.game.server2client.WinMessage;
@@ -94,20 +95,21 @@ public class TurnController {
 
 	private void tokenActivation(){
 		VirtualView view = virtualViewMap.get(activePlayer);
+		GameMechanicsSinglePlayer mechanicsSinglePlayer = (GameMechanicsSinglePlayer) mechanics;
 		if(nicknameList.size()==1){
-			Token currentToken= mechanics.revealTop();
+			Token currentToken= mechanicsSinglePlayer.revealTop();
 			currentToken.applyEffect();
 			view.showToken(currentToken.getTokenType(),currentToken.getColor());
 			if(currentToken.getTokenType()==TokenType.DISCARD_TOKEN)
 				view.showCardsDeck(new ReducedDevelopmentCardsDeck(mechanics.getGameDevCardsDeck()));
 			else
-				view.showFaithTrack( new ReducedFaithTrack(mechanics.getLorenzoFaithTrack()));
+				view.showFaithTrack( new ReducedFaithTrack(mechanicsSinglePlayer.getLorenzoFaithTrack()));
 
 			if(currentToken.isEndGame())
 				endTurn();
 
 			else if (currentToken.applyEffect())
-				mechanics.shuffleTokenDeck();
+				mechanicsSinglePlayer.shuffleTokenDeck();
 		}
 	}
 

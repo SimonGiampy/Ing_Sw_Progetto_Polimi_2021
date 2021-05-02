@@ -200,14 +200,5 @@ public class GameMechanicsMultiPlayer {
 		
 	}
 
-	public FaithTrack getLorenzoFaithTrack() {
-		return null;
-	}
-
-	public Token revealTop(){
-		return null;
-	}
-
-	public void shuffleTokenDeck() {
-	}
+	
 }

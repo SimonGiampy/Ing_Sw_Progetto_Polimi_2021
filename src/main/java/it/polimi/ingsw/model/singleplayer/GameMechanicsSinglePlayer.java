@@ -19,17 +19,7 @@ public class GameMechanicsSinglePlayer extends GameMechanicsMultiPlayer {
 	public GameMechanicsSinglePlayer(ServerSideController controller, int players) {
 		super(controller, players);
 	}
-/*
-	public GameMechanicsSinglePlayer(GameDemo controller) {
-		super(controller, 1);
-	}
-	
- */
-/*
-	public GameMechanicsSinglePlayer(ServerSideController controller){
-		super(controller,1);
-	}
-*/
+
 
 	/**
 	 * constructor for creating the single player instances and Lorenzo's personal Faith track
@@ -78,7 +68,6 @@ public class GameMechanicsSinglePlayer extends GameMechanicsMultiPlayer {
 
 	/**
 	 * getter for the Player object
-	 *
 	 * @return single instance of player
 	 */
 	public Player getPlayer() {

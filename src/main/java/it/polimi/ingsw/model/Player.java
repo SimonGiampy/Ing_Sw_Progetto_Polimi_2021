@@ -279,8 +279,8 @@ public class Player {
 		if (!cardManager.isSelectedProductionAvailable(playerInput))
 			throw new InvalidInputException("Selected production not available");
 
-		if(!cardManager.isNumberOfSelectedInputEmptyResourcesEnough(playerInput,resourcesInput))
-			throw new InvalidInputException("Input Empty Resources selection not correct");
+		//if(!cardManager.isNumberOfSelectedInputEmptyResourcesEnough(playerInput,resourcesInput))
+		//	throw new InvalidInputException("Input Empty Resources selection not correct");
 
 		//System.out.println(Arrays.toString(resourcesOutput));
 		cardManager.takeSelectedResources(playerInput,resourcesInput);
