@@ -101,7 +101,8 @@ public class TurnController {
 		GameMechanicsSinglePlayer mechanicsSinglePlayer = (GameMechanicsSinglePlayer) mechanics;
 		if(nicknameList.size()==1){
 			Token currentToken= mechanicsSinglePlayer.revealTop();
-			currentToken.applyEffect();
+			 boolean check=currentToken.applyEffect();
+			System.out.println("boh");
 			view.showToken(currentToken.getTokenType(),currentToken.getColor());
 			if(currentToken.getTokenType()==TokenType.DISCARD_TOKEN)
 				view.showCardsDeck(new ReducedDevelopmentCardsDeck(mechanics.getGameDevCardsDeck()));
@@ -111,7 +112,7 @@ public class TurnController {
 			if(currentToken.isEndGame())
 				endOfGame=true;
 
-			else if (currentToken.applyEffect())
+			else if (check)
 				mechanicsSinglePlayer.shuffleTokenDeck();
 		}
 	}
@@ -163,7 +164,7 @@ public class TurnController {
 						winner.append(", ");
 				}
 			String stringWinner=winner.toString();
-			serverSideController.getLobby().broadcastMessage(new WinMessage(stringWinner));
+			serverSideController.getLobby().broadcastMessage(new WinMessage(stringWinner,winnerInfo[0]));
 			//TODO: add end of game, closing socket
 		}
 

@@ -9,14 +9,19 @@ import it.polimi.ingsw.network.messages.MessageType;
 public class WinMessage extends Message {
 
 	private final String winner;
-	//private final int points;
+	private final int points;
 
-	public WinMessage(String winner) {
+	public WinMessage(String winner, int points) {
 		super("lobby", MessageType.WIN_MESSAGE);
 		this.winner = winner;
+		this.points=points;
 	}
 
 	public String getWinner() {
 		return winner;
+	}
+
+	public int getPoints() {
+		return points;
 	}
 }

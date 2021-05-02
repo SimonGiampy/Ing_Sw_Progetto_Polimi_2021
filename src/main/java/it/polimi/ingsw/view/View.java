@@ -190,7 +190,7 @@ public interface View {
 	 * it shows the winner of the game
 	 * @param winner is the winner
 	 */
-	void showWinMessage(String winner);
+	void showWinMessage(String winner, int points);
 
 	/**
 	 * shows an error message regarding a client's disconnection

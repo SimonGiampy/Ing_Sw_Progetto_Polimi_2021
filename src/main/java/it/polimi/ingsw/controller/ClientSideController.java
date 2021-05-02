@@ -95,7 +95,7 @@ public class ClientSideController implements ViewObserver, Observer {
 				case ACTION_REQUEST -> view.askAction(((ActionRequest) message).getAvailableAction());
 				case CARDS_SHOW -> view.askBuyCardAction(((BuyableDevCards) message).getCards(), ((BuyableDevCards) message).isWrongSlot());
 				case PRODUCTION_SHOW -> view.askProductionAction(((ProductionsAvailable) message).getAvailableProduction());
-				case WIN_MESSAGE -> view.showWinMessage(((WinMessage) message).getWinner());
+				case WIN_MESSAGE -> view.showWinMessage(((WinMessage) message).getWinner(),((WinMessage) message).getPoints());
 				case DISCONNECTION_MESSAGE -> {
 					DisconnectionMessage mess = (DisconnectionMessage) message;
 					view.showDisconnectionMessage(mess.getNicknameDisconnected(), mess.getMessage());

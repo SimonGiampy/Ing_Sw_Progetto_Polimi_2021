@@ -174,8 +174,8 @@ public class VirtualView implements View, Observer {
 	}
 
 	@Override
-	public void showWinMessage(String winner) {
-		clientHandler.sendMessage(new WinMessage(winner));
+	public void showWinMessage(String winner, int points) {
+		clientHandler.sendMessage(new WinMessage(winner,points));
 	}
 
 	@Override

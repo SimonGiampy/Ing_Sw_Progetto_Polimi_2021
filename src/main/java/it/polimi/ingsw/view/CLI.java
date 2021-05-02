@@ -998,7 +998,7 @@ public class CLI extends ViewObservable implements View {
 
 	
 	@Override
-	public void showWinMessage(String winner) {
+	public void showWinMessage(String winner,int points) {
 		System.out.println("Match ended! The winner is: " + winner);
 	}
 	
