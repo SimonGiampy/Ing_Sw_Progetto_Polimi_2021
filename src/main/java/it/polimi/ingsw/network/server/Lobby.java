@@ -299,10 +299,17 @@ public class Lobby {
 	 * @param user disconnected from the lobby
 	 */
 	private void endGame(User user) {
-		broadcastMessage(new DisconnectionMessage(user.getNickname(), " disconnected from the lobby: Game ended!"));
-		handlersList.clear();
-		serverSideController.haltGame();
-		server.removeLobby(this);
+		new Thread(() -> {
+			broadcastMessage(new DisconnectionMessage(user.getNickname(), " disconnected from the lobby: Game ended!"));
+			for (ClientHandler h: handlersList) {
+				if (!h.equals(user.getHandler())) {
+					h.disconnect();
+				}
+			}
+			serverSideController.haltGame();
+			server.removeLobby(this);
+		}).start();
+		
 	}
 	
 	/**

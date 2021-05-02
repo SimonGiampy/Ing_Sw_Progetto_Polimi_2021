@@ -95,7 +95,7 @@ public class Client extends Observable {
 		}
 	}
 	
-	/**
+	/** TODO: handle disconnection when the thread listens for user input
 	 * Method called when an error occurs and the client disconnects from the server. The socket gets closed.
 	 */
 	public void disconnect() {
@@ -104,8 +104,9 @@ public class Client extends Observable {
 				readExecutionQueue.shutdownNow();
 				enablePinger(false);
 				socket.close();
+				LOGGER.info("Client disconnected from the game");
 			}
-			LOGGER.info("Client disconnected from the game");
+			
 		} catch (IOException e) {
 			LOGGER.error("Client-side disconnection cannot be completed: " + e.getMessage());
 		}

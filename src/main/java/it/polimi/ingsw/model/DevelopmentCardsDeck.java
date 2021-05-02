@@ -98,8 +98,8 @@ public class DevelopmentCardsDeck {
 	 */
 	public DevelopmentCard claimCard(int level, Colors color) {
 		int row = level - 1, column = color.getColorNumber();
-		//System.out.println(cardStackStructure[row][column].size());
-		return cardStackStructure[row][column].remove(0);
+		if (cardStackStructure[row][column].isEmpty()) return null;
+		else return cardStackStructure[row][column].remove(0);
 	}
 	
 	/**
@@ -127,7 +127,7 @@ public class DevelopmentCardsDeck {
 	public int lowestCardLevelAvailable(Colors color) {
 		int colorN = color.getColorNumber();
 		for (int level = 1; level <= 3; level++) {
-			if (!cardStackStructure[level][colorN].isEmpty()) return level;
+			if (!cardStackStructure[level - 1][colorN].isEmpty()) return level;
 		}
 		return 0; // there are no more cards of this color in the cards deck
 	}
