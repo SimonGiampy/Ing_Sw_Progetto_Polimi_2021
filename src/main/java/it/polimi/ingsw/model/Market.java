@@ -63,7 +63,11 @@ public class Market {
 	 * @return the selected row, so that the equivalent resources are sent to the resource deck
 	 */
 	public Marbles[] shiftRow(int row) {
-		Marbles[] selected = market[row].clone();
+		Marbles[] selected = new Marbles[4];
+		selected[0] = market[row][0];
+		selected[1] = market[row][1];
+		selected[2] = market[row][2];
+		selected[3] = market[row][3];
 
 		Marbles temp = extraBall;
 		extraBall = market[row][0];

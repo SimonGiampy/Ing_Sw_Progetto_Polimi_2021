@@ -15,8 +15,10 @@ import it.polimi.ingsw.xml_parsers.XMLParser;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.stream.Stream;
 
 public class ServerSideController {
 
@@ -294,7 +296,11 @@ public class ServerSideController {
 					deck.getWhiteMarblesInput2(), deck.getWhiteMarblesTaken());
 			return;
 		}
-
+		if(deck.getFaithPoint() != 0) {
+			mechanics.getPlayer(playerIndex).getPlayerFaithTrack().moveMarker(deck.getFaithPoint());
+			view.showFaithTrack(new ReducedFaithTrack(mechanics.getPlayer(playerIndex).getPlayerFaithTrack()));
+			deck.setFaithPoint(0);
+		}
 		//moves the resources automatically to the additional depots if possible
 		mechanics.getPlayer(playerIndex).getPlayersWarehouseDepot().moveResourcesToAdditionalDepots();
 		//sends confirmation of the completed action
@@ -312,10 +318,15 @@ public class ServerSideController {
 		
 		if(message.isConfirmed()){ //if the player confirmed its actions
 			int n = mechanics.getPlayer(playerIndex).getPlayersWarehouseDepot().discardResourcesAfterUserConfirmation();
-			for (int i = 0; i < numberOfPlayers && i != playerIndex; i++) {
-				mechanics.getPlayer(i).getPlayerFaithTrack().moveMarker(n);
-				virtualViewMap.get(nicknameList.get(i)).showFaithTrack(new ReducedFaithTrack(mechanics.getPlayer(i).getPlayerFaithTrack()));
+			for (int i = 0; i < numberOfPlayers; i++) {
+				if(i != playerIndex) {
+					mechanics.getPlayer(i).getPlayerFaithTrack().moveMarker(n);
+					virtualViewMap.get(nicknameList.get(i)).showGenericMessage(message.getNickname()+ " discarded " + n +
+							" resources, you get " + n + " faith points" );
+					virtualViewMap.get(nicknameList.get(i)).showFaithTrack(new ReducedFaithTrack(mechanics.getPlayer(i).getPlayerFaithTrack()));
+				}
 			}
+			checkVaticanReport();
 			turnController.setTurnPhase(TurnPhase.MAIN_ACTION); //next turn
 		} else {
 			//if the player did something else with its depot
@@ -479,6 +490,27 @@ public class ServerSideController {
 
 		else turnController.turnAskAction();
 
+	}
+
+	private void checkVaticanReport(){
+		boolean[] check = new boolean[4];
+
+		for (int i = 0; i < numberOfPlayers; i++) {
+			check[i] = mechanics.getPlayer(i).getPlayerFaithTrack().checkVaticanReport(mechanics.getLastReportClaimed());
+		}
+		boolean check2 = false;
+		for(int i = 0; i < numberOfPlayers; i++) {
+			if(check[i]){
+				virtualViewMap.get(nicknameList.get(i)).showGenericMessage(mechanics.getPlayer(i).getNickname()+ "triggered Vatican Report" +
+						" n." + (mechanics.getLastReportClaimed()+1) + "!");
+				mechanics.increaseLastReportClaimed();
+				check2 = true;
+				break;
+			}
+		}
+		for(int i = 0; i < numberOfPlayers && check2; i++) {
+			virtualViewMap.get(nicknameList.get(i)).showFaithTrack(new ReducedFaithTrack(mechanics.getPlayer(i).getPlayerFaithTrack()));
+		}
 	}
 
 	
