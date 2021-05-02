@@ -172,16 +172,20 @@ public class CLI extends ViewObservable implements View {
 		System.out.println("Choose game configuration!, Type [standard] for standard game, or the full path for a custom game!");
 		String input = scanner.nextLine();
 		boolean check = true;
-		do {
-			if (!input.equals("standard")) {
-				if (!input.endsWith(".xml")) {
-					System.out.println("Invalid file extension: XML file expected");
-					check = false;
+		if(!input.equals("")) {
+			do {
+				if (!input.equals("standard")) {
+					if (!input.endsWith(".xml")) {
+						System.out.println("Invalid file extension: XML file expected");
+						check = false;
+					}
 				}
-			}
-		} while (!check);
+			} while (!check);
+		}else
+			input = "standard";
 		// assumes that the selected file has a correct schema and is a valid configuration file
-		notifyObserver(obs->obs.onUpdateGameConfiguration(input));
+		String finalInput = input;
+		notifyObserver(obs->obs.onUpdateGameConfiguration(finalInput));
 	}
 	
 	@Override

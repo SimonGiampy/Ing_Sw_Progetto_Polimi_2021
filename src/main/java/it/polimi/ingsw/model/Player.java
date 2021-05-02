@@ -118,7 +118,6 @@ public class Player {
 			output = commonMarket.shiftRow(where - 1);
 		}
 		myResourceDeck.setMarblesFromMarket(output);
-		myFaithTrack.moveMarker(myResourceDeck.getFaithPoint());
 	}
 	
 	/**

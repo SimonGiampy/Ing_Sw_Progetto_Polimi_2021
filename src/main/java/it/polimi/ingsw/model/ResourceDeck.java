@@ -88,6 +88,7 @@ public class ResourceDeck {
 			}
 		}
 		playerDepot.addIncomingResources(getResourceList()); // sends the resources list from the market to the player warehouse depot
+		this.marblesFromMarket = null;
 	}
 
 	/**
@@ -143,6 +144,7 @@ public class ResourceDeck {
 	}
 
 	public void setMarblesFromMarket(Marbles[] marblesFromMarket) {
+		this.marblesFromMarket = null;
 		this.marblesFromMarket = marblesFromMarket;
 	}
 
@@ -151,5 +153,9 @@ public class ResourceDeck {
 	}
 	public int getRightNumberOfActivations(){
 		return (getWhiteMarblesTaken()/whiteMarblesInput1);
+	}
+
+	public void setFaithPoint(int faithPoint) {
+		this.faithPoint = faithPoint;
 	}
 }
