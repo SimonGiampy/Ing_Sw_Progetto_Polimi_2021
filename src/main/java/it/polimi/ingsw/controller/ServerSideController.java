@@ -3,10 +3,7 @@ package it.polimi.ingsw.controller;
 import it.polimi.ingsw.exceptions.InvalidInputException;
 import it.polimi.ingsw.exceptions.InvalidUserRequestException;
 import it.polimi.ingsw.model.*;
-import it.polimi.ingsw.model.reducedClasses.ReducedFaithTrack;
-import it.polimi.ingsw.model.reducedClasses.ReducedLeaderCard;
-import it.polimi.ingsw.model.reducedClasses.ReducedMarket;
-import it.polimi.ingsw.model.reducedClasses.ReducedWarehouseDepot;
+import it.polimi.ingsw.model.reducedClasses.*;
 import it.polimi.ingsw.model.singleplayer.GameMechanicsSinglePlayer;
 import it.polimi.ingsw.model.util.Resources;
 import it.polimi.ingsw.network.messages.*;
@@ -18,6 +15,7 @@ import it.polimi.ingsw.xml_parsers.XMLParser;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 
@@ -222,12 +220,11 @@ public class ServerSideController {
 			case DEPOT_INTERACTION -> depotInteractionHandler((DepotInteraction) receivedMessage);
 			case PRODUCTION_SELECTION -> productionHandler((ProductionSelection) receivedMessage);
 			case LEADER_ACTION -> leaderActionHandler((LeaderAction) receivedMessage);
-			case RESOURCE_CHOICE ->{
+			case RESOURCES_LIST ->{
 				if (((ResourcesList)receivedMessage).getFlag()==1)
 					freeInputHandler((ResourcesList)receivedMessage);
-				else
+				else if(((ResourcesList)receivedMessage).getFlag()==2)
 					freeOutputHandler((ResourcesList) receivedMessage);
-
 			}
 		}
 	}
@@ -365,6 +362,10 @@ public class ServerSideController {
 	private void productionHandler(ProductionSelection message) {
 		int playerIndex = nicknameList.indexOf(message.getNickname());
 		VirtualView view = virtualViewMap.get(message.getNickname());
+		view.showGenericMessage("Your Boxes!");
+		view.showDepot(new ReducedWarehouseDepot(mechanics.getPlayer(playerIndex).getPlayersWarehouseDepot()));
+		view.showStrongBox(new ReducedStrongbox(mechanics.getPlayer(playerIndex).getMyStrongbox()));
+
 		CardProductionsManagement cardProductionsManagement = mechanics.getPlayer(playerIndex).getPlayersCardManager();
 		cardProductionsManagement.setSelectedInput(message.getSelectedProductions());
 		if (cardProductionsManagement.numberOfInputEmptySelectedProduction(message.getSelectedProductions()) > 0)
@@ -384,25 +385,25 @@ public class ServerSideController {
 		}
 	}
 
-
 	private void freeInputHandler(ResourcesList message){
 		int playerIndex = nicknameList.indexOf(message.getNickname());
 		VirtualView view = virtualViewMap.get(message.getNickname());
 		CardProductionsManagement cardProductionsManagement = mechanics.getPlayer(playerIndex).getPlayersCardManager();
-		if(cardProductionsManagement.numberOfOutputEmptySelectedProduction(cardProductionsManagement.getSelectedInput())>0) {
-			cardProductionsManagement.setInputResources(putResources(message));
-			view.askFreeOutput(cardProductionsManagement.numberOfOutputEmptySelectedProduction(cardProductionsManagement.getSelectedInput()));
-		}
-		else{
-			try {
-				int[] outputResources= new int[]{0,0,0,0};
-				mechanics.getPlayer(playerIndex).activateProduction(cardProductionsManagement.getSelectedInput(), putResources(message),outputResources);
-				turnController.setTurnPhase(TurnPhase.MAIN_ACTION);
-		}
-			catch (InvalidInputException e){
-				view.askFreeInput(cardProductionsManagement.numberOfInputEmptySelectedProduction(cardProductionsManagement.getSelectedInput()));
+		if(cardProductionsManagement.checkFreeInput(cardProductionsManagement.getSelectedInput(),putResources(message))) {
+			if (cardProductionsManagement.numberOfOutputEmptySelectedProduction(cardProductionsManagement.getSelectedInput()) > 0) {
+					cardProductionsManagement.setInputResources(putResources(message));
+					view.askFreeOutput(cardProductionsManagement.numberOfOutputEmptySelectedProduction(cardProductionsManagement.getSelectedInput()));
+			} else {
+				try {
+					int[] outputResources = new int[]{0, 0, 0, 0};
+					mechanics.getPlayer(playerIndex).activateProduction(cardProductionsManagement.getSelectedInput(), putResources(message), outputResources);
+					turnController.setTurnPhase(TurnPhase.MAIN_ACTION);
+				} catch (InvalidInputException e) {
+					view.askFreeInput(cardProductionsManagement.numberOfInputEmptySelectedProduction(cardProductionsManagement.getSelectedInput()));
+				}
 			}
 		}
+		else view.askFreeInput(cardProductionsManagement.numberOfInputEmptySelectedProduction(cardProductionsManagement.getSelectedInput()));
 
 	}
 
@@ -431,6 +432,9 @@ public class ServerSideController {
 		try {
 			mechanics.getPlayer(playerIndex).activateProduction(cardProductionsManagement.getSelectedInput(),
 					cardProductionsManagement.getInputResources(), putResources(message));
+
+			view.showGenericMessage("Your Strongbox after production(s)!");
+			view.showStrongBox(new ReducedStrongbox(cardProductionsManagement.getMyStrongbox()));
 			turnController.setTurnPhase(TurnPhase.MAIN_ACTION);
 		} catch (InvalidInputException e) {
 			e.printStackTrace();

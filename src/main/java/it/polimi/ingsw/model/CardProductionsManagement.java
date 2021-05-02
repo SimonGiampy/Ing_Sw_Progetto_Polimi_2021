@@ -1,5 +1,6 @@
 package it.polimi.ingsw.model;
 
+import it.polimi.ingsw.model.util.ListSet;
 import it.polimi.ingsw.model.util.Productions;
 import it.polimi.ingsw.model.util.Resources;
 import it.polimi.ingsw.exceptions.InvalidInputException;
@@ -114,7 +115,9 @@ public class CardProductionsManagement {
 			}
 		}
 		selectedProduction = selectedProduction.stream().filter(i -> i != Resources.FREE_CHOICE).collect(Collectors.toCollection(ArrayList::new));
+		//System.out.println(selectedProduction);
 		myStrongbox.storeResources(selectedProduction);
+		//System.out.println(myStrongbox.getContent().toString());
 		return totalFaithPoints;
 	}
 
@@ -199,7 +202,26 @@ public class CardProductionsManagement {
 			remainingResources = myWarehouseDepot.payResources(filteredProduction);
 			myStrongbox.retrieveResources(remainingResources);
 		}
-		// else throw new InvalidUserRequestException("invalid input resources");
+
+	}
+
+	public boolean checkFreeInput(ArrayList<Integer> playerInput, int[] inputResources){
+		ArrayList<Resources> playerResources= myWarehouseDepot.gatherAllResources();
+		playerResources.addAll(myStrongbox.getContent());
+		ArrayList<Resources> productionInput= new ArrayList<>();
+		ArrayList<Resources> remainingResources;
+		for (Integer integer : playerInput) {
+			productionInput.addAll(getProductionInput(integer));
+		}
+		ArrayList<Resources> filteredProduction = productionInput.stream().filter(i->i!=Resources.FREE_CHOICE)
+				.collect(Collectors.toCollection(ArrayList::new));
+		for (int i = 0; i < 4; i++) {
+			for (int j = 0; j < inputResources[i]; j++) {
+				filteredProduction.add(Resources.values()[i]);
+			}
+		}
+		ProductionRules allSelectedProduction= new ProductionRules(filteredProduction,new ArrayList<>(),0);
+		return allSelectedProduction.isProductionAvailable(playerResources);
 	}
 
 	/**
@@ -268,9 +290,19 @@ public class CardProductionsManagement {
 	 * @param inputResources is an array of multiplicity of each resource selected by the player
 	 * @return true if the sum of all resources selected by the player is equal to production's number of ? in input
 	 */
-	public boolean isNumberOfSelectedInputEmptyResourcesEnough(ArrayList<Integer> playerInput,int[] inputResources){
+	public boolean isNumberOfSelectedInputEmptyResourcesEnough(ArrayList<Integer> playerInput, int[] inputResources){
 		int totalNumber= numberOfInputEmptySelectedProduction(playerInput);
-		return totalNumber==inputResources[0]+inputResources[1]+inputResources[2]+inputResources[3];
+		ArrayList<Resources> playerResources= myWarehouseDepot.gatherAllResources();
+		playerResources.addAll(myStrongbox.getContent());
+		ArrayList<Resources> filteredProduction= new ArrayList<>();
+			for (int i = 0; i < 4; i++) {
+				for (int j = 0; j < inputResources[i]; j++) {
+					filteredProduction.add(Resources.values()[i]);
+				}
+			}
+
+		return ListSet.subset(playerResources,filteredProduction);
+		//return totalNumber==inputResources[0]+inputResources[1]+inputResources[2]+inputResources[3];
 	}
 
 	/**

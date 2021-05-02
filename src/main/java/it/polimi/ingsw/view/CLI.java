@@ -525,17 +525,14 @@ public class CLI extends ViewObservable implements View {
 		notifyObserver(obs -> obs.onUpdateProductionAction(selection));
 
 	}
-	
-	@Override
-	public void askFreeInput(int number) {
-		System.out.println("sei un pirla");
-	}
-	
-	@Override
-	public void askFreeOutput(int number) {
+
+	private  void freeChoice(int number, int flag){
 		ArrayList<Resources> resourcesList = new ArrayList<>();
 		ArrayList<Integer> resourcesNumber = new ArrayList<>();
 		String regex = "[1-" + number + "]X(COIN|SERVANT|STONE|SHIELD)";
+		if(flag==1)
+			System.out.println("You have " + number + " free choice resources in input");
+		else
 		System.out.println("You have " + number + " free choice resources in output");
 		System.out.println("Type [NUMBERxRESOURCE,NUMBERxRESOURCE,...] to select them (ex. [2xshield])");
 		String input;
@@ -564,8 +561,17 @@ public class CLI extends ViewObservable implements View {
 					resourcesList.stream().distinct().count() != resourcesNumber.size()) check = false;
 			if (!check) System.out.println("Input incorrect! Type again!");
 		}while(!check);
+		notifyObserver(obs -> obs.onUpdateResourceChoice(resourcesList, resourcesNumber,flag));
+	}
 
-		notifyObserver(obs -> obs.onUpdateResourceChoice(resourcesList, resourcesNumber,0));
+	@Override
+	public void askFreeInput(int number) {
+		freeChoice(number,1);
+	}
+
+	@Override
+	public void askFreeOutput(int number) {
+		freeChoice(number,2);
 	}
 	
 	

@@ -284,8 +284,10 @@ public class Player {
 		if(!cardManager.isNumberOfSelectedInputEmptyResourcesEnough(playerInput,resourcesInput))
 			throw new InvalidInputException("Input Empty Resources selection not correct");
 
+		//System.out.println(Arrays.toString(resourcesOutput));
 		cardManager.takeSelectedResources(playerInput,resourcesInput);
 		myFaithTrack.moveMarker(cardManager.activateSelectedProduction(playerInput,resourcesOutput));
+		System.out.println(getMyStrongbox().getContent());
 	}
 
 
