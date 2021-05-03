@@ -1,6 +1,5 @@
 package it.polimi.ingsw.model;
 
-import it.polimi.ingsw.model.util.ListSet;
 import it.polimi.ingsw.model.util.Productions;
 import it.polimi.ingsw.model.util.Resources;
 import it.polimi.ingsw.exceptions.InvalidInputException;
@@ -239,7 +238,7 @@ public class CardProductionsManagement {
 	 * it checks if one of card's productions is available
 	 * @return true if at least one of card's production is available
 	 */
-	public boolean isAtLeastOneProductionAvailable() throws InvalidInputException {
+	public boolean isAtLeastOneProductionAvailable() {
 		return  (checkStackLevel(1) >0 && isSingleProductionAvailable(Productions.STACK_1_CARD_PRODUCTION)) ||
 				(checkStackLevel(2) >0 && isSingleProductionAvailable(Productions.STACK_2_CARD_PRODUCTION)) ||
 				(checkStackLevel(3) >0 && isSingleProductionAvailable(Productions.STACK_3_CARD_PRODUCTION)) ||

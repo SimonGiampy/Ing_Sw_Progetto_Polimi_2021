@@ -2,7 +2,6 @@ package it.polimi.ingsw.network;
 
 import it.polimi.ingsw.network.messages.Message;
 import it.polimi.ingsw.network.messages.MessageType;
-import it.polimi.ingsw.network.messages.generic.DisconnectionMessage;
 import it.polimi.ingsw.network.messages.generic.PingMessage;
 import it.polimi.ingsw.observers.Observable;
 
@@ -17,9 +16,9 @@ import java.util.concurrent.TimeUnit;
 
 public class Client extends Observable {
 
-	private Socket socket;
-	private ObjectOutputStream outputStream;
-	private ObjectInputStream inputStream;
+	private final Socket socket;
+	private final ObjectOutputStream outputStream;
+	private final ObjectInputStream inputStream;
 	
 	private final ExecutorService readExecutionQueue;
 	private final ScheduledExecutorService pinger;

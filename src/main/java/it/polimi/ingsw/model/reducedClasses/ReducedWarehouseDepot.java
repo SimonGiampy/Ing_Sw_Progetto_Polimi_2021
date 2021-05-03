@@ -2,15 +2,14 @@ package it.polimi.ingsw.model.reducedClasses;
 
 import it.polimi.ingsw.model.WarehouseDepot;
 import it.polimi.ingsw.model.util.Resources;
-import it.polimi.ingsw.model.util.Unicode;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 
 public class ReducedWarehouseDepot implements Serializable {
 
-	private ArrayList<Resources> incomingResources; //incoming resources from the market
-	private Resources[] depot; // array of fixed length = 6, representing the pyramid
+	private final ArrayList<Resources> incomingResources; //incoming resources from the market
+	private final Resources[] depot; // array of fixed length = 6, representing the pyramid
 	private final ArrayList<Integer> positionsIncomingResources; // memorizes the positions of the resources that have been moved from the deck
 
 	// list of 2 lists of resources, one for each leader. If the value of the first element in the list is NO_RES,

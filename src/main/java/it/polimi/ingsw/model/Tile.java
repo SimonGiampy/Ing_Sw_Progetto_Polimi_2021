@@ -9,7 +9,7 @@ public class Tile implements Serializable {
 	
 	//These insideVatican attributes are true not only for the tiles that actually are in the correspondent Vatican Zone
 	//but also for all the tiles after them
-	private ArrayList<Boolean> insideVatican;
+	private final ArrayList<Boolean> insideVatican;
 
 	private final boolean papalSpace;
 

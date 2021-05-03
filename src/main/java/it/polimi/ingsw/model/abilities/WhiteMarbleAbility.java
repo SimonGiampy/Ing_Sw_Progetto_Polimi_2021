@@ -35,8 +35,7 @@ public class WhiteMarbleAbility implements AbilityEffectActivation {
 
 	@Override
 	public void appendPower(StringBuilder string) {
-		string.append("  White Marble Ability:\n");
-		string.append("  ");
+		string.append("  White Marble Ability:\n  ");
 		for (int i = 0; i < whiteMarbleNumber; i++) {
 			string.append("\uD83D\uDFE3 ");
 		}

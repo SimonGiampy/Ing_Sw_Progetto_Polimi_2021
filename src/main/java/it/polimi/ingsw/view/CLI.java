@@ -194,7 +194,7 @@ public class CLI extends ViewObservable implements View {
 				}
 			}
 		} while (!check);
-
+		if (input.equals("")) input = "standard";
 		// assumes that the selected file has a correct schema and is a valid configuration file
 		String finalInput = input;
 		notifyObserver(obs->obs.onUpdateGameConfiguration(finalInput));

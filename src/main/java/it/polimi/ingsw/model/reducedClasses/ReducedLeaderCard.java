@@ -2,11 +2,8 @@ package it.polimi.ingsw.model.reducedClasses;
 
 import it.polimi.ingsw.model.CardRequirement;
 import it.polimi.ingsw.model.LeaderCard;
-import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.abilities.AbilityEffectActivation;
-import it.polimi.ingsw.model.util.ListSet;
 import it.polimi.ingsw.model.util.Resources;
-import it.polimi.ingsw.model.util.Unicode;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -16,9 +13,9 @@ public class ReducedLeaderCard implements Serializable {
 	private final ArrayList<Resources> resourceRequirements; // list of resources required for the activation
 	private final ArrayList<CardRequirement> cardRequirements; // list of development card requirements
 	private final ArrayList<AbilityEffectActivation> effectsActivation; // a single leader card supports multiple abilities
-	private boolean abilitiesActivated;
-	private boolean discarded;
-	private boolean playable;
+	private final boolean abilitiesActivated;
+	private final boolean discarded;
+	private final boolean playable;
 
 	public ReducedLeaderCard(LeaderCard leaderCard, boolean abilitiesActivated,boolean discarded, boolean playable){
 		victoryPoints=leaderCard.getVictoryPoints();

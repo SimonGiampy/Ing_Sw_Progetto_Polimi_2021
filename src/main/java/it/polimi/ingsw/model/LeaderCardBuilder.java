@@ -13,7 +13,7 @@ public class LeaderCardBuilder {
 	private int victoryPoints;
 	private ArrayList<Resources> resourceRequirements;
 	private ArrayList<CardRequirement> cardRequirements;
-	private ArrayList<AbilityEffectActivation> effects;
+	private final ArrayList<AbilityEffectActivation> effects;
 	
 	/**
 	 * basic constructor

@@ -25,8 +25,8 @@ public abstract class ViewObservable {
 	}
 	
 	/**
-	 * è da pazzi furiosi
-	 * @param lambda
+	 * this is crazy furious
+	 * @param lambda expression that executes the desired function
 	 */
 	protected void notifyObserver(Consumer<ViewObserver> lambda) {
 		for (ViewObserver observer : observers) {

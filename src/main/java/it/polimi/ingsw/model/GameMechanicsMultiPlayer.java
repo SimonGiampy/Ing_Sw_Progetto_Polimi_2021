@@ -1,14 +1,10 @@
 package it.polimi.ingsw.model;
 
 import it.polimi.ingsw.controller.ServerSideController;
-import it.polimi.ingsw.model.singleplayer.Token;
 import it.polimi.ingsw.model.util.Resources;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
-import java.util.Comparator;
-import java.util.stream.Collectors;
 
 public class GameMechanicsMultiPlayer {
 	
@@ -23,6 +19,7 @@ public class GameMechanicsMultiPlayer {
 	
 	int startingPlayer; //index of starting player: from 0 to 3 maximum
 	
+	//TODO: this constructor does not need the server side controller
 	public GameMechanicsMultiPlayer(ServerSideController controller, int players) {
 		numberOfPlayers = players;
 		this.serverSideController = controller;

@@ -74,8 +74,8 @@ public interface View {
 	void askBuyCardAction(ArrayList<DevelopmentCard> cardsAvailable, boolean wrongSlot);
 
 	/**
-	 * TODO: to be fixed
-	 * @param productionAvailable
+	 * the server asks the client what productions to do, and sends them a list of the available ones
+	 * @param productionAvailable list of available productions
 	 */
 	void askProductionAction(ArrayList<Productions> productionAvailable);
 

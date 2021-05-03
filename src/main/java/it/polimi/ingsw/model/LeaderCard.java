@@ -4,7 +4,6 @@ import it.polimi.ingsw.model.util.Colors;
 import it.polimi.ingsw.model.util.ListSet;
 import it.polimi.ingsw.model.util.Resources;
 import it.polimi.ingsw.model.abilities.AbilityEffectActivation;
-import it.polimi.ingsw.model.util.Unicode;
 
 import java.util.ArrayList;
 import java.util.stream.Collectors;

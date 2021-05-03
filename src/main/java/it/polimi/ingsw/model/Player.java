@@ -1,13 +1,10 @@
 package it.polimi.ingsw.model;
 
 import it.polimi.ingsw.model.util.*;
-import it.polimi.ingsw.exceptions.InvalidDevCardSlotException;
 import it.polimi.ingsw.exceptions.InvalidInputException;
 import it.polimi.ingsw.exceptions.InvalidUserRequestException;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Scanner;
 
 /**
  * Player class represents a unique player in the game. Handles all the instances of the classes in the game, since the player interacts with all of
@@ -142,12 +139,8 @@ public class Player {
 		if (isBuyMoveAvailable()) {
 			actions.add(PlayerActions.BUY_CARD);
 		}
-		try {
-			if (cardManager.isAtLeastOneProductionAvailable()) {
-				actions.add(PlayerActions.PRODUCTIONS);
-			}
-		} catch (InvalidInputException e) {
-			e.printStackTrace();
+		if (cardManager.isAtLeastOneProductionAvailable()) {
+			actions.add(PlayerActions.PRODUCTIONS);
 		}
 		return actions;
 	}

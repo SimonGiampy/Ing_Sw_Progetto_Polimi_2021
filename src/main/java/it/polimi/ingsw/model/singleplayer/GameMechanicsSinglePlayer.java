@@ -81,7 +81,7 @@ public class GameMechanicsSinglePlayer extends GameMechanicsMultiPlayer {
 		Collections.shuffle(tokenList);
 	}
 
-	/**
+	/** TODO: check if this method works
 	 * Checks if the single player game is finished and show the total score
 	 */
 	@Override
@@ -102,7 +102,7 @@ public class GameMechanicsSinglePlayer extends GameMechanicsMultiPlayer {
 			//System.out.println("Game Over!\nLorenzo won!");
 			//System.out.println("Your score: "+ getPlayer().totalScore());
 		}
-		return winner; //TODO: return an integer representing who is the winner of the game; move sys out in the CLI
+		return winner;
 	}
 
 	public FaithTrack getLorenzoFaithTrack() {

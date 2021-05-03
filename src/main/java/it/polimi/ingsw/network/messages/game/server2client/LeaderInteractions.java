@@ -1,7 +1,4 @@
 package it.polimi.ingsw.network.messages.game.server2client;
-/**
- * the server sends leader cards to the player
- */
 
 import it.polimi.ingsw.model.reducedClasses.ReducedLeaderCard;
 import it.polimi.ingsw.network.messages.Message;
@@ -9,6 +6,9 @@ import it.polimi.ingsw.network.messages.MessageType;
 
 import java.util.ArrayList;
 
+/**
+ * the server sends leader cards to the player, with a parameter to describe what to do with them
+ */
 public class LeaderInteractions extends Message {
 
 	private final ArrayList<ReducedLeaderCard> leaderCards;

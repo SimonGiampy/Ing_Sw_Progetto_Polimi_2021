@@ -7,9 +7,9 @@ import java.util.ArrayList;
 
 public class ReducedFaithTrack implements Serializable {
 
-	private ArrayList<Boolean> vaticanReports;
-	private Integer currentPosition;
-	private ArrayList<Tile> track;
+	private final ArrayList<Boolean> vaticanReports;
+	private final Integer currentPosition;
+	private final ArrayList<Tile> track;
 	private final ArrayList<Integer> reportPoints;
 	
 	private final boolean singlePlayer;

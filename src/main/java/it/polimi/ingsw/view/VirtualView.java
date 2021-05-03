@@ -2,7 +2,6 @@ package it.polimi.ingsw.view;
 
 import it.polimi.ingsw.model.*;
 import it.polimi.ingsw.model.reducedClasses.*;
-import it.polimi.ingsw.model.singleplayer.Token;
 import it.polimi.ingsw.model.util.Colors;
 import it.polimi.ingsw.model.util.PlayerActions;
 import it.polimi.ingsw.model.util.Productions;

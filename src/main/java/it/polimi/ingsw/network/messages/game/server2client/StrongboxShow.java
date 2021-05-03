@@ -1,6 +1,5 @@
 package it.polimi.ingsw.network.messages.game.server2client;
 
-import it.polimi.ingsw.model.Strongbox;
 import it.polimi.ingsw.model.reducedClasses.ReducedStrongbox;
 import it.polimi.ingsw.network.messages.Message;
 import it.polimi.ingsw.network.messages.MessageType;
@@ -10,7 +9,7 @@ import it.polimi.ingsw.network.messages.MessageType;
  */
 public class StrongboxShow extends Message {
 
-	private ReducedStrongbox strongbox;
+	private final ReducedStrongbox strongbox;
 
 	public StrongboxShow(ReducedStrongbox strongbox){
 		super("server", MessageType.STRONGBOX_SHOW);

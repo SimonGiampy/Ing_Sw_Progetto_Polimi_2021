@@ -52,7 +52,7 @@ class ListSetTest {
 	@Test
 	void removeSubSet() {
 		set = ListSet.removeSubSet(subList, set);
-		System.out.println("remainder = " + set.toString());
+		System.out.println("remainder = " + set);
 		assertTrue(set.isEmpty());
 	}
 	

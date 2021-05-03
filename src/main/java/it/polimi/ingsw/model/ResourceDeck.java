@@ -10,7 +10,7 @@ import java.util.Arrays;
 
 public class ResourceDeck {
 
-	private ArrayList<Resources> resourceList;
+	private final ArrayList<Resources> resourceList;
 	private ArrayList<Resources> fromWhiteMarble1;
 	private ArrayList<Resources> fromWhiteMarble2;
 	private int whiteMarblesInput1;

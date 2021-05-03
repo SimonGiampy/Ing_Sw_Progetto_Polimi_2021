@@ -13,7 +13,6 @@ import it.polimi.ingsw.network.messages.game.server2client.WinMessage;
 import it.polimi.ingsw.view.VirtualView;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 
 public class TurnController {
@@ -174,6 +173,7 @@ public class TurnController {
 		//TODO: add end of game, closing socket
 	}
 
+	//TODO: check if this method works
 	public void endgame(){
 		boolean check=false;
 		for (int i = 0; i < nicknameList.size(); i++) {
