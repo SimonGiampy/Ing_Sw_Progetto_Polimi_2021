@@ -20,20 +20,20 @@ import java.util.HashMap;
 
 public class ServerSideController {
 
-	private GameMechanicsMultiPlayer mechanics;
+	private final GameMechanicsMultiPlayer mechanics;
 	private GameState gameState;
 	private HashMap<String, VirtualView> virtualViewMap;
 	
-	private Lobby lobby;
+	private final Lobby lobby;
 	private ArrayList<String> nicknameList;
 	private final boolean[] gameReady; //
 	private final boolean[] initResources;
-	private boolean endGame;
+	//private boolean endGame;
 
 
 	private TurnController turnController;
 	
-	private int numberOfPlayers;
+	private final int numberOfPlayers;
 	
 	public ServerSideController(Lobby lobby, int numberOfPlayers) {
 		this.lobby = lobby;
@@ -65,7 +65,6 @@ public class ServerSideController {
 			case CONFIG -> configHandler(receivedMessage);
 			case INIT -> initState(receivedMessage);
 			case GAME -> inGameState(receivedMessage);
-			case ENDGAME -> endGameState(receivedMessage);
 			default -> throw new IllegalStateException("Unexpected value: " + gameState);
 		}
 	}
@@ -159,10 +158,10 @@ public class ServerSideController {
 	private void controllerAskLeaders(){
 		for (int i = 0; i < numberOfPlayers; i++) {
 			ArrayList<ReducedLeaderCard> leaderCards = new ArrayList<>();
-			leaderCards.add(new ReducedLeaderCard(mechanics.getPlayer(i).getLeaderCards()[0]));
-			leaderCards.add(new ReducedLeaderCard(mechanics.getPlayer(i).getLeaderCards()[1]));
-			leaderCards.add(new ReducedLeaderCard(mechanics.getPlayer(i).getLeaderCards()[2]));
-			leaderCards.add(new ReducedLeaderCard(mechanics.getPlayer(i).getLeaderCards()[3]));
+			leaderCards.add(new ReducedLeaderCard(mechanics.getPlayer(i).getLeaderCards()[0],false,false));
+			leaderCards.add(new ReducedLeaderCard(mechanics.getPlayer(i).getLeaderCards()[1],false,false));
+			leaderCards.add(new ReducedLeaderCard(mechanics.getPlayer(i).getLeaderCards()[2],false,false));
+			leaderCards.add(new ReducedLeaderCard(mechanics.getPlayer(i).getLeaderCards()[3],false,false));
 			VirtualView view = virtualViewMap.get(nicknameList.get(i));
 			view.askInitLeaders(leaderCards);
 		}
@@ -200,8 +199,8 @@ public class ServerSideController {
 		mechanics.getPlayer(playerIndex).chooseTwoLeaders(message.getLeaderSelection().get(0),message.getLeaderSelection().get(1));
 		ArrayList<ReducedLeaderCard> leaderCards = new ArrayList<>();
 		view.showGenericMessage("Your Leader Cards now!");
-		leaderCards.add(new ReducedLeaderCard(mechanics.getPlayer(playerIndex).getLeaderCards()[0]));
-		leaderCards.add(new ReducedLeaderCard(mechanics.getPlayer(playerIndex).getLeaderCards()[1]));
+		leaderCards.add(new ReducedLeaderCard(mechanics.getPlayer(playerIndex).getLeaderCards()[0],false,false));
+		leaderCards.add(new ReducedLeaderCard(mechanics.getPlayer(playerIndex).getLeaderCards()[1],false,false));
 		view.showLeaderCards(leaderCards);
 		gameReady[playerIndex]=true;
 		if(allTrue(gameReady))
@@ -249,8 +248,9 @@ public class ServerSideController {
 			}
 			case LEADER -> {
 				ArrayList<ReducedLeaderCard> leaderCards = new ArrayList<>();
-				leaderCards.add(new ReducedLeaderCard(mechanics.getPlayer(playerIndex).getLeaderCards()[0]));
-				leaderCards.add(new ReducedLeaderCard(mechanics.getPlayer(playerIndex).getLeaderCards()[1]));
+				Player player=mechanics.getPlayer(playerIndex);
+				leaderCards.add(new ReducedLeaderCard(player.getLeaderCards()[0], player.isActiveAbilityLeader1(), player.isDiscardedLeader1()));
+				leaderCards.add(new ReducedLeaderCard(mechanics.getPlayer(playerIndex).getLeaderCards()[1], player.isActiveAbilityLeader2(), player.isDiscardedLeader2()));
 				view.askLeaderAction(leaderCards);
 			}
 		}
@@ -532,17 +532,8 @@ public class ServerSideController {
 		}
 	}
 
-	
-	private void endGameState(Message receivedMessage) {
-
-	}
-	
-	
 	public Lobby getLobby() {
 		return lobby;
 	}
 
-	public void setGameState(GameState gameState) {
-		this.gameState = gameState;
-	}
 }

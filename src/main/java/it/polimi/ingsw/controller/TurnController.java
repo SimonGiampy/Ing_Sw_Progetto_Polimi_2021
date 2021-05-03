@@ -1,6 +1,7 @@
 package it.polimi.ingsw.controller;
 
 import it.polimi.ingsw.model.GameMechanicsMultiPlayer;
+import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.reducedClasses.ReducedDevelopmentCardsDeck;
 import it.polimi.ingsw.model.reducedClasses.ReducedFaithTrack;
 import it.polimi.ingsw.model.reducedClasses.ReducedLeaderCard;
@@ -11,6 +12,7 @@ import it.polimi.ingsw.network.messages.game.server2client.WinMessage;
 import it.polimi.ingsw.view.VirtualView;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 
 public class TurnController {
@@ -144,7 +146,7 @@ public class TurnController {
 
 	private void endTurn(){
 		if(nicknameList.size()==1) {
-			tokenActivation();
+			tokenActivation(); //activate token just in singleplayer
 		}
 		endgame(); //activated only if endgame started
 		if (endOfGame) {
@@ -195,9 +197,10 @@ public class TurnController {
 	public void turnAskLeaderAction(){
 		VirtualView view= virtualViewMap.get(activePlayer);
 		int playerIndex= nicknameList.indexOf(activePlayer);
+		Player player= mechanics.getPlayer(playerIndex);
 		ArrayList<ReducedLeaderCard> leaderCards = new ArrayList<>();
-		leaderCards.add(new ReducedLeaderCard(mechanics.getPlayer(playerIndex).getLeaderCards()[0]));
-		leaderCards.add(new ReducedLeaderCard(mechanics.getPlayer(playerIndex).getLeaderCards()[1]));
+		leaderCards.add(new ReducedLeaderCard(player.getLeaderCards()[0],player.isActiveAbilityLeader1(),player.isDiscardedLeader1()));
+		leaderCards.add(new ReducedLeaderCard(player.getLeaderCards()[1], player.isActiveAbilityLeader2(),player.isDiscardedLeader2()));
 		view.askLeaderAction(leaderCards);
 	}
 
