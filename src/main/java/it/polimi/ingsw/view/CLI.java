@@ -7,12 +7,16 @@ import it.polimi.ingsw.model.reducedClasses.*;
 import it.polimi.ingsw.model.util.*;
 import it.polimi.ingsw.observers.ViewObservable;
 
-import java.util.*;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Scanner;
 import java.util.regex.Pattern;
 
 public class CLI extends ViewObservable implements View {
 	
-	Scanner scanner;
+	private final Scanner scanner;
 
 	public CLI() {
 		scanner = new Scanner(System.in);
@@ -22,34 +26,36 @@ public class CLI extends ViewObservable implements View {
 	 * it initializes CLI
 	 */
 	public void initialize() {
-		System.out.println("\n" +
-				" ,ggg, ,ggg,_,ggg,                                                                                                         \n" +
-				"dP\"\"Y8dP\"\"Y88P\"\"Y8b                          I8                                                     ,dPYb,                 \n" +
-				"Yb, `88'  `88'  `88                          I8                                                     IP'`Yb                 \n" +
-				" `\"  88    88    88                       88888888                                                  I8  8I                 \n" +
-				"     88    88    88                          I8                                                     I8  8'                 \n" +
-				"     88    88    88    ,gggg,gg    ,g,       I8     ,ggg,    ,gggggg,    ,g,             ,ggggg,    I8 dP                  \n" +
-				"     88    88    88   dP\"  \"Y8I   ,8'8,      I8    i8\" \"8i   dP\"\"\"\"8I   ,8'8,           dP\"  \"Y8ggg I8dP                   \n" +
-				"     88    88    88  i8'    ,8I  ,8'  Yb    ,I8,   I8, ,8I  ,8'    8I  ,8'  Yb         i8'    ,8I   I8P                    \n" +
-				"     88    88    Y8,,d8,   ,d8b,,8'_   8)  ,d88b,  `YbadP' ,dP     Y8,,8'_   8)       ,d8,   ,d8'  ,d8b,_                  \n" +
-				"     88    88    `Y8P\"Y8888P\"`Y8P' \"YY8P8P 8P\"\"Y8 888P\"Y8888P      `Y8P' \"YY8P8P      P\"Y8888P\"    PI8\"888                 \n" +
-				"                                                                                                    I8 `8,                 \n" +
-				" ,ggggggggggg,                                                                                      I8  `8,                \n" +
-				"dP\"\"\"88\"\"\"\"\"\"Y8,                                                                                    I8   8I                \n" +
-				"Yb,  88      `8b                                                                                    I8   8I                \n" +
-				" `\"  88      ,8P                                      gg                                            I8, ,8'                \n" +
-				"     88aaaad8P\"                                       \"\"                                             \"Y8P'                 \n" +
-				"     88\"\"\"\"Yb,     ,ggg,    ,ggg,,ggg,     ,gggg,gg   gg     ,g,       ,g,       ,gggg,gg   ,ggg,,ggg,     ,gggg,   ,ggg,  \n" +
-				"     88     \"8b   i8\" \"8i  ,8\" \"8P\" \"8,   dP\"  \"Y8I   88    ,8'8,     ,8'8,     dP\"  \"Y8I  ,8\" \"8P\" \"8,   dP\"  \"Yb i8\" \"8i \n" +
-				"     88      `8i  I8, ,8I  I8   8I   8I  i8'    ,8I   88   ,8'  Yb   ,8'  Yb   i8'    ,8I  I8   8I   8I  i8'       I8, ,8I \n" +
-				"     88       Yb, `YbadP' ,dP   8I   Yb,,d8,   ,d8b,_,88,_,8'_   8) ,8'_   8) ,d8,   ,d8b,,dP   8I   Yb,,d8,_    _ `YbadP' \n" +
-				"     88        Y8888P\"Y8888P'   8I   `Y8P\"Y8888P\"`Y88P\"\"Y8P' \"YY8P8PP' \"YY8P8PP\"Y8888P\"`Y88P'   8I   `Y8P\"\"Y8888PP888P\"Y888\n" +
-				"                                                                                                                           \n" +
-				"                                                                                                                           \n" +
-				"                                                                                                                           \n" +
-				"                                                                                                                           \n" +
-				"                                                                                                                           \n" +
-				"                                                                                                                           \n");
+		System.out.println("""
+				
+				 ,ggg, ,ggg,_,ggg,                                                                                                        \s
+				dP""Y8dP""Y88P""Y8b                          I8                                                     ,dPYb,                \s
+				Yb, `88'  `88'  `88                          I8                                                     IP'`Yb                \s
+				 `"  88    88    88                       88888888                                                  I8  8I                \s
+				     88    88    88                          I8                                                     I8  8'                \s
+				     88    88    88    ,gggg,gg    ,g,       I8     ,ggg,    ,gggggg,    ,g,             ,ggggg,    I8 dP                 \s
+				     88    88    88   dP"  "Y8I   ,8'8,      I8    i8" "8i   dP""\""8I   ,8'8,           dP"  "Y8ggg I8dP                  \s
+				     88    88    88  i8'    ,8I  ,8'  Yb    ,I8,   I8, ,8I  ,8'    8I  ,8'  Yb         i8'    ,8I   I8P                   \s
+				     88    88    Y8,,d8,   ,d8b,,8'_   8)  ,d88b,  `YbadP' ,dP     Y8,,8'_   8)       ,d8,   ,d8'  ,d8b,_                 \s
+				     88    88    `Y8P"Y8888P"`Y8P' "YY8P8P 8P""Y8 888P"Y8888P      `Y8P' "YY8P8P      P"Y8888P"    PI8"888                \s
+				                                                                                                    I8 `8,                \s
+				 ,ggggggggggg,                                                                                      I8  `8,               \s
+				dP""\"88""\"""\"Y8,                                                                                    I8   8I               \s
+				Yb,  88      `8b                                                                                    I8   8I               \s
+				 `"  88      ,8P                                      gg                                            I8, ,8'               \s
+				     88aaaad8P"                                       ""                                             "Y8P'                \s
+				     88""\""Yb,     ,ggg,    ,ggg,,ggg,     ,gggg,gg   gg     ,g,       ,g,       ,gggg,gg   ,ggg,,ggg,     ,gggg,   ,ggg, \s
+				     88     "8b   i8" "8i  ,8" "8P" "8,   dP"  "Y8I   88    ,8'8,     ,8'8,     dP"  "Y8I  ,8" "8P" "8,   dP"  "Yb i8" "8i\s
+				     88      `8i  I8, ,8I  I8   8I   8I  i8'    ,8I   88   ,8'  Yb   ,8'  Yb   i8'    ,8I  I8   8I   8I  i8'       I8, ,8I\s
+				     88       Yb, `YbadP' ,dP   8I   Yb,,d8,   ,d8b,_,88,_,8'_   8) ,8'_   8) ,d8,   ,d8b,,dP   8I   Yb,,d8,_    _ `YbadP'\s
+				     88        Y8888P"Y8888P'   8I   `Y8P"Y8888P"`Y88P""Y8P' "YY8P8PP' "YY8P8PP"Y8888P"`Y88P'   8I   `Y8P""Y8888PP888P"Y888
+				                                                                                                                          \s
+				                                                                                                                          \s
+				                                                                                                                          \s
+				                                                                                                                          \s
+				                                                                                                                          \s
+				                                                                                                                          \s
+				""");
 		
 		askServerInfo();
 	}
@@ -211,7 +217,6 @@ public class CLI extends ViewObservable implements View {
 			System.out.println("You can choose " + number + " free resources");
 			System.out.println("Type [RESOURCE] to select. For different type of resources " +
 					"separate them with a space (Example: [stone servant])");
-			input = scanner.nextLine().toUpperCase();
 			String[] selection;
 			do {
 				input = scanner.nextLine().toUpperCase();
@@ -586,8 +591,11 @@ public class CLI extends ViewObservable implements View {
 	
 	
 	@Override
-	public void showDisconnectionMessage(String nicknameDisconnected, String text) {
-		System.out.println(nicknameDisconnected + text);
+	public void disconnection(String text, boolean termination) {
+		System.out.println(text);
+		if (termination) {
+			System.out.println("Exiting from game.");
+		}
 	}
 	
 	@Override
@@ -843,9 +851,9 @@ public class CLI extends ViewObservable implements View {
 		if(card.isAbilitiesActivated()) string.append(Unicode.ANSI_GREEN);
 		string.append(Unicode.TOP_LEFT);
 		string.append(String.valueOf(Unicode.HORIZONTAL).repeat(Math.max(0, maxLength(card))));
-		string.append(Unicode.TOP_RIGHT + "\n");
+		string.append(Unicode.TOP_RIGHT).append("\n");
 		string.append(Unicode.RESET);
-		string.append(Unicode.RED_BOLD + "  LEADER " + Unicode.RESET).append(card.getVictoryPoints())
+		string.append(Unicode.RED_BOLD).append("  LEADER ").append(Unicode.RESET).append(card.getVictoryPoints())
 				.append(Resources.VICTORY_POINTS).append("\n");
 		if(card.getResourceRequirements().size()!=0)
 			string.append("  REQs ").append(ListSet.listMultiplicityToString(card.getResourceRequirements())).append("\n");
@@ -857,8 +865,7 @@ public class CLI extends ViewObservable implements View {
 		if(card.isAbilitiesActivated()) string.append(Unicode.ANSI_GREEN);
 		string.append(Unicode.BOTTOM_LEFT);
 		string.append(String.valueOf(Unicode.HORIZONTAL).repeat(Math.max(0, maxLength(card))));
-		string.append(Unicode.BOTTOM_RIGHT + "\n");
-		string.append(Unicode.RESET);
+		string.append(Unicode.BOTTOM_RIGHT).append("\n").append(Unicode.RESET);
 		System.out.println(string);
 	}
 	
@@ -952,11 +959,11 @@ public class CLI extends ViewObservable implements View {
 				.append(Unicode.TOP_RIGHT).append("\n").append(Unicode.RESET).append("  LVL ");
 		
 		if(card.getLevel() == 1) {
-			string.append(Unicode.DOT + "    ");
+			string.append(Unicode.DOT).append("    ");
 		} else if(card.getLevel() == 2) {
-			string.append(Unicode.DOT + " " + Unicode.DOT + "  ");
+			string.append(Unicode.DOT).append(" ").append(Unicode.DOT).append("  ");
 		} else {
-			string.append(Unicode.DOT + " " + Unicode.DOT + " " + Unicode.DOT);
+			string.append(Unicode.DOT).append(" ").append(Unicode.DOT).append("  ").append(Unicode.DOT);
 		}
 		string.append(Unicode.RESET+"        ").append(card.getProductionRules().getFaithOutput())
 				.append(Unicode.RED_BOLD).append(Unicode.CROSS2).append(Unicode.RESET).append(" ")
@@ -1005,7 +1012,7 @@ public class CLI extends ViewObservable implements View {
 	/**
 	 * Clears the CLI terminal.
 	 */
-	public void clearCli() {
+	private void clearCli() {
 		System.out.print("\033[H\033[2J");
 		System.out.flush();
 	}

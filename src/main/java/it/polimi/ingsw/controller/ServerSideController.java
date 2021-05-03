@@ -536,12 +536,7 @@ public class ServerSideController {
 
 	}
 	
-	/**
-	 * TODO: called from the lobby when the game must be halted since a player left the game
-	 */
-	public void haltGame() {
 	
-	}
 	public Lobby getLobby() {
 		return lobby;
 	}

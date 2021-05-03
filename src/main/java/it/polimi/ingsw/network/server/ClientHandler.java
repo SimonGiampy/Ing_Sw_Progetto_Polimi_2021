@@ -160,7 +160,6 @@ public class ClientHandler implements Runnable {
 	public void sendMessage(Message message) {
 		try {
 			outputStream.writeObject(message);
-			
 			outputStream.reset();
 			LOGGER.info("Sent: " + message);
 		} catch (IOException e) {

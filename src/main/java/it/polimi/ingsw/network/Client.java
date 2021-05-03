@@ -2,6 +2,7 @@ package it.polimi.ingsw.network;
 
 import it.polimi.ingsw.network.messages.Message;
 import it.polimi.ingsw.network.messages.MessageType;
+import it.polimi.ingsw.network.messages.generic.DisconnectionMessage;
 import it.polimi.ingsw.network.messages.generic.PingMessage;
 import it.polimi.ingsw.observers.Observable;
 
@@ -53,6 +54,11 @@ public class Client extends Observable {
 						message = (Message) inputStream.readObject();
 						LOGGER.info("Received: " + message);
 						notifyObserver(message);
+						if (message != null && message.getMessageType() == MessageType.DISCONNECTION_MESSAGE) {
+							if (((DisconnectionMessage) message).isTermination()) {
+								disconnect();
+							}
+						}
 					} catch (ClassNotFoundException e) {
 						LOGGER.error("Error: wrong class read from stream");
 					} catch (IOException ex) {
@@ -73,11 +79,11 @@ public class Client extends Observable {
 			if (message.getMessageType() != MessageType.PING) {
 				LOGGER.info("Sending: " + message);
 			}
-			
 			outputStream.writeObject(message);
 			outputStream.reset();
 		} catch (IOException e) {
 			LOGGER.error("Error in sending message: " + e.getMessage());
+			e.printStackTrace();
 			disconnect();
 		}
 	}
@@ -95,7 +101,7 @@ public class Client extends Observable {
 		}
 	}
 	
-	/** TODO: handle disconnection when the thread listens for user input
+	/**
 	 * Method called when an error occurs and the client disconnects from the server. The socket gets closed.
 	 */
 	public void disconnect() {
@@ -105,8 +111,8 @@ public class Client extends Observable {
 				enablePinger(false);
 				socket.close();
 				LOGGER.info("Client disconnected from the game");
+				System.exit(1); // abrupt termination of program
 			}
-			
 		} catch (IOException e) {
 			LOGGER.error("Client-side disconnection cannot be completed: " + e.getMessage());
 		}

@@ -108,13 +108,13 @@ public interface View {
 	 * @param genericMessage is the message to be shown
 	 */
 	void showGenericMessage(String genericMessage);
-
+	
 	/**
-	 * it shows that a player hase logged out
-	 * @param nicknameDisconnected is the nickname of the player
-	 * @param text is a generic message to be shown
+	 * handles client disconnection by showing an error message and then input termination
+	 * @param text to be displayed upon disconnection
+	 * @param termination if the input thread needs to be terminated
 	 */
-	void showDisconnectionMessage(String nicknameDisconnected, String text);
+	void disconnection(String text, boolean termination);
 
 	/**
 	 * it shows an error

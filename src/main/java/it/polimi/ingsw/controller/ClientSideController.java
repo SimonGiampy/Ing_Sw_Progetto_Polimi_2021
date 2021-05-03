@@ -29,11 +29,11 @@ public class ClientSideController implements ViewObserver, Observer {
 	private final View view;
 	private String nickname;
 	
-	private final ExecutorService taskQueue;
+	private final ExecutorService userTask;
 
 	public ClientSideController(View view) {
 		this.view = view;
-		taskQueue = Executors.newSingleThreadExecutor();
+		userTask = Executors.newSingleThreadExecutor();
 	}
 	
 	
@@ -45,14 +45,16 @@ public class ClientSideController implements ViewObserver, Observer {
 	public void update(Message message) {
 		if (message != null) {
 			switch(message.getMessageType()) {
-				case LOBBY_LIST -> view.showLobbyList(((LobbyList) message).getLobbies(), ((LobbyList) message).getIdVersion());
-				case LOGIN_CONFIRMATION -> view.showLobbyConfirmation(((LobbyConfirmation) message).isConfirmed());
-				case PLAYER_NUMBER_REQUEST -> view.askNumberOfPlayer();
-				case NICKNAME_REQUEST -> view.askNickname();
-				case NICKNAME_CONFIRMATION -> view.showNicknameConfirmation(((NicknameConfirmation) message).isConfirmed());
-				case GAME_CONFIG_REQUEST -> view.askCustomGame();
-				case MATCH_INFO -> view.showMatchInfo(((MatchInfo) message).getPlayers());
-				case RESOURCE_CHOICE -> {
+				case LOBBY_LIST -> userTask.execute(() -> view.showLobbyList(((LobbyList) message).getLobbies(),
+						((LobbyList) message).getIdVersion()));
+				case LOGIN_CONFIRMATION -> userTask.execute(() -> view.showLobbyConfirmation(((LobbyConfirmation) message).isConfirmed()));
+				case PLAYER_NUMBER_REQUEST -> userTask.execute(() -> view.askNumberOfPlayer());
+				case NICKNAME_REQUEST -> userTask.execute(() -> view.askNickname());
+				case NICKNAME_CONFIRMATION -> userTask.execute(() ->
+						view.showNicknameConfirmation(((NicknameConfirmation) message).isConfirmed()));
+				case GAME_CONFIG_REQUEST -> userTask.execute(() -> view.askCustomGame());
+				case MATCH_INFO -> userTask.execute(() -> view.showMatchInfo(((MatchInfo) message).getPlayers()));
+				case RESOURCE_CHOICE -> userTask.execute(() -> {
 					ResourceChoice choice = (ResourceChoice) message;
 					switch (choice.getAction()) {
 						case 0 -> view.askInitResources(choice.getNumber());
@@ -60,8 +62,8 @@ public class ClientSideController implements ViewObserver, Observer {
 						case 2 -> view.askFreeOutput(choice.getNumber());
 						default -> view.showError("Wrong info from server");
 					}
-				}
-				case LEADER_SHOW -> {
+				});
+				case LEADER_SHOW -> userTask.execute(() -> {
 					LeaderInteractions show = (LeaderInteractions) message;
 					if(show.getAction() == 0)
 						view.askInitLeaders(show.getLeaderCards());
@@ -70,40 +72,51 @@ public class ClientSideController implements ViewObserver, Observer {
 					else
 						view.askLeaderAction(show.getLeaderCards());
 
-				}
-				case MARKET_SHOW -> {
-					if(((MarketShow) message).getAction() == 0)
-						view.showMarket(((MarketShow) message).getMarket());
+				});
+				case MARKET_SHOW -> userTask.execute(() -> {
+					MarketShow marketShow = (MarketShow) message;
+					if (!marketShow.isAskAction())
+						view.showMarket(marketShow.getMarket());
 					else
-						view.askMarketAction(((MarketShow) message).getMarket());
-				}
-				case WHITE_MARBLE_REQUEST -> {
+						view.askMarketAction(marketShow.getMarket());
+				});
+				case WHITE_MARBLE_REQUEST -> userTask.execute(() -> {
 					WhiteMarbleRequest m = (WhiteMarbleRequest) message;
 					view.askWhiteMarbleChoice(m.getFromWhiteMarble1(), m.getFromWhiteMarble2(),
 							m.getWhiteMarblesInput1(), m.getWhiteMarblesInput2(), m.getHowMany());
-				}
-				case DEPOT_SHOW -> view.showDepot(((DepotShow) message).getDepot());
-				case DEPOT_CONFIRMATION -> {
+				});
+				case DEPOT_SHOW -> userTask.execute(() -> view.showDepot(((DepotShow) message).getDepot()));
+				case DEPOT_CONFIRMATION -> userTask.execute(() -> {
 					DepotReply c = (DepotReply) message;
 					view.replyDepot(c.getDepot(), c.isInitialMove(), c.isConfirmationAvailable(), c.isMoveValid());
-				}
-				case STRONGBOX_SHOW -> view.showStrongBox(((StrongboxShow) message).getStrongbox());
-				case FAITH_TRACK_SHOW -> view.showFaithTrack(((FaithTrackShow) message).getFaithTrack());
-				case CARDS_DECK_SHOW -> view.showCardsDeck(((CardsDeckShow) message).getCardsDeck());
-				case PLAYER_CARDS_AND_PRODUCTION_SHOW ->
-						view.showPlayerCardsAndProduction(((PlayerCardsAndProductionShow) message).getCardProductionManagement());
-				case ACTION_REQUEST -> view.askAction(((ActionRequest) message).getAvailableAction());
-				case CARDS_SHOW -> view.askBuyCardAction(((BuyableDevCards) message).getCards(), ((BuyableDevCards) message).isWrongSlot());
-				case PRODUCTION_SHOW -> view.askProductionAction(((ProductionsAvailable) message).getAvailableProduction());
-				case WIN_MESSAGE -> view.showWinMessage(((WinMessage) message).getWinner(),((WinMessage) message).getPoints());
-				case DISCONNECTION_MESSAGE -> {
+				});
+				case STRONGBOX_SHOW -> userTask.execute(() ->
+						view.showStrongBox(((StrongboxShow) message).getStrongbox()));
+				case FAITH_TRACK_SHOW -> userTask.execute(() ->
+						view.showFaithTrack(((FaithTrackShow) message).getFaithTrack()));
+				case CARDS_DECK_SHOW -> userTask.execute(() ->
+						view.showCardsDeck(((CardsDeckShow) message).getCardsDeck()));
+				case PLAYER_CARDS_AND_PRODUCTION_SHOW -> userTask.execute(() ->
+						view.showPlayerCardsAndProduction(((PlayerCardsAndProductionShow) message).getCardProductionManagement()));
+				case ACTION_REQUEST -> userTask.execute(() ->
+						view.askAction(((ActionRequest) message).getAvailableAction()));
+				case CARDS_SHOW -> userTask.execute(() ->
+						view.askBuyCardAction(((BuyableDevCards) message).getCards(), ((BuyableDevCards) message).isWrongSlot()));
+				case PRODUCTION_SHOW -> userTask.execute(() ->
+						view.askProductionAction(((ProductionsAvailable) message).getAvailableProduction()));
+				case WIN_MESSAGE -> userTask.execute(() ->
+						view.showWinMessage(((WinMessage) message).getWinner(),((WinMessage) message).getPoints()));
+				case DISCONNECTION_MESSAGE -> { // the only one which must not use taskQueue to show the message
 					DisconnectionMessage mess = (DisconnectionMessage) message;
-					view.showDisconnectionMessage(mess.getNicknameDisconnected(), mess.getMessage());
+					view.disconnection(mess.getText(), mess.isTermination());
 				}
-				case GENERIC_MESSAGE -> view.showGenericMessage(((GenericMessage) message).getMessage());
-				case ERROR_MESSAGE -> view.showError(((ErrorMessage) message).getErrorMessage());
+				case GENERIC_MESSAGE -> userTask.execute(() -> view.showGenericMessage(((GenericMessage) message).getMessage()));
+				case ERROR_MESSAGE -> userTask.execute(() -> view.showError(((ErrorMessage) message).getErrorMessage()));
 
-				case TOKEN_SHOW -> view.showToken(((TokenShow) message).getTokenType(), ((TokenShow) message).getColor());
+				case TOKEN_SHOW -> userTask.execute(() -> {
+					TokenShow t = (TokenShow) message;
+					view.showToken(t.getTokenType(), t.getColor());
+				});
 			}
 		}
 	}

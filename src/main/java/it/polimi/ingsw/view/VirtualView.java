@@ -69,7 +69,7 @@ public class VirtualView implements View, Observer {
 
 	@Override
 	public void askMarketAction(ReducedMarket market) {
-		clientHandler.sendMessage(new MarketShow(market, 1));
+		clientHandler.sendMessage(new MarketShow(market, true));
 	}
 
 	@Override
@@ -120,8 +120,8 @@ public class VirtualView implements View, Observer {
 	}
 
 	@Override
-	public void showDisconnectionMessage(String nicknameDisconnected, String text) {
-		clientHandler.sendMessage(new DisconnectionMessage(nicknameDisconnected,text));
+	public void disconnection(String text, boolean termination) {
+		clientHandler.sendMessage(new DisconnectionMessage(text, termination));
 	}
 
 	@Override
@@ -161,7 +161,7 @@ public class VirtualView implements View, Observer {
 
 	@Override
 	public void showMarket(ReducedMarket market) {
-		clientHandler.sendMessage(new MarketShow(market, 0));
+		clientHandler.sendMessage(new MarketShow(market, false));
 	}
 
 	@Override

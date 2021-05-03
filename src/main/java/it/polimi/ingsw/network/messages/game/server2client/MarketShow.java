@@ -10,19 +10,19 @@ import it.polimi.ingsw.network.messages.MessageType;
 public class MarketShow extends Message {
 
 	 private final ReducedMarket market;
-	 private final int action; // 0: show, 1: ask action
+	 private final boolean askAction; // false: only shows the market, true: ask action
 
-	public MarketShow(ReducedMarket market, int action){
+	public MarketShow(ReducedMarket market, boolean action){
 		super("Lobby", MessageType.MARKET_SHOW);
-		this.market=market;
-		this.action = action;
+		this.market = market;
+		this.askAction = action;
 	}
 
 	public ReducedMarket getMarket() {
 		return market;
 	}
 
-	public int getAction() {
-		return action;
+	public boolean isAskAction() {
+		return askAction;
 	}
 }

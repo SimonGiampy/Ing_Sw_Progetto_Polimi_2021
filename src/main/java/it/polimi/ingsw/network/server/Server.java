@@ -18,8 +18,6 @@ public class Server implements Runnable {
 	private int lobbyListVersion;
 	
 	private ServerSocket serverSocket;
-
-	private Thread serverThread;
 	
 	/**
 	 * Host a server on the local machine

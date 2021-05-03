@@ -200,11 +200,10 @@ public class Lobby {
 						if (user != null) { // user chose its nickname before the host disconnected
 							nicknames.remove(user.getNickname());
 							clients.remove(user);
-							broadcastMessage(new DisconnectionMessage("",
-									"The host (" + user.getNickname() + ") left the lobby: new host role assigned."), host);
+							String text = "The host (" + user.getNickname() + ") left the lobby: new host role assigned.";
+							broadcastMessage(new DisconnectionMessage(text, false), host);
 						} else { // the user didn't choose its nickname before the host disconnected
-							broadcastMessage(new DisconnectionMessage("",
-									"The host left the lobby: new host role assigned."), host);
+							broadcastMessage(new DisconnectionMessage("The host left the lobby: new host role assigned.", false), host);
 						}
 						handlersList.remove(client); //removes host
 						host.sendMessage(new GenericMessage("You are the new lobby host."));
@@ -221,7 +220,7 @@ public class Lobby {
 					} else if (user != null) { // the client had already chosen a nickname but the game didn't start
 						LOGGER.info("Removed " + user.getNickname() + " from the connected players list");
 						nicknames.remove(user.getNickname());
-						broadcastMessage(new DisconnectionMessage(user.getNickname(), " disconnected from the lobby"));
+						broadcastMessage(new DisconnectionMessage(user.getNickname() + " disconnected from the lobby", false));
 						clients.remove(user);
 						handlersList.remove(client);
 					} else { // the client disconnected before choosing a nickname
@@ -288,6 +287,9 @@ public class Lobby {
 		return num;
 	}
 	
+	/**
+	 * starts the match and sends a broadcast message to the players connected
+	 */
 	public void matchStart() {
 		LOGGER.info("Match started");
 		gameStarted = true;
@@ -300,13 +302,11 @@ public class Lobby {
 	 */
 	private void endGame(User user) {
 		new Thread(() -> {
-			broadcastMessage(new DisconnectionMessage(user.getNickname(), " disconnected from the lobby: Game ended!"));
 			for (ClientHandler h: handlersList) {
 				if (!h.equals(user.getHandler())) {
-					h.disconnect();
+					h.sendMessage(new DisconnectionMessage(user.getNickname() + " disconnected from the lobby: Game ended!", true));
 				}
 			}
-			serverSideController.haltGame();
 			server.removeLobby(this);
 		}).start();
 		
