@@ -181,19 +181,20 @@ public class CLI extends ViewObservable implements View {
 	@Override
 	public void askCustomGame() {
 		System.out.println("Choose game configuration!, Type [standard] for standard game, or the full path for a custom game!");
-		String input = scanner.nextLine();
+		String input;
 		boolean check = true;
-		if(!input.equals("")) {
-			do {
-				if (!input.equals("standard")) {
-					if (!input.endsWith(".xml")) {
-						System.out.println("Invalid file extension: XML file expected");
-						check = false;
-					}
+		do {
+			input = scanner.nextLine();
+			if (!input.equals("standard") && !input.equals("")) {
+				if (!input.endsWith(".xml")) {
+					System.out.println("Invalid file extension: XML file expected");
+					check = false;
+				} else {
+					check = true;
 				}
-			} while (!check);
-		}else
-			input = "standard";
+			}
+		} while (!check);
+
 		// assumes that the selected file has a correct schema and is a valid configuration file
 		String finalInput = input;
 		notifyObserver(obs->obs.onUpdateGameConfiguration(finalInput));
@@ -278,16 +279,7 @@ public class CLI extends ViewObservable implements View {
 		String input;
 		
 		boolean check;
-		System.out.println("Your Leader Cards:");
-		for (int i = 0; i < availableLeaders.size(); i++) {
-			System.out.print("Card's number: " + (i + 1));
-			if (!availableLeaders.get(i).isDiscarded()) {
-				System.out.print(" PLAYABLE\n");
-			} else {
-				System.out.print("\n");
-			}
-			showLeaderCard(availableLeaders.get(i));
-		}
+		showLeaderCards(availableLeaders);
 		
 		System.out.println("Type <action> <number> use the leader card or [0] to do nothing and end the turn.");
 		System.out.println("The action can be 'play' or 'discard', where number is 1 or 2");
@@ -306,7 +298,7 @@ public class CLI extends ViewObservable implements View {
 					if (input.charAt(0) == 'p') { // plays the leader card
 						action = 1;
 						selectedLeader = Character.getNumericValue(input.charAt(5));
-						if (!availableLeaders.get(selectedLeader).isPlayable()) {
+						if (!availableLeaders.get(selectedLeader-1).isPlayable()) {
 							System.out.println("Selected leader card is not playable! Choose something else to do.");
 							check = false;
 						}
@@ -849,6 +841,13 @@ public class CLI extends ViewObservable implements View {
 		System.out.println("Your Leader Cards:");
 		for (int i = 0; i < availableLeaders.size(); i++) {
 			System.out.println("Card's number: " + (i + 1));
+			if (availableLeaders.get(i).isPlayable()) {
+				System.out.print("PLAYABLE\n");
+			} else if(availableLeaders.get(i).isDiscarded()){
+				System.out.print("DISCARDED\n");
+			} else{
+				System.out.print("\n");
+			}
 			if(!availableLeaders.get(i).isDiscarded())
 				showLeaderCard(availableLeaders.get(i));
 		}
