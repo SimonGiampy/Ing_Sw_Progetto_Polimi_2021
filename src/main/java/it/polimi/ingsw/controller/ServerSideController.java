@@ -5,6 +5,7 @@ import it.polimi.ingsw.exceptions.InvalidUserRequestException;
 import it.polimi.ingsw.model.*;
 import it.polimi.ingsw.model.reducedClasses.*;
 import it.polimi.ingsw.model.singleplayer.GameMechanicsSinglePlayer;
+import it.polimi.ingsw.model.util.PlayerActions;
 import it.polimi.ingsw.model.util.Resources;
 import it.polimi.ingsw.network.messages.*;
 import it.polimi.ingsw.network.messages.game.client2server.*;
@@ -158,10 +159,10 @@ public class ServerSideController {
 	private void controllerAskLeaders(){
 		for (int i = 0; i < numberOfPlayers; i++) {
 			ArrayList<ReducedLeaderCard> leaderCards = new ArrayList<>();
-			leaderCards.add(new ReducedLeaderCard(mechanics.getPlayer(i).getLeaderCards()[0],false,false));
-			leaderCards.add(new ReducedLeaderCard(mechanics.getPlayer(i).getLeaderCards()[1],false,false));
-			leaderCards.add(new ReducedLeaderCard(mechanics.getPlayer(i).getLeaderCards()[2],false,false));
-			leaderCards.add(new ReducedLeaderCard(mechanics.getPlayer(i).getLeaderCards()[3],false,false));
+			leaderCards.add(new ReducedLeaderCard(mechanics.getPlayer(i).getLeaderCards()[0],false,false,false));
+			leaderCards.add(new ReducedLeaderCard(mechanics.getPlayer(i).getLeaderCards()[1],false,false,false));
+			leaderCards.add(new ReducedLeaderCard(mechanics.getPlayer(i).getLeaderCards()[2],false,false,false));
+			leaderCards.add(new ReducedLeaderCard(mechanics.getPlayer(i).getLeaderCards()[3],false,false,false));
 			VirtualView view = virtualViewMap.get(nicknameList.get(i));
 			view.askInitLeaders(leaderCards);
 		}
@@ -199,8 +200,8 @@ public class ServerSideController {
 		mechanics.getPlayer(playerIndex).chooseTwoLeaders(message.getLeaderSelection().get(0),message.getLeaderSelection().get(1));
 		ArrayList<ReducedLeaderCard> leaderCards = new ArrayList<>();
 		view.showGenericMessage("Your Leader Cards now!");
-		leaderCards.add(new ReducedLeaderCard(mechanics.getPlayer(playerIndex).getLeaderCards()[0],false,false));
-		leaderCards.add(new ReducedLeaderCard(mechanics.getPlayer(playerIndex).getLeaderCards()[1],false,false));
+		leaderCards.add(new ReducedLeaderCard(mechanics.getPlayer(playerIndex).getLeaderCards()[0],false,false,false));
+		leaderCards.add(new ReducedLeaderCard(mechanics.getPlayer(playerIndex).getLeaderCards()[1],false,false,false));
 		view.showLeaderCards(leaderCards);
 		gameReady[playerIndex]=true;
 		if(allTrue(gameReady))
@@ -249,8 +250,11 @@ public class ServerSideController {
 			case LEADER -> {
 				ArrayList<ReducedLeaderCard> leaderCards = new ArrayList<>();
 				Player player=mechanics.getPlayer(playerIndex);
-				leaderCards.add(new ReducedLeaderCard(player.getLeaderCards()[0], player.isActiveAbilityLeader1(), player.isDiscardedLeader1()));
-				leaderCards.add(new ReducedLeaderCard(mechanics.getPlayer(playerIndex).getLeaderCards()[1], player.isActiveAbilityLeader2(), player.isDiscardedLeader2()));
+				ArrayList<PlayerActions> leaderActions=player.checkAvailableLeaderActions();
+				boolean checkLeader1=leaderActions.contains(PlayerActions.PLAY_LEADER_1);
+				boolean checkLeader2=leaderActions.contains(PlayerActions.PLAY_LEADER_2);
+				leaderCards.add(new ReducedLeaderCard(player.getLeaderCards()[0], player.isActiveAbilityLeader1(), player.isDiscardedLeader1(),checkLeader1));
+				leaderCards.add(new ReducedLeaderCard(mechanics.getPlayer(playerIndex).getLeaderCards()[1], player.isActiveAbilityLeader2(), player.isDiscardedLeader2(),checkLeader2));
 				view.askLeaderAction(leaderCards);
 			}
 		}

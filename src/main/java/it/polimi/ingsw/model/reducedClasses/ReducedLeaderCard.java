@@ -18,14 +18,16 @@ public class ReducedLeaderCard implements Serializable {
 	private final ArrayList<AbilityEffectActivation> effectsActivation; // a single leader card supports multiple abilities
 	private boolean abilitiesActivated;
 	private boolean discarded;
+	private boolean playable;
 
-	public ReducedLeaderCard(LeaderCard leaderCard, boolean abilitiesActivated,boolean discarded){
+	public ReducedLeaderCard(LeaderCard leaderCard, boolean abilitiesActivated,boolean discarded, boolean playable){
 		victoryPoints=leaderCard.getVictoryPoints();
 		resourceRequirements= leaderCard.getResourceRequirements();
 		cardRequirements=leaderCard.getCardRequirements();
 		effectsActivation= leaderCard.getEffectsActivation();
 		this.abilitiesActivated=abilitiesActivated;
 		this.discarded=discarded;
+		this.playable=playable;
 	}
 
 	public int getVictoryPoints() {
@@ -52,6 +54,7 @@ public class ReducedLeaderCard implements Serializable {
 		return discarded;
 	}
 
-	
-
+	public boolean isPlayable() {
+		return playable;
+	}
 }

@@ -7,6 +7,7 @@ import it.polimi.ingsw.model.reducedClasses.ReducedFaithTrack;
 import it.polimi.ingsw.model.reducedClasses.ReducedLeaderCard;
 import it.polimi.ingsw.model.singleplayer.GameMechanicsSinglePlayer;
 import it.polimi.ingsw.model.singleplayer.Token;
+import it.polimi.ingsw.model.util.PlayerActions;
 import it.polimi.ingsw.model.util.TokenType;
 import it.polimi.ingsw.network.messages.game.server2client.WinMessage;
 import it.polimi.ingsw.view.VirtualView;
@@ -199,8 +200,11 @@ public class TurnController {
 		int playerIndex= nicknameList.indexOf(activePlayer);
 		Player player= mechanics.getPlayer(playerIndex);
 		ArrayList<ReducedLeaderCard> leaderCards = new ArrayList<>();
-		leaderCards.add(new ReducedLeaderCard(player.getLeaderCards()[0],player.isActiveAbilityLeader1(),player.isDiscardedLeader1()));
-		leaderCards.add(new ReducedLeaderCard(player.getLeaderCards()[1], player.isActiveAbilityLeader2(),player.isDiscardedLeader2()));
+		ArrayList<PlayerActions> leaderActions=player.checkAvailableLeaderActions();
+		boolean checkLeader1=leaderActions.contains(PlayerActions.PLAY_LEADER_1);
+		boolean checkLeader2=leaderActions.contains(PlayerActions.PLAY_LEADER_2);
+		leaderCards.add(new ReducedLeaderCard(player.getLeaderCards()[0],player.isActiveAbilityLeader1(),player.isDiscardedLeader1(),checkLeader1));
+		leaderCards.add(new ReducedLeaderCard(player.getLeaderCards()[1], player.isActiveAbilityLeader2(),player.isDiscardedLeader2(),checkLeader2));
 		view.askLeaderAction(leaderCards);
 	}
 
