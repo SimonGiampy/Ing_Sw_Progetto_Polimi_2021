@@ -48,11 +48,11 @@ public class ClientSideController implements ViewObserver, Observer {
 				case LOBBY_LIST -> userTask.execute(() -> view.showLobbyList(((LobbyList) message).getLobbies(),
 						((LobbyList) message).getIdVersion()));
 				case LOGIN_CONFIRMATION -> userTask.execute(() -> view.showLobbyConfirmation(((LobbyConfirmation) message).isConfirmed()));
-				case PLAYER_NUMBER_REQUEST -> userTask.execute(() -> view.askNumberOfPlayer());
-				case NICKNAME_REQUEST -> userTask.execute(() -> view.askNickname());
+				case PLAYER_NUMBER_REQUEST -> userTask.execute(view::askNumberOfPlayer);
+				case NICKNAME_REQUEST -> userTask.execute(view::askNickname);
 				case NICKNAME_CONFIRMATION -> userTask.execute(() ->
 						view.showNicknameConfirmation(((NicknameConfirmation) message).isConfirmed()));
-				case GAME_CONFIG_REQUEST -> userTask.execute(() -> view.askCustomGame());
+				case GAME_CONFIG_REQUEST -> userTask.execute(view::askCustomGame);
 				case MATCH_INFO -> userTask.execute(() -> view.showMatchInfo(((MatchInfo) message).getPlayers()));
 				case RESOURCE_CHOICE -> userTask.execute(() -> {
 					ResourceChoice choice = (ResourceChoice) message;
@@ -109,6 +109,9 @@ public class ClientSideController implements ViewObserver, Observer {
 				case DISCONNECTION_MESSAGE -> { // the only one which must not use taskQueue to show the message
 					DisconnectionMessage mess = (DisconnectionMessage) message;
 					view.disconnection(mess.getText(), mess.isTermination());
+					if (mess.isTermination()) {
+						client.disconnect();
+					}
 				}
 				case GENERIC_MESSAGE -> userTask.execute(() -> view.showGenericMessage(((GenericMessage) message).getMessage()));
 				case ERROR_MESSAGE -> userTask.execute(() -> view.showError(((ErrorMessage) message).getErrorMessage()));

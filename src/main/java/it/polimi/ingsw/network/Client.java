@@ -54,11 +54,6 @@ public class Client extends Observable {
 						message = (Message) inputStream.readObject();
 						LOGGER.info("Received: " + message);
 						notifyObserver(message);
-						if (message != null && message.getMessageType() == MessageType.DISCONNECTION_MESSAGE) {
-							if (((DisconnectionMessage) message).isTermination()) {
-								disconnect();
-							}
-						}
 					} catch (ClassNotFoundException e) {
 						LOGGER.error("Error: wrong class read from stream");
 					} catch (IOException ex) {

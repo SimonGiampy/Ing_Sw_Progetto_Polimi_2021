@@ -101,9 +101,6 @@ public class Player {
 	 */
 	public void discardLeaderCard(int indexCard) {
 		if (indexCard == 1 && !activeAbilityLeader1) {
-			LeaderCard temp = leaderCards[0];
-			leaderCards[0] = leaderCards[1];
-			leaderCards[1] = temp;
 			discardedLeader1 = true;
 		} else if (indexCard == 2 && !activeAbilityLeader2) {
 			discardedLeader2 = true;

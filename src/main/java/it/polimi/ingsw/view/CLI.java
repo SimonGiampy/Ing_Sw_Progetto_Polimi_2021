@@ -397,8 +397,12 @@ public class CLI extends ViewObservable implements View {
 		boolean confirming = false;
 
 		// regex pattern for reading input for moving the resources to the warehouse
-		String regexGoingToWarehouse = "((move\s[1-" + depot.getIncomingResources().size() + "]\sfrom\sdeck\sto\s[1-6])|" +
-				"(move\s[1-6]\sfrom\sdepot\sto\s[1-6]))";
+		String regexGoingToWarehouse;
+		if (depot.getIncomingResources().size() == 0) {
+			regexGoingToWarehouse = "move\s[1-6]\sfrom\sdepot\sto\s[1-6]";
+		} else {
+			regexGoingToWarehouse = "move\s(([1-" + depot.getIncomingResources().size() + "]\sfrom\sdeck)|([1-6]\sfrom\sdepot))\sto[1-6]";
+		}
 		String regexGoingToDeck = "move\s[1-6]\sto\sdeck"; //regex pattern for reading input for moving back to the deck
 		
 		if (initialMove) { // confirmation cannot be available
@@ -517,12 +521,13 @@ public class CLI extends ViewObservable implements View {
 		
 		System.out.println("Write the list of productions you want to use in this turn, as a list of integers separated by spaces." +
 						" For example type: '1, 3, 4'");
-		boolean check = true;
+		boolean check;
 		String input;
 		String[] x;
 		do {
 			input = scanner.nextLine();
 			x = input.split(",");
+			check = true;
 			for (String s : x) {
 				if (!Pattern.matches(regex, s)) {
 					check = false;
