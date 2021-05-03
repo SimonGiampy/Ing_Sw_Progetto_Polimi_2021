@@ -281,7 +281,7 @@ public class CLI extends ViewObservable implements View {
 		System.out.println("Your Leader Cards:");
 		for (int i = 0; i < availableLeaders.size(); i++) {
 			System.out.print("Card's number: " + (i + 1));
-			if (availableLeaders.get(i).isPlayable()) {
+			if (!availableLeaders.get(i).isDiscarded()) {
 				System.out.print(" PLAYABLE\n");
 			} else {
 				System.out.print("\n");
@@ -507,7 +507,8 @@ public class CLI extends ViewObservable implements View {
 	
 	@Override
 	public void askProductionAction(ArrayList<Productions> productionAvailable) {
-		System.out.println("These are your available production! Remember that not necessarily all productions can be activated at the same time!");
+		System.out.println("These are your available production! Remember that not necessarily all productions " +
+				"can be activated at the same time!");
 		
 		for (int i = 0; i < productionAvailable.size(); i++) {
 			System.out.println((i+1) + ": " + productionAvailable.get(i).toString());
@@ -843,7 +844,8 @@ public class CLI extends ViewObservable implements View {
 		System.out.println("Your Leader Cards:");
 		for (int i = 0; i < availableLeaders.size(); i++) {
 			System.out.println("Card's number: " + (i + 1));
-			showLeaderCard(availableLeaders.get(i));
+			if(!availableLeaders.get(i).isDiscarded())
+				showLeaderCard(availableLeaders.get(i));
 		}
 	}
 	
