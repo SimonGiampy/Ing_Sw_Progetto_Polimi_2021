@@ -481,6 +481,7 @@ public class ServerSideController {
 			
 		} else if(message.getAction()==2){ // discard leader
 			mechanics.getPlayer(playerIndex).discardLeaderCard(message.getSelectedLeader());
+			checkVaticanReport();
 			turnController.setTurnPhase(TurnPhase.LEADER_ACTION);
 			
 		} else if(turnController.isMainActionDone()){ // nothing, next turn
