@@ -88,7 +88,7 @@ public class ResourceDeck {
 			}
 		}
 		playerDepot.addIncomingResources(getResourceList()); // sends the resources list from the market to the player warehouse depot
-		this.marblesFromMarket = null;
+		resourceList.clear();
 	}
 
 	/**
@@ -144,7 +144,6 @@ public class ResourceDeck {
 	}
 
 	public void setMarblesFromMarket(Marbles[] marblesFromMarket) {
-		this.marblesFromMarket = null;
 		this.marblesFromMarket = marblesFromMarket;
 	}
 

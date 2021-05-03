@@ -126,7 +126,7 @@ public class WarehouseDepot {
 	 */
 	public void addIncomingResources(ArrayList<Resources> list) {
 		if (incomingResources.isEmpty()) {
-			incomingResources = list;
+			incomingResources = new ArrayList<>(list);
 		}
 	}
 	

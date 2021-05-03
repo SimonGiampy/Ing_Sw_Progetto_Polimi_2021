@@ -31,12 +31,12 @@ public class FaithTrackParserTest {
 
 		faithTrack2.moveMarker(8);
 		faithTrack.moveMarker(3);
-		faithTrack.checkVaticanReport(0);
-		faithTrack2.checkVaticanReport(0);
+		faithTrack.checkActivationVaticanReport(0);
+		faithTrack2.checkActivationVaticanReport(0);
 		faithTrack2.moveMarker(4);
 		faithTrack.moveMarker(11);
-		faithTrack.checkVaticanReport(1);
-		faithTrack2.checkVaticanReport(1);
+		faithTrack.checkActivationVaticanReport(1);
+		faithTrack2.checkActivationVaticanReport(1);
 		//faithTrack.showFaithTrack(0);
 		System.out.print("\n");
 		//faithTrack2.showFaithTrack(1);

@@ -57,11 +57,11 @@ public class TurnController {
 	 * set next active player
 	 */
 	public void nextTurn(){
-		int currentPlayerIndex=nicknameList.indexOf(activePlayer);
-		if(currentPlayerIndex+1< mechanics.getNumberOfPlayers())
-			currentPlayerIndex=currentPlayerIndex+1;
+		int currentPlayerIndex = nicknameList.indexOf(activePlayer);
+		if(currentPlayerIndex + 1 < mechanics.getNumberOfPlayers())
+			currentPlayerIndex = currentPlayerIndex + 1;
 		else
-			currentPlayerIndex=0;
+			currentPlayerIndex = 0;
 		activePlayer=nicknameList.get(currentPlayerIndex);
 	}
 
@@ -99,22 +99,21 @@ public class TurnController {
 	private void tokenActivation(){
 		VirtualView view = virtualViewMap.get(activePlayer);
 		GameMechanicsSinglePlayer mechanicsSinglePlayer = (GameMechanicsSinglePlayer) mechanics;
-		if(nicknameList.size()==1){
-			Token currentToken= mechanicsSinglePlayer.revealTop();
-			 boolean check=currentToken.applyEffect();
-			System.out.println("boh");
-			view.showToken(currentToken.getTokenType(),currentToken.getColor());
-			if(currentToken.getTokenType()==TokenType.DISCARD_TOKEN)
-				view.showCardsDeck(new ReducedDevelopmentCardsDeck(mechanics.getGameDevCardsDeck()));
-			else
-				view.showFaithTrack( new ReducedFaithTrack(mechanicsSinglePlayer.getLorenzoFaithTrack()));
 
-			if(currentToken.isEndGame())
-				endOfGame=true;
+		Token currentToken= mechanicsSinglePlayer.revealTop();
+		boolean check=currentToken.applyEffect();
+		System.out.println("boh");
+		view.showToken(currentToken.getTokenType(),currentToken.getColor());
+		if(currentToken.getTokenType()==TokenType.DISCARD_TOKEN)
+			view.showCardsDeck(new ReducedDevelopmentCardsDeck(mechanics.getGameDevCardsDeck()));
+		else
+			view.showFaithTrack( new ReducedFaithTrack(mechanicsSinglePlayer.getLorenzoFaithTrack()));
 
-			else if (check)
-				mechanicsSinglePlayer.shuffleTokenDeck();
-		}
+		if(currentToken.isEndGame())
+			endOfGame=true;
+
+		else if (check)
+			mechanicsSinglePlayer.shuffleTokenDeck();
 	}
 
 	public void setTurnPhase(TurnPhase turnPhase) {
@@ -144,30 +143,31 @@ public class TurnController {
 	}
 
 	private void endTurn(){
-		tokenActivation();
+		if(nicknameList.size()==1) {
+			tokenActivation();
+		}
 		endgame(); //activated only if endgame started
-		sendWinner(); // activated only if the game is over. stop the game
+		if (endOfGame) {
+			sendWinner(); // activated only if the game is over. stop the game
+		}
 		nextTurn();
 		startTurn();
 	}
 
 	private void sendWinner(){
-		if (endOfGame){
-			StringBuilder winner = new StringBuilder();
-			int[] winnerInfo= mechanics.winner();
-			if(winnerInfo[1]==-1)
-				winner.append("Lorenzo");
-			else
-				for (int i = 1; i < winnerInfo.length; i++) {
-					winner.append(nicknameList.get(winnerInfo[i]));
-					if(i!=winnerInfo.length-1)
-						winner.append(", ");
-				}
-			String stringWinner=winner.toString();
-			serverSideController.getLobby().broadcastMessage(new WinMessage(stringWinner,winnerInfo[0]));
-			//TODO: add end of game, closing socket
-		}
-
+		StringBuilder winner = new StringBuilder();
+		int[] winnerInfo= mechanics.winner();
+		if(winnerInfo[1]==-1)
+			winner.append("Lorenzo");
+		else
+			for (int i = 1; i < winnerInfo.length; i++) {
+				winner.append(nicknameList.get(winnerInfo[i]));
+				if(i!=winnerInfo.length-1)
+					winner.append(", ");
+			}
+		String stringWinner=winner.toString();
+		serverSideController.getLobby().broadcastMessage(new WinMessage(stringWinner,winnerInfo[0]));
+		//TODO: add end of game, closing socket
 	}
 
 	public void endgame(){

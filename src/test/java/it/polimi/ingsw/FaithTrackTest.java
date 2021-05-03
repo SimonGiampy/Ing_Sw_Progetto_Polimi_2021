@@ -53,7 +53,7 @@ class FaithTrackTest {
 		//Move player 1 to the first report
 		faithTrack.moveMarker(i);
 		//Activate report, player 1 must have true, player 2 must have false
-		if(faithTrack.checkVaticanReport(lastReportClaimed) || faithTrack2.checkVaticanReport(lastReportClaimed))
+		if(faithTrack.checkActivationVaticanReport(lastReportClaimed) || faithTrack2.checkActivationVaticanReport(lastReportClaimed))
 			lastReportClaimed++;
 		assertTrue(faithTrack.getVaticanReport(lastReportClaimed));
 		assertFalse(faithTrack2.getVaticanReport(lastReportClaimed));
@@ -61,7 +61,7 @@ class FaithTrackTest {
 		
 		//assert faithTrack2.moveMarker(i);
 		
-		if(faithTrack.checkVaticanReport(lastReportClaimed) || faithTrack2.checkVaticanReport(lastReportClaimed))
+		if(faithTrack.checkActivationVaticanReport(lastReportClaimed) || faithTrack2.checkActivationVaticanReport(lastReportClaimed))
 			lastReportClaimed++;
 		assertTrue(faithTrack.getVaticanReport(lastReportClaimed));
 		assertFalse(faithTrack2.getVaticanReport(lastReportClaimed));
@@ -88,7 +88,7 @@ class FaithTrackTest {
 		//Move player 1 to the first report
 		faithTrack.moveMarker(i);
 		
-		if(faithTrack.checkVaticanReport(lastReportClaimed))
+		if(faithTrack.checkActivationVaticanReport(lastReportClaimed))
 			lastReportClaimed++;
 		assertTrue(faithTrack.getVaticanReport(lastReportClaimed));
 
@@ -113,7 +113,7 @@ class FaithTrackTest {
 		while(faithTrack.getCurrentPosition() < faithTrack.getTrack().size()){
 			faithTrack.moveMarker(1);
 			System.out.println(faithTrack.getCurrentPosition());
-			if(faithTrack.checkVaticanReport(lastReportClaimed))
+			if(faithTrack.checkActivationVaticanReport(lastReportClaimed))
 				lastReportClaimed++;
 		}
 		assertTrue(faithTrack.isTrackFinished());

@@ -15,10 +15,8 @@ import it.polimi.ingsw.xml_parsers.XMLParser;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.stream.Stream;
 
 public class ServerSideController {
 
@@ -300,6 +298,7 @@ public class ServerSideController {
 			mechanics.getPlayer(playerIndex).getPlayerFaithTrack().moveMarker(deck.getFaithPoint());
 			view.showFaithTrack(new ReducedFaithTrack(mechanics.getPlayer(playerIndex).getPlayerFaithTrack()));
 			deck.setFaithPoint(0);
+			checkVaticanReport();
 		}
 		//moves the resources automatically to the additional depots if possible
 		mechanics.getPlayer(playerIndex).getPlayersWarehouseDepot().moveResourcesToAdditionalDepots();
@@ -492,23 +491,42 @@ public class ServerSideController {
 
 	}
 
+	/**
+	 * Checks the vatican reports and notifies every player with their track
+	 */
 	private void checkVaticanReport(){
 		boolean[] check = new boolean[4];
-
-		for (int i = 0; i < numberOfPlayers; i++) {
-			check[i] = mechanics.getPlayer(i).getPlayerFaithTrack().checkVaticanReport(mechanics.getLastReportClaimed());
-		}
+		boolean flag = true;
 		boolean check2 = false;
-		for(int i = 0; i < numberOfPlayers; i++) {
-			if(check[i]){
-				virtualViewMap.get(nicknameList.get(i)).showGenericMessage(mechanics.getPlayer(i).getNickname()+ "triggered Vatican Report" +
-						" n." + (mechanics.getLastReportClaimed()+1) + "!");
-				mechanics.increaseLastReportClaimed();
-				check2 = true;
-				break;
+		String nickname = "";
+		do {
+			for (int i = 0; i < numberOfPlayers; i++) {
+				check[i] = mechanics.getPlayer(i).getPlayerFaithTrack().checkActivationVaticanReport(mechanics.getLastReportClaimed());
+				if (check[i]) {
+					check2 = true;
+					nickname = nicknameList.get(i);
+				}
 			}
-		}
+			for (int i = 0; i < numberOfPlayers && check2; i++) {
+				mechanics.getPlayer(i).getPlayerFaithTrack().checkVaticanReport(mechanics.getLastReportClaimed());
+			}
+
+			if(check2) mechanics.increaseLastReportClaimed();
+
+			for(int i = 0; i < numberOfPlayers; i++){
+				if(mechanics.getPlayer(i).getPlayerFaithTrack().getLastReportClaimed() != mechanics.getLastReportClaimed())
+					flag = false;
+			}
+		}while(!flag);
+
 		for(int i = 0; i < numberOfPlayers && check2; i++) {
+			String nick;
+			if(nicknameList.get(i).equals(nickname))
+				nick = "You";
+			else
+				nick = nickname;
+			virtualViewMap.get(nicknameList.get(i)).showGenericMessage(nick + " triggered Vatican Report" +
+					" n." + (mechanics.getLastReportClaimed()) + "!");
 			virtualViewMap.get(nicknameList.get(i)).showFaithTrack(new ReducedFaithTrack(mechanics.getPlayer(i).getPlayerFaithTrack()));
 		}
 	}
