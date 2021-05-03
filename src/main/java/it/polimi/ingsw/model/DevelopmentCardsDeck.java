@@ -113,7 +113,6 @@ public class DevelopmentCardsDeck {
 				return true;
 			} else {
 				int row = lowestCardLevelAvailable(color) - 1;
-				System.out.println(i);
 				cardStackStructure[row][color.getColorNumber()].remove(0);
 			}
 		}

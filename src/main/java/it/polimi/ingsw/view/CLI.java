@@ -306,7 +306,7 @@ public class CLI extends ViewObservable implements View {
 					if (input.charAt(0) == 'p') { // plays the leader card
 						action = 1;
 						selectedLeader = Character.getNumericValue(input.charAt(5));
-						if (!availableLeaders.get(selectedLeader).isPlayable()) {
+						if (!availableLeaders.get(selectedLeader-1).isPlayable()) {
 							System.out.println("Selected leader card is not playable! Choose something else to do.");
 							check = false;
 						}

@@ -105,7 +105,6 @@ public class TurnController {
 
 		Token currentToken= mechanicsSinglePlayer.revealTop();
 		boolean check=currentToken.applyEffect();
-		System.out.println("boh");
 		view.showToken(currentToken.getTokenType(),currentToken.getColor());
 		if(currentToken.getTokenType()==TokenType.DISCARD_TOKEN)
 			view.showCardsDeck(new ReducedDevelopmentCardsDeck(mechanics.getGameDevCardsDeck()));
@@ -123,7 +122,9 @@ public class TurnController {
 		this.turnPhase = turnPhase;
 		if(turnPhase == TurnPhase.MAIN_ACTION){
 			setMainActionDone(true);
-			if(leaderAction){
+			int playerIndex= nicknameList.indexOf(activePlayer);
+			Player player= mechanics.getPlayer(playerIndex);
+			if(leaderAction || player.checkAvailableLeaderActions().size()==0){
 				endTurn();
 			}
 			else {
