@@ -142,9 +142,14 @@ public class CLI extends ViewObservable implements View {
 	
 	@Override
 	public void askNickname() {
+		String nickname;
 		System.out.print("Enter your nickname: ");
-		String nickname = scanner.nextLine();
-		notifyObserver(obs -> obs.onUpdateNickname(nickname));
+		do {
+			nickname = scanner.nextLine();
+			if (nickname.equals("")) System.out.println("Wrong input, type again");
+		}while(nickname.equals(""));
+		String finalNickname = nickname;
+		notifyObserver(obs -> obs.onUpdateNickname(finalNickname));
 	}
 	
 	@Override

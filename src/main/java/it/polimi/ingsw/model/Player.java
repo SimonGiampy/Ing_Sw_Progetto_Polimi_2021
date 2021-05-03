@@ -25,10 +25,10 @@ public class Player {
 	private final DevelopmentCardsDeck commonCardsDeck;
 	
 	private LeaderCard[] leaderCards;
-	private boolean playableLeader1; // indicates whether the player has the first leader card in his hand
-	private boolean playableLeader2; // indicates whether the player has the second leader card in his hand
 	private boolean activeAbilityLeader1; // indicates whether the first leader card ability is activated or not
 	private boolean activeAbilityLeader2; // indicates whether the second leader card ability is activated or not
+	private boolean discardedLeader1;
+	private boolean discardedLeader2;
 
 	private final int playerIndex;
 	private String nickname;
@@ -70,9 +70,7 @@ public class Player {
 		servantDiscount = 0;
 		shieldDiscount = 0;
 		stoneDiscount = 0;
-		
-		playableLeader1 = false;
-		playableLeader2 = false;
+
 		activeAbilityLeader1 = false;
 		activeAbilityLeader2 = false;
 
@@ -91,9 +89,9 @@ public class Player {
 		temp[0] = leaderCards[indexCard1 - 1];
 		temp[1] = leaderCards[indexCard2 - 1];
 		leaderCards = temp;
-		
-		playableLeader1 = true;
-		playableLeader2 = true;
+
+		discardedLeader1 = false;
+		discardedLeader2 = false;
 	}
 	
 	
@@ -103,9 +101,9 @@ public class Player {
 	 */
 	public void discardLeaderCard(int indexCard) {
 		if (indexCard == 1 && !activeAbilityLeader1) {
-			playableLeader1 = false;
+			discardedLeader1 = true;
 		} else if (indexCard == 2 && !activeAbilityLeader2) {
-			playableLeader2 = false;
+			discardedLeader2 = true;
 		}
 		myFaithTrack.moveMarker(1);
 	}
@@ -161,18 +159,18 @@ public class Player {
 	public ArrayList<PlayerActions> checkAvailableLeaderActions(){
 
 		ArrayList<PlayerActions> actions = new ArrayList<>();
-		if(playableLeader1 && leaderCards[0].checkCards(cardManager.getPlayerCardsRequirements()) &&
+		if(!discardedLeader1 && leaderCards[0].checkCards(cardManager.getPlayerCardsRequirements()) &&
 				leaderCards[0].checkResources(gatherAllPlayersResources())) {
 			actions.add(PlayerActions.PLAY_LEADER_1);
 		}
-		if(playableLeader2 && leaderCards[1].checkCards(cardManager.getPlayerCardsRequirements()) &&
+		if(!discardedLeader2 && leaderCards[1].checkCards(cardManager.getPlayerCardsRequirements()) &&
 				leaderCards[1].checkResources(gatherAllPlayersResources())) {
 			actions.add(PlayerActions.PLAY_LEADER_2);
 		}
-		if(playableLeader1){
+		if(!discardedLeader1){
 			actions.add(PlayerActions.DISCARD_LEADER_1);
 		}
-		if(playableLeader2){
+		if(!discardedLeader2){
 			actions.add(PlayerActions.DISCARD_LEADER_2);
 		}
 
@@ -298,8 +296,10 @@ public class Player {
 		leaderCards[whichLeader].activateAbility(this);
 		if (whichLeader == 0) {
 			activeAbilityLeader1 = true;
+			discardedLeader1 = false;
 		} else if (whichLeader == 1) {
 			activeAbilityLeader2 = true;
+			discardedLeader2 = false;
 		}
 	}
 
@@ -351,14 +351,6 @@ public class Player {
 		return leaderCards;
 	}
 
-	public boolean isPlayableLeader1() {
-		return playableLeader1;
-	}
-
-	public boolean isPlayableLeader2() {
-		return playableLeader2;
-	}
-
 	public boolean isActiveAbilityLeader1() {
 		return activeAbilityLeader1;
 	}
@@ -393,5 +385,13 @@ public class Player {
 
 	public int getStoneDiscount() {
 		return stoneDiscount;
+	}
+
+	public boolean isDiscardedLeader1() {
+		return discardedLeader1;
+	}
+
+	public boolean isDiscardedLeader2() {
+		return discardedLeader2;
 	}
 }
