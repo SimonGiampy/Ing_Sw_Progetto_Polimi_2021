@@ -1,8 +1,7 @@
-package it.polimi.ingsw;
+package it.polimi.ingsw.model;
 
-import it.polimi.ingsw.model.WarehouseDepot;
-import it.polimi.ingsw.model.util.Resources;
 import it.polimi.ingsw.exceptions.InvalidUserRequestException;
+import it.polimi.ingsw.model.util.Resources;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
@@ -13,6 +12,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 
 public class WarehouseDepotTest {
+
 	
 	/**
 	 * tests the activation of the additional depots in the warehouse.
@@ -187,10 +187,10 @@ public class WarehouseDepotTest {
 		
 		//lists of expected values to check
 		ArrayList<Boolean> expected1 = new ArrayList<>();
-		expected1.add(false);
+		expected1.add(true);
 		expected1.add(false);
 		ArrayList<Boolean> expected2 = new ArrayList<>();
-		expected2.add(true);
+		expected2.add(false);
 		
 		assertEquals(expected1, depot.getExtraDepotContents().get(0)); // first leader slots
 		assertEquals(expected2, depot.getExtraDepotContents().get(1)); // second leader slots
@@ -231,11 +231,11 @@ public class WarehouseDepotTest {
 		
 		//lists of expected values to check
 		ArrayList<Boolean> expected1 = new ArrayList<>();
-		expected1.add(false);
-		expected1.add(false);
+		expected1.add(true);
+		expected1.add(true);
 		ArrayList<Boolean> expected2 = new ArrayList<>();
-		expected2.add(true);
-		expected2.add(true);
+		expected2.add(false);
+		expected2.add(false);
 		expected2.add(true);
 		
 		assertEquals(expected1, depot.getExtraDepotContents().get(0)); // first leader slots
@@ -290,7 +290,60 @@ public class WarehouseDepotTest {
 	}
 	
 	@Test
-	public void getAllResourcesWithEmptyAdditionalDepots() {
+	void getConvertedList() {
+		WarehouseDepot w = new WarehouseDepot();
+		Resources[] depot1 = new Resources[6];
+		depot1[0] = Resources.EMPTY;
+		depot1[1] = Resources.SERVANT;
+		depot1[2] = Resources.SERVANT;
+		depot1[3] = Resources.SHIELD;
+		depot1[4] = Resources.COIN;
+		depot1[5] = Resources.STONE;
+		
+		int[] result = new int[]{0, 3, 3, 4, 1, 2};
+		
+		assertArrayEquals(result, w.getConvertedList(depot1));
+	}
+	
+	@Test
+	void assignInitialResources() {
+		WarehouseDepot w = new WarehouseDepot();
+		w.assignInitialResources(Resources.COIN);
+		
+		Resources[] exp1 = new Resources[]{Resources.COIN, Resources.EMPTY, Resources.EMPTY, Resources.EMPTY, Resources.EMPTY, Resources.EMPTY};
+		assertArrayEquals(exp1, w.getDepot());
+		
+		w.assignInitialResources(Resources.SHIELD, Resources.STONE);
+		Resources[] exp2 = new Resources[]{Resources.SHIELD, Resources.STONE, Resources.EMPTY, Resources.EMPTY, Resources.EMPTY, Resources.EMPTY};
+		assertArrayEquals(exp2, w.getDepot());
+	}
+	
+	@Test
+	void addIncomingResources() {
+		ArrayList<Resources> list = new ArrayList<>();
+		list.add(Resources.EMPTY);
+		list.add(Resources.SHIELD);
+		list.add(Resources.SHIELD);
+		list.add(Resources.EMPTY);
+		list.add(Resources.SERVANT);
+		list.add(Resources.COIN);
+		
+		WarehouseDepot w = new WarehouseDepot();
+		w.addIncomingResources(list);
+		
+		ArrayList<Resources> expected = new ArrayList<>();
+		expected.add(Resources.EMPTY);
+		expected.add(Resources.SHIELD);
+		expected.add(Resources.SHIELD);
+		expected.add(Resources.EMPTY);
+		expected.add(Resources.SERVANT);
+		expected.add(Resources.COIN);
+		
+		assertEquals(expected, w.getIncomingResources());
+	}
+	
+	@Test
+	void getAllResourcesWithEmptyAdditionalDepots() {
 		WarehouseDepot depot = new WarehouseDepot();
 		Resources[] res = new Resources[] {Resources.COIN, Resources.SHIELD, Resources.SHIELD,
 				Resources.EMPTY, Resources.SERVANT, Resources.EMPTY};
@@ -308,7 +361,7 @@ public class WarehouseDepotTest {
 	}
 	
 	@Test
-	void moveResources() {
+	void moveResourcesToDepot() {
 		WarehouseDepot depot = new WarehouseDepot();
 		Resources[] res = new Resources[] {Resources.COIN, Resources.SHIELD, Resources.SHIELD,
 				Resources.EMPTY, Resources.SERVANT, Resources.EMPTY};
@@ -353,12 +406,5 @@ public class WarehouseDepotTest {
 		
 	}
 
-	@Test
-	void showDepot(){
-		WarehouseDepot depot = new WarehouseDepot();
-		Resources[] list = new Resources[] {Resources.COIN, Resources.SHIELD, Resources.COIN,
-				Resources.SHIELD, Resources.STONE, Resources.SERVANT};
-		depot.setDepotForDebugging(list);
-		//depot.showDepot();
-	}
+	
 }

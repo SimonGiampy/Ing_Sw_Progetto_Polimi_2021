@@ -327,9 +327,9 @@ public class GameDemo {
 		String place = "";
 		do {
 			read = scanner.nextLine(); // user input
-			if (read.equals("confirm") && depot.isCombinationCorrect(depot.getConvertedList(depot.getDepot()))) {
-				return true;
-			}
+			//if (read.equals("confirm") && depot.isCombinationCorrect(depot.getConvertedList(depot.getDepot()))) {
+			//	return true;
+			//}
 			
 			if (read.equals("help")) {
 				helpMe();

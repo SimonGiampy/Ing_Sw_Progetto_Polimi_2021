@@ -226,7 +226,7 @@ public class WarehouseDepot {
 	 * @param pyramid the converted array
 	 * @return true if the combination of resources is a valid one
 	 */
-	public boolean isCombinationCorrect(int[] pyramid) {
+	protected boolean isCombinationCorrect(int[] pyramid) {
 		if (pyramid[0] != 0) { // top shelf is not empty
 			// top shelf has the same resource as middle shelf or top shelf
 			if (pyramid[0] == pyramid[1] || pyramid[0] == pyramid[2] || pyramid[0] == pyramid[3] ||
@@ -269,7 +269,7 @@ public class WarehouseDepot {
 	 * @param list of resources to be converted
 	 * @return converted list
 	 */
-	public int[] getConvertedList(Resources[] list) {
+	protected int[] getConvertedList(Resources[] list) {
 		assert list.length == 6;
 		int[] depotConverted = new int[6];
 		for (int i = 0; i < 6; i++) {
