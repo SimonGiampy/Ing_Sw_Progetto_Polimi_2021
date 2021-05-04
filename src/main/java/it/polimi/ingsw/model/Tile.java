@@ -33,7 +33,7 @@ public class Tile implements Serializable {
 		return papalSpace;
 	}
 	
-	public int tilePoints(){
+	public int getVictoryPoints(){
 		return victoryPoints;
 	}
 

@@ -85,7 +85,7 @@ public class FaithTrack {
 		}
 
 		//Add points of the current position
-		totalPoints = totalPoints + track.get(currentPosition).tilePoints();
+		totalPoints = totalPoints + track.get(currentPosition).getVictoryPoints();
 		
 		return totalPoints;
 	}

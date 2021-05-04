@@ -92,7 +92,7 @@ class FaithTrackTest {
 			lastReportClaimed++;
 		assertTrue(faithTrack.getVaticanReport(lastReportClaimed));
 
-		assertEquals(2 + track.get(i).tilePoints(), faithTrack.countFaithTrackVictoryPoints());
+		assertEquals(2 + track.get(i).getVictoryPoints(), faithTrack.countFaithTrackVictoryPoints());
 
 
 	}

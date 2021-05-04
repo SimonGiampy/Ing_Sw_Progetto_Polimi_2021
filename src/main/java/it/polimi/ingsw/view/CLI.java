@@ -693,21 +693,21 @@ public class CLI extends ViewObservable implements View {
 					string.append(Unicode.WHITE_BACKGROUND_BRIGHT);
 				}
 				string.append("  ");
-				if(faithTrack.getTrack().get(i).tilePoints() != currentVictoryPoints){
+				if(faithTrack.getTrack().get(i).getVictoryPoints() != currentVictoryPoints){
 					if(i == faithTrack.getCurrentPosition()) {
-						string.append(Unicode.BLACK_BOLD).append(faithTrack.getTrack().get(i).tilePoints())
+						string.append(Unicode.BLACK_BOLD).append(faithTrack.getTrack().get(i).getVictoryPoints())
 								.append(Unicode.WHITE_BACKGROUND_BRIGHT);
 					}else{
-						string.append(Unicode.RESET).append(faithTrack.getTrack().get(i).tilePoints());
+						string.append(Unicode.RESET).append(faithTrack.getTrack().get(i).getVictoryPoints());
 					}
-					if(faithTrack.getTrack().get(i).tilePoints() < 10){
+					if(faithTrack.getTrack().get(i).getVictoryPoints() < 10){
 						string.append("  ");
 					}
 					else{
 						string.append(" ");
 					}
 					string.append(currentColor);
-					currentVictoryPoints = faithTrack.getTrack().get(i).tilePoints();
+					currentVictoryPoints = faithTrack.getTrack().get(i).getVictoryPoints();
 				}else{
 					string.append("   ");
 				}
