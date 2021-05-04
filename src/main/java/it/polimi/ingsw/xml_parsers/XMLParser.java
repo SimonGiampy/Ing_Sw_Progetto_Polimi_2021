@@ -22,7 +22,7 @@ public class XMLParser {
 
 	/**
 	 * constructor that open the xml file, creates the document and normalizes it
-	 * @param fileName
+	 * @param fileName name of the configuration file
 	 */
 	public XMLParser(String fileName) {
 		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
