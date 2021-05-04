@@ -46,9 +46,9 @@ public class ServerSideController {
 		this.lobby = lobby;
 		this.numberOfPlayers = numberOfPlayers;
 		if(numberOfPlayers==1) {
-			mechanics = new GameMechanicsSinglePlayer(this,numberOfPlayers);
+			mechanics = new GameMechanicsSinglePlayer(numberOfPlayers);
 		} else {
-			mechanics = new GameMechanicsMultiPlayer(this, numberOfPlayers);
+			mechanics = new GameMechanicsMultiPlayer(numberOfPlayers);
 		}
 		
 		initResources= new boolean[numberOfPlayers-1];

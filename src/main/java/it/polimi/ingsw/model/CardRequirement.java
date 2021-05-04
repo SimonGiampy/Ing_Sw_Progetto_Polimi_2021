@@ -22,14 +22,6 @@ public class CardRequirement implements Serializable {
 		this.color = color;
 		this.level = level;
 	}
-
-	protected int getLevel(){
-		return level;
-	}
-	
-	protected Colors getColor(){
-		return color;
-	}
 	
 	/**
 	 * override of toString method for debugging purposes
@@ -66,4 +58,11 @@ public class CardRequirement implements Serializable {
 		return n + this.getLevel();
 	}
 
+	protected int getLevel(){
+		return level;
+	}
+
+	protected Colors getColor(){
+		return color;
+	}
 }

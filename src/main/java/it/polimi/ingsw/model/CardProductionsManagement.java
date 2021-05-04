@@ -2,7 +2,6 @@ package it.polimi.ingsw.model;
 
 import it.polimi.ingsw.model.util.Productions;
 import it.polimi.ingsw.model.util.Resources;
-import it.polimi.ingsw.exceptions.InvalidInputException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Stack;
@@ -224,6 +223,12 @@ public class CardProductionsManagement {
 		return filteredProduction;
 	}
 
+	/**
+	 * checks if the resources chosen by the player are valid
+	 * @param playerInput productions to activate
+	 * @param inputResources resources chosen
+	 * @return true if the input is valid
+	 */
 	public boolean checkFreeInput(ArrayList<Productions> playerInput, int[] inputResources){
 		ArrayList<Resources> playerResources = myWarehouseDepot.gatherAllResources();
 		playerResources.addAll(myStrongbox.getContent());
@@ -282,40 +287,6 @@ public class CardProductionsManagement {
 			totalNumber = totalNumber +  productions.get(prod).numberOfFreeChoicesOutput();
 		}
 		return totalNumber;
-	}
-
-	/** TODO: remove unnecessary input parameter
-	 * it checks if the resources selected by the player to put in input are correct
-	 * @param playerInput is a list of production selected by the player
-	 * @param inputResources is an array of multiplicity of each resource selected by the player
-	 * @return true if the sum of all resources selected by the player is equal to production's number of ? in input
-	 */
-	/*
-	public boolean isNumberOfSelectedInputEmptyResourcesEnough(ArrayList<Productions> playerInput, int[] inputResources){
-		//int totalNumber = numberOfInputEmptySelectedProduction(playerInput);
-		ArrayList<Resources> playerResources= myWarehouseDepot.gatherAllResources();
-		playerResources.addAll(myStrongbox.getContent());
-		ArrayList<Resources> filteredProduction = new ArrayList<>();
-			for (int i = 0; i < 4; i++) {
-				for (int j = 0; j < inputResources[i]; j++) {
-					filteredProduction.add(Resources.values()[i]);
-				}
-			}
-
-		return ListSet.subset(playerResources, filteredProduction);
-		//return totalNumber==inputResources[0]+inputResources[1]+inputResources[2]+inputResources[3];
-	}
-	*/
-
-	/**
-	 * it checks if the resources selected by the player to put in output are correct
-	 * @param playerInput is a list of production selected by the player
-	 * @param outputResources is an array of multiplicity of each resource selected by the player
-	 * @return true if the sum of all resources selected by the player is equal to production's number of ? in output
-	 */
-	public boolean isNumberOfSelectedOutputEmptyResourcesEnough(ArrayList<Productions> playerInput, int[] outputResources){
-		int totalNumber = numberOfFreeChoicesInInputProductions(playerInput);
-		return totalNumber == outputResources[0]+outputResources[1]+outputResources[2]+outputResources[3];
 	}
 	
 	/**

@@ -85,14 +85,5 @@ public class ProductionRules implements Serializable {
 	public int numberOfFreeChoicesInput(){
 		return ListSet.count(input, Resources.FREE_CHOICE);
 	}
-	
-	//TODO: delete this
-	/*
-	public void showProductionRulesInformation(){
-		ListSet.listMultiplicityToString(input);
-		ListSet.listMultiplicityToString(output);
-		
-		System.out.println("Faith points output: "+getFaithOutput());
-	}
-	 */
+
 }

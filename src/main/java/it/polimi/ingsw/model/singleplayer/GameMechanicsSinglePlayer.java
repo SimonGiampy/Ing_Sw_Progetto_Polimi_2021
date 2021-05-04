@@ -1,6 +1,5 @@
 package it.polimi.ingsw.model.singleplayer;
 
-import it.polimi.ingsw.controller.ServerSideController;
 import it.polimi.ingsw.model.*;
 import it.polimi.ingsw.model.util.Colors;
 
@@ -16,8 +15,8 @@ public class GameMechanicsSinglePlayer extends GameMechanicsMultiPlayer {
 	private ArrayList<Token> tokenList;
 	private FaithTrack lorenzoFaithTrack;
 	
-	public GameMechanicsSinglePlayer(ServerSideController controller, int players) {
-		super(controller, players);
+	public GameMechanicsSinglePlayer(int players) {
+		super(players);
 	}
 
 

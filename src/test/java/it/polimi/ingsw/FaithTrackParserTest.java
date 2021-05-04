@@ -40,7 +40,7 @@ public class FaithTrackParserTest {
 		//faithTrack.showFaithTrack(0);
 		System.out.print("\n");
 		//faithTrack2.showFaithTrack(1);
-		faithTrack.helpMe();
+		//faithTrack.helpMe();
 		/*
 		for (int i = 0; i < track.size(); i++) {
 			System.out.println("tile: " + i);

@@ -19,7 +19,11 @@ import java.util.ArrayList;
 public class XMLParser {
 	
 	private Document document;
-	
+
+	/**
+	 * constructor that open the xml file, creates the document and normalizes it
+	 * @param fileName
+	 */
 	public XMLParser(String fileName) {
 		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
 		DocumentBuilder builder;

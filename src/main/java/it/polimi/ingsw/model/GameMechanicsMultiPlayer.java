@@ -1,14 +1,11 @@
 package it.polimi.ingsw.model;
 
-import it.polimi.ingsw.controller.ServerSideController;
 import it.polimi.ingsw.model.util.Resources;
 
 import java.util.ArrayList;
 import java.util.Collections;
 
 public class GameMechanicsMultiPlayer {
-	
-	private ServerSideController serverSideController;
 	
 	private Market market;
 	private DevelopmentCardsDeck gameDevCardsDeck;
@@ -18,11 +15,13 @@ public class GameMechanicsMultiPlayer {
 	private int lastReportClaimed;
 	
 	int startingPlayer; //index of starting player: from 0 to 3 maximum
-	
-	//TODO: this constructor does not need the server side controller
-	public GameMechanicsMultiPlayer(ServerSideController controller, int players) {
+
+	/**
+	 * constructor that sets the number if players
+	 * @param players number of players
+	 */
+	public GameMechanicsMultiPlayer(int players) {
 		numberOfPlayers = players;
-		this.serverSideController = controller;
 	}
 	
 	
@@ -105,6 +104,11 @@ public class GameMechanicsMultiPlayer {
 	}
 
 
+	/**
+	 * handles the assigning of the initial resources and faith points based on the order of the players
+	 * @param resources resources chosen by the player
+	 * @param playerIndex index of the current player
+	 */
 	public void assignInitialAdvantage(ArrayList<Resources> resources, int playerIndex) {
 		if (playerIndex==1)
 			players[playerIndex].getPlayersWarehouseDepot().assignInitialResources(resources.get(0));
@@ -117,42 +121,9 @@ public class GameMechanicsMultiPlayer {
 			players[playerIndex].getPlayerFaithTrack().moveMarker(1);
 		}
 	}
-
-	
-	public Market getMarket() {
-		return market;
-	}
-	
-	public DevelopmentCardsDeck getGameDevCardsDeck() {
-		return gameDevCardsDeck;
-	}
-	
-	public Player[] getPlayers() {
-		return players;
-	}
-	
-	public Player getPlayer(int which) {
-		return players[which];
-	}
-	
-	public int getNumberOfPlayers() {
-		return numberOfPlayers;
-	}
-	
-	public int getLastReportClaimed() {
-		return lastReportClaimed;
-	}
-
-	public void increaseLastReportClaimed(){
-		lastReportClaimed++;
-	}
-	
-	public int getStartingPlayer() {
-		return startingPlayer;
-	}
 	
 	/**
-	 * calculates the winner of the match, by calculating the points
+	 * decides the winner of the match, by calculating the points
 	 * @return the index of the winning player. returns -1 if there is a draw
 	 */
 	public int[] winner() {
@@ -195,6 +166,38 @@ public class GameMechanicsMultiPlayer {
 
 		}
 		
+	}
+
+	public Market getMarket() {
+		return market;
+	}
+
+	public DevelopmentCardsDeck getGameDevCardsDeck() {
+		return gameDevCardsDeck;
+	}
+
+	public Player[] getPlayers() {
+		return players;
+	}
+
+	public Player getPlayer(int which) {
+		return players[which];
+	}
+
+	public int getNumberOfPlayers() {
+		return numberOfPlayers;
+	}
+
+	public int getLastReportClaimed() {
+		return lastReportClaimed;
+	}
+
+	public void increaseLastReportClaimed(){
+		lastReportClaimed++;
+	}
+
+	public int getStartingPlayer() {
+		return startingPlayer;
 	}
 
 	

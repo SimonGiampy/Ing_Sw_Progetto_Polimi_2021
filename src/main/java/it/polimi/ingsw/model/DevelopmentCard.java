@@ -24,7 +24,6 @@ public class DevelopmentCard implements Serializable {
 	 * @param resourceList is a list of needed resources to buy the card
 	 * @param productionRules is the instance of the corresponding production rules
 	 */
-	
 	public DevelopmentCard(int level, Colors color, int victoryPoints, ArrayList<Resources> resourceList, ProductionRules productionRules) {
 		this.level = level;
 		this.color = color;
@@ -50,8 +49,8 @@ public class DevelopmentCard implements Serializable {
 	}
 
 	/**
-	 * too lazy to write something here
-	 * @return //
+	 * getter for resources requirements
+	 * @return resources requirements
 	 */
 	public ArrayList<Resources> getResourcesRequirement(){
 		return resourcesRequirement;

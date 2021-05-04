@@ -8,7 +8,6 @@ public class BlackCrossToken extends Token{
 	private final int tileNumber;
 	private final FaithTrack lorenzoTrack;
 
-
 	/**
 	 * Initialize the attributes
 	 * @param tileNumber number of tiles Lorenzo's marker has to move when this token is revealed

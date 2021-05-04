@@ -1033,5 +1033,22 @@ public class CLI extends ViewObservable implements View {
 		System.out.println("Error! Connection failed!");
 		askServerInfo();
 	}
-	
+
+	/**
+	 * Shows a legend to help the understanding of the graphic representation of the track
+	 */
+	public void helpFaithTrack(){
+		System.out.println("HELP:");
+		System.out.println(Unicode.RED_BOLD + "+" + Unicode.RESET + " is your marker");
+		System.out.println("The number " + Unicode.UNDERLINE+ "underneath" + Unicode.RESET +
+				" the tile indicate its position in the track");
+		System.out.println("The number "+ Unicode.UNDERLINE + "inside" + Unicode.RESET +" the tile is the amount of " +
+				"Victory Points you get if you are on it or after it at the end of the game");
+		System.out.println(Unicode.ANSI_YELLOW + "Yellow" + Unicode.RESET + " frame indicates that this tile is " +
+				"part of a Vatican Zone");
+		System.out.println(Unicode.ANSI_RED + "Red" + Unicode.RESET + " frame indicates that this tile is a Papal Space");
+		System.out.println("[" + Unicode.GREEN_BOLD+ "✓"+ Unicode.RESET + "/" + Unicode.RED_BOLD+"X"+Unicode.RESET +
+				" Num] shows if you are currently getting Victory Points from that Vatican Report" +
+				" and the amount of Victory Points");
+	}
 }

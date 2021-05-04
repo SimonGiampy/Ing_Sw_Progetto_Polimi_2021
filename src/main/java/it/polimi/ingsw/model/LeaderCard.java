@@ -102,7 +102,6 @@ public class LeaderCard {
 	public ArrayList<AbilityEffectActivation> getEffectsActivation() {
 		return effectsActivation;
 	}
-	
 
 	public boolean isAbilitiesActivated() {
 		return abilitiesActivated;

@@ -105,6 +105,11 @@ public class Player {
 		myFaithTrack.moveMarker(1);
 	}
 
+	/**
+	 * shifts the selected row/col of the market and sets the array of marbles in the deck
+	 * @param which row or col
+	 * @param where number of the row/col
+	 */
 	public void interactWithMarket(String which, int where){
 		Marbles[] output;
 		if (which.equals("COL")) {
@@ -116,12 +121,16 @@ public class Player {
 	}
 	
 	/**
-	 * prototype function that sends the command to the market
+	 * converts the marbles in resources after the choice of the player regarding white marbles leaders
 	 */
 	public void convertMarketOutput(int quantity1, int quantity2) throws InvalidUserRequestException {
 		myResourceDeck.addResources(quantity1 ,quantity2);
 	}
 
+	/**
+	 * checks which action are possible in the current situation
+	 * @return list of possible actions
+	 */
 	public ArrayList<PlayerActions> checkAvailableActions(){
 		ArrayList<PlayerActions> actions = new ArrayList<>(checkAvailableNormalActions());
 		if(!checkAvailableLeaderActions().isEmpty())
@@ -130,7 +139,7 @@ public class Player {
 	}
 
 	/**
-	 * Checks which actions the player can do in the current turn
+	 * Checks which main actions the player can do in the current turn
 	 * @return a list of player actions that contains the available actions the player can do
 	 */
 	public ArrayList<PlayerActions> checkAvailableNormalActions() {
@@ -211,6 +220,11 @@ public class Player {
 		total.addAll(myWarehouseDepot.gatherAllResources());
 		return total;
 	}
+
+	/**
+	 * count the resources of the player
+	 * @return number of all the resources owned by the player
+	 */
 	public int numberOfResources(){
 		return gatherAllPlayersResources().size();
 	}
