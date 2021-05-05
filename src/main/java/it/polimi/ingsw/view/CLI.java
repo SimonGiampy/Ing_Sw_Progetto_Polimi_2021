@@ -419,10 +419,7 @@ public class CLI extends ViewObservable implements View {
 				check = true;
 				confirming = true;
 			} else if (read.equals("help")) {
-				System.out.println("Syntax for moving resources from the deck or depot to the depot is: " +
-						"[move <position> from <deck/depot> to <destination>]");
-				System.out.println("Syntax for moving a resource origin the warehouse to the deck is : [move <position> to deck]");
-				System.out.println("The positional number in the warehouse is between 1 and 6: origin top to bottom, and origin left to right");
+				helpDepot();
 				check = false;
 			} else {
 				checkGoingToWarehouse = Pattern.matches(regexGoingToWarehouse, read);
@@ -459,6 +456,16 @@ public class CLI extends ViewObservable implements View {
 		// notifies the server with the choices of the player
 		notifyObserver(obs -> obs.onUpdateDepotMove(finalFromWhere, finalToWhere, finalOrigin, finalDestination, finalConfirming));
 
+	}
+	
+	/**
+	 * helper function that tells the user how to interact with the depot
+	 */
+	public void helpDepot() {
+		System.out.println("Syntax for moving resources from the deck or depot to the depot is: " +
+				"[move <position> from <deck/depot> to <destination>]");
+		System.out.println("Syntax for moving a resource origin the warehouse to the deck is : [move <position> to deck]");
+		System.out.println("The positional number in the warehouse is between 1 and 6: origin top to bottom, and origin left to right");
 	}
 	
 	

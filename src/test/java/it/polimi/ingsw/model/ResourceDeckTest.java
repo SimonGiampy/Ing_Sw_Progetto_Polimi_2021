@@ -1,4 +1,4 @@
-package it.polimi.ingsw;
+package it.polimi.ingsw.model;
 
 import it.polimi.ingsw.model.ResourceDeck;
 import it.polimi.ingsw.model.WarehouseDepot;
@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import static org.junit.jupiter.api.Assertions.*;
 
 
-public class ResourceDeckTest {
+public class ResourceDeckTest { // TODO: this needs to be checked
 	
 	/**
 	 * creates an array of marbles from the market and passes it to the resource deck. Then converts the white marbles

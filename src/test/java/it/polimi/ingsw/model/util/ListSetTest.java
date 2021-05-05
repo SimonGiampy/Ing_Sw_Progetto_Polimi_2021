@@ -1,7 +1,5 @@
-package it.polimi.ingsw;
+package it.polimi.ingsw.model.util;
 
-import it.polimi.ingsw.model.util.ListSet;
-import it.polimi.ingsw.model.util.Resources;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

@@ -113,20 +113,20 @@ public class CardProductionsManagement {
 	 * @return the number of faith points of the selected productions
 	 */
 	public int activateSelectedProduction(ArrayList<Productions> playerInput, int[] outputResources){
-		ArrayList<Resources> selectedProduction= new ArrayList<>();
+		ArrayList<Resources> productionsResult = new ArrayList<>();
 		int totalFaithPoints = 0;
 		for (Productions prod : playerInput) {
-			selectedProduction.addAll(activateSingleProduction(prod));
-			totalFaithPoints = returnFaithPoints(prod);
+			productionsResult.addAll(activateSingleProduction(prod));
+			totalFaithPoints += returnFaithPoints(prod);
 		}
 		
 		for (int i = 0; i < 4; i++) {
 			for (int j = 0; j < outputResources[i]; j++) {
-				selectedProduction.add(Resources.values()[i]);
+				productionsResult.add(Resources.values()[i]);
 			}
 		}
-		selectedProduction = selectedProduction.stream().filter(i -> i != Resources.FREE_CHOICE).collect(Collectors.toCollection(ArrayList::new));
-		myStrongbox.storeResources(selectedProduction);
+		productionsResult = productionsResult.stream().filter(i -> i != Resources.FREE_CHOICE).collect(Collectors.toCollection(ArrayList::new));
+		myStrongbox.storeResources(productionsResult);
 		return totalFaithPoints;
 	}
 
@@ -187,16 +187,15 @@ public class CardProductionsManagement {
 	}
 
 	/**
-	 * it takes resources from Depot and Strongbox
+	 * It takes resources from Depot and Strongbox in order to activate a list of productions.
+	 * The quantities of requested resources come from the input list in the productions and a list of free choices.
+	 * The list of free choices is transformed in a list of resources, according to the user's requests.
 	 * @param playerInput is a list of selected production
 	 * @param inputResources is an array of number of Resources [#COIN,#SERVANT,#SHIELD,#STONE]
 	 */
 	public void takeSelectedResources(ArrayList<Productions> playerInput, int[] inputResources)  {
-		ArrayList<Resources> playerResources= myWarehouseDepot.gatherAllResources();
-		playerResources.addAll(myStrongbox.getContent());
-		ArrayList<Resources> remainingResources;
 		ArrayList<Resources> filteredProduction = filteredProduction(playerInput, inputResources);
-		remainingResources = myWarehouseDepot.payResources(filteredProduction);
+		ArrayList<Resources> remainingResources = myWarehouseDepot.payResources(filteredProduction);
 		myStrongbox.retrieveResources(remainingResources);
 	}
 	
@@ -207,8 +206,6 @@ public class CardProductionsManagement {
 	 * @return the result of the filter
 	 */
 	private ArrayList<Resources> filteredProduction(ArrayList<Productions> playerInput, int[] inputResources){
-		ArrayList<Resources> playerResources = myWarehouseDepot.gatherAllResources();
-		playerResources.addAll(myStrongbox.getContent());
 		ArrayList<Resources> productionInput = new ArrayList<>();
 		for (Productions prod : playerInput) {
 			productionInput.addAll(getProductionInput(prod));
@@ -234,7 +231,7 @@ public class CardProductionsManagement {
 		playerResources.addAll(myStrongbox.getContent());
 
 		ArrayList<Resources> filteredProduction = filteredProduction(playerInput, inputResources);
-		ProductionRules allSelectedProduction= new ProductionRules(filteredProduction,new ArrayList<>(),0);
+		ProductionRules allSelectedProduction = new ProductionRules(filteredProduction,new ArrayList<>(),0);
 
 		return allSelectedProduction.isProductionAvailable(playerResources);
 	}
@@ -264,7 +261,7 @@ public class CardProductionsManagement {
 	
 
 	/**
-	 *  it calculates the number of input ? (free choices) selected (by the player) productions
+	 * it calculates the number of input ? (free choices) selected (by the player) productions
 	 * @param playerInput is a list of production selected by the player
 	 * @return the number of all ? in input
 	 */
@@ -277,7 +274,7 @@ public class CardProductionsManagement {
 	}
 	
 	/**
-	 *  it calculates the number of input ? (free choices) selected (by the player) productions
+	 * it calculates the number of input ? (free choices) selected (by the player) productions
 	 * @param playerInput is a list of production selected by the player
 	 * @return the number of all ? in input
 	 */
@@ -293,7 +290,7 @@ public class CardProductionsManagement {
 	 * calculates the available productions
 	 * @return a list of productions
 	 */
-	public ArrayList<Productions> availableProduction() {
+	public ArrayList<Productions> availableProductions() {
 		ArrayList<Productions> list = new ArrayList<>();
 		for (Productions p: Productions.values()) {
 			if(presentProductions.get(p) && isSingleProductionAvailable(p))

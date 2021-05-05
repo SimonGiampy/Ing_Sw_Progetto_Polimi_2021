@@ -1,4 +1,4 @@
-package it.polimi.ingsw;
+package it.polimi.ingsw.model;
 
 import it.polimi.ingsw.controller.ServerSideController;
 import it.polimi.ingsw.controller.GameDemo;
@@ -16,7 +16,7 @@ import java.util.Collections;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class PlayerTest {
+class PlayerTest { //TODO: this needs to be corrected
 
 	Player player;
 	private final PrintStream standardOut = System.out;

@@ -1,10 +1,9 @@
 package it.polimi.ingsw.xml_parsers;
 
-import it.polimi.ingsw.model.DevelopmentCard;
-import it.polimi.ingsw.model.LeaderCard;
-import it.polimi.ingsw.model.ProductionRules;
-import it.polimi.ingsw.model.Tile;
+import it.polimi.ingsw.model.*;
+import it.polimi.ingsw.model.reducedClasses.ReducedFaithTrack;
 import it.polimi.ingsw.model.reducedClasses.ReducedLeaderCard;
+import it.polimi.ingsw.model.util.ListSet;
 import it.polimi.ingsw.model.util.Resources;
 import it.polimi.ingsw.view.CLI;
 import org.junit.jupiter.api.BeforeEach;
@@ -20,6 +19,7 @@ class XMLParserTest {
 
 	private XMLParser parser;
 	private CLI cli;
+	
 	@BeforeEach
 	void instantiateParser(){
 		String path;
@@ -34,46 +34,48 @@ class XMLParserTest {
 	@Test
 	void readTiles() {
 		ArrayList<Tile> tiles = parser.readTiles();
-		for(int i = 0; i < tiles.size(); i++){
-			System.out.println("Tile n." + i );
-			System.out.println("Inside Vatican: " + tiles.get(i).getInsideVatican());
-			System.out.println("Victory points: " + tiles.get(i).getVictoryPoints());
-			System.out.print("\n");
-		}
-	}
-
-	@Test
-	void readReportPoints() {
 		ArrayList<Integer> report = parser.readReportPoints();
-		for(int i = 0; i < report.size(); i++)
-			System.out.println("Report n." + (i+1) + ": " + report.get(i));
+		ReducedFaithTrack faithTrack = new ReducedFaithTrack(new FaithTrack(tiles, report, false));
+		System.out.println("Faith Track");
+		cli.showFaithTrack(faithTrack);
+		System.out.println("\n");
+		cli.helpFaithTrack();
+		System.out.println("\n");
 	}
+	
 
 	@Test
 	void readDevCards() {
 		ArrayList<DevelopmentCard> devCards = parser.readDevCards();
-		for(DevelopmentCard card: devCards)
+		int i = 1;
+		for(DevelopmentCard card: devCards) {
+			System.out.println("Card #" + i);
 			cli.showDevCard(card);
+			System.out.print("\n");
+			i++;
+		}
 	}
 
 	@Test
 	void readLeaderCards() {
+		System.out.println("Showing Leader Cards");
 		ArrayList<LeaderCard> leaderCards = parser.readLeaderCards();
-		for(LeaderCard leader: leaderCards)
+		int i = 1;
+		for(LeaderCard leader: leaderCards) {
+			System.out.println("Card #" + i);
 			cli.showLeaderCard(new ReducedLeaderCard(leader, false, false, true));
+			System.out.print("\n");
+			i++;
+		}
+		
 	}
 
 	@Test
 	void parseBaseProductionFromXML() {
 		ProductionRules baseProduction = parser.parseBaseProductionFromXML();
-		ArrayList<Resources> a = new ArrayList<>();
-		a.add(Resources.COIN);
-		a.add(Resources.STONE);
 		System.out.println("Base Production:");
-		System.out.println("Input -> " + baseProduction.numberOfFreeChoicesInput() + " "+ baseProduction.getInputCopy());
-		System.out.println("Output -> "+ baseProduction.numberOfFreeChoicesOutput() + " " + baseProduction.getOutputCopy());
-		System.out.println("Faith Output -> " + baseProduction.getFaithOutput());
-		assertTrue(baseProduction.isProductionAvailable(a));
-		System.out.println("Is available: " + baseProduction.isProductionAvailable(a));
+		System.out.println("Input -> " + ListSet.listMultiplicityToString(baseProduction.getInputCopy()));
+		System.out.println("Output -> " + ListSet.listMultiplicityToString(baseProduction.getOutputCopy()));
+		System.out.println("Faith Output -> " + baseProduction.getFaithOutput() + "\n");
 	}
 }

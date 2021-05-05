@@ -17,7 +17,7 @@ public interface AbilityEffectActivation extends Serializable {
 	 */
 	void activateAbility(Player player);
 
-	void appendPower(StringBuilder string);
+	void appendPower(StringBuilder string); //TODO: this must be deleted and reformatted: override toString()
 
 	int maxLength();
 

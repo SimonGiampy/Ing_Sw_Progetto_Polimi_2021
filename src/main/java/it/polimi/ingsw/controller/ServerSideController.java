@@ -267,7 +267,7 @@ public class ServerSideController {
 						mechanics.getPlayer(playerIndex).getPlayersCardManager())), false);
 			case PRODUCTIONS -> {
 				sendBoxes(view,playerIndex); //it sends player boxes before production
-				view.askProductionAction(mechanics.getPlayer(playerIndex).getPlayersCardManager().availableProduction());
+				view.askProductionAction(mechanics.getPlayer(playerIndex).getPlayersCardManager().availableProductions());
 			}
 			case LEADER -> {
 				ArrayList<ReducedLeaderCard> leaderCards = new ArrayList<>();
@@ -426,11 +426,11 @@ public class ServerSideController {
 					turnController.setTurnPhase(TurnPhase.MAIN_ACTION);
 
 				} catch (InvalidInputException e) { // cannot process the list of productions
-					view.askProductionAction(cardProductionsManagement.availableProduction());
+					view.askProductionAction(cardProductionsManagement.availableProductions());
 				}
 			}
 		} else { // productions cannot be completed
-			view.askProductionAction(cardProductionsManagement.availableProduction());
+			view.askProductionAction(cardProductionsManagement.availableProductions());
 		}
 	}
 	

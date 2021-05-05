@@ -275,21 +275,12 @@ public class Player {
 	 */
 	public void activateProduction(ArrayList<Productions> playerInput, int[] resourcesInput, int[] resourcesOutput)
 			throws InvalidInputException {
-		/* TODO: move this check in client side
-		if (!cardManager.checkPlayerInput(playerInput)) // this check is in the client
-			throw new InvalidInputException("Production input not correct");
-			*/
-
+		
 		if (!cardManager.isSelectedProductionAvailable(playerInput))
 			throw new InvalidInputException("Selected production not available");
-
-		//if(!cardManager.isNumberOfSelectedInputEmptyResourcesEnough(playerInput,resourcesInput))
-		//	throw new InvalidInputException("Input Empty Resources selection not correct");
-
-		//System.out.println(Arrays.toString(resourcesOutput));
+		
 		cardManager.takeSelectedResources(playerInput,resourcesInput);
 		myFaithTrack.moveMarker(cardManager.activateSelectedProduction(playerInput,resourcesOutput));
-		//System.out.println(getMyStrongbox().getContent());
 	}
 
 

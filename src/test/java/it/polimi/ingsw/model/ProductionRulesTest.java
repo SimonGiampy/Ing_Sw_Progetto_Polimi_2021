@@ -1,6 +1,5 @@
-package it.polimi.ingsw;
+package it.polimi.ingsw.model;
 
-import it.polimi.ingsw.model.ProductionRules;
 import it.polimi.ingsw.model.util.Resources;
 import org.junit.jupiter.api.Test;
 
@@ -108,25 +107,24 @@ public class ProductionRulesTest {
 		ProductionRules productionRules = new ProductionRules(inputProduction,outputProduction,1);
 		assertFalse(productionRules.isProductionAvailable(playerResources));
 	}
-
+	
 	/**
-	 *
+	 * checks free choices
 	 */
 	@Test
 	public void numberOfInputEmptyResources(){
 		ArrayList<Resources> inputProduction= new ArrayList<>();
 		ArrayList<Resources> outputProduction= new ArrayList<>();
-		ArrayList<Resources> playerResources= new ArrayList<>();
 		inputProduction.add(Resources.FREE_CHOICE);
 		inputProduction.add(Resources.STONE);
 		ProductionRules productionRules = new ProductionRules(inputProduction,outputProduction,1);
 		assertEquals(1,productionRules.numberOfFreeChoicesInput());
 	}
+	
 	@Test
 	public void numberOfInputEmptyResources_2(){
 		ArrayList<Resources> inputProduction= new ArrayList<>();
 		ArrayList<Resources> outputProduction= new ArrayList<>();
-		ArrayList<Resources> playerResources= new ArrayList<>();
 		ProductionRules productionRules = new ProductionRules(inputProduction,outputProduction,1);
 		assertEquals(0,productionRules.numberOfFreeChoicesInput());
 

@@ -1,7 +1,5 @@
-package it.polimi.ingsw;
+package it.polimi.ingsw.model;
 
-import it.polimi.ingsw.model.FaithTrack;
-import it.polimi.ingsw.model.Tile;
 import it.polimi.ingsw.xml_parsers.XMLParser;
 import org.junit.jupiter.api.Test;
 
@@ -11,6 +9,8 @@ import java.util.ArrayList;
 import static org.junit.jupiter.api.Assertions.*;
 
 class FaithTrackTest {
+	
+	//TODO: complete this test and correct the errors
 
 	@Test
 	void moveMarker() {
