@@ -42,7 +42,4 @@ public class Strongbox {
 		return new ArrayList<>(content);
 	}
 
-	public void showStrongbox() {
-		ListSet.listMultiplicityToString(content);
-	}
 }

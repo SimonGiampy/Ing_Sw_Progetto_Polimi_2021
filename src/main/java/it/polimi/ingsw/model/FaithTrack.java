@@ -95,7 +95,7 @@ public class FaithTrack {
 	 * @return true if the player have finished the track
 	 */
 	public boolean isTrackFinished(){
-		return currentPosition == track.size();
+		return currentPosition == track.size()-1;
 	}
 	
 	public ArrayList<Tile> getTrack(){

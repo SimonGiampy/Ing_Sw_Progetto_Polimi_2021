@@ -19,7 +19,12 @@ public class Player {
 	private final CardProductionsManagement cardManager;
 	
 	private final Market commonMarket;
-	private final DevelopmentCardsDeck commonCardsDeck;
+
+	public void setCommonCardsDeck(DevelopmentCardsDeck commonCardsDeck) {
+		this.commonCardsDeck = commonCardsDeck;
+	}
+
+	private  DevelopmentCardsDeck commonCardsDeck;
 	
 	private LeaderCard[] leaderCards;
 	private boolean activeAbilityLeader1; // indicates whether the first leader card ability is activated or not
@@ -161,18 +166,18 @@ public class Player {
 	public ArrayList<PlayerActions> checkAvailableLeaderActions(){
 
 		ArrayList<PlayerActions> actions = new ArrayList<>();
-		if(!discardedLeader1 && leaderCards[0].checkCards(cardManager.getPlayerCardsRequirements()) &&
+		if(!activeAbilityLeader1 && !discardedLeader1 && leaderCards[0].checkCards(cardManager.getPlayerCardsRequirements()) &&
 				leaderCards[0].checkResources(gatherAllPlayersResources())) {
 			actions.add(PlayerActions.PLAY_LEADER_1);
 		}
-		if(!discardedLeader2 && leaderCards[1].checkCards(cardManager.getPlayerCardsRequirements()) &&
+		if(!activeAbilityLeader2 && !discardedLeader2 && leaderCards[1].checkCards(cardManager.getPlayerCardsRequirements()) &&
 				leaderCards[1].checkResources(gatherAllPlayersResources())) {
 			actions.add(PlayerActions.PLAY_LEADER_2);
 		}
-		if(!discardedLeader1){
+		if(!activeAbilityLeader1 && !discardedLeader1){
 			actions.add(PlayerActions.DISCARD_LEADER_1);
 		}
-		if(!discardedLeader2){
+		if(!activeAbilityLeader1 && !discardedLeader2){
 			actions.add(PlayerActions.DISCARD_LEADER_2);
 		}
 
@@ -336,10 +341,7 @@ public class Player {
 	public Strongbox getMyStrongbox() {
 		return myStrongbox;
 	}
-	
-	public DevelopmentCardsDeck getCommonCardsDeck() {
-		return commonCardsDeck;
-	}
+
 
 	public int getPlayerIndex() {
 		return playerIndex;
@@ -357,9 +359,8 @@ public class Player {
 		return activeAbilityLeader2;
 	}
 
-	public Market getCommonMarket() {
-		return commonMarket;
-	}
+
+
 
 	public String getNickname() {
 		return nickname;

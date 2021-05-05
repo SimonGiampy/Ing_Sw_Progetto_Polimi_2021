@@ -442,7 +442,6 @@ public class GameDemo {
 		int[] selectedResourcesInput = new int[]{0, 0, 0, 0};
 		int[] selectedResourcesOutput = new int[]{0, 0, 0, 0};
 		System.out.print("Player Strongbox: ");
-		currentPlayer.getMyStrongbox().showStrongbox();
 		//currentPlayer.getPlayersWarehouseDepot().showDepot();
 		//currentPlayer.getPlayersCardManager().showAvailableProductions();
 		System.out.println("which production do you want to activate?");
