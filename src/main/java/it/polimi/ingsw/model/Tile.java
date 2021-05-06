@@ -36,8 +36,4 @@ public class Tile implements Serializable {
 	public int getVictoryPoints(){
 		return victoryPoints;
 	}
-
-	public ArrayList<Boolean> getInsideVatican() {
-		return insideVatican;
-	}
 }

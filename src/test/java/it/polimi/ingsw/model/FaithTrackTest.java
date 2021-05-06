@@ -1,6 +1,7 @@
 package it.polimi.ingsw.model;
 
 import it.polimi.ingsw.xml_parsers.XMLParser;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.io.File;
@@ -10,10 +11,11 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class FaithTrackTest {
 	
-	//TODO: complete this test and correct the errors
+	private FaithTrack faithTrack;
+	private FaithTrack faithTrack2;
 
-	@Test
-	void moveMarker() {
+	@BeforeEach
+	void instantiateTrack(){
 		String fileName = "game_configuration_complete.xml";
 		ClassLoader classLoader = getClass().getClassLoader();
 		File file = new File(classLoader.getResource(fileName).getFile());
@@ -22,100 +24,102 @@ class FaithTrackTest {
 		XMLParser parser = new XMLParser(fullPath);
 		ArrayList<Tile> tilesTrack = parser.readTiles();
 		ArrayList<Integer> reportPoints = parser.readReportPoints();
-		FaithTrack faithTrack = new FaithTrack(tilesTrack, reportPoints, false);
-		ArrayList<Tile> track = faithTrack.getTrack();
-
-		faithTrack.moveMarker(3);
-		assertEquals(faithTrack.getCurrentPosition(), 3);
-
-
+		faithTrack = new FaithTrack(tilesTrack, reportPoints, false);
+		faithTrack2 = new FaithTrack(tilesTrack, reportPoints, false);
+		assertFalse(faithTrack.isSinglePlayer());
+		ArrayList<Boolean> reports = new ArrayList<>();
+		reports.add(false);
+		reports.add(false);
+		reports.add(false);
+		assertEquals(reports, faithTrack.getVaticanReports());
 	}
 
 	@Test
-	void checkVaticanReport() {
-		int lastReportClaimed = 0;
-		String fileName = "game_configuration_complete.xml";
-		ClassLoader classLoader = getClass().getClassLoader();
-		File file = new File(classLoader.getResource(fileName).getFile());
-		String fullPath = file.getAbsolutePath();
+	void moveMarker() {
+		faithTrack.moveMarker(3);
+		assertEquals(faithTrack.getCurrentPosition(), 3);
+		faithTrack.moveMarker(1);
+		assertNotEquals(faithTrack.getCurrentPosition(), 3);
+	}
 
-		XMLParser parser = new XMLParser(fullPath);
-		ArrayList<Tile> tilesTrack = parser.readTiles();
-		ArrayList<Integer> reportPoints = parser.readReportPoints();
-		FaithTrack faithTrack = new FaithTrack(tilesTrack, reportPoints, false);
+	@Test
+	void checkActivationVaticanReport() {
 		ArrayList<Tile> track = faithTrack.getTrack();
-		FaithTrack faithTrack2 = new FaithTrack(tilesTrack, reportPoints, false);
-		ArrayList<Tile> track2 = faithTrack2.getTrack();
+		while(!track.get(faithTrack.getCurrentPosition()).isPapalSpace()) {
+			faithTrack.moveMarker(1);
+		}
+		assertTrue(faithTrack.checkActivationVaticanReport(0));
+		assertFalse(faithTrack.checkActivationVaticanReport(1));
+		faithTrack.moveMarker(1);
+		while(!track.get(faithTrack.getCurrentPosition()).isPapalSpace()) {
+			faithTrack.moveMarker(1);
+		}
+		assertTrue(faithTrack.checkActivationVaticanReport(1));
+		assertFalse(faithTrack.checkActivationVaticanReport(2));
+	}
 
-		int i = 0;
-		while(!track.get(i).isPapalSpace())
-			i++;
-		//Move player 1 to the first report
-		faithTrack.moveMarker(i);
-		//Activate report, player 1 must have true, player 2 must have false
-		if(faithTrack.checkActivationVaticanReport(lastReportClaimed) || faithTrack2.checkActivationVaticanReport(lastReportClaimed))
-			lastReportClaimed++;
-		assertTrue(faithTrack.getVaticanReport(lastReportClaimed));
-		assertFalse(faithTrack2.getVaticanReport(lastReportClaimed));
-		//Move player 2 to the tile of the first report but it was already activated so he must have false again
-		
-		//assert faithTrack2.moveMarker(i);
-		
-		if(faithTrack.checkActivationVaticanReport(lastReportClaimed) || faithTrack2.checkActivationVaticanReport(lastReportClaimed))
-			lastReportClaimed++;
-		assertTrue(faithTrack.getVaticanReport(lastReportClaimed));
-		assertFalse(faithTrack2.getVaticanReport(lastReportClaimed));
+	@Test
+	void checkVaticanReport(){
+		ArrayList<Tile> track1 = faithTrack.getTrack();
+		ArrayList<Tile> track2 = faithTrack2.getTrack();
+		while(!track2.get(faithTrack2.getCurrentPosition()).isInsideVatican(0)) {
+			faithTrack2.moveMarker(1);
+		}
+		while(!track1.get(faithTrack.getCurrentPosition()).isPapalSpace()) {
+			faithTrack.moveMarker(1);
+		}
+		assertEquals(1, faithTrack.getLastReportClaimed());
+		assertEquals(0, faithTrack2.getLastReportClaimed());
+		faithTrack.checkVaticanReport(0);
+		faithTrack2.checkVaticanReport(0);
+		assertTrue(faithTrack.getVaticanReport(1));
+		assertTrue(faithTrack2.getVaticanReport(1));
+		assertEquals(1, faithTrack.getLastReportClaimed());
+		assertEquals(1, faithTrack2.getLastReportClaimed());
+		while(!track2.get(faithTrack2.getCurrentPosition()).isPapalSpace()) {
+			faithTrack2.moveMarker(1);
+		}
+		faithTrack2.moveMarker(1);
+		while(!track2.get(faithTrack2.getCurrentPosition()).isPapalSpace()) {
+			faithTrack2.moveMarker(1);
+		}
+		faithTrack.checkVaticanReport(1);
+		faithTrack2.checkVaticanReport(1);
+		assertEquals(2, faithTrack.getLastReportClaimed());
+		assertEquals(2, faithTrack2.getLastReportClaimed());
+		assertFalse(faithTrack.getVaticanReport(2));
+		assertTrue(faithTrack2.getVaticanReport(2));
 	}
 
 	@Test
 	void countFaithTrackVictoryPoints() {
-		int lastReportClaimed = 0;
-		String fileName = "game_configuration_complete.xml";
-		ClassLoader classLoader = getClass().getClassLoader();
-		File file = new File(classLoader.getResource(fileName).getFile());
-		String fullPath = file.getAbsolutePath();
-
-		XMLParser parser = new XMLParser(fullPath);
-		ArrayList<Tile> tilesTrack = parser.readTiles();
-		ArrayList<Integer> reportPoints = parser.readReportPoints();
-		FaithTrack faithTrack = new FaithTrack(tilesTrack, reportPoints, false);
 		ArrayList<Tile> track = faithTrack.getTrack();
 
-		int i = 0;
-		while(!track.get(i).isPapalSpace())
-			i++;
-
-		//Move player 1 to the first report
-		faithTrack.moveMarker(i);
-		
-		if(faithTrack.checkActivationVaticanReport(lastReportClaimed))
-			lastReportClaimed++;
-		assertTrue(faithTrack.getVaticanReport(lastReportClaimed));
-
-		assertEquals(2 + track.get(i).getVictoryPoints(), faithTrack.countFaithTrackVictoryPoints());
-
-
+		while(!track.get(faithTrack.getCurrentPosition()).isPapalSpace()) {
+			faithTrack.moveMarker(1);
+		}
+		faithTrack.moveMarker(1);
+		faithTrack.checkVaticanReport(0);
+		assertEquals(faithTrack.getReportPoints().get(0) + track.get(faithTrack.getCurrentPosition()).getVictoryPoints(),
+				faithTrack.countFaithTrackVictoryPoints());
 	}
 
 	@Test
 	void isTrackFinished() {
-		int lastReportClaimed = 0;
-		String fileName = "game_configuration_complete.xml";
-		ClassLoader classLoader = getClass().getClassLoader();
-		File file = new File(classLoader.getResource(fileName).getFile());
-		String fullPath = file.getAbsolutePath();
+		ArrayList<Tile> track = faithTrack.getTrack();
 
-		XMLParser parser = new XMLParser(fullPath);
-		ArrayList<Tile> tilesTrack = parser.readTiles();
-		ArrayList<Integer> reportPoints = parser.readReportPoints();
-		FaithTrack faithTrack = new FaithTrack(tilesTrack, reportPoints, false);
-
-		while(faithTrack.getCurrentPosition() < faithTrack.getTrack().size()){
+		while(!track.get(faithTrack.getCurrentPosition()).isPapalSpace()) {
 			faithTrack.moveMarker(1);
-			System.out.println(faithTrack.getCurrentPosition());
-			if(faithTrack.checkActivationVaticanReport(lastReportClaimed))
-				lastReportClaimed++;
 		}
+		faithTrack.moveMarker(1);
+		while(!track.get(faithTrack.getCurrentPosition()).isPapalSpace()) {
+			faithTrack.moveMarker(1);
+		}
+		faithTrack.moveMarker(1);
+		while(!track.get(faithTrack.getCurrentPosition()).isPapalSpace()) {
+			faithTrack.moveMarker(1);
+		}
+		faithTrack.moveMarker(1);
 		assertTrue(faithTrack.isTrackFinished());
 	}
 }
