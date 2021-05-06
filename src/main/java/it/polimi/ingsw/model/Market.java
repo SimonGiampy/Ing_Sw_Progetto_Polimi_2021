@@ -11,7 +11,7 @@ import java.util.Collections;
 public class Market {
 	
 	// representation as a Matrix
-	private final Marbles[][] market;
+	private  Marbles[][] market;
 	private Marbles extraBall;
 	
 	/**
@@ -100,5 +100,13 @@ public class Market {
 
 	public Marbles[][] getMarket() {
 		return market;
+	}
+
+	public void setMarket(Marbles[][] market) {
+		this.market = market;
+	}
+
+	public void setExtraBall(Marbles extraBall) {
+		this.extraBall = extraBall;
 	}
 }

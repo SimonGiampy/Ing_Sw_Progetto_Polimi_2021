@@ -18,11 +18,9 @@ public class Player {
 	private final FaithTrack myFaithTrack;
 	private final CardProductionsManagement cardManager;
 	
-	private final Market commonMarket;
+	private  Market commonMarket;
 
-	public void setCommonCardsDeck(DevelopmentCardsDeck commonCardsDeck) {
-		this.commonCardsDeck = commonCardsDeck;
-	}
+
 
 	private  DevelopmentCardsDeck commonCardsDeck;
 	
@@ -392,5 +390,17 @@ public class Player {
 
 	public boolean isDiscardedLeader2() {
 		return discardedLeader2;
+	}
+
+	public void setCommonCardsDeck(DevelopmentCardsDeck commonCardsDeck) {
+		this.commonCardsDeck = commonCardsDeck;
+	}
+
+	public void setCommonMarket(Market commonMarket) {
+		this.commonMarket = commonMarket;
+	}
+
+	public Market getCommonMarket() {
+		return commonMarket;
 	}
 }

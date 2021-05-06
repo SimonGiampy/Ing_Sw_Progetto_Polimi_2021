@@ -4,6 +4,7 @@ import it.polimi.ingsw.controller.ServerSideController;
 import it.polimi.ingsw.controller.GameDemo;
 import it.polimi.ingsw.model.*;
 import it.polimi.ingsw.model.util.Colors;
+import it.polimi.ingsw.model.util.Marbles;
 import it.polimi.ingsw.model.util.PlayerActions;
 import it.polimi.ingsw.model.util.Resources;
 import it.polimi.ingsw.xml_parsers.XMLParser;
@@ -15,6 +16,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.PrintStream;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -51,7 +53,32 @@ class PlayerTest { //TODO: this needs to be corrected
 		ProductionRules baseProduction = parser.parseBaseProductionFromXML();
 		DevelopmentCardsDeck gameDevCardsDeck = new DevelopmentCardsDeck(mechanics.createCommonCardsDeck(devCards));
 		int numberOfPlayers = 2;
-		Market market = new Market();
+		Market commonMarket= new Market();
+		Marbles[][] market= new Marbles[3][4];
+
+		ArrayList<Marbles> marblesList = new ArrayList<>(13);
+		marblesList.add(Marbles.RED);
+		marblesList.add(Marbles.WHITE);
+		marblesList.add(Marbles.WHITE);
+		marblesList.add(Marbles.WHITE);
+		marblesList.add(Marbles.WHITE);
+		marblesList.add(Marbles.BLUE);
+		marblesList.add(Marbles.BLUE);
+		marblesList.add(Marbles.GREY);
+		marblesList.add(Marbles.GREY);
+		marblesList.add(Marbles.YELLOW);
+		marblesList.add(Marbles.YELLOW);
+		marblesList.add(Marbles.PURPLE);
+		marblesList.add(Marbles.PURPLE);
+		Marbles extraBall = marblesList.get(0);
+		int k = 1;
+		for (int i = 0; i < 3; i++) {
+			for (int j = 0; j < 4; j++) {
+				market[i][j] = marblesList.get(k);
+				k++;
+			}
+		}
+
 		Player[] players = new Player[numberOfPlayers];
 
 
@@ -73,6 +100,9 @@ class PlayerTest { //TODO: this needs to be corrected
 		this.player = players[0];
 
 		player.setCommonCardsDeck(gameDevCardsDeck);
+		commonMarket.setMarket(market);
+		commonMarket.setExtraBall(extraBall);
+		player.setCommonMarket(commonMarket);
 
 
 		developmentCard1 = new DevelopmentCard(1, Colors.GREEN,1,new ArrayList<>(), baseProduction);
@@ -113,9 +143,24 @@ class PlayerTest { //TODO: this needs to be corrected
 		assertSame(player.getPlayerFaithTrack().getCurrentPosition(), 2);
 	}
 
+	/**
+	 * useless test, just for coverage
+	 */
 	@Test
-	void interactWithMarket() {
+	void interactWithMarket_ROW(){
+		Marbles[] check= new Marbles[]{Marbles.BLUE,Marbles.BLUE,Marbles.GREY,Marbles.GREY};
+		assertEquals(Arrays.asList(check),Arrays.asList(player.getCommonMarket().shiftRow(1)));
+		player.interactWithMarket("ROW",2);
+	}
 
+	/**
+	 * useless test, just for coverage
+	 */
+	@Test
+	void interactWithMarket_COL(){
+		Marbles[] check= new Marbles[]{Marbles.WHITE,Marbles.BLUE,Marbles.YELLOW};
+		assertEquals(Arrays.asList(check),Arrays.asList(player.getCommonMarket().shiftCol(1)));
+		player.interactWithMarket("COL",2);
 	}
 
 	/**
