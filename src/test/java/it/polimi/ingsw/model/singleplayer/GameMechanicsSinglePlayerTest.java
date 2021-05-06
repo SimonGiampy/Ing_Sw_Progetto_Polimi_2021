@@ -1,6 +1,5 @@
 package it.polimi.ingsw.model.singleplayer;
 
-import it.polimi.ingsw.controller.GameDemo;
 import it.polimi.ingsw.model.*;
 import it.polimi.ingsw.model.util.Colors;
 import it.polimi.ingsw.model.util.TokenType;
@@ -9,9 +8,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.io.File;
-import java.io.PrintStream;
 import java.util.ArrayList;
-import java.util.Collections;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -59,16 +56,26 @@ class GameMechanicsSinglePlayerTest {
 
 		mechanicsSinglePlayer.setTokenList(tokenList); //set token for testing
 
-		assertEquals(TokenType.BLACK_CROSS_TOKEN,mechanicsSinglePlayer.revealTop().getTokenType());
-		assertEquals(TokenType.DISCARD_TOKEN,mechanicsSinglePlayer.revealTop().getTokenType());
-		assertEquals(TokenType.BLACK_CROSS_SHUFFLE_TOKEN,mechanicsSinglePlayer.revealTop().getTokenType());
+		Token token=mechanicsSinglePlayer.revealTop();
+		token.applyEffect();
+		assertEquals(2,mechanicsSinglePlayer.getLorenzoFaithTrack().getCurrentPosition());
+		assertEquals(TokenType.BLACK_CROSS_TOKEN,token.getTokenType());
+
+		token=mechanicsSinglePlayer.revealTop();
+		token.applyEffect();
+		assertEquals(TokenType.DISCARD_TOKEN,token.getTokenType());
+		assertEquals(2,mechanicsSinglePlayer.getGameDevCardsDeck().getCardStackStructure()[0][1].size());
+		token=mechanicsSinglePlayer.revealTop();
+		token.applyEffect();
+		assertEquals(TokenType.BLACK_CROSS_SHUFFLE_TOKEN,token.getTokenType());
+		assertEquals(3,mechanicsSinglePlayer.getLorenzoFaithTrack().getCurrentPosition());
 	}
 
 
 	@Test
 	void winner_LorenzoFaithTrackFinished() {
 		mechanicsSinglePlayer.getLorenzoFaithTrack().moveMarker(24);
-		assertEquals(-1,mechanicsSinglePlayer.winner()[1]);
+		assertEquals(-1,mechanicsSinglePlayer.winningPlayers()[1]);
 
 	}
 
@@ -79,20 +86,20 @@ class GameMechanicsSinglePlayerTest {
 		mechanicsSinglePlayer.getGameDevCardsDeck().discard2Cards(Colors.BLUE);
 		mechanicsSinglePlayer.getGameDevCardsDeck().discard2Cards(Colors.BLUE);
 		mechanicsSinglePlayer.getGameDevCardsDeck().discard2Cards(Colors.BLUE);
-		assertEquals(0,mechanicsSinglePlayer.winner()[1]);
-		assertEquals(0,mechanicsSinglePlayer.winner()[0]);
+		assertEquals(0,mechanicsSinglePlayer.winningPlayers()[1]);
+		assertEquals(0,mechanicsSinglePlayer.winningPlayers()[0]);
 
 		mechanicsSinglePlayer.getGameDevCardsDeck().discard2Cards(Colors.BLUE);
 
-		assertEquals(-1,mechanicsSinglePlayer.winner()[1]);
+		assertEquals(-1,mechanicsSinglePlayer.winningPlayers()[1]);
 
 	}
 
 	@Test
 	void winner_PlayerWin() {
 		mechanicsSinglePlayer.getPlayer().getPlayerFaithTrack().moveMarker(24);
-		assertNotEquals(0,mechanicsSinglePlayer.winner()[0]);
-		assertEquals(0,mechanicsSinglePlayer.winner()[1]);
+		assertNotEquals(0,mechanicsSinglePlayer.winningPlayers()[0]);
+		assertEquals(0,mechanicsSinglePlayer.winningPlayers()[1]);
 
 	}
 

@@ -1,9 +1,11 @@
 package it.polimi.ingsw.model;
 
+import it.polimi.ingsw.model.reducedClasses.ReducedStrongbox;
 import it.polimi.ingsw.model.util.Colors;
 import it.polimi.ingsw.model.util.ListSet;
 import it.polimi.ingsw.model.util.Productions;
 import it.polimi.ingsw.model.util.Resources;
+import it.polimi.ingsw.view.CLI;
 import it.polimi.ingsw.xml_parsers.XMLParser;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -182,6 +184,8 @@ public class CardProductionsManagementTest {
 		resources.add(Resources.COIN);
 		strongbox.storeResources(resources);
 		System.out.println("initial strongbox before taking any resources = " + ListSet.listMultiplicityToString(strongbox.getContent()));
+		CLI cli = new CLI();
+		cli.showStrongBox(new ReducedStrongbox(strongbox));
 		
 		//second leader card
 		ArrayList<Resources> input2 = new ArrayList<>(); // input production resources

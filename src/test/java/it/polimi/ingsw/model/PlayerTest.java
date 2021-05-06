@@ -1,10 +1,8 @@
 package it.polimi.ingsw.model;
 
+import it.polimi.ingsw.exceptions.InvalidInputException;
 import it.polimi.ingsw.exceptions.InvalidUserRequestException;
-import it.polimi.ingsw.model.util.Colors;
-import it.polimi.ingsw.model.util.Marbles;
-import it.polimi.ingsw.model.util.PlayerActions;
-import it.polimi.ingsw.model.util.Resources;
+import it.polimi.ingsw.model.util.*;
 import it.polimi.ingsw.xml_parsers.XMLParser;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -15,10 +13,11 @@ import java.io.File;
 import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Objects;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class PlayerTest { //TODO: this needs to be corrected
+class PlayerTest {
 
 	Player player;
 	private final PrintStream standardOut = System.out;
@@ -39,7 +38,7 @@ class PlayerTest { //TODO: this needs to be corrected
 		GameMechanicsMultiPlayer mechanics = new GameMechanicsMultiPlayer(2);
 		String fileName = "game_configuration_complete.xml";
 		ClassLoader classLoader = getClass().getClassLoader();
-		File file = new File(classLoader.getResource(fileName).getFile());
+		File file = new File(Objects.requireNonNull(classLoader.getResource(fileName)).getFile());
 		String fullPath = file.getAbsolutePath();
 		XMLParser parser = new XMLParser(fullPath);
 		ArrayList<Tile> tiles = parser.readTiles();
@@ -95,10 +94,10 @@ class PlayerTest { //TODO: this needs to be corrected
 
 		this.player = players[0];
 
-		player.setCommonCardsDeck(gameDevCardsDeck);
-		commonMarket.setMarket(market);
-		commonMarket.setExtraBall(extraBall);
-		player.setCommonMarket(commonMarket);
+		player.setCommonCardsDeckForDebugging(gameDevCardsDeck);
+		commonMarket.setMarketForDebugging(market);
+		commonMarket.setExtraBallForDebugging(extraBall);
+		player.setCommonMarketForDebugging(commonMarket);
 
 
 		developmentCard1 = new DevelopmentCard(1, Colors.GREEN,1,new ArrayList<>(), baseProduction);
@@ -283,7 +282,19 @@ class PlayerTest { //TODO: this needs to be corrected
 	}
 
 	@Test
-	void activateProduction() {
+	void activateProduction() throws InvalidInputException {
+		ArrayList<Productions> playerInput = new ArrayList<>();
+		playerInput.add(Productions.BASE_PRODUCTION);
+		int[] input= new int[]{2,0,0,0};
+		int[] output= new int[]{0,1,0,0};
+		ArrayList<Resources> resources= new ArrayList<>();
+		resources.add(Resources.COIN);
+		resources.add(Resources.COIN);
+		player.getMyStrongbox().storeResources(resources);
+		player.activateProduction(playerInput,input,output);
+		resources.clear();
+		resources.add(Resources.SERVANT);
+		assertEquals(resources,player.getMyStrongbox().getContent());
 	}
 
 	@Test

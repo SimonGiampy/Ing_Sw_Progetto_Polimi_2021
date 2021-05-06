@@ -102,11 +102,11 @@ public class Market {
 		return market;
 	}
 
-	public void setMarket(Marbles[][] market) {
+	public void setMarketForDebugging(Marbles[][] market) {
 		this.market = market;
 	}
 
-	public void setExtraBall(Marbles extraBall) {
+	public void setExtraBallForDebugging(Marbles extraBall) {
 		this.extraBall = extraBall;
 	}
 }

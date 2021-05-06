@@ -279,8 +279,8 @@ public class Player {
 	public void activateProduction(ArrayList<Productions> playerInput, int[] resourcesInput, int[] resourcesOutput)
 			throws InvalidInputException {
 		
-		if (!cardManager.isSelectedProductionAvailable(playerInput))
-			throw new InvalidInputException("Selected production not available");
+		//if (!cardManager.isSelectedProductionAvailable(playerInput))
+			//throw new InvalidInputException("Selected production not available");
 		
 		cardManager.takeSelectedResources(playerInput,resourcesInput);
 		myFaithTrack.moveMarker(cardManager.activateSelectedProduction(playerInput,resourcesOutput));
@@ -392,15 +392,16 @@ public class Player {
 		return discardedLeader2;
 	}
 
-	public void setCommonCardsDeck(DevelopmentCardsDeck commonCardsDeck) {
+	public void setCommonCardsDeckForDebugging(DevelopmentCardsDeck commonCardsDeck) {
 		this.commonCardsDeck = commonCardsDeck;
-	}
-
-	public void setCommonMarket(Market commonMarket) {
-		this.commonMarket = commonMarket;
 	}
 
 	public Market getCommonMarket() {
 		return commonMarket;
 	}
+	
+	protected void setCommonMarketForDebugging(Market commonMarket) {
+		this.commonMarket = commonMarket;
+	}
+	
 }

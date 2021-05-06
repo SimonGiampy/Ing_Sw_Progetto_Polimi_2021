@@ -123,49 +123,62 @@ public class GameMechanicsMultiPlayer {
 	}
 	
 	/**
-	 * decides the winner of the match, by calculating the points
-	 * @return the index of the winning player. returns -1 if there is a draw
+	 * Decides the winner or winners of the match, by calculating the points and the number of resources gained
+	 * @return an array of integers where:
+	 *          the first number is the total score achieved by the player or players
+	 *          the second number is the index of the winning player
+	 *          the other numbers (if present) are the indexes of the other winning players (Draw)
 	 */
-	public int[] winner() {
-		ArrayList<Player> winners1 = new ArrayList<>();
-		ArrayList<Player> winners2 = new ArrayList<>();
+	public int[] winningPlayers() {
+		ArrayList<Player> winnersPoints = new ArrayList<>();
+		int[] winners;
 		int maxScore = 0, maxRes = 0;
+		
 		for (int i = 0; i < numberOfPlayers; i++) {
 			if (getPlayer(i).totalScore() > maxScore) {
 				maxScore = getPlayer(i).totalScore();
 			}
-			if (getPlayer(i).numberOfResources() > maxRes) {
-				maxRes = getPlayer(i).numberOfResources();
-			}
 		}
 		for (int i = 0; i < numberOfPlayers; i++) {
 			if (getPlayer(i).totalScore() == maxScore) {
-				winners1.add(getPlayer(i));
+				winnersPoints.add(getPlayer(i));
 			}
-			if (getPlayer(i).numberOfResources() == maxRes) {
-				winners2.add(getPlayer(i));
-			}
-		}
-		if (winners1.size() == 1){
-			int[] winner=new int[2];
-			winner[0]=winners1.get(0).totalScore();
-			winner[1]=winners1.get(0).getPlayerIndex();
-			return winner; // calculation based on the total points gained
-		} else if (winners2.size() == 1) {
-			int[] winner=new int[2];
-			winner[0]=winners1.get(0).totalScore();
-			winner[1]=winners1.get(0).getPlayerIndex();
-			return winner; // calculation based on the number of resources
-		} else {
-			int[] winner= new int[winners2.size()+1];
-			winner[0]=winners2.get(0).totalScore();
-			for (int i = 0; i < winners2.size(); i++) {
-				winner[i+1]=winners2.get(i).getPlayerIndex();
-			}
-			return winner; //draw
-
 		}
 		
+		// calculation based on the number of resources
+		if (winnersPoints.size() == 1) { // calculation based on the total points gained
+			winners = new int[2];
+			winners[0] = winnersPoints.get(0).totalScore();
+			winners[1] = winnersPoints.get(0).getPlayerIndex();
+		} else {
+			// calculation based on the number of resources accumulated among the players with top score
+			ArrayList<Player> winnersResources = new ArrayList<>();
+			for (int i = 0; i < winnersPoints.size(); i++) {
+				if (winnersPoints.get(i).numberOfResources() > maxRes) {
+					maxRes = winnersPoints.get(i).numberOfResources();
+				}
+			}
+			for (int i = 0; i < winnersPoints.size(); i++) {
+				if (winnersPoints.get(i).numberOfResources() == maxRes) {
+					winnersResources.add(winnersPoints.get(i));
+				}
+			}
+			
+			if (winnersResources.size() == 1) { // unique winner
+				winners = new int[2];
+				winners[0] = winnersResources.get(0).totalScore();
+				winners[1] = winnersResources.get(0).getPlayerIndex();
+			} else {
+				// since the number of resources is the same for the winners, then there is a draw
+				winners = new int[winnersResources.size() + 1];
+				winners[0] = winnersResources.get(0).totalScore();
+				for (int i = 0; i < winnersResources.size(); i++) {
+					winners[i + 1] = winnersResources.get(i).getPlayerIndex();
+				}
+			}
+		}
+		
+		return winners;
 	}
 
 	public Market getMarket() {

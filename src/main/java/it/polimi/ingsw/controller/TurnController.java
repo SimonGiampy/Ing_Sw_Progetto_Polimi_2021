@@ -159,7 +159,7 @@ public class TurnController {
 
 	private void sendWinner(){
 		StringBuilder winner = new StringBuilder();
-		int[] winnerInfo= mechanics.winner();
+		int[] winnerInfo= mechanics.winningPlayers();
 		if(winnerInfo[1]==-1)
 			winner.append("Lorenzo");
 		else

@@ -84,7 +84,7 @@ public class GameMechanicsSinglePlayer extends GameMechanicsMultiPlayer {
 	 * Checks if the single player game is finished and show the total score
 	 */
 	@Override
-	public int[] winner(){
+	public int[] winningPlayers(){
 		int[] winner= new int[2];
 		if(getPlayer().isEndgameStarted()){
 			winner[0]=getPlayer().totalScore();
@@ -102,6 +102,10 @@ public class GameMechanicsSinglePlayer extends GameMechanicsMultiPlayer {
 			//System.out.println("Your score: "+ getPlayer().totalScore());
 		}
 		return winner;
+	}
+
+	public void setTokenList(ArrayList<Token> tokenList) {
+		this.tokenList = tokenList;
 	}
 
 	public FaithTrack getLorenzoFaithTrack() {
