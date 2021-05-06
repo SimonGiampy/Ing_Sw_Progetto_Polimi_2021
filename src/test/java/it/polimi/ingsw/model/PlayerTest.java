@@ -1,8 +1,6 @@
 package it.polimi.ingsw.model;
 
-import it.polimi.ingsw.controller.ServerSideController;
-import it.polimi.ingsw.controller.GameDemo;
-import it.polimi.ingsw.model.*;
+import it.polimi.ingsw.exceptions.InvalidUserRequestException;
 import it.polimi.ingsw.model.util.Colors;
 import it.polimi.ingsw.model.util.Marbles;
 import it.polimi.ingsw.model.util.PlayerActions;
@@ -17,7 +15,6 @@ import java.io.File;
 import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -38,8 +35,7 @@ class PlayerTest { //TODO: this needs to be corrected
 	void setUp() {
 
 		System.setOut(new PrintStream(outputStreamCaptor));
-
-		GameDemo demo = new GameDemo();
+		
 		GameMechanicsMultiPlayer mechanics = new GameMechanicsMultiPlayer(2);
 		String fileName = "game_configuration_complete.xml";
 		ClassLoader classLoader = getClass().getClassLoader();
@@ -143,19 +139,21 @@ class PlayerTest { //TODO: this needs to be corrected
 		assertSame(player.getPlayerFaithTrack().getCurrentPosition(), 2);
 	}
 
-	/**
-	 * useless test, just for coverage
-	 */
+	
 	@Test
 	void interactWithMarket_ROW(){
 		Marbles[] check= new Marbles[]{Marbles.BLUE,Marbles.BLUE,Marbles.GREY,Marbles.GREY};
 		assertEquals(Arrays.asList(check),Arrays.asList(player.getCommonMarket().shiftRow(1)));
 		player.interactWithMarket("ROW",2);
+		
+		try {
+			player.convertMarketOutput(0, 0); // just for testing
+		} catch (InvalidUserRequestException e) {
+			System.out.println("Invalid input");
+		}
 	}
 
-	/**
-	 * useless test, just for coverage
-	 */
+	
 	@Test
 	void interactWithMarket_COL(){
 		Marbles[] check= new Marbles[]{Marbles.WHITE,Marbles.BLUE,Marbles.YELLOW};
@@ -164,7 +162,7 @@ class PlayerTest { //TODO: this needs to be corrected
 	}
 
 	/**
-	 *
+	 * checks the available leader actions when the player chooses arbitrarily first and third leader
 	 */
 	@Test
 	void checkAvailableLeaderActions(){
@@ -321,6 +319,13 @@ class PlayerTest { //TODO: this needs to be corrected
 	public void tearDown() {
 		System.setOut(standardOut);
 	}
-
-
+	
+	/**
+	 * Fundamental Test
+	 */
+	@Test
+	void nickname() {
+		player.setNickname("Giorgio Mastrota");
+		assertEquals("Giorgio Mastrota", player.getNickname());
+	}
 }
