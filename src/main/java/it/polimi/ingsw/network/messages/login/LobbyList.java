@@ -19,10 +19,6 @@ public class LobbyList extends Message {
 		this.idVersion = idVersion;
 	}
 	
-	public String getLobby(int n) {
-		return lobbies.get(n - 1);
-	}
-
 	public ArrayList<String> getLobbies() {
 		return lobbies;
 	}

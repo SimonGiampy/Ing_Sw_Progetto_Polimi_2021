@@ -275,12 +275,8 @@ class PlayerTest {
 		assertEquals(37,player.totalScore());
 
 	}
-
-
-	@Test
-	void buyNewDevCard() {
-	}
-
+	
+	
 	@Test
 	void activateProduction() throws InvalidInputException {
 		ArrayList<Productions> playerInput = new ArrayList<>();

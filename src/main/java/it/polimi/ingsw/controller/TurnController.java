@@ -150,10 +150,9 @@ public class TurnController {
 			}
 		String stringWinner=winner.toString();
 		serverSideController.getLobby().broadcastMessage(new WinMessage(stringWinner,winnerInfo[0]));
-		//TODO: add end of game, closing socket
+		serverSideController.getLobby().endGame();
 	}
-
-	//TODO: check if this method works
+	
 	public void endgame(){
 		boolean check=false;
 		for (int i = 0; i < nicknameList.size(); i++) {

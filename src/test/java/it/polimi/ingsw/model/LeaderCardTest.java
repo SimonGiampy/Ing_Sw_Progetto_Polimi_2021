@@ -13,12 +13,12 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class LeaderCardTest {
 	
-	CardRequirement yellow0= new CardRequirement(Colors.YELLOW,0);
-	CardRequirement blue0= new CardRequirement(Colors.BLUE,0);
-	CardRequirement yellow1= new CardRequirement(Colors.YELLOW,1);
-	CardRequirement green1= new CardRequirement(Colors.GREEN,1);
-	CardRequirement blue1= new CardRequirement(Colors.BLUE,1);
-	CardRequirement blue2= new CardRequirement(Colors.BLUE,2);
+	final CardRequirement yellow0= new CardRequirement(Colors.YELLOW,0);
+	final CardRequirement blue0= new CardRequirement(Colors.BLUE,0);
+	final CardRequirement yellow1= new CardRequirement(Colors.YELLOW,1);
+	final CardRequirement green1= new CardRequirement(Colors.GREEN,1);
+	final CardRequirement blue1= new CardRequirement(Colors.BLUE,1);
+	final CardRequirement blue2= new CardRequirement(Colors.BLUE,2);
 
 	
 	@Test
@@ -115,7 +115,7 @@ class LeaderCardTest {
 		LeaderCard leaderCard = new LeaderCard(0,new ArrayList<>(), leaderInput, effectActivations);
 		
 		ReducedLeaderCard reduced = new ReducedLeaderCard(leaderCard, false, false, true);
-		assertTrue(!reduced.isDiscarded());
+		assertFalse(reduced.isDiscarded());
 		assertTrue(reduced.isPlayable());
 	}
 

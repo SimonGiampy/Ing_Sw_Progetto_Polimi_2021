@@ -18,7 +18,7 @@ public class ResourceDeck {
 	private int faithPoint;
 	private Marbles[] marblesFromMarket;
 	
-	WarehouseDepot playerDepot;
+	final WarehouseDepot playerDepot;
 	
 	/**
 	 * Constructor that assigns default values to the parameters

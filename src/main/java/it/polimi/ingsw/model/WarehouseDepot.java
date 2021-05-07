@@ -390,10 +390,6 @@ public class WarehouseDepot {
 		this.depot = depot;
 	}
 	
-	public ArrayList<Integer> getPositionsIncomingResources() {
-		return positionsIncomingResources;
-	}
-
 	public ArrayList<Resources> getIncomingResources() {
 		return incomingResources;
 	}

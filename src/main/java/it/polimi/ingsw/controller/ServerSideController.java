@@ -418,16 +418,13 @@ public class ServerSideController {
 				// free user choices for output resources
 				view.askFreeOutput(cardProductionsManagement.numberOfFreeChoicesInOutputProductions(message.getSelectedProductions()));
 			} else { // no free choices present
-				try {
-					int[] inputResources = new int[]{0, 0, 0, 0};
-					int[] outPutResources = new int[]{0, 0, 0, 0};
-					mechanics.getPlayer(playerIndex).activateProduction(message.getSelectedProductions(), inputResources, outPutResources);
-					sendBoxes(view, playerIndex);
-					turnController.setTurnPhase(TurnPhase.MAIN_ACTION);
-
-				} catch (InvalidInputException e) { // cannot process the list of productions
-					view.askProductionAction(cardProductionsManagement.availableProductions());
-				}
+				int[] inputResources = new int[]{0, 0, 0, 0};
+				int[] outPutResources = new int[]{0, 0, 0, 0};
+				mechanics.getPlayer(playerIndex).activateProduction(message.getSelectedProductions(), inputResources, outPutResources);
+				sendBoxes(view, playerIndex);
+				turnController.setTurnPhase(TurnPhase.MAIN_ACTION);
+				
+				
 			}
 		} else { // productions cannot be completed
 			view.askProductionAction(cardProductionsManagement.availableProductions());
@@ -455,14 +452,10 @@ public class ServerSideController {
 					cardProductionsManagement.setInputResources(putResources(message));
 					view.askFreeOutput(cardProductionsManagement.numberOfFreeChoicesInOutputProductions(cardProductionsManagement.getSelectedInput()));
 			} else {
-				try {
-					int[] outputResources = new int[]{0, 0, 0, 0};
-					mechanics.getPlayer(playerIndex).activateProduction(cardProductionsManagement.getSelectedInput(), putResources(message), outputResources);
-					sendBoxes(view,playerIndex);
-					turnController.setTurnPhase(TurnPhase.MAIN_ACTION);
-				} catch (InvalidInputException e) {
-					view.askFreeInput(cardProductionsManagement.numberOfFreeChoicesInInputProductions(cardProductionsManagement.getSelectedInput()));
-				}
+				int[] outputResources = new int[]{0, 0, 0, 0};
+				mechanics.getPlayer(playerIndex).activateProduction(cardProductionsManagement.getSelectedInput(), putResources(message), outputResources);
+				sendBoxes(view,playerIndex);
+				turnController.setTurnPhase(TurnPhase.MAIN_ACTION);
 			}
 		}
 		else view.askFreeInput(cardProductionsManagement.numberOfFreeChoicesInInputProductions(cardProductionsManagement.getSelectedInput()));
@@ -498,17 +491,13 @@ public class ServerSideController {
 		int playerIndex = nicknameList.indexOf(message.getNickname());
 		VirtualView view = virtualViewMap.get(message.getNickname());
 		CardProductionsManagement cardProductionsManagement = mechanics.getPlayer(playerIndex).getPlayersCardManager();
-		try {
-			mechanics.getPlayer(playerIndex).activateProduction(cardProductionsManagement.getSelectedInput(),
-					cardProductionsManagement.getInputResources(), putResources(message));
-
-			sendBoxes(view,playerIndex);
-			turnController.setTurnPhase(TurnPhase.MAIN_ACTION);
-		} catch (InvalidInputException e) {
-			e.printStackTrace();
-		}
-
-
+		mechanics.getPlayer(playerIndex).activateProduction(cardProductionsManagement.getSelectedInput(),
+				cardProductionsManagement.getInputResources(), putResources(message));
+		
+		sendBoxes(view,playerIndex);
+		turnController.setTurnPhase(TurnPhase.MAIN_ACTION);
+		
+		
 	}
 
 	/**

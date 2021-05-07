@@ -272,9 +272,4 @@ public class CardProductionsManagementTest {
 		assertArrayEquals(freeChoicesInput, cardProductionsManagement.getInputResources());
 	}
 	
-	@Test
-	void something() {
-	
-	}
-	
 }

@@ -185,9 +185,5 @@ public class VirtualView implements View, Observer {
 	@Override
 	public void connectionError() {
 	}
-
-	public ClientHandler getClientHandler() {
-		return clientHandler;
-	}
-
+	
 }

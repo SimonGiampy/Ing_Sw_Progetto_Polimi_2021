@@ -35,12 +35,7 @@ class GameMechanicsSinglePlayerTest {
 		//DevelopmentCardsDeck gameDevCardsDeck = new DevelopmentCardsDeck(mechanicsSinglePlayer.createCommonCardsDeck(devCards));
 		mechanicsSinglePlayer.instantiateGame(devCards,allLeaderCards,baseProduction,tiles,report);
 	}
-
-	@Test
-	void instantiateGame() {
-
-	}
-
+	
 	@Test
 	void revealTop() {
 		ArrayList<Token> tokenList = new ArrayList<>();

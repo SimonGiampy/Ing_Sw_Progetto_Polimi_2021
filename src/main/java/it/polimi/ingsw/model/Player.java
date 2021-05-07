@@ -274,10 +274,8 @@ public class Player {
 	 *                       When the production does not have ?, the caller set it to [0,0,0,0].
 	 * @param resourcesOutput is an array of number of Resources [#COIN,#SERVANT,#SHIELD,#STONE].
 	 *                       When the production does not have ?, the caller set it to [0,0,0,0].
-	 * @throws InvalidInputException when the production cannot be executed
 	 */
-	public void activateProduction(ArrayList<Productions> playerInput, int[] resourcesInput, int[] resourcesOutput)
-			throws InvalidInputException {
+	public void activateProduction(ArrayList<Productions> playerInput, int[] resourcesInput, int[] resourcesOutput) {
 		
 		//if (!cardManager.isSelectedProductionAvailable(playerInput))
 			//throw new InvalidInputException("Selected production not available");

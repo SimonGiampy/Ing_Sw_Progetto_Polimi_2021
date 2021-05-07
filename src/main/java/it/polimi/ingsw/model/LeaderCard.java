@@ -94,16 +94,9 @@ public class LeaderCard {
 	public ArrayList<CardRequirement> getCardRequirements() {
 		return cardRequirements;
 	}
-
-	public AbilityEffectActivation getEffectActivation(int whichAbility) {
-		return effectsActivation.get(whichAbility);
-	}
-
+	
 	public ArrayList<AbilityEffectActivation> getEffectsActivation() {
 		return effectsActivation;
 	}
-
-	public boolean isAbilitiesActivated() {
-		return abilitiesActivated;
-	}
+	
 }

@@ -138,6 +138,15 @@ public class ClientHandler implements Runnable {
 	 */
 	public void disconnect() {
 		if (connected) {
+			closeConnection();
+			
+			//disconnects the client handler from the lobby
+			if (lobby != null) lobby.onDisconnect(this);
+		}
+	}
+	
+	protected void closeConnection() {
+		if (connected) {
 			try {
 				if (!socket.isClosed()) {
 					socket.close();
@@ -147,9 +156,6 @@ public class ClientHandler implements Runnable {
 			}
 			connected = false;
 			Thread.currentThread().interrupt();
-			
-			//disconnects the client handler from the lobby
-			if (lobby != null) lobby.onDisconnect(this);
 		}
 	}
 	

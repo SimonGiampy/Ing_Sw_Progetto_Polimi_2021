@@ -191,7 +191,7 @@ public class Lobby {
 						}
 					}
 					if (gameStarted && user != null) { // game was already started
-						endGame(user);
+						haltGame(user);
 					} else if (handlersList.size() == 1) { // the host was the only one connected
 						handlersList.clear();
 						server.removeLobby(this);
@@ -216,7 +216,7 @@ public class Lobby {
 						}
 					}
 					if (gameStarted && user != null) { // if the game already started, halts it abruptly
-						endGame(user);
+						haltGame(user);
 					} else if (user != null) { // the client had already chosen a nickname but the game didn't start
 						LOGGER.info("Removed " + user.getNickname() + " from the connected players list");
 						nicknames.remove(user.getNickname());
@@ -300,7 +300,7 @@ public class Lobby {
 	 * if a client disconnects from the lobby when the game already started, the lobby closes it abruptly
 	 * @param user disconnected from the lobby
 	 */
-	private void endGame(User user) {
+	private void haltGame(User user) {
 		new Thread(() -> {
 			for (ClientHandler h: handlersList) {
 				if (!h.equals(user.getHandler())) {
@@ -310,6 +310,14 @@ public class Lobby {
 			server.removeLobby(this);
 		}).start();
 		
+	}
+	
+	public void endGame() {
+		Lobby.LOGGER.info("Game has ended.");
+		for (User user: clients) {
+			user.getHandler().closeConnection();
+		}
+		server.removeLobby(this);
 	}
 	
 	/**
