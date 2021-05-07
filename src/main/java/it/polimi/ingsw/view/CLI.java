@@ -833,7 +833,7 @@ public class CLI extends ViewObservable implements View {
 		for (int i = 0; i <= 1; i++) {
 			if (depot.isLeaderActivated(i)) {
 				System.out.print("Leader #" + (i+1) + "'s additional depot = ");
-				for (int r = 0; r <= depot.getExtraDepotResources().get(i).size(); r++) {
+				for (int r = 0; r < depot.getExtraDepotResources().get(i).size(); r++) {
 					if (depot.getExtraDepotContents().get(i).get(r)) {
 						System.out.println(depot.getExtraDepotResources().get(i).get(r).toString() + "  ");
 					}
@@ -1054,8 +1054,8 @@ public class CLI extends ViewObservable implements View {
 		System.out.println(Unicode.ANSI_YELLOW + "Yellow" + Unicode.RESET + " frame indicates that this tile is " +
 				"part of a Vatican Zone");
 		System.out.println(Unicode.ANSI_RED + "Red" + Unicode.RESET + " frame indicates that this tile is a Papal Space");
-		System.out.println("[" + Unicode.GREEN_BOLD+ "✓"+ Unicode.RESET + "/" + Unicode.RED_BOLD+"X"+Unicode.RESET +
-				" Num] shows if you are currently getting Victory Points from that Vatican Report" +
-				" and the amount of Victory Points");
+		System.out.println("[" + Unicode.GREEN_BOLD+ Unicode.TICK + Unicode.RESET + "/" + Unicode.RED_BOLD +
+				Unicode.CROSS_REPORT + Unicode.RESET + " Num] shows if you are currently getting " +
+				"Victory Points from that Vatican Report and the amount of Victory Points");
 	}
 }

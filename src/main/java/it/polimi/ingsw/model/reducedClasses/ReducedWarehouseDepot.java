@@ -10,7 +10,6 @@ public class ReducedWarehouseDepot implements Serializable {
 
 	private final ArrayList<Resources> incomingResources; //incoming resources from the market
 	private final Resources[] depot; // array of fixed length = 6, representing the pyramid
-	private final ArrayList<Integer> positionsIncomingResources; // memorizes the positions of the resources that have been moved from the deck
 
 	// list of 2 lists of resources, one for each leader. If the value of the first element in the list is NO_RES,
 	// then the corresponding leader is not activated yet. The size of the lists for the base case is 2
@@ -25,11 +24,10 @@ public class ReducedWarehouseDepot implements Serializable {
 	public ReducedWarehouseDepot(WarehouseDepot depot){
 		incomingResources=depot.getIncomingResources();
 		this.depot=depot.getDepot();
-		positionsIncomingResources= depot.getPositionsIncomingResources();
 		extraDepotResources=depot.getExtraDepotResources();
 		extraDepotContents=depot.getExtraDepotContents();
 		leader1 = depot.isLeaderActivated(0);
-		leader2 = depot.isLeaderActivated(0);
+		leader2 = depot.isLeaderActivated(1);
 	}
 
 	public ArrayList<Resources> getIncomingResources() {
@@ -38,10 +36,6 @@ public class ReducedWarehouseDepot implements Serializable {
 
 	public Resources[] getDepot() {
 		return depot;
-	}
-
-	public ArrayList<Integer> getPositionsIncomingResources() {
-		return positionsIncomingResources;
 	}
 
 	public ArrayList<ArrayList<Resources>> getExtraDepotResources() {

@@ -232,6 +232,9 @@ public class WarehouseDepotTest {
 		
 		depot.moveResourcesToAdditionalDepots(); // function to be tested
 		
+		CLI cli = new CLI();
+		cli.showDepot(new ReducedWarehouseDepot(depot));
+		
 		//lists of expected values to check
 		ArrayList<Boolean> expected1 = new ArrayList<>();
 		expected1.add(true);

@@ -1,5 +1,6 @@
 package it.polimi.ingsw.model;
 
+import it.polimi.ingsw.model.reducedClasses.ReducedDevelopmentCardsDeck;
 import it.polimi.ingsw.model.util.Colors;
 import it.polimi.ingsw.model.util.ListSet;
 import it.polimi.ingsw.model.util.Resources;
@@ -82,7 +83,7 @@ class DevelopmentCardsDeckTest {
 	
 	@Test
 	void discard2CardsForSinglePlayer() {
-		int stackSize = deck.getCardStackStructure()[0][0].size();
+		int stackSize = new ReducedDevelopmentCardsDeck(deck).getCardStackStructure()[0][0].size();
 		
 		for (int i = 0; i < stackSize / 2 * 3; i++) { // cards discarded twice at a time, for the 3 levels
 			assertFalse(deck.discard2Cards(Colors.PURPLE));
