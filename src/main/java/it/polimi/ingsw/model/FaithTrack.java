@@ -40,7 +40,8 @@ public class FaithTrack {
 		while(faithPoints > 0) {
 			if(!isTrackFinished()) {
 				currentPosition = currentPosition + 1;
-				if(track.get(currentPosition).isPapalSpace() && track.get(currentPosition).isInsideVatican(lastReportClaimed)) {
+				if(track.get(currentPosition).isPapalSpace() && lastReportClaimed < reportPoints.size()
+						&& track.get(currentPosition).isInsideVatican(lastReportClaimed)) {
 					reportsActivated.set(lastReportClaimed, true);
 					lastReportClaimed++;
 				}
