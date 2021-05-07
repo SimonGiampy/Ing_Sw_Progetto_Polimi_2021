@@ -36,39 +36,20 @@ public class ExtraProductionAbility implements AbilityEffectActivation {
 	}
 
 	@Override
-	public void appendPower(StringBuilder string) {
-		string.append("  In : ").append(ListSet.listMultiplicityToString(inputResources)).append("\n");
-		string.append("  Out: ").append(ListSet.listMultiplicityToString(outputResources)).append("\n");
-		string.append("       "+faithPointsOutput+ Unicode.RED_BOLD+Unicode.CROSS2+Unicode.RESET+"\n");
-	}
-
-	@Override
 	public int maxLength() {
 		int inputSize= (int) (8+4*inputResources.stream().distinct().count());
 		int outputSize=(int) (8+4*outputResources.stream().distinct().count());
 		return Math.max(inputSize, outputSize);
 	}
 
-	public ArrayList<Resources> getInputResources() {
-		return inputResources;
-	}
-
-	public int getFaithPointsOutput() {
-		return faithPointsOutput;
-	}
-
-	public ArrayList<Resources> getOutputResources() {
-		return outputResources;
-	}
-	
 	/**
 	 * description of the input and output parameters of the extra production ability
 	 * @return a list of input and output resources, and the faith points
 	 */
 	@Override
 	public String toString() {
-		return "Extra Production Ability : {" +	"inputResources = " + inputResources.toString() +
-				", faith Points in output = " + faithPointsOutput +
-				", outputResources = " + outputResources.toString() + '}';
+		return "  In : " + ListSet.listMultiplicityToString(inputResources) + "\n" +
+				"  Out: " + ListSet.listMultiplicityToString(outputResources) + "\n" +
+				"       " + faithPointsOutput + Unicode.RED_BOLD + Unicode.CROSS2 + Unicode.RESET + "\n";
 	}
 }

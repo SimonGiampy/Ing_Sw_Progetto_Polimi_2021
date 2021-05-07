@@ -76,7 +76,7 @@ class DevelopmentCardsDeckTest {
 		assertEquals(2, deck.lowestCardLevelAvailable(Colors.BLUE));
 		
 		// since the dev cards in the selected stack are finished, the stack is empty thus the method returns null
-		assertEquals(null, deck.claimCard(1, Colors.BLUE));
+		assertNull(deck.claimCard(1, Colors.BLUE));
 		
 	}
 	
@@ -85,10 +85,10 @@ class DevelopmentCardsDeckTest {
 		int stackSize = deck.getCardStackStructure()[0][0].size();
 		
 		for (int i = 0; i < stackSize / 2 * 3; i++) { // cards discarded twice at a time, for the 3 levels
-			assertEquals(false, deck.discard2Cards(Colors.PURPLE));
+			assertFalse(deck.discard2Cards(Colors.PURPLE));
 		}
-		
-		assertEquals(true, deck.discard2Cards(Colors.PURPLE)); // cannot discard 2 cards of this color anymore
+
+		assertTrue(deck.discard2Cards(Colors.PURPLE)); // cannot discard 2 cards of this color anymore
 		
 	}
 	

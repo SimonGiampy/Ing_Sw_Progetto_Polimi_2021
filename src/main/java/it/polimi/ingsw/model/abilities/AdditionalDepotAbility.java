@@ -26,10 +26,6 @@ public class AdditionalDepotAbility implements AbilityEffectActivation {
 	public void activateAbility(Player player) {
 		player.getPlayersWarehouseDepot().enableAdditionalDepot(abilityResource);
 	}
-
-	public ArrayList<Resources> getAbilityResource() {
-		return abilityResource;
-	}
 	
 	/**
 	 * description of ability properties and contents
@@ -37,22 +33,15 @@ public class AdditionalDepotAbility implements AbilityEffectActivation {
 	 */
 	@Override
 	public String toString() {
-		return "Additional Depot: resources = " + abilityResource.toString();
+		return "  Additional Depot:\n" +
+				"  " + ListSet.listMultiplicityToString(abilityResource) + "\n";
 	}
 
-	@Override
-	public void appendPower(StringBuilder string){
-		string.append("  Additional Depot:\n");
-		string.append("  "+ListSet.listMultiplicityToString(abilityResource)+"\n");
-	}
 
 	@Override
 	public int maxLength() {
 		int size= (int) (3+4*abilityResource.stream().distinct().count());
-		if(size>19)
-			return size;
-		else return 19;
+		return Math.max(size, 19);
 	}
-
 
 }

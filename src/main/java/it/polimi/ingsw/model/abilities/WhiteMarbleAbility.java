@@ -33,39 +33,24 @@ public class WhiteMarbleAbility implements AbilityEffectActivation {
 		player.getPlayersResourceDeck().setFromWhiteMarble(abilityResources, whiteMarbleNumber);
 	}
 
-	@Override
-	public void appendPower(StringBuilder string) {
-		string.append("  White Marble Ability:\n  ");
-		for (int i = 0; i < whiteMarbleNumber; i++) {
-			string.append("\uD83D\uDFE3 ");
-		}
-		string.append("= ");
-		string.append(ListSet.listMultiplicityToString(abilityResources)+"\n");
-	}
 
 	@Override
 	public int maxLength() {
 		int size=(int)(5+3*whiteMarbleNumber+4*abilityResources.stream().distinct().count());
-		if (size>23)
-			return size;
-		else return 23;
+		return Math.max(size, 23);
 	}
 
-	public ArrayList<Resources> getAbilityResources() {
-		return abilityResources;
-	}
 
-	public int getWhiteMarbleNumber() {
-		return whiteMarbleNumber;
-	}
-	
 	/**
 	 * description of the ability with input white marbles, and output = list of resources
 	 * @return description of the input and output
 	 */
 	@Override
 	public String toString() {
-		return "WhiteMarble Ability { " + "resources transformed = " + abilityResources.toString() +
-				", white marbles number = " + whiteMarbleNumber + '}';
+
+		return "  White Marble Ability:\n  " +
+				"\uD83D\uDFE3 ".repeat(Math.max(0, whiteMarbleNumber)) +
+				"= " +
+				ListSet.listMultiplicityToString(abilityResources) + "\n";
 	}
 }

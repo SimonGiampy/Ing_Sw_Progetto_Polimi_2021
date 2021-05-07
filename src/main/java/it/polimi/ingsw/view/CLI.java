@@ -393,7 +393,7 @@ public class CLI extends ViewObservable implements View {
 		if (depot.getIncomingResources().size() == 0) {
 			regexGoingToWarehouse = "move\s[1-6]\sfrom\sdepot\sto\s[1-6]";
 		} else {
-			regexGoingToWarehouse = "move\s(([1-" + depot.getIncomingResources().size() + "]\sfrom\sdeck)|([1-6]\sfrom\sdepot))\sto[1-6]";
+			regexGoingToWarehouse = "move\s(([1-" + depot.getIncomingResources().size() + "]\sfrom\sdeck)|([1-6]\sfrom\sdepot))\sto\s[1-6]";
 		}
 		String regexGoingToDeck = "move\s[1-6]\sto\sdeck"; //regex pattern for reading input for moving back to the deck
 		
@@ -878,7 +878,7 @@ public class CLI extends ViewObservable implements View {
 		if(card.getCardRequirements().size()!=0)
 			string.append("  REQs ").append(ListSet.listMultiplicityToString(card.getCardRequirements())).append("\n");
 		for (AbilityEffectActivation abilityEffectActivation : card.getEffectsActivation()) {
-			abilityEffectActivation.appendPower(string);
+			abilityEffectActivation.toString();
 		}
 		if(card.isAbilitiesActivated()) string.append(Unicode.ANSI_GREEN);
 		string.append(Unicode.BOTTOM_LEFT);

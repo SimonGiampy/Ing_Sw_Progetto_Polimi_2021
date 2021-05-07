@@ -20,16 +20,17 @@ public class TurnController {
 	private final ArrayList<String> nicknameList;
 	private final HashMap<String, VirtualView> virtualViewMap;
 	private final ServerSideController serverSideController;
-	private boolean endOfTurn;
+	//private boolean endOfTurn;
 	private boolean endOfGame;
 	private boolean endgameStarted;
 	private int remainingTurn;
 
 
+	public boolean isMainActionDone() {
+		return mainActionDone;
+	}
 
-	private boolean MainActionDone;
-	private TurnPhase turnPhase;
-
+	private boolean mainActionDone;
 
 
 	private boolean leaderAction;
@@ -47,14 +48,6 @@ public class TurnController {
 		endgameStarted=false;
 	}
 
-	public String getActivePlayer() {
-		return activePlayer;
-	}
-
-	public void setActivePlayer(String activePlayer) {
-		this.activePlayer = activePlayer;
-	}
-
 	/**
 	 * set next active player
 	 */
@@ -68,9 +61,9 @@ public class TurnController {
 	}
 
 	public void startTurn(){
-		setEndOfTurn(false);
-		setLeaderAction(false);
-		setMainActionDone(false);
+		//endOfTurn=false;
+		leaderAction=false;
+		mainActionDone=false;
 		VirtualView view= virtualViewMap.get(activePlayer);
 		view.showGenericMessage("It's your turn!");
 		turnAskAction();
@@ -84,18 +77,6 @@ public class TurnController {
 			view.askAction(mechanics.getPlayer(playerIndex).checkAvailableNormalActions());
 		else
 			view.askAction(mechanics.getPlayer(playerIndex).checkAvailableActions());
-	}
-
-	public void setEndOfTurn(boolean endOfTurn) {
-		this.endOfTurn = endOfTurn;
-	}
-
-	public void setLeaderAction(boolean leaderAction) {
-		this.leaderAction = leaderAction;
-	}
-
-	public TurnPhase getPhaseType() {
-		return turnPhase;
 	}
 
 	private void tokenActivation(){
@@ -118,9 +99,8 @@ public class TurnController {
 	}
 
 	public void setTurnPhase(TurnPhase turnPhase) {
-		this.turnPhase = turnPhase;
 		if(turnPhase == TurnPhase.MAIN_ACTION){
-			setMainActionDone(true);
+			mainActionDone=true;
 			int playerIndex= nicknameList.indexOf(activePlayer);
 			Player player= mechanics.getPlayer(playerIndex);
 			if(leaderAction || player.checkAvailableLeaderActions().size()==0){
@@ -128,12 +108,12 @@ public class TurnController {
 			}
 			else {
 				turnAskLeaderAction();
-				setEndOfTurn(true);
+				//endOfTurn=true;
 			}
 		}
 		else if (turnPhase == TurnPhase.LEADER_ACTION){
-			setLeaderAction(true);
-			if(MainActionDone){
+			leaderAction=true;
+			if(mainActionDone){
 				endTurn();
 			}
 			else turnAskAction();
@@ -209,27 +189,4 @@ public class TurnController {
 		view.askLeaderAction(leaderCards);
 	}
 
-	public void setMainActionDone(boolean mainActionDone) {
-		MainActionDone = mainActionDone;
-	}
-
-	public boolean isMainActionDone() {
-		return MainActionDone;
-	}
-
-	public boolean isEndOfGame() {
-		return endOfGame;
-	}
-
-	public void setEndOfGame(boolean endOfGame) {
-		this.endOfGame = endOfGame;
-	}
-
-	public void setEndgameStarted(boolean endgameStarted) {
-		this.endgameStarted = endgameStarted;
-	}
-
-	public void setRemainingTurn(int remainingTurn) {
-		this.remainingTurn = remainingTurn;
-	}
 }

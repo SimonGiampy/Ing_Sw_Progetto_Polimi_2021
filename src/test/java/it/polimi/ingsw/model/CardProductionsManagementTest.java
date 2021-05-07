@@ -248,7 +248,7 @@ public class CardProductionsManagementTest {
 		
 		// if the result is correct, then the difference of the resulting set and the expected result is an emtpy set of resources
 		ArrayList<Resources> difference = ListSet.removeSubSet(strongbox.getContent(), result);
-		assertEquals(true, difference.isEmpty());
+		assertTrue(difference.isEmpty());
 	}
 	
 	

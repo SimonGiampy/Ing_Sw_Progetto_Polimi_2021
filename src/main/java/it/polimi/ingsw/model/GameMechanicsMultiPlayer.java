@@ -153,14 +153,14 @@ public class GameMechanicsMultiPlayer {
 		} else {
 			// calculation based on the number of resources accumulated among the players with top score
 			ArrayList<Player> winnersResources = new ArrayList<>();
-			for (int i = 0; i < winnersPoints.size(); i++) {
-				if (winnersPoints.get(i).numberOfResources() > maxRes) {
-					maxRes = winnersPoints.get(i).numberOfResources();
+			for (Player winnersPoint : winnersPoints) {
+				if (winnersPoint.numberOfResources() > maxRes) {
+					maxRes = winnersPoint.numberOfResources();
 				}
 			}
-			for (int i = 0; i < winnersPoints.size(); i++) {
-				if (winnersPoints.get(i).numberOfResources() == maxRes) {
-					winnersResources.add(winnersPoints.get(i));
+			for (Player winnersPoint : winnersPoints) {
+				if (winnersPoint.numberOfResources() == maxRes) {
+					winnersResources.add(winnersPoint);
 				}
 			}
 			

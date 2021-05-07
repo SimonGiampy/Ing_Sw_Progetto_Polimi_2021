@@ -32,29 +32,18 @@ public class DiscountAbility implements AbilityEffectActivation {
 	}
 
 	@Override
-	public void appendPower(StringBuilder string) {
-		string.append("  Discount Ability:\n");
-		string.append("  "+ListSet.listMultiplicityToString(singleDiscounts)+"\n");
-	}
-
-	@Override
 	public int maxLength() {
 		int size= (int) (3+4*singleDiscounts.stream().distinct().count());
-		if (size>19)
-			return size;
-		else return 19;
+		return Math.max(size, 19);
 	}
 
-	public ArrayList<Resources> getSingleDiscounts() {
-		return singleDiscounts;
-	}
-	
 	/**
 	 * description of the discounts applied
 	 * @return a list of resources representing single discounts
 	 */
 	@Override
 	public String toString() {
-		return "Discount Ability: discounts = " + singleDiscounts.toString();
+		return "  Discount Ability:\n" +
+				"  " + ListSet.listMultiplicityToString(singleDiscounts) + "\n";
 	}
 }

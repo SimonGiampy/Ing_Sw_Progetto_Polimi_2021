@@ -93,7 +93,7 @@ class GameMechanicsMultiPlayerTest {
 		game.getPlayer(1).getMyStrongbox().storeResources(resources);
 		game.getPlayer(2).getMyStrongbox().storeResources(resources);
 		
-		// calulation of winning players
+		// calculation of winning players
 		int[] winners = game.winningPlayers();
 		assertEquals(0, winners[1]); // winner
 		assertEquals(2, winners.length);
