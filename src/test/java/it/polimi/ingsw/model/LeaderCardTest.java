@@ -1,5 +1,6 @@
 package it.polimi.ingsw.model;
 
+import it.polimi.ingsw.model.reducedClasses.ReducedLeaderCard;
 import it.polimi.ingsw.model.util.Colors;
 import it.polimi.ingsw.model.abilities.AbilityEffectActivation;
 import it.polimi.ingsw.model.abilities.DiscountAbility;
@@ -101,6 +102,21 @@ class LeaderCardTest {
 		effectActivations.add(disc);
 		LeaderCard leaderCard = new LeaderCard(0,new ArrayList<>(), leaderInput, effectActivations);
 		assertTrue(leaderCard.checkCards(playerCards));
+	}
+	
+	@Test
+	void reduced() {
+		ArrayList<CardRequirement> leaderInput=new ArrayList<>();
+		leaderInput.add(yellow1);
+		leaderInput.add(blue1);
+		DiscountAbility disc = new DiscountAbility(new ArrayList<>());
+		ArrayList<AbilityEffectActivation> effectActivations = new ArrayList<>();
+		effectActivations.add(disc);
+		LeaderCard leaderCard = new LeaderCard(0,new ArrayList<>(), leaderInput, effectActivations);
+		
+		ReducedLeaderCard reduced = new ReducedLeaderCard(leaderCard, false, false, true);
+		assertTrue(!reduced.isDiscarded());
+		assertTrue(reduced.isPlayable());
 	}
 
 }

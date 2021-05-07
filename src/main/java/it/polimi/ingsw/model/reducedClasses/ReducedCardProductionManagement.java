@@ -9,20 +9,13 @@ import java.util.Stack;
 public class ReducedCardProductionManagement implements Serializable {
 	
 	private final ArrayList<Stack<DevelopmentCard>> cards;
-	//private final ProductionRules[] productions;
 
-	ReducedCardProductionManagement(CardProductionsManagement productionsManagement){
+	public ReducedCardProductionManagement(CardProductionsManagement productionsManagement){
 		cards = productionsManagement.getCards();
-		//productions = productionsManagement.getProductions();
 	}
 
 	public ArrayList<Stack<DevelopmentCard>> getCards() {
 		return cards;
 	}
-
-	/*
-	public ProductionRules[] getProductions() {
-		return productions;
-	}
-	 */
+	
 }

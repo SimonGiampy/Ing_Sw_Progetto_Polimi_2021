@@ -833,7 +833,7 @@ public class CLI extends ViewObservable implements View {
 		for (int i = 0; i <= 1; i++) {
 			if (depot.isLeaderActivated(i)) {
 				System.out.print("Leader #" + (i+1) + "'s additional depot = ");
-				for (int r = 0; r <= depot.getExtraDepotResources().get(i).size(); r++) {
+				for (int r = 0; r < depot.getExtraDepotResources().get(i).size(); r++) {
 					if (depot.getExtraDepotContents().get(i).get(r)) {
 						System.out.println(depot.getExtraDepotResources().get(i).get(r).toString() + "  ");
 					}

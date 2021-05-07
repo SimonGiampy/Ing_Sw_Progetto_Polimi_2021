@@ -1,5 +1,6 @@
 package it.polimi.ingsw.model;
 
+import it.polimi.ingsw.model.reducedClasses.ReducedCardProductionManagement;
 import it.polimi.ingsw.model.reducedClasses.ReducedStrongbox;
 import it.polimi.ingsw.model.util.Colors;
 import it.polimi.ingsw.model.util.ListSet;
@@ -88,6 +89,9 @@ public class CardProductionsManagementTest {
 		result.add(new CardRequirement(Colors.YELLOW,2));
 		ArrayList<CardRequirement> test = cardProductionsManagement.getPlayerCardsRequirements();
 		assertEquals(result, test);
+		
+		System.out.println("victory points: " + new ReducedCardProductionManagement(cardProductionsManagement)
+				.getCards().get(0).peek().getVictoryPoints());
 	}
 	
 	/**
@@ -266,6 +270,11 @@ public class CardProductionsManagementTest {
 		int[] freeChoicesInput = new int[]{2, 1, 0, 0}; //[#COIN, #SERVANT, #SHIELD, #STONE]
 		cardProductionsManagement.setInputResources(freeChoicesInput);
 		assertArrayEquals(freeChoicesInput, cardProductionsManagement.getInputResources());
+	}
+	
+	@Test
+	void something() {
+	
 	}
 	
 }
