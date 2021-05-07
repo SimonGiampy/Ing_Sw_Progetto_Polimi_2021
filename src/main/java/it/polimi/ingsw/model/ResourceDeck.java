@@ -139,10 +139,6 @@ public class ResourceDeck {
 		return whiteMarblesInput2 > 0;
 	}
 
-	public Marbles[] getMarblesFromMarket() {
-		return marblesFromMarket;
-	}
-
 	public void setMarblesFromMarket(Marbles[] marblesFromMarket) {
 		this.marblesFromMarket = marblesFromMarket;
 	}

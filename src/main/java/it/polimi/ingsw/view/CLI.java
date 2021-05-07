@@ -1054,8 +1054,8 @@ public class CLI extends ViewObservable implements View {
 		System.out.println(Unicode.ANSI_YELLOW + "Yellow" + Unicode.RESET + " frame indicates that this tile is " +
 				"part of a Vatican Zone");
 		System.out.println(Unicode.ANSI_RED + "Red" + Unicode.RESET + " frame indicates that this tile is a Papal Space");
-		System.out.println("[" + Unicode.GREEN_BOLD+ "✓"+ Unicode.RESET + "/" + Unicode.RED_BOLD+"X"+Unicode.RESET +
-				" Num] shows if you are currently getting Victory Points from that Vatican Report" +
-				" and the amount of Victory Points");
+		System.out.println("[" + Unicode.GREEN_BOLD+ Unicode.TICK + Unicode.RESET + "/" + Unicode.RED_BOLD +
+				Unicode.CROSS_REPORT + Unicode.RESET + " Num] shows if you are currently getting " +
+				"Victory Points from that Vatican Report and the amount of Victory Points");
 	}
 }
