@@ -18,12 +18,14 @@ public class GUI extends ViewObservable implements View {
 	
 	@Override
 	public void showLobbyList(ArrayList<String> lobbyList, int idVersion) {
+		LobbyAccess lobbyAccess = new LobbyAccess();
+		lobbyAccess.update(lobbyList);
 		switcher.changeRootPane(observers, "lobby_access.fxml");
 	}
 	
 	@Override
 	public void askNumberOfPlayer() {
-	
+
 	}
 	
 	@Override
