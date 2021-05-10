@@ -7,6 +7,7 @@ import it.polimi.ingsw.observers.ViewObservable;
 import it.polimi.ingsw.view.View;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class GUI extends ViewObservable implements View {
 	
@@ -19,7 +20,9 @@ public class GUI extends ViewObservable implements View {
 	@Override
 	public void showLobbyList(ArrayList<String> lobbyList, int idVersion) {
 		LobbyAccess lobbyAccess = new LobbyAccess();
-		lobbyAccess.update(lobbyList);
+		lobbyAccess.addAllObservers(observers);
+		//lobbyAccess.update(lobbyList);
+		lobbyAccess.update(new ArrayList<>(Arrays.asList("madonna", "cagna")));
 		switcher.changeRootPane(observers, "lobby_access.fxml");
 	}
 	

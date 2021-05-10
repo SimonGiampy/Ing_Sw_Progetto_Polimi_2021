@@ -1,21 +1,24 @@
 package it.polimi.ingsw.view.gui;
 
 import it.polimi.ingsw.observers.ViewObservable;
-import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.Event;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
-import javafx.stage.Stage;
 
+import java.net.URL;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.ResourceBundle;
 
-public class LobbyAccess extends ViewObservable {
+public class LobbyAccess extends ViewObservable implements Initializable, SceneController {
 
 	@FXML public Button btnCreateLobby;
 	@FXML public ListView<String> lobbyList;
@@ -29,19 +32,10 @@ public class LobbyAccess extends ViewObservable {
 	@FXML public Button btnConfirmNick;
 	@FXML public Button btnConfirmConfig;
 
-	public ArrayList<String> lobbies;
+	public List<String> lobbiesDescription;
 
 
-	@FXML
-	public void initialize(){
-		btnCreateLobby.addEventHandler(MouseEvent.MOUSE_CLICKED, this::onCreateLobby);
-		btnJoinLobby.addEventHandler(MouseEvent.MOUSE_CLICKED, this::onJoinLobby);
-		btnConfirmNum.addEventHandler(MouseEvent.MOUSE_CLICKED, this::onConfirmNum);
-		btnConfirmNum.addEventHandler(MouseEvent.MOUSE_CLICKED, this::onConfirmNick);
-		btnConfirmConfig.addEventHandler(MouseEvent.MOUSE_CLICKED, this::onConfirmConfig);
-		ObservableList<String> list = FXCollections.observableArrayList(lobbies);
-		this.lobbyList.setItems(list);
-	}
+	
 
 	public void onCreateLobby(Event event){
 
@@ -64,6 +58,27 @@ public class LobbyAccess extends ViewObservable {
 	}
 
 	public void update(ArrayList<String> lobbyList){
-		lobbies = lobbyList;
+		lobbiesDescription = lobbyList;
+	}
+	
+	@Override
+	public void initialize(URL url, ResourceBundle resourceBundle) {
+		btnCreateLobby.addEventHandler(MouseEvent.MOUSE_CLICKED, this::onCreateLobby);
+		btnJoinLobby.addEventHandler(MouseEvent.MOUSE_CLICKED, this::onJoinLobby);
+		btnConfirmNum.addEventHandler(MouseEvent.MOUSE_CLICKED, this::onConfirmNum);
+		btnConfirmNum.addEventHandler(MouseEvent.MOUSE_CLICKED, this::onConfirmNick);
+		btnConfirmConfig.addEventHandler(MouseEvent.MOUSE_CLICKED, this::onConfirmConfig);
+		lobbyList.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
+			@Override
+			public void handle(MouseEvent event) {
+				ObservableList<String> strings = FXCollections.observableList(lobbiesDescription);
+				lobbyList.setItems(strings);
+			}
+		});
+		
+		// this two lines crash the program for some reason, when put in the initialize method
+		//ObservableList<String> list = FXCollections.observableList(lobbies);
+		//lobbyList.setItems(list);
+		
 	}
 }

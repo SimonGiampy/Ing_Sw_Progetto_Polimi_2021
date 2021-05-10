@@ -13,6 +13,7 @@ import java.util.List;
 public class SceneSwitcher extends ViewObservable {
 	
 	private Scene activeScene;
+	private SceneController activeController;
 	
 	public SceneSwitcher(Scene scene) {
 		this.activeScene = scene;
@@ -22,10 +23,10 @@ public class SceneSwitcher extends ViewObservable {
 		try {
 			FXMLLoader loader = new FXMLLoader(SceneSwitcher.class.getResource("/fxml/" + fxml));
 			Parent root = loader.load();
-			ViewObservable controller = loader.getController();
-			controller.addAllObservers(observerList);
+			SceneController controller = loader.getController();
+			((ViewObservable) controller).addAllObservers(observerList);
 			
-			//activeController = (GenericSceneController) controller;
+			activeController = controller;
 			activeScene = scene;
 			activeScene.setRoot(root);
 		} catch (IOException e) {
@@ -38,4 +39,27 @@ public class SceneSwitcher extends ViewObservable {
 		changeRootPane(observerList, activeScene, fxml);
 	}
 	
+	public void changeRootPane(SceneController controller, Scene scene, String fxml) {
+		try {
+			FXMLLoader loader = new FXMLLoader(SceneSwitcher.class.getResource("/fxml/" + fxml));
+			
+			// Setting the controller BEFORE the load() method.
+			loader.setController(controller);
+			activeController = controller;
+			Parent root = loader.load();
+			
+			activeScene = scene;
+			activeScene.setRoot(root);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public void changeRootPane(SceneController controller, String fxml) {
+		changeRootPane(controller, activeScene, fxml);
+	}
+	
+	public SceneController getActiveController() {
+		return activeController;
+	}
 }

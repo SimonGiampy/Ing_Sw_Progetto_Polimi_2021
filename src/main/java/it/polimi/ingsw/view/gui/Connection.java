@@ -11,7 +11,7 @@ import javafx.scene.input.MouseEvent;
 
 import java.util.HashMap;
 
-public class Connection extends ViewObservable {
+public class Connection extends ViewObservable implements SceneController {
 	
 	@FXML Button connect;
 	@FXML TextField address;
