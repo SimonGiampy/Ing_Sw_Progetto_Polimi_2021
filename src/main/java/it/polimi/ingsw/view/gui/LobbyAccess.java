@@ -58,7 +58,9 @@ public class LobbyAccess extends ViewObservable implements Initializable, SceneC
 	}
 
 	public void update(ArrayList<String> lobbyList){
-		lobbiesDescription = lobbyList;
+		ObservableList<String> lobbies = FXCollections.observableList(lobbyList);
+		this.lobbyList.setItems(lobbies);
+
 	}
 	
 	@Override
@@ -68,13 +70,15 @@ public class LobbyAccess extends ViewObservable implements Initializable, SceneC
 		btnConfirmNum.addEventHandler(MouseEvent.MOUSE_CLICKED, this::onConfirmNum);
 		btnConfirmNum.addEventHandler(MouseEvent.MOUSE_CLICKED, this::onConfirmNick);
 		btnConfirmConfig.addEventHandler(MouseEvent.MOUSE_CLICKED, this::onConfirmConfig);
-		lobbyList.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
+		/*lobbyList.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {
 				ObservableList<String> strings = FXCollections.observableList(lobbiesDescription);
 				lobbyList.setItems(strings);
 			}
 		});
+
+		 */
 		
 		// this two lines crash the program for some reason, when put in the initialize method
 		//ObservableList<String> list = FXCollections.observableList(lobbies);

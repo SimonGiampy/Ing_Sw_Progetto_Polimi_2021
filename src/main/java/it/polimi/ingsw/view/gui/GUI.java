@@ -11,7 +11,7 @@ import java.util.Arrays;
 
 public class GUI extends ViewObservable implements View {
 	
-	private SceneSwitcher switcher;
+	private final SceneSwitcher switcher;
 	
 	public GUI(SceneSwitcher switcher) {
 		this.switcher = switcher;
@@ -19,11 +19,12 @@ public class GUI extends ViewObservable implements View {
 	
 	@Override
 	public void showLobbyList(ArrayList<String> lobbyList, int idVersion) {
-		LobbyAccess lobbyAccess = new LobbyAccess();
-		lobbyAccess.addAllObservers(observers);
-		//lobbyAccess.update(lobbyList);
-		lobbyAccess.update(new ArrayList<>(Arrays.asList("madonna", "cagna")));
+		LobbyAccess lobbyAccess;
+		//lobbyAccess.addAllObservers(observers);
 		switcher.changeRootPane(observers, "lobby_access.fxml");
+		lobbyAccess= (LobbyAccess) switcher.getActiveController();
+		lobbyAccess.update(lobbyList);
+		//lobbyAccess.update(new ArrayList<>(Arrays.asList("madonna", "cagna")));
 	}
 	
 	@Override
