@@ -7,7 +7,7 @@ import it.polimi.ingsw.model.util.Unicode;
  */
 public class Logger {
 	
-	private static final boolean DEBUG_ACTIVE = true; // activate or deactivate logging in the game
+	private static final boolean DEBUG_ACTIVE = false; // activate or deactivate logging in the game
 	
 	private final String className; // name of the class sending the log message
 	

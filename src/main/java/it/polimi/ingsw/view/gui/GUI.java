@@ -7,6 +7,8 @@ import it.polimi.ingsw.observers.ViewObservable;
 import it.polimi.ingsw.view.View;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.layout.Pane;
+import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -39,9 +41,9 @@ public class GUI extends ViewObservable implements View {
 		//lobbyAccess.addAllObservers(observers);
 		//switcher.changeRootPane(observers, "lobby_access.fxml");
 		//lobbyAccess = (LobbyAccess) switcher.getActiveController();
-		
 		setRoot("lobby_access.fxml");
 		lobbyAccess = (LobbyAccess) controller;
+		lobbyAccess.addAllObservers(observers);
 		lobbyAccess.update(lobbyList,idVersion);
 	}
 	
@@ -50,8 +52,12 @@ public class GUI extends ViewObservable implements View {
 	@Override
 	public void askNumberOfPlayer() {
 		System.out.println("num asked");
-		LobbyAccess lobbyAccess = (LobbyAccess) controller;
-		lobbyAccess.fieldNumPlayers.setVisible(true);
+		setRoot("numberOfPlayers.fxml");
+		//LobbyAccess lobbyAccess = (LobbyAccess) controller;
+		//lobbyAccess.fieldNumPlayers.setVisible(true);
+
+
+
 	}
 	
 	@Override
