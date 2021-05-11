@@ -7,6 +7,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 
 import java.io.IOException;
 
@@ -18,8 +19,6 @@ public class AppGui extends Application {
 	
 	@Override
 	public void start(Stage stage) {
-		
-		
 		FXMLLoader loader = new FXMLLoader();
 		loader.setLocation(getClass().getResource("/fxml/connection.fxml"));
 		Parent rootLayout;
@@ -30,21 +29,22 @@ public class AppGui extends Application {
 			return;
 		}
 		
-		
-		
 		Scene scene = new Scene(rootLayout);
-		
-		SceneSwitcher switcher = new SceneSwitcher(scene);
-		GUI gui = new GUI(switcher);
+		GUI gui = new GUI(scene);
 		ClientSideController clientController = new ClientSideController(gui);
 		gui.attach(clientController);
 		
 		Connection controller = loader.getController();
 		controller.attach(clientController);
+		//TODO: check if the observables lists are actually needed
 		
 		stage.setScene(scene);
 		stage.setResizable(false);
 		stage.setTitle("Masters of Renaissance");
+		stage.setOnCloseRequest((WindowEvent t) -> {
+			Platform.exit();
+			System.exit(0);
+		});
 		stage.show();
 	}
 	

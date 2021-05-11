@@ -5,32 +5,53 @@ import it.polimi.ingsw.model.reducedClasses.*;
 import it.polimi.ingsw.model.util.*;
 import it.polimi.ingsw.observers.ViewObservable;
 import it.polimi.ingsw.view.View;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 
 public class GUI extends ViewObservable implements View {
 	
-	private final SceneSwitcher switcher;
+	private static Scene scene;
+	private static SceneController controller;
+	FXMLLoader fxmlLoader;
 	
-	public GUI(SceneSwitcher switcher) {
-		this.switcher = switcher;
+	public GUI(Scene scene) {
+		this.scene = scene;
+	}
+	
+	public void setRoot(String fxml) {
+		FXMLLoader fxmlLoader = new FXMLLoader(GUI.class.getResource(fxml));
+		scene.setUserData(fxmlLoader);
+		try {
+			scene.setRoot(fxmlLoader.load());
+		} catch (IOException e) {
+			Thread.currentThread().interrupt();
+		}
+		controller = fxmlLoader.getController();
 	}
 	
 	@Override
 	public void showLobbyList(ArrayList<String> lobbyList, int idVersion) {
 		LobbyAccess lobbyAccess;
 		//lobbyAccess.addAllObservers(observers);
-		switcher.changeRootPane(observers, "lobby_access.fxml");
-		lobbyAccess= (LobbyAccess) switcher.getActiveController();
+		//switcher.changeRootPane(observers, "lobby_access.fxml");
+		//lobbyAccess = (LobbyAccess) switcher.getActiveController();
+		
+		setRoot("lobby_access.fxml");
+		lobbyAccess = (LobbyAccess) controller;
 		lobbyAccess.update(lobbyList,idVersion);
-		//lobbyAccess.update(new ArrayList<>(Arrays.asList("madonna", "cagna")));
 	}
+	
+	
 	
 	@Override
 	public void askNumberOfPlayer() {
-
-
+		System.out.println("num asked");
+		LobbyAccess lobbyAccess = (LobbyAccess) controller;
+		lobbyAccess.fieldNumPlayers.setVisible(true);
 	}
 	
 	@Override

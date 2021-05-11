@@ -32,7 +32,7 @@ public class LobbyAccess extends ViewObservable implements Initializable, SceneC
 	@FXML public Button btnConfirmNick;
 	@FXML public Button btnConfirmConfig;
 
-	public List<String> lobbiesDescription;
+	
 	private int idVersion;
 
 
@@ -40,7 +40,7 @@ public class LobbyAccess extends ViewObservable implements Initializable, SceneC
 
 	public void onCreateLobby(Event event){
 		new Thread(() -> notifyObserver(obs -> obs.onUpdateLobbyAccess(0,idVersion))).start();
-		fieldNumPlayers.setVisible(true);
+		//fieldNumPlayers.setVisible(true);
 
 	}
 
@@ -76,19 +76,6 @@ public class LobbyAccess extends ViewObservable implements Initializable, SceneC
 		btnConfirmNum.addEventHandler(MouseEvent.MOUSE_CLICKED, this::onConfirmNum);
 		btnConfirmNum.addEventHandler(MouseEvent.MOUSE_CLICKED, this::onConfirmNick);
 		btnConfirmConfig.addEventHandler(MouseEvent.MOUSE_CLICKED, this::onConfirmConfig);
-		/*lobbyList.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
-			@Override
-			public void handle(MouseEvent event) {
-				ObservableList<String> strings = FXCollections.observableList(lobbiesDescription);
-				lobbyList.setItems(strings);
-			}
-		});
-
-		 */
-		
-		// this two lines crash the program for some reason, when put in the initialize method
-		//ObservableList<String> list = FXCollections.observableList(lobbies);
-		//lobbyList.setItems(list);
 		
 	}
 }
