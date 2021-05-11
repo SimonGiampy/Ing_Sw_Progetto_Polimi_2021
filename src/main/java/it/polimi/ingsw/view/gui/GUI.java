@@ -23,12 +23,13 @@ public class GUI extends ViewObservable implements View {
 		//lobbyAccess.addAllObservers(observers);
 		switcher.changeRootPane(observers, "lobby_access.fxml");
 		lobbyAccess= (LobbyAccess) switcher.getActiveController();
-		lobbyAccess.update(lobbyList);
+		lobbyAccess.update(lobbyList,idVersion);
 		//lobbyAccess.update(new ArrayList<>(Arrays.asList("madonna", "cagna")));
 	}
 	
 	@Override
 	public void askNumberOfPlayer() {
+
 
 	}
 	

@@ -33,11 +33,14 @@ public class LobbyAccess extends ViewObservable implements Initializable, SceneC
 	@FXML public Button btnConfirmConfig;
 
 	public List<String> lobbiesDescription;
+	private int idVersion;
 
 
 	
 
 	public void onCreateLobby(Event event){
+		new Thread(() -> notifyObserver(obs -> obs.onUpdateLobbyAccess(0,idVersion))).start();
+		fieldNumPlayers.setVisible(true);
 
 	}
 
@@ -46,6 +49,8 @@ public class LobbyAccess extends ViewObservable implements Initializable, SceneC
 	}
 
 	public void onConfirmNum(Event event){
+		//fieldNumPlayers.g
+		new Thread(() -> notifyObserver(obs -> obs.onUpdatePlayersNumber(1))).start();
 
 	}
 
@@ -57,9 +62,10 @@ public class LobbyAccess extends ViewObservable implements Initializable, SceneC
 
 	}
 
-	public void update(ArrayList<String> lobbyList){
+	public void update(ArrayList<String> lobbyList, int idVersion){
 		ObservableList<String> lobbies = FXCollections.observableList(lobbyList);
 		this.lobbyList.setItems(lobbies);
+		this.idVersion=idVersion;
 
 	}
 	
