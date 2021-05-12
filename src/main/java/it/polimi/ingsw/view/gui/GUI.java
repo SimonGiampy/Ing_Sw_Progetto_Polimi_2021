@@ -18,7 +18,6 @@ public class GUI extends ViewObservable implements View {
 	
 	private static Scene scene;
 	private static SceneController controller;
-	FXMLLoader fxmlLoader;
 	
 	public GUI(Scene scene) {
 		this.scene = scene;
@@ -26,7 +25,7 @@ public class GUI extends ViewObservable implements View {
 	
 	public void setRoot(String fxml) {
 		FXMLLoader fxmlLoader = new FXMLLoader(GUI.class.getResource(fxml));
-		scene.setUserData(fxmlLoader);
+		//scene.setUserData(fxmlLoader); // this is most likely not needed
 		try {
 			scene.setRoot(fxmlLoader.load());
 		} catch (IOException e) {
@@ -38,36 +37,31 @@ public class GUI extends ViewObservable implements View {
 	@Override
 	public void showLobbyList(ArrayList<String> lobbyList, int idVersion) {
 		LobbyAccess lobbyAccess;
-		//lobbyAccess.addAllObservers(observers);
-		//switcher.changeRootPane(observers, "lobby_access.fxml");
-		//lobbyAccess = (LobbyAccess) switcher.getActiveController();
 		setRoot("lobby_access.fxml");
 		lobbyAccess = (LobbyAccess) controller;
 		lobbyAccess.addAllObservers(observers);
 		lobbyAccess.update(lobbyList,idVersion);
 	}
 	
-	
+	@Override
+	public void showLobbyConfirmation(boolean lobbyAccessed) {
+		// update scene only if the result is positive (the flag is true), otherwise shows a connection error
+	}
 	
 	@Override
 	public void askNumberOfPlayer() {
-		System.out.println("num asked");
 		setRoot("numberOfPlayers.fxml");
-		//LobbyAccess lobbyAccess = (LobbyAccess) controller;
-		//lobbyAccess.fieldNumPlayers.setVisible(true);
-
-
 
 	}
 	
 	@Override
 	public void askNickname() {
-	
+		// another scene here
 	}
 	
 	@Override
 	public void askCustomGame() {
-	
+		// another scene here
 	}
 	
 	@Override
@@ -125,10 +119,7 @@ public class GUI extends ViewObservable implements View {
 	
 	}
 	
-	@Override
-	public void showLobbyConfirmation(boolean lobbyAccessed) {
-	
-	}
+
 	
 	@Override
 	public void showGenericMessage(String genericMessage) {

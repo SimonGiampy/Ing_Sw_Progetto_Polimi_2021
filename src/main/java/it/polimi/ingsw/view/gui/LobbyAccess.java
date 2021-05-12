@@ -14,16 +14,14 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.Pane;
-import javafx.stage.Stage;
 
-import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.ResourceBundle;
 
-public class LobbyAccess extends ViewObservable implements Initializable, SceneController {
+public class LobbyAccess extends ViewObservable implements SceneController {
+	
+	//TODO: modify this controller so that it just handles the entrance in a lobby or its creation (with confirmation labels)
 
 	@FXML public Button btnCreateLobby;
 	@FXML public ListView<String> lobbyList;
@@ -68,7 +66,6 @@ public class LobbyAccess extends ViewObservable implements Initializable, SceneC
 	}
 
 	public void onConfirmNum(Event event){
-		//fieldNumPlayers.g
 		new Thread(() -> notifyObserver(obs -> obs.onUpdatePlayersNumber(1))).start();
 
 	}
@@ -88,8 +85,8 @@ public class LobbyAccess extends ViewObservable implements Initializable, SceneC
 
 	}
 	
-	@Override
-	public void initialize(URL url, ResourceBundle resourceBundle) {
+	@FXML
+	public void initialize() {
 		btnCreateLobby.addEventHandler(MouseEvent.MOUSE_CLICKED, this::onCreateLobby);
 		btnJoinLobby.addEventHandler(MouseEvent.MOUSE_CLICKED, this::onJoinLobby);
 		btnConfirmNum.addEventHandler(MouseEvent.MOUSE_CLICKED, this::onConfirmNum);
