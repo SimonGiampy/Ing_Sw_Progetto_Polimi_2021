@@ -2,9 +2,10 @@ package it.polimi.ingsw.view.gui;
 
 import it.polimi.ingsw.observers.ViewObservable;
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
+import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 
-import java.awt.*;
 
 public class Nickname extends ViewObservable implements SceneController {
 

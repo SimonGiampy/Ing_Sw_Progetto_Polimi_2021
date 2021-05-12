@@ -1,11 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.*?>
-<?import javafx.scene.image.*?>
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.text.*?>
+<?import java.lang.String?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.text.Font?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1080.0" prefWidth="1920.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.view.gui.Connection">
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1080.0" prefWidth="1920.0" stylesheets="@../assets/bootstrap3.css" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.view.gui.Connection">
     <children>
         <BorderPane prefHeight="200.0" prefWidth="200.0">
          <left>
@@ -25,13 +31,39 @@
         </BorderPane>
       <AnchorPane layoutX="809.0" layoutY="-2.0" prefHeight="1082.0" prefWidth="1112.0">
          <children>
-            <Button fx:id="connect" layoutX="528.0" layoutY="491.0" mnemonicParsing="false" onMouseClicked="#connection" prefHeight="207.0" prefWidth="393.0" styleClass="nicebtn" stylesheets="@../assets/style.css" text="SUCA">
+            <Button fx:id="connect" layoutX="373.0" layoutY="749.0" maxHeight="85.0" onMouseClicked="#connection" prefHeight="85.0" prefWidth="336.0"
+                    text="Connect to the Server">
+                <styleClass>
+                    <String fx:value="info" />
+                    <String fx:value="lg" />
+                </styleClass>
+            </Button>
+            <TextField fx:id="address" layoutX="373.0" layoutY="259.0" prefHeight="53.0" prefWidth="336.0" promptText="Server Address">
+                <font>
+                    <Font size="24" />
+                </font>
+            </TextField>
+            <TextField fx:id="port" layoutX="373.0" layoutY="420.0" prefHeight="53.0" prefWidth="336.0" promptText="Port Number">
+                <font>
+                    <Font size="24" />
+                </font>
+            </TextField>
+            <Label fx:id="addressWrong" layoutX="738.0" layoutY="264.0" prefHeight="25.0" prefWidth="201.0" text="Server Address not valid">
+                <styleClass>
+                    <String fx:value="tooltip"/>
+                    <String fx:value="warning"/>
+                </styleClass>
+            </Label>
+            <Label fx:id="portWrong" layoutX="738.0" layoutY="424.0" prefHeight="25.0" prefWidth="179.0" text="Port number not valid">
+                <styleClass>
+                    <String fx:value="tooltip" />
+                    <String fx:value="warning" />
+                </styleClass>
                <font>
-                  <Font size="24.0" />
-               </font></Button>
+                  <Font size="18.0" />
+               </font>
+            </Label>
          </children>
       </AnchorPane>
-      <TextField fx:id="port" />
-      <TextField fx:id="address" />
     </children>
 </Pane>

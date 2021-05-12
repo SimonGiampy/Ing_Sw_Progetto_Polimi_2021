@@ -39,7 +39,8 @@ public class AppGui extends Application {
 		//TODO: check if the observables lists are actually needed
 		
 		stage.setScene(scene);
-		stage.setResizable(false);
+		//stage.setResizable(false);
+		stage.setMaximized(true);
 		stage.setTitle("Masters of Renaissance");
 		stage.setOnCloseRequest((WindowEvent t) -> {
 			Platform.exit();
