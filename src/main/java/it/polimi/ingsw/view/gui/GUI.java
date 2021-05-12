@@ -50,13 +50,31 @@ public class GUI extends ViewObservable implements View {
 	
 	@Override
 	public void askNumberOfPlayer() {
+		NumberOfPlayers numberOfPlayers;
 		setRoot("numberOfPlayers.fxml");
-
+		numberOfPlayers=(NumberOfPlayers) controller;
+		numberOfPlayers.addAllObservers(observers);
 	}
 	
 	@Override
 	public void askNickname() {
+		Nickname nickname;
+		setRoot("nickname.fxml");
+		nickname=(Nickname) controller;
+		nickname.addAllObservers(observers);
 		// another scene here
+	}
+
+	@Override
+	public void showNicknameConfirmation(boolean nicknameAccepted) {
+		Nickname nickname;
+		nickname=(Nickname) controller;
+		nickname.addAllObservers(observers);
+		if (nicknameAccepted)
+			setRoot("nicknameAccepted.fxml");
+		else
+			nickname.nicknameValid.setVisible(true);
+
 	}
 	
 	@Override
@@ -114,10 +132,7 @@ public class GUI extends ViewObservable implements View {
 	
 	}
 	
-	@Override
-	public void showNicknameConfirmation(boolean nicknameAccepted) {
-	
-	}
+
 	
 
 	

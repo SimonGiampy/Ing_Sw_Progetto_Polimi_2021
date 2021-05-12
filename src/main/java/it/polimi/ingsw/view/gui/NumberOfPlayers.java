@@ -1,9 +1,11 @@
 package it.polimi.ingsw.view.gui;
 
 import it.polimi.ingsw.observers.ViewObservable;
+import javafx.event.Event;
 import javafx.fxml.FXML;
 
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 
 public class NumberOfPlayers extends ViewObservable implements SceneController {
 
@@ -16,7 +18,8 @@ public class NumberOfPlayers extends ViewObservable implements SceneController {
 	@FXML public ImageView fourPlayersNormal;
 	@FXML public ImageView fourPlayersGlow;
 
-	public void onMouseClickedOne(){
+	@FXML
+	void onMouseClickedOne(){
 		new Thread(() -> notifyObserver(obs -> obs.onUpdatePlayersNumber(1))).start();
 	}
 
