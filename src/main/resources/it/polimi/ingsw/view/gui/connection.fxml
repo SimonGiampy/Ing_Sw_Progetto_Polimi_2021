@@ -48,13 +48,15 @@
                     <Font size="24" />
                 </font>
             </TextField>
-            <Label fx:id="addressWrong" layoutX="738.0" layoutY="264.0" prefHeight="25.0" prefWidth="201.0" text="Server Address not valid">
+            <Label fx:id="addressWrong" layoutX="738.0" layoutY="264.0" prefHeight="25.0" prefWidth="201.0" text="Server Address not valid"
+                   visible="false">
                 <styleClass>
                     <String fx:value="tooltip"/>
                     <String fx:value="warning"/>
                 </styleClass>
             </Label>
-            <Label fx:id="portWrong" layoutX="738.0" layoutY="424.0" prefHeight="25.0" prefWidth="179.0" text="Port number not valid">
+            <Label fx:id="portWrong" layoutX="738.0" layoutY="424.0" prefHeight="25.0" prefWidth="179.0" text="Port number not valid"
+                   visible="false">
                 <styleClass>
                     <String fx:value="tooltip" />
                     <String fx:value="warning" />
