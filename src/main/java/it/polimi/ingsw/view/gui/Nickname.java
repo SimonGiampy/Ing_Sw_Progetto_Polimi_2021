@@ -12,7 +12,6 @@ public class Nickname extends ViewObservable implements SceneController {
 	@FXML public Button confirm;
 	@FXML public TextField nickname;
 	@FXML public ImageView nicknameValid;
-	@FXML public Button button;
 
 	public void onMouseClicked(){
 		String nick=nickname.getText();
