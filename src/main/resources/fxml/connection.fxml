@@ -25,13 +25,13 @@
                     <String fx:value="lg" />
                 </styleClass>
             </Button>
-            <Label fx:id="addressWrong" layoutX="418.0" layoutY="263.0" prefHeight="25.0" prefWidth="201.0" text="Server Address not valid">
+            <Label fx:id="addressWrong" layoutX="330.0" layoutY="255.0" prefHeight="25.0" prefWidth="201.0" text="Server Address not valid">
                 <styleClass>
                     <String fx:value="tooltip" />
                     <String fx:value="warning" />
                 </styleClass>
             </Label>
-            <Label fx:id="portWrong" layoutX="452.0" layoutY="398.0" prefHeight="25.0" prefWidth="179.0" text="Port number not valid">
+            <Label fx:id="portWrong" layoutX="326.0" layoutY="394.0" prefHeight="25.0" prefWidth="179.0" text="Port number not valid">
                 <styleClass>
                     <String fx:value="tooltip" />
                     <String fx:value="warning" />
