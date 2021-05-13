@@ -7,34 +7,31 @@
 <?import javafx.scene.text.*?>
 
 <AnchorPane prefHeight="1080.0" prefWidth="1920.0" stylesheets="@../../../../../assets/bootstrap3.css" xmlns="http://javafx.com/javafx/11.0.1"
-            xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.view.gui.LobbyAccess">
-    <children>
-        <ImageView fitHeight="1080.0" fitWidth="1920.0" pickOnBounds="true" preserveRatio="true">
-            <image>
-                <Image url="@../../../../../assets/lobby_access_uffizi.jpg" />
-            </image>
-        </ImageView>
-        <ListView fx:id="lobbyList" layoutX="200.0" layoutY="230.0" prefHeight="700.0" prefWidth="400.0" />
-        <Button fx:id="btnCreateLobby" layoutX="1250.0" layoutY="230.0" mnemonicParsing="false" prefHeight="193.0" prefWidth="290.0" text="Create Lobby">
-            <styleClass>
-                <String fx:value="info" />
-                <String fx:value="lg" />
-            </styleClass>
-        </Button>
-        <Button fx:id="btnJoinLobby" layoutX="1250.0" layoutY="731.0" mnemonicParsing="false" prefHeight="193.0" prefWidth="290.0" text="Join Lobby" visible="false">
-            <styleClass>
-                <String fx:value="info" />
-                <String fx:value="lg" />
-            </styleClass>
-        </Button>
-        <Label fx:id="lobbyInvalid" layoutX="750.0" layoutY="250.0" prefHeight="25.0" prefWidth="179.0" text="Lobby is not valid" visible="false">
-            <styleClass>
-                <String fx:value="tooltip" />
-                <String fx:value="warning" />
-            </styleClass>
-            <font>
-                <Font size="18.0" />
-            </font>
-        </Label>
-    </children>
+            xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.view.gui.scenes.LobbyAccess">
+    <ImageView fitHeight="1080.0" fitWidth="1920.0" pickOnBounds="true" preserveRatio="true">
+        <Image url="@../../../../../assets/lobby_access_uffizi.jpg"/>
+    </ImageView>
+    <ListView fx:id="lobbyList" layoutX="200.0" layoutY="230.0" prefHeight="700.0" prefWidth="400.0"/>
+    <Button fx:id="btnCreateLobby" layoutX="1250.0" layoutY="230.0" mnemonicParsing="false" prefHeight="193.0" prefWidth="290.0" text="Create Lobby">
+        <styleClass>
+            <String fx:value="info"/>
+            <String fx:value="lg"/>
+        </styleClass>
+    </Button>
+    <Button fx:id="btnJoinLobby" layoutX="1250.0" layoutY="731.0" mnemonicParsing="false" prefHeight="193.0" prefWidth="290.0" text="Join Lobby"
+            visible="false">
+        <styleClass>
+            <String fx:value="info"/>
+            <String fx:value="lg"/>
+        </styleClass>
+    </Button>
+    <Label fx:id="lobbyInvalid" layoutX="750.0" layoutY="250.0" prefHeight="25.0" prefWidth="179.0" text="Lobby is not valid" visible="false">
+        <styleClass>
+            <String fx:value="tooltip"/>
+            <String fx:value="warning"/>
+        </styleClass>
+        <font>
+            <Font size="18.0"/>
+        </font>
+    </Label>
 </AnchorPane>

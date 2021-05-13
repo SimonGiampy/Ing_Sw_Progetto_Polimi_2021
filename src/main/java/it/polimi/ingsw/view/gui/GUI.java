@@ -5,14 +5,16 @@ import it.polimi.ingsw.model.reducedClasses.*;
 import it.polimi.ingsw.model.util.*;
 import it.polimi.ingsw.observers.ViewObservable;
 import it.polimi.ingsw.view.View;
+import it.polimi.ingsw.view.gui.scenes.LobbyAccess;
+import it.polimi.ingsw.view.gui.scenes.Nickname;
+import it.polimi.ingsw.view.gui.scenes.NumberOfPlayers;
+import it.polimi.ingsw.view.gui.scenes.SceneController;
+import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
-import javafx.scene.layout.Pane;
-import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 
 public class GUI extends ViewObservable implements View {
 	
@@ -39,49 +41,58 @@ public class GUI extends ViewObservable implements View {
 	
 	@Override
 	public void showLobbyList(ArrayList<String> lobbyList, int idVersion) {
-		if (currentFXML.equals("lobby_access.fxml")) {
-			LobbyAccess lobbyAccess = (LobbyAccess) controller;
-			lobbyAccess.update(lobbyList,idVersion);
-		} else {
-			setRoot("lobby_access.fxml");
-			LobbyAccess lobbyAccess = (LobbyAccess) controller;
-			lobbyAccess.addAllObservers(observers);
-			lobbyAccess.update(lobbyList,idVersion);
-		}
+		Platform.runLater(() -> {
+			if (currentFXML.equals("lobby_access.fxml")) {
+				LobbyAccess lobbyAccess = (LobbyAccess) controller;
+				lobbyAccess.update(lobbyList,idVersion);
+			} else {
+				setRoot("lobby_access.fxml");
+				LobbyAccess lobbyAccess = (LobbyAccess) controller;
+				lobbyAccess.addAllObservers(observers);
+				lobbyAccess.update(lobbyList,idVersion);
+			}
+		});
 	}
 	
 	@Override
 	public void showLobbyConfirmation(boolean lobbyAccessed) {
 		// update scene only if the result is positive (the flag is true), otherwise shows a connection error
-		if (!lobbyAccessed) {
-			LobbyAccess lobbyAccess = (LobbyAccess) controller;
-			lobbyAccess.setLobbyInvalid();
-		}
+		Platform.runLater(() -> {
+			if (!lobbyAccessed) {
+				LobbyAccess lobbyAccess = (LobbyAccess) controller;
+				lobbyAccess.setLobbyInvalid();
+			}
+		});
 	}
 	
 	@Override
 	public void askNumberOfPlayer() {
-		setRoot("numberOfPlayers.fxml");
-		NumberOfPlayers numberOfPlayers = (NumberOfPlayers) controller;
-		numberOfPlayers.addAllObservers(observers);
+		Platform.runLater(() -> {
+			setRoot("numberOfPlayers.fxml");
+			NumberOfPlayers numberOfPlayers = (NumberOfPlayers) controller;
+			numberOfPlayers.addAllObservers(observers);
+		});
 	}
 	
 	@Override
 	public void askNickname() {
-		setRoot("nickname.fxml");
-		Nickname nickname = (Nickname) controller;
-		nickname.addAllObservers(observers);
+		Platform.runLater(() -> {
+			setRoot("nickname.fxml");
+			Nickname nickname = (Nickname) controller;
+			nickname.addAllObservers(observers);
+		});
 	}
 
 	@Override
 	public void showNicknameConfirmation(boolean nicknameAccepted) {
-		Nickname nickname = (Nickname) controller;
-		nickname.addAllObservers(observers);
-		if (nicknameAccepted)
-			setRoot("nicknameAccepted.fxml");
-		else
-			nickname.setInvalid();
-
+		Platform.runLater(() -> {
+			Nickname nickname = (Nickname) controller;
+			nickname.addAllObservers(observers);
+			if (nicknameAccepted)
+				setRoot("nicknameAccepted.fxml");
+			else
+				nickname.setInvalid();
+		});
 	}
 	
 	@Override

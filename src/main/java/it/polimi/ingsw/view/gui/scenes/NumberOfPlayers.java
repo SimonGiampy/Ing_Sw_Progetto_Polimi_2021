@@ -1,11 +1,9 @@
-package it.polimi.ingsw.view.gui;
+package it.polimi.ingsw.view.gui.scenes;
 
 import it.polimi.ingsw.observers.ViewObservable;
-import javafx.event.Event;
 import javafx.fxml.FXML;
 
 import javafx.scene.image.ImageView;
-import javafx.scene.input.MouseEvent;
 
 public class NumberOfPlayers extends ViewObservable implements SceneController {
 

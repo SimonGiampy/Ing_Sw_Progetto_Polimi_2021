@@ -1,4 +1,4 @@
-package it.polimi.ingsw.view.gui;
+package it.polimi.ingsw.view.gui.scenes;
 
 import it.polimi.ingsw.observers.ViewObservable;
 import javafx.collections.FXCollections;
@@ -24,11 +24,13 @@ public class LobbyAccess extends ViewObservable implements SceneController {
 	
 
 	public void onCreateLobby(Event event){
-		new Thread(() -> notifyObserver(obs -> obs.onUpdateLobbyAccess(0,idVersion))).start();
+		//new Thread(() -> notifyObserver(obs -> obs.onUpdateLobbyAccess(0,idVersion))).start();
+		notifyObserver(obs -> obs.onUpdateLobbyAccess(0,idVersion));
 	}
 
 	public void onJoinLobby(Event event){
-		new Thread(() -> notifyObserver(obs -> obs.onUpdateLobbyAccess(selectedLobby, idVersion))).start();
+		//new Thread(() -> notifyObserver(obs -> obs.onUpdateLobbyAccess(selectedLobby, idVersion))).start();
+		notifyObserver(obs -> obs.onUpdateLobbyAccess(selectedLobby, idVersion));
 	}
 
 	public void onSelectLobby(Event event){

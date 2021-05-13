@@ -951,3 +951,7 @@ VBox > .split-menu-button.last > .arrow-button {
 	-fx-text-fill: white;
 }
 
+.mid {
+	-fx-font-size: 25;
+}
+

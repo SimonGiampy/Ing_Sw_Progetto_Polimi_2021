@@ -1,4 +1,4 @@
-package it.polimi.ingsw.view.gui;
+package it.polimi.ingsw.view.gui.scenes;
 
 import it.polimi.ingsw.controller.ClientSideController;
 import it.polimi.ingsw.observers.ViewObservable;
@@ -53,6 +53,7 @@ public class Connection extends ViewObservable implements SceneController {
 		} else
 			portWrong.setVisible(true);
 		
-		new Thread(() -> notifyObserver(obs -> obs.onUpdateServerInfo(serverInfo))).start();
+		//new Thread(() -> notifyObserver(obs -> obs.onUpdateServerInfo(serverInfo))).start();
+		notifyObserver(obs -> obs.onUpdateServerInfo(serverInfo));
 	}
 }
