@@ -46,6 +46,10 @@ public class GUI extends ViewObservable implements View {
 	@Override
 	public void showLobbyConfirmation(boolean lobbyAccessed) {
 		// update scene only if the result is positive (the flag is true), otherwise shows a connection error
+		if (!lobbyAccessed) {
+			LobbyAccess lobbyAccess = (LobbyAccess) controller;
+			lobbyAccess.setLobbyInvalid();
+		}
 	}
 	
 	@Override

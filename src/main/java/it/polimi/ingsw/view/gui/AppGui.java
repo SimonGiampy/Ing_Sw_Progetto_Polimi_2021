@@ -40,6 +40,7 @@ public class AppGui extends Application {
 		stage.setScene(scene);
 		//stage.setResizable(false);
 		stage.setMaximized(true);
+		//stage.setFullScreen(true);
 		stage.setTitle("Masters of Renaissance");
 		stage.setOnCloseRequest((WindowEvent t) -> {
 			Platform.exit();

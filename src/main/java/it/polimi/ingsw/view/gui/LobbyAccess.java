@@ -6,6 +6,7 @@ import javafx.collections.ObservableList;
 import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.input.MouseEvent;
 
@@ -15,10 +16,10 @@ public class LobbyAccess extends ViewObservable implements SceneController {
 	
 	//TODO: modify this controller so that it just handles the entrance in a lobby or its creation (with confirmation labels)
 
-	@FXML public Button btnCreateLobby;
-	@FXML public ListView<String> lobbyList;
-	@FXML public Button btnJoinLobby;
-
+	@FXML private Button btnCreateLobby;
+	@FXML private ListView<String> lobbyList;
+	@FXML private Button btnJoinLobby;
+	@FXML private Label lobbyInvalid;
 	
 	private int idVersion;
 	private int selectedLobby;
@@ -26,7 +27,6 @@ public class LobbyAccess extends ViewObservable implements SceneController {
 
 	public void onCreateLobby(Event event){
 		new Thread(() -> notifyObserver(obs -> obs.onUpdateLobbyAccess(0,idVersion))).start();
-
 	}
 
 	public void onJoinLobby(Event event){
@@ -45,6 +45,10 @@ public class LobbyAccess extends ViewObservable implements SceneController {
 		this.lobbyList.setItems(lobbies);
 		this.idVersion=idVersion;
 
+	}
+	
+	public void setLobbyInvalid() {
+		lobbyInvalid.setVisible(true);
 	}
 	
 	@FXML
