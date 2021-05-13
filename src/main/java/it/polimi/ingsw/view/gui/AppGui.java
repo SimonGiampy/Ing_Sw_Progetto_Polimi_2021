@@ -20,7 +20,7 @@ public class AppGui extends Application {
 	@Override
 	public void start(Stage stage) {
 		FXMLLoader loader = new FXMLLoader();
-		loader.setLocation(getClass().getResource("/fxml/connection.fxml"));
+		loader.setLocation(getClass().getResource("/it/polimi/ingsw/view/gui/connection.fxml"));
 		Parent rootLayout;
 		try {
 			rootLayout = loader.load();
@@ -36,7 +36,6 @@ public class AppGui extends Application {
 		
 		Connection controller = loader.getController();
 		controller.attach(clientController);
-		//TODO: check if the observables lists are actually needed
 		
 		stage.setScene(scene);
 		//stage.setResizable(false);

@@ -39,6 +39,7 @@
 	-fx-max-height: 70;
 	-fx-font-size: 30;
 }
+/* font size was 18, and both the other parameters were 46 by default */
 
 .sm {
 	-fx-min-height: 30;
@@ -652,6 +653,7 @@ VBox > .split-menu-button.last > .arrow-button {
 	-fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.5), 10, 0.0, 0, 3);
 	-fx-font-size: 14;
 }
+/* font size was 0.85em; in tooltip */
 
 .tooltip.success {
 	-fx-background: #dff0d8;
