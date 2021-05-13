@@ -13,8 +13,6 @@ import javafx.scene.input.MouseEvent;
 import java.util.ArrayList;
 
 public class LobbyAccess extends ViewObservable implements SceneController {
-	
-	//TODO: modify this controller so that it just handles the entrance in a lobby or its creation (with confirmation labels)
 
 	@FXML private Button btnCreateLobby;
 	@FXML private ListView<String> lobbyList;
@@ -35,16 +33,17 @@ public class LobbyAccess extends ViewObservable implements SceneController {
 
 	public void onSelectLobby(Event event){
 		btnJoinLobby.setVisible(true);
-		selectedLobby = lobbyList.getSelectionModel().getSelectedIndex();
+		selectedLobby = lobbyList.getSelectionModel().getSelectedIndex() + 1;
 	}
 
 	public void update(ArrayList<String> lobbyList, int idVersion){
-		lobbyList.add("merda");
-		lobbyList.add("mca");
 		ObservableList<String> lobbies = FXCollections.observableList(lobbyList);
 		this.lobbyList.setItems(lobbies);
 		this.idVersion=idVersion;
-
+		btnJoinLobby.setVisible(false);
+		if (lobbyList.size() > 0) {
+			this.lobbyList.addEventHandler(MouseEvent.MOUSE_CLICKED, this::onSelectLobby);
+		}
 	}
 	
 	public void setLobbyInvalid() {
@@ -55,6 +54,6 @@ public class LobbyAccess extends ViewObservable implements SceneController {
 	public void initialize() {
 		btnCreateLobby.addEventHandler(MouseEvent.MOUSE_CLICKED, this::onCreateLobby);
 		btnJoinLobby.addEventHandler(MouseEvent.MOUSE_CLICKED, this::onJoinLobby);
-		lobbyList.addEventHandler(MouseEvent.MOUSE_CLICKED, this::onSelectLobby);
+		//lobbyList.addEventHandler(MouseEvent.MOUSE_CLICKED, this::onSelectLobby);
 	}
 }

@@ -21,4 +21,8 @@ public class Nickname extends ViewObservable implements SceneController {
 	@FXML public void initialize(){
 
 	}
+	
+	protected void setInvalid() {
+		nicknameValid.setVisible(true);
+	}
 }

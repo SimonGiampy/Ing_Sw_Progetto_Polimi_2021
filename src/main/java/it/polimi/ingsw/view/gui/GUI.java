@@ -16,16 +16,19 @@ import java.util.Arrays;
 
 public class GUI extends ViewObservable implements View {
 	
-	private static Scene scene;
-	private static SceneController controller;
+	private Scene scene;
+	private SceneController controller;
+	private String currentFXML;
 	
 	public GUI(Scene scene) {
 		this.scene = scene;
+		currentFXML = "connection.fxml"; // initial window
 	}
 	
 	public void setRoot(String fxml) {
 		FXMLLoader fxmlLoader = new FXMLLoader(GUI.class.getResource(fxml));
 		//scene.setUserData(fxmlLoader); // this is most likely not needed
+		currentFXML = fxml;
 		try {
 			scene.setRoot(fxmlLoader.load());
 		} catch (IOException e) {
@@ -36,11 +39,15 @@ public class GUI extends ViewObservable implements View {
 	
 	@Override
 	public void showLobbyList(ArrayList<String> lobbyList, int idVersion) {
-		LobbyAccess lobbyAccess;
-		setRoot("lobby_access.fxml");
-		lobbyAccess = (LobbyAccess) controller;
-		lobbyAccess.addAllObservers(observers);
-		lobbyAccess.update(lobbyList,idVersion);
+		if (currentFXML.equals("lobby_access.fxml")) {
+			LobbyAccess lobbyAccess = (LobbyAccess) controller;
+			lobbyAccess.update(lobbyList,idVersion);
+		} else {
+			setRoot("lobby_access.fxml");
+			LobbyAccess lobbyAccess = (LobbyAccess) controller;
+			lobbyAccess.addAllObservers(observers);
+			lobbyAccess.update(lobbyList,idVersion);
+		}
 	}
 	
 	@Override
@@ -54,30 +61,26 @@ public class GUI extends ViewObservable implements View {
 	
 	@Override
 	public void askNumberOfPlayer() {
-		NumberOfPlayers numberOfPlayers;
 		setRoot("numberOfPlayers.fxml");
-		numberOfPlayers=(NumberOfPlayers) controller;
+		NumberOfPlayers numberOfPlayers = (NumberOfPlayers) controller;
 		numberOfPlayers.addAllObservers(observers);
 	}
 	
 	@Override
 	public void askNickname() {
-		Nickname nickname;
 		setRoot("nickname.fxml");
-		nickname=(Nickname) controller;
+		Nickname nickname = (Nickname) controller;
 		nickname.addAllObservers(observers);
-		// another scene here
 	}
 
 	@Override
 	public void showNicknameConfirmation(boolean nicknameAccepted) {
-		Nickname nickname;
-		nickname=(Nickname) controller;
+		Nickname nickname = (Nickname) controller;
 		nickname.addAllObservers(observers);
 		if (nicknameAccepted)
 			setRoot("nicknameAccepted.fxml");
 		else
-			nickname.nicknameValid.setVisible(true);
+			nickname.setInvalid();
 
 	}
 	
