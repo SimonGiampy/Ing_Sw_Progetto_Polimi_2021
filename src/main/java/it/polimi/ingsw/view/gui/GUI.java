@@ -73,13 +73,15 @@ public class GUI extends ViewObservable implements View {
 			numberOfPlayers.addAllObservers(observers);
 		});
 	}
-	
+
 	@Override
 	public void askNickname() {
 		Platform.runLater(() -> {
-			setRoot("nickname.fxml");
-			Nickname nickname = (Nickname) controller;
-			nickname.addAllObservers(observers);
+			if (!currentFXML.equals("nickname.fxml")) {
+				setRoot("nickname.fxml");
+				Nickname nickname = (Nickname) controller;
+				nickname.addAllObservers(observers);
+			}
 		});
 	}
 
@@ -90,8 +92,9 @@ public class GUI extends ViewObservable implements View {
 			nickname.addAllObservers(observers);
 			if (nicknameAccepted)
 				setRoot("nicknameAccepted.fxml");
-			else
+			else {
 				nickname.setInvalid();
+			}
 		});
 	}
 	
@@ -102,6 +105,7 @@ public class GUI extends ViewObservable implements View {
 	
 	@Override
 	public void askInitResources(int number) {
+
 	
 	}
 	
