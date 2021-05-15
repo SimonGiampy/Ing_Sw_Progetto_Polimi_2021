@@ -955,3 +955,14 @@ VBox > .split-menu-button.last > .arrow-button {
 	-fx-font-size: 25;
 }
 
+@font-face {
+	src: url("font/Caveat-Regular.ttf");
+}
+
+.numerosity {
+	-fx-alignment: center;
+	-fx-font-size: 50px;
+	-fx-font-family: "Harrington";
+	-fx-text-fill: #f4eded;
+	-fx-effect: dropshadow(gaussian, #0e1f33, 20, 0.6, 0, 0);
+}
