@@ -24,15 +24,7 @@ public class TurnController {
 	private boolean endOfGame;
 	private boolean endgameStarted;
 	private int remainingTurn;
-
-
-	public boolean isMainActionDone() {
-		return mainActionDone;
-	}
-
 	private boolean mainActionDone;
-
-
 	private boolean leaderAction;
 	private final GameMechanicsMultiPlayer mechanics;
 
@@ -186,6 +178,10 @@ public class TurnController {
 		leaderCards.add(new ReducedLeaderCard(player.getLeaderCards()[0],player.isActiveAbilityLeader1(),player.isDiscardedLeader1(),checkLeader1));
 		leaderCards.add(new ReducedLeaderCard(player.getLeaderCards()[1], player.isActiveAbilityLeader2(),player.isDiscardedLeader2(),checkLeader2));
 		view.askLeaderAction(leaderCards);
+	}
+
+	public boolean isMainActionDone() {
+		return mainActionDone;
 	}
 
 }
