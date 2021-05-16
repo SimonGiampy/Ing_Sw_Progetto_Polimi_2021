@@ -22,7 +22,6 @@ public class PlayerTabs extends ViewObservable implements SceneController{
 
 	public void instantiateTabs(ArrayList<String> nicknameList) {
 
-		playersMap = new HashMap<>();
 		Node node;
 		try {
 			node = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/it/polimi/ingsw/view/gui/commonBoard.fxml")));
@@ -30,6 +29,9 @@ public class PlayerTabs extends ViewObservable implements SceneController{
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+
+		playersMap = new HashMap<>();
+
 		//commonPane.getChildren().setAll( (Node) FXMLLoader.load(Objects.requireNonNull(getClass()
 		//		.getResource("it/polimi/ingsw/view/gui/commonBoard.fxml"))));
 		/*
