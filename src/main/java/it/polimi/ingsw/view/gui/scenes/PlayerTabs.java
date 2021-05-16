@@ -1,7 +1,6 @@
 package it.polimi.ingsw.view.gui.scenes;
 
 import it.polimi.ingsw.observers.ViewObservable;
-import it.polimi.ingsw.view.gui.GUI;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -21,9 +20,16 @@ public class PlayerTabs extends ViewObservable implements SceneController{
 	@FXML AnchorPane commonPane;
 	HashMap<Tab, AnchorPane> playersMap;
 
-	public void instantiateTabs(ArrayList<String> nicknameList){
+	public void instantiateTabs(ArrayList<String> nicknameList) {
 
 		playersMap = new HashMap<>();
+		Node node;
+		try {
+			node = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/it/polimi/ingsw/view/gui/commonBoard.fxml")));
+			commonPane.getChildren().setAll(node);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 		//commonPane.getChildren().setAll( (Node) FXMLLoader.load(Objects.requireNonNull(getClass()
 		//		.getResource("it/polimi/ingsw/view/gui/commonBoard.fxml"))));
 		/*

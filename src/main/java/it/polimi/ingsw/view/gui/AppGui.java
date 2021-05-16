@@ -21,7 +21,7 @@ public class AppGui extends Application {
 	@Override
 	public void start(Stage stage) {
 		FXMLLoader loader = new FXMLLoader();
-		loader.setLocation(getClass().getResource("/it/polimi/ingsw/view/gui/connection.fxml"));
+		loader.setLocation(getClass().getResource("/it/polimi/ingsw/view/gui/board.fxml"));
 		Parent rootLayout;
 		try {
 			rootLayout = loader.load();
@@ -35,8 +35,8 @@ public class AppGui extends Application {
 		ClientSideController clientController = new ClientSideController(gui);
 		gui.attach(clientController);
 
-		Connection controller = loader.getController();
-		controller.attach(clientController);
+		//Connection controller = loader.getController();
+		//controller.attach(clientController);
 		
 		stage.setScene(scene);
 		stage.setResizable(false);

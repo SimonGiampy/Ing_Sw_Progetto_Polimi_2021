@@ -966,3 +966,9 @@ VBox > .split-menu-button.last > .arrow-button {
 	-fx-text-fill: #f4eded;
 	-fx-effect: dropshadow(gaussian, #0e1f33, 20, 0.6, 0, 0);
 }
+
+.leaders_name {
+	-fx-text-alignment: center;
+	-fx-font-family: "Caveat";
+	-fx-font-size: 16;
+}

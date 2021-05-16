@@ -4,11 +4,12 @@
 <?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane prefHeight="1080.0" prefWidth="1920.0" stylesheets="@../../../../../assets/bootstrap3.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.view.gui.scenes.Board">
+<AnchorPane prefHeight="1043.0" prefWidth="1920.0" stylesheets="@../../../../../assets/bootstrap3.css" xmlns="http://javafx.com/javafx/"
+            xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.view.gui.scenes.Board">
     <BorderPane prefHeight="200.0" prefWidth="200.0">
         <center>
-            <ImageView fitHeight="1080.0" fitWidth="1920.0" pickOnBounds="true" preserveRatio="true" BorderPane.alignment="CENTER">
-                <Image url="@../../../../../assets/board/personal_board.png" />
+            <ImageView fitHeight="1043.0" fitWidth="1920.0" pickOnBounds="true" preserveRatio="true" BorderPane.alignment="CENTER">
+                <Image url="@../../../../../assets/board/personal_board.jpg" />
             </ImageView>
         </center>
     </BorderPane>
@@ -33,22 +34,22 @@
             </ImageView>
         </center>
     </BorderPane>
-   <BorderPane layoutX="1534.0" layoutY="84.0" prefHeight="954.0" prefWidth="366.0">
+   <BorderPane layoutX="1534.0" layoutY="57.0" prefHeight="951.0" prefWidth="366.0">
       <top>
-          <ImageView fx:id="leader1" fitHeight="462.0" fitWidth="294.0" pickOnBounds="true" preserveRatio="true" BorderPane.alignment="CENTER">
+          <ImageView fx:id="leader1" fitHeight="471.0" fitWidth="294.0" pickOnBounds="true" preserveRatio="true" BorderPane.alignment="CENTER">
               <Image url="@../../../../../assets/test_lead_card.png" />
           </ImageView>
       </top>
       <bottom>
-          <ImageView fx:id="leader2" fitHeight="450.0" fitWidth="292.0" pickOnBounds="true" preserveRatio="true" BorderPane.alignment="CENTER">
+          <ImageView fx:id="leader2" fitHeight="441.0" fitWidth="292.0" pickOnBounds="true" preserveRatio="true" BorderPane.alignment="CENTER">
               <Image url="@../../../../../assets/test_lead_card.png" />
           </ImageView>
       </bottom>
       <center>
-         <Label fx:id="lblLeader2" prefHeight="31.0" prefWidth="100.0" text="Leader 2" BorderPane.alignment="CENTER" />
+         <Label fx:id="lblLeader2" prefHeight="31.0" prefWidth="131.0" styleClass="leaders_name" text="Leader 2" BorderPane.alignment="CENTER" />
       </center>
    </BorderPane>
-    <GridPane layoutX="23.0" layoutY="774.0" prefHeight="251.0" prefWidth="298.0">
+    <GridPane layoutX="24.0" layoutY="762.0" prefHeight="238.0" prefWidth="292.0">
         <columnConstraints>
             <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
             <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -76,11 +77,14 @@
         <Label fx:id="numShield" prefHeight="73.0" prefWidth="78.0" styleClass="numerosity" text="2" GridPane.columnIndex="1" GridPane.rowIndex="1" />
         <Label fx:id="numServant" prefHeight="73.0" prefWidth="75.0" styleClass="numerosity" text="7" GridPane.columnIndex="3" GridPane.rowIndex="1" />
     </GridPane>
-   <Label fx:id="lblLeader1" layoutX="1648.0" layoutY="39.0" prefHeight="26.0" prefWidth="106.0" text="Leader 1" />
+   <Label fx:id="lblLeader1" layoutX="1648.0" layoutY="28.0" prefHeight="26.0" prefWidth="106.0" styleClass="leaders_name" text="Leader 1" />
    <ImageView fx:id="depot1" fitHeight="64.0" fitWidth="74.0" layoutX="165.0" layoutY="461.0" pickOnBounds="true" preserveRatio="true" />
    <ImageView fx:id="depot2" fitHeight="71.0" fitWidth="74.0" layoutX="118.0" layoutY="559.0" pickOnBounds="true" preserveRatio="true" />
    <ImageView fx:id="depot3" fitHeight="79.0" fitWidth="74.0" layoutX="200.0" layoutY="555.0" pickOnBounds="true" preserveRatio="true" />
    <ImageView fx:id="depot4" fitHeight="71.0" fitWidth="74.0" layoutX="98.0" layoutY="656.0" pickOnBounds="true" preserveRatio="true" />
    <ImageView fx:id="depot5" fitHeight="67.0" fitWidth="60.0" layoutX="167.0" layoutY="656.0" pickOnBounds="true" preserveRatio="true" />
    <ImageView fx:id="depot6" fitHeight="67.0" fitWidth="60.0" layoutX="223.0" layoutY="656.0" pickOnBounds="true" preserveRatio="true" />
+    <ImageView fx:id="cross" fitHeight="64.0" fitWidth="73.0" layoutX="1394.0" layoutY="66.0" pickOnBounds="true" preserveRatio="true">
+        <Image url="@../../../../../assets/board/red_cross.png" />
+    </ImageView>
 </AnchorPane>
