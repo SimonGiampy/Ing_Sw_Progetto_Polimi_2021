@@ -5,10 +5,7 @@ import it.polimi.ingsw.model.reducedClasses.*;
 import it.polimi.ingsw.model.util.*;
 import it.polimi.ingsw.observers.ViewObservable;
 import it.polimi.ingsw.view.View;
-import it.polimi.ingsw.view.gui.scenes.LobbyAccess;
-import it.polimi.ingsw.view.gui.scenes.Nickname;
-import it.polimi.ingsw.view.gui.scenes.NumberOfPlayers;
-import it.polimi.ingsw.view.gui.scenes.SceneController;
+import it.polimi.ingsw.view.gui.scenes.*;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -100,7 +97,18 @@ public class GUI extends ViewObservable implements View {
 	
 	@Override
 	public void askCustomGame() {
-		// another scene here
+		notifyObserver(obs->obs.onUpdateGameConfiguration("standard"));
+	}
+
+	@Override
+	public void showMatchInfo(ArrayList<String> players) {
+		Platform.runLater(() -> {
+			setRoot("tabs.fxml");
+			PlayerTabs playerTabs = (PlayerTabs) controller;
+			playerTabs.addAllObservers(observers);
+			playerTabs.instantiateTabs(players);
+		});
+
 	}
 	
 	@Override
@@ -213,10 +221,7 @@ public class GUI extends ViewObservable implements View {
 	
 	}
 	
-	@Override
-	public void showMatchInfo(ArrayList<String> players) {
-	
-	}
+
 	
 	
 	

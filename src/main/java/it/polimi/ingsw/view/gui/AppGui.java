@@ -21,7 +21,7 @@ public class AppGui extends Application {
 	@Override
 	public void start(Stage stage) {
 		FXMLLoader loader = new FXMLLoader();
-		loader.setLocation(getClass().getResource("/it/polimi/ingsw/view/gui/board.fxml"));
+		loader.setLocation(getClass().getResource("/it/polimi/ingsw/view/gui/connection.fxml"));
 		Parent rootLayout;
 		try {
 			rootLayout = loader.load();
@@ -34,14 +34,14 @@ public class AppGui extends Application {
 		GUI gui = new GUI(scene);
 		ClientSideController clientController = new ClientSideController(gui);
 		gui.attach(clientController);
-		
-		//Connection controller = loader.getController();
-		//controller.attach(clientController);
+
+		Connection controller = loader.getController();
+		controller.attach(clientController);
 		
 		stage.setScene(scene);
-		//stage.setResizable(false);
+		stage.setResizable(false);
 		stage.setMaximized(true);
-		//stage.setFullScreen(true);
+		stage.setFullScreen(true);
 		stage.setTitle("Masters of Renaissance");
 		stage.setOnCloseRequest((WindowEvent t) -> {
 			Platform.exit();

@@ -962,7 +962,7 @@ VBox > .split-menu-button.last > .arrow-button {
 .numerosity {
 	-fx-alignment: center;
 	-fx-font-size: 50px;
-	-fx-font-family: "Harrington";
+	-fx-font-family: "Caveat";
 	-fx-text-fill: #f4eded;
 	-fx-effect: dropshadow(gaussian, #0e1f33, 20, 0.6, 0, 0);
 }
