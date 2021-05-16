@@ -8,6 +8,5 @@ public class CommonBoard extends ViewObservable implements SceneController{
 	@FXML
 	public void initialize(){
 
-
 	}
 }

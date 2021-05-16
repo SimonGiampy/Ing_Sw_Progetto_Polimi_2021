@@ -14,7 +14,7 @@
             <String fx:value="tab-header-area"/>
             <String fx:value="tab"/>
         </styleClass>
-        <Tab fx:id="commonBoard" closable="false" text="Common Board">
+        <Tab fx:id="commonBoardTab" closable="false" text="Common Board">
             <AnchorPane fx:id="commonPane" minHeight="0.0" minWidth="0.0" prefHeight="1043.0" prefWidth="1920.0"/>
         </Tab>
     </TabPane>

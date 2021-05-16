@@ -7,6 +7,7 @@ import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.text.Font;
 
 import java.util.ArrayList;
 
@@ -39,7 +40,7 @@ public class Board extends ViewObservable implements SceneController {
 	
 	@FXML
 	public void initialize() {
-		//Font caveat = Font.loadFont(getClass().getResourceAsStream("/assets/font/Harrington.ttf"), 40);
+		Font caveat = Font.loadFont(getClass().getResourceAsStream("/assets/font/Caveat-Regular.ttf"), 40);
 		
 		coordinates = new ArrayList<>();
 		coordinates.add(new Coordinates(0, 61, 212));
