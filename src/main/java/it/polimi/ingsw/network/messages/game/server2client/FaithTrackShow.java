@@ -11,8 +11,8 @@ public class FaithTrackShow extends Message {
 
 	private final ReducedFaithTrack faithTrack;
 
-	public FaithTrackShow(ReducedFaithTrack faithTrack){
-		super("server", MessageType.FAITH_TRACK_SHOW);
+	public FaithTrackShow(String nickname, ReducedFaithTrack faithTrack){
+		super(nickname, MessageType.FAITH_TRACK_SHOW);
 		this.faithTrack=faithTrack;
 	}
 

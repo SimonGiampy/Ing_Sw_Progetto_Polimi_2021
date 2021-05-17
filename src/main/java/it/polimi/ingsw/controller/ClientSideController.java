@@ -85,15 +85,15 @@ public class ClientSideController implements ViewObserver, Observer {
 					view.askWhiteMarbleChoice(m.getFromWhiteMarble1(), m.getFromWhiteMarble2(),
 							m.getWhiteMarblesInput1(), m.getWhiteMarblesInput2(), m.getHowMany());
 				});
-				case DEPOT_SHOW -> userTask.execute(() -> view.showDepot(((DepotShow) message).getDepot()));
+				case DEPOT_SHOW -> userTask.execute(() -> view.showDepot(message.getNickname(),((DepotShow) message).getDepot()));
 				case DEPOT_CONFIRMATION -> userTask.execute(() -> {
 					DepotReply c = (DepotReply) message;
 					view.replyDepot(c.getDepot(), c.isInitialMove(), c.isConfirmationAvailable(), c.isMoveValid());
 				});
 				case STRONGBOX_SHOW -> userTask.execute(() ->
-						view.showStrongBox(((StrongboxShow) message).getStrongbox()));
+						view.showStrongBox(message.getNickname(), ((StrongboxShow) message).getStrongbox()));
 				case FAITH_TRACK_SHOW -> userTask.execute(() ->
-						view.showFaithTrack(((FaithTrackShow) message).getFaithTrack()));
+						view.showFaithTrack((message).getNickname(), ((FaithTrackShow) message).getFaithTrack()));
 				case CARDS_DECK_SHOW -> userTask.execute(() ->
 						view.showCardsDeck(((CardsDeckShow) message).getCardsDeck()));
 				case PLAYER_CARDS_AND_PRODUCTION_SHOW -> userTask.execute(() ->

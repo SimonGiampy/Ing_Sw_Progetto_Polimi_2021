@@ -139,18 +139,18 @@ public class VirtualView implements View, Observer {
 	}
 
 	@Override
-	public void showStrongBox(ReducedStrongbox strongbox) {
-		clientHandler.sendMessage(new StrongboxShow(strongbox));
+	public void showStrongBox(String nickname, ReducedStrongbox strongbox) {
+		clientHandler.sendMessage(new StrongboxShow(nickname, strongbox));
 	}
 
 	@Override
-	public void showFaithTrack(ReducedFaithTrack faithTrack) {
-		clientHandler.sendMessage(new FaithTrackShow(faithTrack));
+	public void showFaithTrack(String nickname, ReducedFaithTrack faithTrack) {
+		clientHandler.sendMessage(new FaithTrackShow(nickname, faithTrack));
 	}
 
 	@Override
-	public void showDepot(ReducedWarehouseDepot depot) {
-		clientHandler.sendMessage(new DepotShow(depot));
+	public void showDepot(String nickname, ReducedWarehouseDepot depot) {
+		clientHandler.sendMessage(new DepotShow(nickname, depot));
 	}
 
 	@Override

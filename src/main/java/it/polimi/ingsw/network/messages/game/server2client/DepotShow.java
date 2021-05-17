@@ -8,8 +8,8 @@ public class DepotShow extends Message {
 	
 	private final ReducedWarehouseDepot depot;
 	
-	public DepotShow(ReducedWarehouseDepot depot) {
-		super("server", MessageType.DEPOT_SHOW);
+	public DepotShow(String nickname, ReducedWarehouseDepot depot) {
+		super(nickname, MessageType.DEPOT_SHOW);
 		this.depot = depot;
 	}
 	

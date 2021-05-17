@@ -81,7 +81,7 @@ public class TurnController {
 		if(currentToken.getTokenType()==TokenType.DISCARD_TOKEN)
 			view.showCardsDeck(new ReducedDevelopmentCardsDeck(mechanics.getGameDevCardsDeck()));
 		else
-			view.showFaithTrack( new ReducedFaithTrack(mechanicsSinglePlayer.getLorenzoFaithTrack()));
+			view.showFaithTrack("Lorenzo", new ReducedFaithTrack(mechanicsSinglePlayer.getLorenzoFaithTrack()));
 
 		if(currentToken.isEndGame())
 			endOfGame=true;

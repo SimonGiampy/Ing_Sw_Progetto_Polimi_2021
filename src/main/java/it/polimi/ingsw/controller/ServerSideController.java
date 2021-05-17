@@ -210,8 +210,8 @@ public class ServerSideController {
 					else {
 						view.showGenericMessage("These are " + nicknameList.get(j)+"'s Depot and Faith Track!");
 					}
-					view.showDepot(new ReducedWarehouseDepot(mechanics.getPlayer(j).getPlayersWarehouseDepot()));
-					view.showFaithTrack(new ReducedFaithTrack(mechanics.getPlayer(j).getPlayerFaithTrack()));
+					view.showDepot(nicknameList.get(i), new ReducedWarehouseDepot(mechanics.getPlayer(j).getPlayersWarehouseDepot()));
+					view.showFaithTrack(nicknameList.get(i), new ReducedFaithTrack(mechanics.getPlayer(j).getPlayerFaithTrack()));
 				}
 			}
 			controllerAskLeaders();
@@ -337,7 +337,7 @@ public class ServerSideController {
 		}
 		if(deck.getFaithPoint() != 0) {
 			mechanics.getPlayer(playerIndex).getPlayerFaithTrack().moveMarker(deck.getFaithPoint());
-			view.showFaithTrack(new ReducedFaithTrack(mechanics.getPlayer(playerIndex).getPlayerFaithTrack()));
+			view.showFaithTrack(message.getNickname(), new ReducedFaithTrack(mechanics.getPlayer(playerIndex).getPlayerFaithTrack()));
 			deck.setFaithPoint(0);
 			checkVaticanReport();
 		}
@@ -363,7 +363,8 @@ public class ServerSideController {
 					mechanics.getPlayer(i).getPlayerFaithTrack().moveMarker(n);
 					virtualViewMap.get(nicknameList.get(i)).showGenericMessage(message.getNickname()+ " discarded " + n +
 							" resources, you get " + n + " faith points" );
-					virtualViewMap.get(nicknameList.get(i)).showFaithTrack(new ReducedFaithTrack(mechanics.getPlayer(i).getPlayerFaithTrack()));
+					virtualViewMap.get(nicknameList.get(i)).showFaithTrack(nicknameList.get(i),
+							new ReducedFaithTrack(mechanics.getPlayer(i).getPlayerFaithTrack()));
 				}
 			}
 			checkVaticanReport();
@@ -457,15 +458,15 @@ public class ServerSideController {
 	private void sendBoxes(VirtualView view, int playerIndex, boolean forAll){
 		//view.showGenericMessage("Your Boxes now!");
 		if(forAll){
-			for (int i = 0; i < nicknameList.size(); i++) {
-				view=virtualViewMap.get(nicknameList.get(i));
-				view.showDepot(new ReducedWarehouseDepot(mechanics.getPlayer(playerIndex).getPlayersWarehouseDepot()));
-				view.showStrongBox(new ReducedStrongbox(mechanics.getPlayer(playerIndex).getMyStrongbox()));
+			for (String s : nicknameList) {
+				view = virtualViewMap.get(s);
+				view.showDepot(s, new ReducedWarehouseDepot(mechanics.getPlayer(playerIndex).getPlayersWarehouseDepot()));
+				view.showStrongBox(s, new ReducedStrongbox(mechanics.getPlayer(playerIndex).getMyStrongbox()));
 			}
 		}
 		else {
-			view.showDepot(new ReducedWarehouseDepot(mechanics.getPlayer(playerIndex).getPlayersWarehouseDepot()));
-			view.showStrongBox(new ReducedStrongbox(mechanics.getPlayer(playerIndex).getMyStrongbox()));
+			view.showDepot(nicknameList.get(playerIndex), new ReducedWarehouseDepot(mechanics.getPlayer(playerIndex).getPlayersWarehouseDepot()));
+			view.showStrongBox(nicknameList.get(playerIndex), new ReducedStrongbox(mechanics.getPlayer(playerIndex).getMyStrongbox()));
 		}
 
 	}
@@ -586,7 +587,7 @@ public class ServerSideController {
 				nick = nickname;
 			virtualViewMap.get(nicknameList.get(i)).showGenericMessage(nick + " triggered Vatican Report" +
 					" n." + (mechanics.getLastReportClaimed()) + "!");
-			virtualViewMap.get(nicknameList.get(i)).showFaithTrack(new ReducedFaithTrack(mechanics.getPlayer(i).getPlayerFaithTrack()));
+			virtualViewMap.get(nicknameList.get(i)).showFaithTrack(nickname, new ReducedFaithTrack(mechanics.getPlayer(i).getPlayerFaithTrack()));
 		}
 	}
 

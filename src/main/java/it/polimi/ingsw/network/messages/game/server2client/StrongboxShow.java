@@ -11,8 +11,8 @@ public class StrongboxShow extends Message {
 
 	private final ReducedStrongbox strongbox;
 
-	public StrongboxShow(ReducedStrongbox strongbox){
-		super("server", MessageType.STRONGBOX_SHOW);
+	public StrongboxShow(String nickname, ReducedStrongbox strongbox){
+		super(nickname, MessageType.STRONGBOX_SHOW);
 		this.strongbox=strongbox;
 	}
 

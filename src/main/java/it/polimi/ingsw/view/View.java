@@ -124,9 +124,10 @@ public interface View {
 
 	/**
 	 * it shows player faith track
+	 * @param nickname is the nickname of the track to show
 	 * @param faithTrack is player's faith track
 	 */
-	void showFaithTrack(ReducedFaithTrack faithTrack);
+	void showFaithTrack(String nickname, ReducedFaithTrack faithTrack);
 
 	/**
 	 * it shows player depot and ask which combination the player wants
@@ -151,9 +152,10 @@ public interface View {
 
 	/**
 	 * it shows the depot
+	 * @param nickname is the nickname of the depot to show
 	 * @param depot is the depot
 	 */
-	void showDepot(ReducedWarehouseDepot depot);
+	void showDepot(String nickname, ReducedWarehouseDepot depot);
 
 	/**
 	 * it shows player's cards and productions
@@ -171,7 +173,7 @@ public interface View {
 	 * it shows player's strongbox
 	 * @param strongbox is the strongbox
 	 */
-	void showStrongBox(ReducedStrongbox strongbox);
+	void showStrongBox(String nickname, ReducedStrongbox strongbox);
 
 	/**
 	 * it shows match info

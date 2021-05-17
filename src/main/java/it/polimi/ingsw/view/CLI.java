@@ -407,7 +407,7 @@ public class CLI extends ViewObservable implements View {
 			System.out.println("The positioning you requested is not valid: write a different move.");
 		}
 		
-		showDepot(depot); // shows the current configuration of the warehouse
+		showDepot("", depot); // shows the current configuration of the warehouse
 		
 		boolean checkGoingToWarehouse = false, checkGoingToDeck = false, check;
 		int origin = 0, destination = 0;
@@ -619,7 +619,7 @@ public class CLI extends ViewObservable implements View {
 	 * @param faithTrack to be shown on console
 	 */
 	@Override
-	public void showFaithTrack(ReducedFaithTrack faithTrack) {
+	public void showFaithTrack(String nickname , ReducedFaithTrack faithTrack) {
 
 		StringBuilder string = new StringBuilder();
 		StringBuilder markerColor = new StringBuilder();
@@ -627,7 +627,8 @@ public class CLI extends ViewObservable implements View {
 		boolean lorenzo = faithTrack.isSinglePlayer();
 		if(!lorenzo) markerColor.append(Unicode.RED_BOLD);
 		else markerColor.append(Unicode.BLACK_BOLD);
-		
+
+		System.out.println(nickname + "'s Faith Track");
 		//Row for vatican reports
 		int count = 0;
 		for(int i = 0; i < faithTrack.getReportPoints().size(); i++) {
@@ -796,10 +797,13 @@ public class CLI extends ViewObservable implements View {
 	}
 	
 	@Override
-	public void showDepot(ReducedWarehouseDepot depot) {
+	public void showDepot(String nickname, ReducedWarehouseDepot depot) {
 		ArrayList<Resources> incomingResources = depot.getIncomingResources();
 		Resources[] pyr = depot.getDepot();
-		
+		if(nickname.equals(""))
+			System.out.println("Your Warehouse Depot");
+		else
+			System.out.println(nickname + "'s Warehouse Depot");
 		// shows the incoming resource from the deck if there are any
 		if (incomingResources.size() > 0) System.out.print("Resource deck contains: \t");
 		for (int i = 1; i <= incomingResources.size(); i++) {
@@ -997,7 +1001,8 @@ public class CLI extends ViewObservable implements View {
 	}
 	
 	@Override
-	public void showStrongBox(ReducedStrongbox strongbox) {
+	public void showStrongBox(String nickname, ReducedStrongbox strongbox) {
+		System.out.println(nickname + "'s Strongbox");
 		System.out.println(ListSet.listMultiplicityToString(strongbox.getContent()));
 	}
 	

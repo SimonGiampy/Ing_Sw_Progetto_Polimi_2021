@@ -161,11 +161,7 @@ public class GUI extends ViewObservable implements View {
 	public void askFreeOutput(int number) {
 	
 	}
-	
 
-	
-
-	
 	@Override
 	public void showGenericMessage(String genericMessage) {
 	
@@ -182,7 +178,7 @@ public class GUI extends ViewObservable implements View {
 	}
 	
 	@Override
-	public void showFaithTrack(ReducedFaithTrack faithTrack) {
+	public void showFaithTrack(String nickname, ReducedFaithTrack faithTrack) {
 	
 	}
 	
@@ -202,7 +198,7 @@ public class GUI extends ViewObservable implements View {
 	}
 	
 	@Override
-	public void showDepot(ReducedWarehouseDepot depot) {
+	public void showDepot(String nickname, ReducedWarehouseDepot depot) {
 	
 	}
 	
@@ -217,7 +213,7 @@ public class GUI extends ViewObservable implements View {
 	}
 	
 	@Override
-	public void showStrongBox(ReducedStrongbox strongbox) {
+	public void showStrongBox(String nickname, ReducedStrongbox strongbox) {
 	
 	}
 	

@@ -1,5 +1,9 @@
 package it.polimi.ingsw.view.gui.scenes;
 
+import it.polimi.ingsw.model.FaithTrack;
+import it.polimi.ingsw.model.reducedClasses.ReducedFaithTrack;
+import it.polimi.ingsw.model.reducedClasses.ReducedWarehouseDepot;
+import it.polimi.ingsw.network.messages.game.server2client.FaithTrackShow;
 import it.polimi.ingsw.observers.ViewObservable;
 import it.polimi.ingsw.view.gui.GUI;
 import javafx.fxml.FXML;
@@ -60,7 +64,11 @@ public class PlayerTabs extends ViewObservable implements SceneController{
 		}
 	}
 
-	public void update(){
+	public void update(String nickname, ReducedFaithTrack track){
+
+	}
+
+	public void update(String nickname, ReducedWarehouseDepot depot){
 
 	}
 
