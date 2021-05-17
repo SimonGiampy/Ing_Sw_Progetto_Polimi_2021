@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.DialogPane?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.MenuButton?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<DialogPane prefHeight="632.0" prefWidth="973.0" xmlns="http://javafx.com/javafx/" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="it.polimi.ingsw.view.gui.scenes.ResourcesDialogController" stylesheets="@../../../../../assets/bootstrap3.css">
+    <header>
+        <Label prefHeight="69.0" prefWidth="877.0" text="choose the resources" style="-fx-padding: 0 0 0 50;" styleClass="leaders_name" />
+    </header>
+    <content>
+        <AnchorPane prefHeight="200.0" prefWidth="200.0">
+            <ImageView fitHeight="115.0" fitWidth="121.0" layoutX="52.0" layoutY="116.0" pickOnBounds="true" preserveRatio="true">
+                <Image url="@../../../../../assets/board/Coin.png"/>
+            </ImageView>
+            <MenuButton layoutX="78.0" layoutY="298.0" mnemonicParsing="false" text="Coins" fx:id="numCoins" styleClass="primary">
+                <items>
+
+                </items>
+            </MenuButton>
+            <ImageView fitHeight="120.0" fitWidth="129.0" layoutX="231.0" layoutY="99.0" pickOnBounds="true" preserveRatio="true">
+                <Image url="@../../../../../assets/board/Shield.png"/>
+            </ImageView>
+            <ImageView fitHeight="117.0" fitWidth="132.0" layoutX="383.0" layoutY="101.0" pickOnBounds="true" preserveRatio="true">
+                <Image url="@../../../../../assets/board/Servant.png"/>
+            </ImageView>
+            <ImageView fitHeight="127.0" fitWidth="129.0" layoutX="558.0" layoutY="101.0" pickOnBounds="true" preserveRatio="true">
+                <Image url="@../../../../../assets/board/Stone.png"/>
+            </ImageView>
+            <MenuButton layoutX="234.0" layoutY="299.0" mnemonicParsing="false" text="Shields" fx:id="numShields" styleClass="primary">
+                <items>
+
+                </items>
+            </MenuButton>
+            <MenuButton layoutX="397.0" layoutY="300.0" mnemonicParsing="false" text="Servants" fx:id="numServants" styleClass="primary">
+                <items>
+
+                </items>
+            </MenuButton>
+            <MenuButton layoutX="573.0" layoutY="299.0" mnemonicParsing="false" text="Stones" fx:id="numStones" styleClass="primary">
+                <items>
+
+                </items>
+            </MenuButton>
+            <!--<Button fx:id="confirm" text="Confirm choices" prefHeight="60" prefWidth="200" layoutY="400" layoutX="400"/>-->
+        </AnchorPane>
+    </content>
+</DialogPane>

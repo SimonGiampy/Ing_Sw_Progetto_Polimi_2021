@@ -961,7 +961,7 @@ VBox > .split-menu-button.last > .arrow-button {
 
 .numerosity {
 	-fx-alignment: center;
-	-fx-font-size: 50px;
+	-fx-font-size: 60;
 	-fx-font-family: "Caveat";
 	-fx-text-fill: #f4eded;
 	-fx-effect: dropshadow(gaussian, #0e1f33, 20, 0.6, 0, 0);
@@ -972,3 +972,5 @@ VBox > .split-menu-button.last > .arrow-button {
 	-fx-font-family: "Caveat";
 	-fx-font-size: 16;
 }
+
+/* TODO: add disabled button color: grey-ish indicating that the button cannot be clicked */

@@ -98,7 +98,13 @@ public class GUI extends ViewObservable implements View {
 	
 	@Override
 	public void askCustomGame() {
-		notifyObserver(obs->obs.onUpdateGameConfiguration("standard"));
+		Platform.runLater(() -> {
+			//just for testing the dialog
+			//ResourcesDialog dialog = new ResourcesDialog(3);
+			//dialog.showAndWait();
+			notifyObserver(obs->obs.onUpdateGameConfiguration("standard"));
+		});
+		
 
 	}
 
