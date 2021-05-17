@@ -38,25 +38,25 @@ public class CardProductionsManagementTest {
 		strongbox = new Strongbox();
 		cardProductionsManagement = new CardProductionsManagement(strongbox, new WarehouseDepot(), baseProduction);
 		
-		developmentCard1 = new DevelopmentCard(1, Colors.GREEN,0,new ArrayList<>(), baseProduction);
-		developmentCard2 = new DevelopmentCard(1,Colors.YELLOW,3, new ArrayList<>(), baseProduction);
-		developmentCard3 = new DevelopmentCard(2,Colors.YELLOW,5, new ArrayList<>(), baseProduction);
+		developmentCard1 = new DevelopmentCard(1, Colors.GREEN,0,new ArrayList<>(), baseProduction,1);
+		developmentCard2 = new DevelopmentCard(1,Colors.YELLOW,3, new ArrayList<>(), baseProduction,1);
+		developmentCard3 = new DevelopmentCard(2,Colors.YELLOW,5, new ArrayList<>(), baseProduction,1);
 		
 		ArrayList<Resources> resources = new ArrayList<>(); // requirement resources
 		resources.add(Resources.COIN);
 		resources.add(Resources.COIN);
-		DevelopmentCard developmentCard4 = new DevelopmentCard(1, Colors.PURPLE, 2, resources, baseProduction);
+		DevelopmentCard developmentCard4 = new DevelopmentCard(1, Colors.PURPLE, 2, resources, baseProduction,1);
 		
 		resources.add(Resources.STONE);
 		resources.add(Resources.STONE);
-		DevelopmentCard developmentCard5 = new DevelopmentCard(2, Colors.BLUE, 7, resources, baseProduction);
+		DevelopmentCard developmentCard5 = new DevelopmentCard(2, Colors.BLUE, 7, resources, baseProduction,1);
 		
 		resources.add(Resources.SERVANT);
 		resources.add(Resources.STONE);
 		resources.add(Resources.SHIELD);
 		resources.add(Resources.SHIELD);
 		resources.add(Resources.SHIELD);
-		DevelopmentCard developmentCard6 = new DevelopmentCard(3, Colors.BLUE, 10, resources, baseProduction);
+		DevelopmentCard developmentCard6 = new DevelopmentCard(3, Colors.BLUE, 10, resources, baseProduction,1);
 	}
 	
 	/**

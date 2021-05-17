@@ -159,7 +159,7 @@ public class XMLParser {
 				
 				//Instantiate production rule and card
 				cardsDeck.add(new DevelopmentCard(level, color, victoryPoints, requirements,
-						new ProductionRules(input, output, faithOutput)));
+						new ProductionRules(input, output, faithOutput),i+1));
 			}
 		}
 		

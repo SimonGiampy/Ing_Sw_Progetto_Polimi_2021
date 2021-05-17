@@ -138,6 +138,7 @@ public class ServerSideController {
 		
 		VirtualView vv = virtualViewMap.get(nicknameList.get(0));
 		vv.showGenericMessage("You are the first player! Wait!");
+		vv.showCardsDeck(new ReducedDevelopmentCardsDeck(mechanics.getGameDevCardsDeck())); //TODO: just for test
 		if(numberOfPlayers == 1) { //single player
 			controllerAskLeaders();
 		} else { // multiplayer

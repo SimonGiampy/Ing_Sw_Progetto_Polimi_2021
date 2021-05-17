@@ -1,6 +1,7 @@
 package it.polimi.ingsw.view.gui;
 
 import it.polimi.ingsw.model.DevelopmentCard;
+import it.polimi.ingsw.model.Market;
 import it.polimi.ingsw.model.reducedClasses.*;
 import it.polimi.ingsw.model.util.*;
 import it.polimi.ingsw.observers.ViewObservable;
@@ -98,15 +99,20 @@ public class GUI extends ViewObservable implements View {
 	@Override
 	public void askCustomGame() {
 		notifyObserver(obs->obs.onUpdateGameConfiguration("standard"));
+
 	}
 
 	@Override
 	public void showMatchInfo(ArrayList<String> players) {
 		Platform.runLater(() -> {
 			setRoot("tabs.fxml");
-			PlayerTabs playerTabs = (PlayerTabs) controller;
+			PlayerTabs playerTabs = (PlayerTabs) controller;;
 			playerTabs.addAllObservers(observers);
 			playerTabs.instantiateTabs(players);
+			Market market= new Market();
+			playerTabs.commonBoard.setMarket(new ReducedMarket(market));
+
+
 		});
 
 	}
@@ -209,7 +215,14 @@ public class GUI extends ViewObservable implements View {
 	
 	@Override
 	public void showCardsDeck(ReducedDevelopmentCardsDeck deck) {
-	
+		Platform.runLater(() -> {
+			PlayerTabs playerTabs= (PlayerTabs) controller;
+			playerTabs.commonBoard.setDeck(deck);
+		});
+
+
+
+
 	}
 	
 	@Override

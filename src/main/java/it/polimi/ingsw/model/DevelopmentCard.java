@@ -15,6 +15,7 @@ public class DevelopmentCard implements Serializable {
 	private final Colors color;
 	private final ArrayList<Resources> resourcesRequirement;
 	private final ProductionRules productionRules;
+	private final int cardNumber;
 	
 	/**
 	 * constructor for instantiating card's attributes
@@ -24,12 +25,13 @@ public class DevelopmentCard implements Serializable {
 	 * @param resourceList is a list of needed resources to buy the card
 	 * @param productionRules is the instance of the corresponding production rules
 	 */
-	public DevelopmentCard(int level, Colors color, int victoryPoints, ArrayList<Resources> resourceList, ProductionRules productionRules) {
+	public DevelopmentCard(int level, Colors color, int victoryPoints, ArrayList<Resources> resourceList, ProductionRules productionRules, int cardNumber) {
 		this.level = level;
 		this.color = color;
 		this.victoryPoints = victoryPoints;
 		this.resourcesRequirement = resourceList;
 		this.productionRules = productionRules;
+		this.cardNumber=cardNumber;
 	}
 	
 	/**
@@ -68,4 +70,7 @@ public class DevelopmentCard implements Serializable {
 		return productionRules;
 	}
 
+	public int getCardNumber() {
+		return cardNumber;
+	}
 }

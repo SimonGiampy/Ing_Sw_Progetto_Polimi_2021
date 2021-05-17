@@ -22,10 +22,10 @@ import java.util.Objects;
 public class PlayerTabs extends ViewObservable implements SceneController{
 
 	@FXML TabPane tabPane;
-	@FXML Tab commonBoardTab;
+	@FXML  Tab commonBoardTab;
 	@FXML AnchorPane commonPane;
 	HashMap <String, Board> playersMap;
-	CommonBoard commonBoard;
+	 public CommonBoard commonBoard;
 
 	public void instantiateTabs(ArrayList<String> nicknameList) {
 

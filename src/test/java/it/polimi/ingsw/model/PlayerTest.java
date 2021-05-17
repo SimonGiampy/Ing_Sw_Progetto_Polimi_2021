@@ -100,13 +100,13 @@ class PlayerTest {
 		player.setCommonMarketForDebugging(commonMarket);
 
 
-		developmentCard1 = new DevelopmentCard(1, Colors.GREEN,1,new ArrayList<>(), baseProduction);
-		developmentCard2 = new DevelopmentCard(1,Colors.YELLOW,3, new ArrayList<>(), baseProduction);
-		developmentCard3 = new DevelopmentCard(1,Colors.BLUE,2, new ArrayList<>(), baseProduction);
-		developmentCard4 = new DevelopmentCard(2,Colors.YELLOW,4, new ArrayList<>(), baseProduction);
-		developmentCard5 = new DevelopmentCard(2,Colors.PURPLE,5, new ArrayList<>(), baseProduction);
-		developmentCard6 = new DevelopmentCard(2,Colors.GREEN,6, new ArrayList<>(), baseProduction);
-		developmentCard7 = new DevelopmentCard(3,Colors.BLUE,10, new ArrayList<>(), baseProduction);
+		developmentCard1 = new DevelopmentCard(1, Colors.GREEN,1,new ArrayList<>(), baseProduction,1);
+		developmentCard2 = new DevelopmentCard(1,Colors.YELLOW,3, new ArrayList<>(), baseProduction,1);
+		developmentCard3 = new DevelopmentCard(1,Colors.BLUE,2, new ArrayList<>(), baseProduction,1);
+		developmentCard4 = new DevelopmentCard(2,Colors.YELLOW,4, new ArrayList<>(), baseProduction,1);
+		developmentCard5 = new DevelopmentCard(2,Colors.PURPLE,5, new ArrayList<>(), baseProduction,1);
+		developmentCard6 = new DevelopmentCard(2,Colors.GREEN,6, new ArrayList<>(), baseProduction,1);
+		developmentCard7 = new DevelopmentCard(3,Colors.BLUE,10, new ArrayList<>(), baseProduction,1);
 
 
 	}
