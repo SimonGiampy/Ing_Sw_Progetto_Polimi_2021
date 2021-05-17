@@ -37,7 +37,7 @@ class XMLParserTest {
 		ArrayList<Integer> report = parser.readReportPoints();
 		ReducedFaithTrack faithTrack = new ReducedFaithTrack(new FaithTrack(tiles, report, false));
 		System.out.println("Faith Track");
-		cli.showFaithTrack(faithTrack);
+		cli.showFaithTrack("test", faithTrack);
 		System.out.println("\n");
 		cli.helpFaithTrack();
 		System.out.println("\n");

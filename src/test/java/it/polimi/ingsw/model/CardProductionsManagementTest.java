@@ -189,7 +189,7 @@ public class CardProductionsManagementTest {
 		strongbox.storeResources(resources);
 		System.out.println("initial strongbox before taking any resources = " + ListSet.listMultiplicityToString(strongbox.getContent()));
 		CLI cli = new CLI();
-		cli.showStrongBox(new ReducedStrongbox(strongbox));
+		cli.showStrongBox("test", new ReducedStrongbox(strongbox));
 		
 		//second leader card
 		ArrayList<Resources> input2 = new ArrayList<>(); // input production resources

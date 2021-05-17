@@ -233,7 +233,7 @@ public class WarehouseDepotTest {
 		depot.moveResourcesToAdditionalDepots(); // function to be tested
 		
 		CLI cli = new CLI();
-		cli.showDepot(new ReducedWarehouseDepot(depot));
+		cli.showDepot("test", new ReducedWarehouseDepot(depot));
 		
 		//lists of expected values to check
 		ArrayList<Boolean> expected1 = new ArrayList<>();
@@ -366,7 +366,7 @@ public class WarehouseDepotTest {
 		assertEquals(expected, input);
 		
 		CLI cli = new CLI();
-		cli.showDepot(new ReducedWarehouseDepot(depot));
+		cli.showDepot("test", new ReducedWarehouseDepot(depot));
 	}
 	
 	@Test
