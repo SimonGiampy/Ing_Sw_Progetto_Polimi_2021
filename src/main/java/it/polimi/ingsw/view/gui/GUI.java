@@ -118,12 +118,12 @@ public class GUI extends ViewObservable implements View {
 	}
 	
 	@Override
-	public void askInitLeaders(ArrayList<ReducedLeaderCard> leaderCards) {
+	public void askInitLeaders(String nickname, ArrayList<ReducedLeaderCard> leaderCards) {
 	
 	}
 	
 	@Override
-	public void askLeaderAction(ArrayList<ReducedLeaderCard> availableLeaders) {
+	public void askLeaderAction(String nickname, ArrayList<ReducedLeaderCard> availableLeaders) {
 	
 	}
 	
@@ -188,7 +188,7 @@ public class GUI extends ViewObservable implements View {
 	}
 	
 	@Override
-	public void showLeaderCards(ArrayList<ReducedLeaderCard> availableLeaders) {
+	public void showLeaderCards(String nickname, ArrayList<ReducedLeaderCard> availableLeaders) {
 	
 	}
 	

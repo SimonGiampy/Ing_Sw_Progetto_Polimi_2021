@@ -52,13 +52,13 @@ public class VirtualView implements View, Observer {
 	}
 
 	@Override
-	public void askInitLeaders(ArrayList<ReducedLeaderCard> leaderCards) {
-		clientHandler.sendMessage(new LeaderInteractions(leaderCards, 0));
+	public void askInitLeaders(String nickname, ArrayList<ReducedLeaderCard> leaderCards) {
+		clientHandler.sendMessage(new LeaderInteractions(nickname, leaderCards, 0));
 	}
 
 	@Override
-	public void askLeaderAction(ArrayList<ReducedLeaderCard> availableLeaders) {
-		clientHandler.sendMessage(new LeaderInteractions(availableLeaders, 2));
+	public void askLeaderAction(String nickname, ArrayList<ReducedLeaderCard> availableLeaders) {
+		clientHandler.sendMessage(new LeaderInteractions(nickname, availableLeaders, 2));
 	}
 
 	@Override
@@ -154,8 +154,8 @@ public class VirtualView implements View, Observer {
 	}
 
 	@Override
-	public void showLeaderCards(ArrayList<ReducedLeaderCard> availableLeaders) {
-		clientHandler.sendMessage(new LeaderInteractions(availableLeaders, 1));
+	public void showLeaderCards(String nickname, ArrayList<ReducedLeaderCard> availableLeaders) {
+		clientHandler.sendMessage(new LeaderInteractions(nickname, availableLeaders, 1));
 	}
 
 	@Override

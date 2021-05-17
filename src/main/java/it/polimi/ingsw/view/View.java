@@ -35,13 +35,13 @@ public interface View {
 	 * it asks to all the player which leaders they wants
 	 * @param leaderCards is a list of leaders
 	 */
-	void askInitLeaders(ArrayList<ReducedLeaderCard> leaderCards);
+	void askInitLeaders(String nickname, ArrayList<ReducedLeaderCard> leaderCards);
 
 	/**
 	 * it asks which leader action the player wants to do
 	 * @param availableLeaders is a list of leaders
 	 */
-	void askLeaderAction(ArrayList<ReducedLeaderCard> availableLeaders);
+	void askLeaderAction(String nickname, ArrayList<ReducedLeaderCard> availableLeaders);
 
 	/**
 	 * it asks which action the player wants to do
@@ -142,7 +142,7 @@ public interface View {
 	 * it shows player leader cards
 	 * @param availableLeaders is a list of leader cards
 	 */
-	void showLeaderCards(ArrayList<ReducedLeaderCard> availableLeaders);
+	void showLeaderCards(String nickname, ArrayList<ReducedLeaderCard> availableLeaders);
 
 	/**
 	 * it shows the market

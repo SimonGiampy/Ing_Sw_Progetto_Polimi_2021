@@ -177,7 +177,7 @@ public class TurnController {
 		boolean checkLeader2=leaderActions.contains(PlayerActions.PLAY_LEADER_2);
 		leaderCards.add(new ReducedLeaderCard(player.getLeaderCards()[0],player.isActiveAbilityLeader1(),player.isDiscardedLeader1(),checkLeader1));
 		leaderCards.add(new ReducedLeaderCard(player.getLeaderCards()[1], player.isActiveAbilityLeader2(),player.isDiscardedLeader2(),checkLeader2));
-		view.askLeaderAction(leaderCards);
+		view.askLeaderAction(nicknameList.get(playerIndex), leaderCards);
 	}
 
 	public boolean isMainActionDone() {

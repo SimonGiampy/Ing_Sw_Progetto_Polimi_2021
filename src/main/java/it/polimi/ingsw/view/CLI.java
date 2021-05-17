@@ -180,6 +180,7 @@ public class CLI extends ViewObservable implements View {
 	
 	@Override
 	public void askCustomGame() {
+		/*
 		System.out.println("Choose game configuration!, Type [standard] for standard game, or the full path for a custom game!");
 		String input;
 		boolean check = true;
@@ -197,7 +198,8 @@ public class CLI extends ViewObservable implements View {
 		if (input.equals("")) input = "standard";
 		// assumes that the selected file has a correct schema and is a valid configuration file
 		String finalInput = input;
-		notifyObserver(obs->obs.onUpdateGameConfiguration(finalInput));
+		 */
+		notifyObserver(obs->obs.onUpdateGameConfiguration("standard"));
 	}
 	
 	@Override
@@ -245,7 +247,7 @@ public class CLI extends ViewObservable implements View {
 	}
 	
 	@Override
-	public void askInitLeaders(ArrayList<ReducedLeaderCard> leaderCards) {
+	public void askInitLeaders(String nickname, ArrayList<ReducedLeaderCard> leaderCards) {
 		System.out.println("These are your leader cards, select 2 of them! Type [index,index] of the two you want to keep");
 		for (int i = 0; i < leaderCards.size(); i++) {
 			System.out.println("Card's number: " + (i + 1));
@@ -274,12 +276,12 @@ public class CLI extends ViewObservable implements View {
 	}
 	
 	@Override
-	public void askLeaderAction(ArrayList<ReducedLeaderCard> availableLeaders) {
+	public void askLeaderAction(String nickname, ArrayList<ReducedLeaderCard> availableLeaders) {
 		int selectedLeader = 0, action = 0; //action: 0 = nothing, 1 = play leader, 2 discard leader
 		String input;
 		
 		boolean check;
-		showLeaderCards(availableLeaders);
+		showLeaderCards(nickname, availableLeaders);
 		
 		System.out.println("Type <action> <number> use the leader card or [0] to do nothing and end the turn.");
 		System.out.println("The action can be 'play' or 'discard', where number is 1 or 2");
@@ -848,8 +850,8 @@ public class CLI extends ViewObservable implements View {
 	}
 
 	@Override
-	public void showLeaderCards(ArrayList<ReducedLeaderCard> availableLeaders) {
-		System.out.println("Your Leader Cards:");
+	public void showLeaderCards(String nickname, ArrayList<ReducedLeaderCard> availableLeaders) {
+		System.out.println(nickname + "'s Leader cards:");
 		for (int i = 0; i < availableLeaders.size(); i++) {
 			System.out.println("Card's number: " + (i + 1));
 			if (availableLeaders.get(i).isPlayable()) {

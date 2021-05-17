@@ -14,8 +14,8 @@ public class LeaderInteractions extends Message {
 	private final ArrayList<ReducedLeaderCard> leaderCards;
 	private final int action; //0: choose 2 leaders, 1: just show, 2: ask play or discard
 
-	public LeaderInteractions(ArrayList<ReducedLeaderCard> leaderCards, int action){
-		super("Server", MessageType.LEADER_SHOW);
+	public LeaderInteractions(String nickname, ArrayList<ReducedLeaderCard> leaderCards, int action){
+		super(nickname, MessageType.LEADER_SHOW);
 		this.leaderCards=leaderCards;
 		this.action = action;
 	}

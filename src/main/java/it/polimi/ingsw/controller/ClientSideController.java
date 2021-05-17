@@ -66,11 +66,11 @@ public class ClientSideController implements ViewObserver, Observer {
 				case LEADER_SHOW -> userTask.execute(() -> {
 					LeaderInteractions show = (LeaderInteractions) message;
 					if(show.getAction() == 0)
-						view.askInitLeaders(show.getLeaderCards());
+						view.askInitLeaders(message.getNickname(), show.getLeaderCards());
 					else if(show.getAction() == 1)
-						view.showLeaderCards(show.getLeaderCards());
+						view.showLeaderCards(message.getNickname(), show.getLeaderCards());
 					else
-						view.askLeaderAction(show.getLeaderCards());
+						view.askLeaderAction(message.getNickname(), show.getLeaderCards());
 
 				});
 				case MARKET_SHOW -> userTask.execute(() -> {
