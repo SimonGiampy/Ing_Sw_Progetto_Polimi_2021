@@ -115,9 +115,6 @@ public class GUI extends ViewObservable implements View {
 			PlayerTabs playerTabs = (PlayerTabs) controller;;
 			playerTabs.addAllObservers(observers);
 			playerTabs.instantiateTabs(players);
-			Market market= new Market();
-			playerTabs.commonBoard.setMarket(new ReducedMarket(market));
-
 
 		});
 
@@ -131,7 +128,10 @@ public class GUI extends ViewObservable implements View {
 	
 	@Override
 	public void askInitLeaders(String nickname, ArrayList<ReducedLeaderCard> leaderCards) {
-	
+		ArrayList<Integer> leaderSelection= new ArrayList<>();
+		leaderSelection.add(1);
+		leaderSelection.add(2);
+		notifyObserver(obs-> obs.onUpdateInitLeaders(leaderSelection));
 	}
 	
 	@Override
@@ -206,7 +206,10 @@ public class GUI extends ViewObservable implements View {
 	
 	@Override
 	public void showMarket(ReducedMarket market) {
-	
+		Platform.runLater(() -> {
+			PlayerTabs playerTabs= (PlayerTabs) controller;
+			playerTabs.commonBoard.setMarket(market);
+		});
 	}
 	
 	@Override

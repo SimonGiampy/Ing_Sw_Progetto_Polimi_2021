@@ -15,6 +15,76 @@
          </image>
       </ImageView>
       <ImageView fx:id="extraBall" fitHeight="72.0" fitWidth="72.0" layoutX="1674.0" layoutY="202.0" pickOnBounds="true" preserveRatio="true" />
+      <ImageView fx:id="normalRow1" fitHeight="49.0" fitWidth="82.0" layoutX="1788.0" layoutY="292.0" onMouseEntered="#onMouseEnteredRow1" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../../../../../assets/board/row_normal.png" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="row1" fitHeight="49.0" fitWidth="82.0" layoutX="1788.0" layoutY="292.0" onMouseClicked="#onMouseClickedRow1" onMouseExited="#onMouseExitedRow1" pickOnBounds="true" preserveRatio="true" visible="false">
+         <image>
+            <Image url="@../../../../../assets/board/row.png" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="normalRow2" fitHeight="49.0" fitWidth="82.0" layoutX="1788.0" layoutY="369.0" onMouseEntered="#onMouseEnteredRow2" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../../../../../assets/board/row_normal.png" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="row2" fitHeight="49.0" fitWidth="82.0" layoutX="1788.0" layoutY="369.0" onMouseClicked="#onMouseClickedRow2" onMouseExited="#onMouseExitedRow2" pickOnBounds="true" preserveRatio="true" visible="false">
+         <image>
+            <Image url="@../../../../../assets/board/row.png" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="normalRow3" fitHeight="49.0" fitWidth="82.0" layoutX="1788.0" layoutY="447.0" onMouseEntered="#onMouseEnteredRow3" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../../../../../assets/board/row_normal.png" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="row3" fitHeight="49.0" fitWidth="82.0" layoutX="1788.0" layoutY="447.0" onMouseClicked="#onMouseClickedRow3" onMouseExited="#onMouseExitedRow3" pickOnBounds="true" preserveRatio="true" visible="false">
+         <image>
+            <Image url="@../../../../../assets/board/row.png" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="normalCol1" fitHeight="112.0" fitWidth="51.0" layoutX="1404.0" layoutY="596.0" onMouseEntered="#onMouseEnteredCol1" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../../../../../assets/board/column_normal.png" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="col1" fitHeight="112.0" fitWidth="51.0" layoutX="1404.0" layoutY="597.0" onMouseClicked="#onMouseClickedCol1" onMouseExited="#onMouseExitedCol1" pickOnBounds="true" preserveRatio="true" visible="false">
+         <image>
+            <Image url="@../../../../../assets/board/column.png" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="normalCol2" fitHeight="112.0" fitWidth="51.0" layoutX="1481.0" layoutY="596.0" onMouseEntered="#onMouseEnteredCol2" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../../../../../assets/board/column_normal.png" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="col2" fitHeight="112.0" fitWidth="51.0" layoutX="1481.0" layoutY="597.0" onMouseClicked="#onMouseClickedCol2" onMouseExited="#onMouseExitedCol2" pickOnBounds="true" preserveRatio="true" visible="false">
+         <image>
+            <Image url="@../../../../../assets/board/column.png" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="normalCol3" fitHeight="112.0" fitWidth="51.0" layoutX="1559.0" layoutY="597.0" onMouseEntered="#onMouseEnteredCol3" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../../../../../assets/board/column_normal.png" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="col3" fitHeight="112.0" fitWidth="51.0" layoutX="1559.0" layoutY="597.0" onMouseClicked="#onMouseClickedCol3" onMouseExited="#onMouseExitedCol3" pickOnBounds="true" preserveRatio="true" visible="false">
+         <image>
+            <Image url="@../../../../../assets/board/column.png" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="normalCol4" fitHeight="112.0" fitWidth="51.0" layoutX="1637.0" layoutY="596.0" onMouseEntered="#onMouseEnteredCol4" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../../../../../assets/board/column_normal.png" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="col4" fitHeight="112.0" fitWidth="51.0" layoutX="1637.0" layoutY="596.0" onMouseClicked="#onMouseClickedCol4" onMouseExited="#onMouseExitedCol4" pickOnBounds="true" preserveRatio="true" visible="false">
+         <image>
+            <Image url="@../../../../../assets/board/column.png" />
+         </image>
+      </ImageView>
       <GridPane fx:id="marketGUI" layoutX="1387.0" layoutY="274.0" prefHeight="243.0" prefWidth="314.0">
         <columnConstraints>
             <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="80.0" />
