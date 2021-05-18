@@ -1,7 +1,12 @@
 package it.polimi.ingsw.view.gui.scenes;
 
+import it.polimi.ingsw.model.WarehouseDepot;
+import it.polimi.ingsw.model.reducedClasses.ReducedCardProductionManagement;
+import it.polimi.ingsw.model.reducedClasses.ReducedStrongbox;
+import it.polimi.ingsw.model.reducedClasses.ReducedWarehouseDepot;
 import it.polimi.ingsw.model.util.Resources;
 import it.polimi.ingsw.observers.ViewObservable;
+import it.polimi.ingsw.view.gui.ResourcesGui;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
@@ -40,7 +45,7 @@ public class Board extends ViewObservable implements SceneController {
 	
 	@FXML
 	public void initialize() {
-		Font caveat = Font.loadFont(getClass().getResourceAsStream("/assets/font/Caveat-Regular.ttf"), 40);
+		Font.loadFont(getClass().getResourceAsStream("/assets/font/Caveat-Regular.ttf"), 40);
 		
 		coordinates = new ArrayList<>();
 		coordinates.add(new Coordinates(0, 61, 212));
@@ -82,14 +87,42 @@ public class Board extends ViewObservable implements SceneController {
 	public void setSlotImage(int slot, int cardNumber) {
 	
 	}
+
+	public void setStrongbox(ReducedStrongbox strongbox){
+		ArrayList<Resources> content = strongbox.getContent();
+		setNumerosity(Resources.COIN, (int) content.stream().filter(i -> i.equals(Resources.COIN)).count());
+		setNumerosity(Resources.SERVANT, (int) content.stream().filter(i -> i.equals(Resources.SERVANT)).count());
+		setNumerosity(Resources.SHIELD, (int) content.stream().filter(i -> i.equals(Resources.SHIELD)).count());
+		setNumerosity(Resources.STONE, (int) content.stream().filter(i -> i.equals(Resources.STONE)).count());
+	}
 	
-	public void setNumerosity(Resources res, int num) {
+	private void setNumerosity(Resources res, int num) {
 		switch (res) {
 			case STONE -> numStone.setText(String.valueOf(num));
 			case SHIELD -> numShield.setText(String.valueOf(num));
 			case SERVANT -> numServant.setText(String.valueOf(num));
 			case COIN -> numCoin.setText(String.valueOf(num));
 		}
+	}
+
+	public void setDepot(ReducedWarehouseDepot depot){
+		Resources[] resources = depot.getDepot();
+		if(resources[0] != Resources.EMPTY && resources[0] != Resources.FREE_CHOICE)
+			depot1.setImage(new Image(resources[0].path));
+		if(resources[1] != Resources.EMPTY && resources[1] != Resources.FREE_CHOICE)
+			depot2.setImage(new Image(resources[1].path));
+		if(resources[2] != Resources.EMPTY && resources[2] != Resources.FREE_CHOICE)
+			depot3.setImage(new Image(resources[2].path));
+		if(resources[3] != Resources.EMPTY && resources[3] != Resources.FREE_CHOICE)
+			depot4.setImage(new Image(resources[3].path));
+		if(resources[4] != Resources.EMPTY && resources[4] != Resources.FREE_CHOICE)
+			depot5.setImage(new Image(resources[4].path));
+		if(resources[5] != Resources.EMPTY && resources[5] != Resources.FREE_CHOICE)
+			depot6.setImage(new Image(resources[5].path));
+	}
+
+	public void setCardManager(ReducedCardProductionManagement cardManager){
+
 	}
 	
 	

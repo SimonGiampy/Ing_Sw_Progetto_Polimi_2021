@@ -280,7 +280,8 @@ public class ServerSideController {
 				(mechanics.getGameDevCardsDeck().buyableCards(mechanics.getPlayer(playerIndex).gatherAllPlayersResources(),
 						mechanics.getPlayer(playerIndex).getPlayersCardManager())), false);
 			case PRODUCTIONS -> {
-				view.showPlayerCardsAndProduction(new ReducedCardProductionManagement(mechanics.getPlayer(playerIndex).getPlayersCardManager()));
+				view.showPlayerCardsAndProduction(nicknameList.get(playerIndex),
+						new ReducedCardProductionManagement(mechanics.getPlayer(playerIndex).getPlayersCardManager()));
 				sendBoxes(view,playerIndex,false); //it sends player boxes before production
 				view.askProductionAction(mechanics.getPlayer(playerIndex).getPlayersCardManager().availableProductions());
 			}
@@ -414,7 +415,8 @@ public class ServerSideController {
 		CardProductionsManagement management = mechanics.getPlayer(playerIndex).getPlayersCardManager();
 		if (management.checkStackLevel(message.getSlot()) == message.getLevel() - 1) { // correct
 			mechanics.getPlayer(playerIndex).buyNewDevCard(message.getLevel(),message.getColor(),message.getSlot());
-			view.showPlayerCardsAndProduction(new ReducedCardProductionManagement(mechanics.getPlayer(playerIndex).getPlayersCardManager()));
+			view.showPlayerCardsAndProduction(nicknameList.get(playerIndex),
+					new ReducedCardProductionManagement(mechanics.getPlayer(playerIndex).getPlayersCardManager()));
 			for (String s : nicknameList) {
 				view = virtualViewMap.get(s);
 				view.showGenericMessage("This is the Development Cards Deck now!");
@@ -455,7 +457,8 @@ public class ServerSideController {
 
 			}
 		} else { // productions cannot be completed
-			view.showPlayerCardsAndProduction(new ReducedCardProductionManagement(mechanics.getPlayer(playerIndex).getPlayersCardManager()));
+			view.showPlayerCardsAndProduction(nicknameList.get(playerIndex),
+					new ReducedCardProductionManagement(mechanics.getPlayer(playerIndex).getPlayersCardManager()));
 			view.askProductionAction(cardProductionsManagement.availableProductions());
 		}
 	}

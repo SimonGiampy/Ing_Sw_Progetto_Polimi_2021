@@ -99,9 +99,7 @@ public class GUI extends ViewObservable implements View {
 	
 	@Override
 	public void askCustomGame() {
-		Platform.runLater(() -> {
-			notifyObserver(obs->obs.onUpdateGameConfiguration("standard"));
-		});
+		Platform.runLater(() -> notifyObserver(obs->obs.onUpdateGameConfiguration("standard")));
 	}
 
 	@Override
@@ -111,7 +109,6 @@ public class GUI extends ViewObservable implements View {
 			PlayerTabs playerTabs = (PlayerTabs) controller;;
 			playerTabs.addAllObservers(observers);
 			playerTabs.instantiateTabs(players);
-
 		});
 
 	}
@@ -238,7 +235,10 @@ public class GUI extends ViewObservable implements View {
 	
 	@Override
 	public void showFaithTrack(String nickname, ReducedFaithTrack faithTrack) {
-	
+		Platform.runLater(() -> {
+			PlayerTabs playerTabs= (PlayerTabs) controller;
+			playerTabs.update(nickname, faithTrack);
+		});
 	}
 	
 	@Override
@@ -255,41 +255,48 @@ public class GUI extends ViewObservable implements View {
 	public void showMarket(ReducedMarket market) {
 		Platform.runLater(() -> {
 			PlayerTabs playerTabs= (PlayerTabs) controller;
-			playerTabs.commonBoard.setMarket(market);
+			playerTabs.update(market);
 		});
 	}
 	
 	@Override
 	public void showDepot(String nickname, ReducedWarehouseDepot depot) {
-	
+		//TODO: actual interaction
+
+		//This is only the update
+		Platform.runLater(() -> {
+			PlayerTabs playerTabs= (PlayerTabs) controller;
+			playerTabs.update(nickname, depot);
+		});
 	}
 	
 	@Override
-	public void showPlayerCardsAndProduction(ReducedCardProductionManagement cardProductionsManagement) {
-	
+	public void showPlayerCardsAndProduction(String nickname, ReducedCardProductionManagement cardProductionsManagement) {
+
+		//This is only the update
+		Platform.runLater(() -> {
+			PlayerTabs playerTabs= (PlayerTabs) controller;
+			playerTabs.update(nickname, cardProductionsManagement);
+		});
 	}
 	
 	@Override
 	public void showCardsDeck(ReducedDevelopmentCardsDeck deck) {
 		Platform.runLater(() -> {
 			PlayerTabs playerTabs= (PlayerTabs) controller;
-			playerTabs.commonBoard.setDeck(deck);
+			playerTabs.update(deck);
 		});
-
-
-
 
 	}
 	
 	@Override
 	public void showStrongBox(String nickname, ReducedStrongbox strongbox) {
-	
+		Platform.runLater(() -> {
+			PlayerTabs playerTabs= (PlayerTabs) controller;
+			playerTabs.update(nickname, strongbox);
+		});
 	}
-	
 
-	
-	
-	
 	@Override
 	public void showWinMessage(String winner, int points) {
 	

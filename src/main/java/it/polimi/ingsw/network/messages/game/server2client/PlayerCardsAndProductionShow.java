@@ -11,9 +11,9 @@ public class PlayerCardsAndProductionShow extends Message {
 
 	private final ReducedCardProductionManagement cardProductionManagement;
 
-	public PlayerCardsAndProductionShow(ReducedCardProductionManagement cardProductionManagement){
-		super("server", MessageType.PLAYER_CARDS_AND_PRODUCTION_SHOW);
-		this.cardProductionManagement=cardProductionManagement;
+	public PlayerCardsAndProductionShow(String nickname, ReducedCardProductionManagement cardProductionManagement){
+		super(nickname, MessageType.PLAYER_CARDS_AND_PRODUCTION_SHOW);
+		this.cardProductionManagement = cardProductionManagement;
 	}
 
 	public ReducedCardProductionManagement getCardProductionManagement() {

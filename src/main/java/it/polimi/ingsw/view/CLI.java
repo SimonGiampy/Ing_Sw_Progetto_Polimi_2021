@@ -935,7 +935,8 @@ public class CLI extends ViewObservable implements View {
 	}
 	
 	@Override
-	public void showPlayerCardsAndProduction(ReducedCardProductionManagement cardProductionsManagement) {
+	public void showPlayerCardsAndProduction(String nickname, ReducedCardProductionManagement cardProductionsManagement) {
+		System.out.println(nickname+ "'s card and production manager");
 		for (int i = 0; i < 3; i++) {
 			if(cardProductionsManagement.getCards().get(i).size()>0)
 				showDevCard(cardProductionsManagement.getCards().get(i).peek());

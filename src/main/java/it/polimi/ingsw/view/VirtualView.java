@@ -129,8 +129,8 @@ public class VirtualView implements View, Observer {
 	}
 
 	@Override
-	public void showPlayerCardsAndProduction(ReducedCardProductionManagement cardProductionsManagement) {
-		clientHandler.sendMessage(new PlayerCardsAndProductionShow(cardProductionsManagement));
+	public void showPlayerCardsAndProduction(String nickname, ReducedCardProductionManagement cardProductionsManagement) {
+		clientHandler.sendMessage(new PlayerCardsAndProductionShow(nickname, cardProductionsManagement));
 	}
 
 	@Override

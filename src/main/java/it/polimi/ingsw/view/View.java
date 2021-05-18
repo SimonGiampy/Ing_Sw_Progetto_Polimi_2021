@@ -159,9 +159,10 @@ public interface View {
 
 	/**
 	 * it shows player's cards and productions
-	 * @param cardProductionsManagement ?
+	 * @param cardProductionsManagement card manager of the player
+	 * @param nickname of the player
 	 */
-	void showPlayerCardsAndProduction(ReducedCardProductionManagement cardProductionsManagement);
+	void showPlayerCardsAndProduction(String nickname, ReducedCardProductionManagement cardProductionsManagement);
 
 	/**
 	 * it shows cards deck

@@ -1,8 +1,7 @@
 package it.polimi.ingsw.view.gui.scenes;
 
 import it.polimi.ingsw.model.FaithTrack;
-import it.polimi.ingsw.model.reducedClasses.ReducedFaithTrack;
-import it.polimi.ingsw.model.reducedClasses.ReducedWarehouseDepot;
+import it.polimi.ingsw.model.reducedClasses.*;
 import it.polimi.ingsw.network.messages.game.server2client.FaithTrackShow;
 import it.polimi.ingsw.observers.ViewObservable;
 import it.polimi.ingsw.view.gui.GUI;
@@ -24,8 +23,8 @@ public class PlayerTabs extends ViewObservable implements SceneController{
 	@FXML TabPane tabPane;
 	@FXML  Tab commonBoardTab;
 	@FXML AnchorPane commonPane;
-	HashMap <String, Board> playersMap;
-	 public CommonBoard commonBoard;
+	private HashMap <String, Board> playersMap;
+	private CommonBoard commonBoard;
 
 	public void instantiateTabs(ArrayList<String> nicknameList) {
 
@@ -65,11 +64,35 @@ public class PlayerTabs extends ViewObservable implements SceneController{
 	}
 
 	public void update(String nickname, ReducedFaithTrack track){
-
+		Board board = playersMap.get(nickname);
+		board.updateCrossCoords(track.getCurrentPosition());
 	}
 
 	public void update(String nickname, ReducedWarehouseDepot depot){
+		Board board = playersMap.get(nickname);
+		board.setDepot(depot);
+	}
 
+	public void update(String nickname, ReducedStrongbox strongbox){
+		Board board = playersMap.get(nickname);
+		board.setStrongbox(strongbox);
+	}
+
+	public void update(String nickname, ReducedLeaderCard leaderCard){
+		Board board = playersMap.get(nickname);
+	}
+
+	public void update(String nickname, ReducedCardProductionManagement cardProductionManagement){
+		Board board = playersMap.get(nickname);
+		board.setCardManager(cardProductionManagement);
+	}
+
+	public void update(ReducedDevelopmentCardsDeck deck){
+		commonBoard.setDeck(deck);
+	}
+
+	public void update(ReducedMarket market){
+		commonBoard.setMarket(market);
 	}
 
 	@FXML public void initialize(){

@@ -97,7 +97,8 @@ public class ClientSideController implements ViewObserver, Observer {
 				case CARDS_DECK_SHOW -> userTask.execute(() ->
 						view.showCardsDeck(((CardsDeckShow) message).getCardsDeck()));
 				case PLAYER_CARDS_AND_PRODUCTION_SHOW -> userTask.execute(() ->
-						view.showPlayerCardsAndProduction(((PlayerCardsAndProductionShow) message).getCardProductionManagement()));
+						view.showPlayerCardsAndProduction(message.getNickname(),
+								((PlayerCardsAndProductionShow) message).getCardProductionManagement()));
 				case ACTION_REQUEST -> userTask.execute(() ->
 						view.askAction(((ActionRequest) message).getAvailableAction()));
 				case CARDS_SHOW -> userTask.execute(() ->
