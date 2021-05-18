@@ -35,7 +35,7 @@ class LeaderCardTest {
 		requirements.add(Resources.SERVANT);
 		requirements.add(Resources.SHIELD);
 		
-		LeaderCard card = new LeaderCard(2, requirements, new ArrayList<>(), new ArrayList<>());
+		LeaderCard card = new LeaderCard(2, requirements, new ArrayList<>(), new ArrayList<>(), 1);
 		assertTrue(card.checkResources(resources));
 	}
 
@@ -52,7 +52,7 @@ class LeaderCardTest {
 		DiscountAbility disc = new DiscountAbility(new ArrayList<>());
 		ArrayList<AbilityEffectActivation> effectActivations = new ArrayList<>();
 		effectActivations.add(disc);
-		LeaderCard leaderCard = new LeaderCard(0,new ArrayList<>(), leaderInput, effectActivations);
+		LeaderCard leaderCard = new LeaderCard(0,new ArrayList<>(), leaderInput, effectActivations,1);
 		assertTrue(leaderCard.checkCards(playerCards));
 		
 	}
@@ -69,7 +69,7 @@ class LeaderCardTest {
 		DiscountAbility disc = new DiscountAbility(new ArrayList<>());
 		ArrayList<AbilityEffectActivation> effectActivations = new ArrayList<>();
 		effectActivations.add(disc);
-		LeaderCard leaderCard = new LeaderCard(0,new ArrayList<>(), leaderInput, effectActivations);
+		LeaderCard leaderCard = new LeaderCard(0,new ArrayList<>(), leaderInput, effectActivations,1);
 		assertFalse(leaderCard.checkCards(playerCards));
 	}
 	@Test
@@ -85,7 +85,7 @@ class LeaderCardTest {
 		DiscountAbility disc = new DiscountAbility(new ArrayList<>());
 		ArrayList<AbilityEffectActivation> effectActivations = new ArrayList<>();
 		effectActivations.add(disc);
-		LeaderCard leaderCard = new LeaderCard(0,new ArrayList<>(), leaderInput, effectActivations);
+		LeaderCard leaderCard = new LeaderCard(0,new ArrayList<>(), leaderInput, effectActivations,1);
 		assertTrue(leaderCard.checkCards(playerCards));
 	}
 	@Test
@@ -100,7 +100,7 @@ class LeaderCardTest {
 		DiscountAbility disc = new DiscountAbility(new ArrayList<>());
 		ArrayList<AbilityEffectActivation> effectActivations = new ArrayList<>();
 		effectActivations.add(disc);
-		LeaderCard leaderCard = new LeaderCard(0,new ArrayList<>(), leaderInput, effectActivations);
+		LeaderCard leaderCard = new LeaderCard(0,new ArrayList<>(), leaderInput, effectActivations,1);
 		assertTrue(leaderCard.checkCards(playerCards));
 	}
 	
@@ -112,7 +112,7 @@ class LeaderCardTest {
 		DiscountAbility disc = new DiscountAbility(new ArrayList<>());
 		ArrayList<AbilityEffectActivation> effectActivations = new ArrayList<>();
 		effectActivations.add(disc);
-		LeaderCard leaderCard = new LeaderCard(0,new ArrayList<>(), leaderInput, effectActivations);
+		LeaderCard leaderCard = new LeaderCard(0,new ArrayList<>(), leaderInput, effectActivations,1);
 		
 		ReducedLeaderCard reduced = new ReducedLeaderCard(leaderCard, false, false, true);
 		assertFalse(reduced.isDiscarded());
