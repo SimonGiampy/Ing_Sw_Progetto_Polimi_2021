@@ -95,6 +95,11 @@ public class PlayerTabs extends ViewObservable implements SceneController{
 		commonBoard.setMarket(market);
 	}
 
+	public void testSwitch(){
+		//code for switch focus
+		tabPane.getSelectionModel().select(playersMap.size());
+	}
+
 	@FXML public void initialize(){
 
 	}
