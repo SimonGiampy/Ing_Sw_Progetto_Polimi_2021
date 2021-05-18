@@ -123,9 +123,13 @@ public class XMLParser {
 				ArrayList<Resources> output = new ArrayList<>();
 				ArrayList<Resources> requirements = new ArrayList<>();
 				
-				int faithOutput, level, victoryPoints;
+				int faithOutput, level, victoryPoints, cardNumber;
 				Colors color;
-				
+
+				//Get the unique id number
+				Element cardElement = (Element) cardNode;
+				cardNumber = Integer.parseInt(cardElement.getAttribute("number"));
+
 				//Get list of all the different data
 				NodeList cardDetailList = cardNode.getChildNodes();
 				
@@ -159,7 +163,7 @@ public class XMLParser {
 				
 				//Instantiate production rule and card
 				cardsDeck.add(new DevelopmentCard(level, color, victoryPoints, requirements,
-						new ProductionRules(input, output, faithOutput),i+1));
+						new ProductionRules(input, output, faithOutput), cardNumber));
 			}
 		}
 		
@@ -199,7 +203,11 @@ public class XMLParser {
 		for (int i = 1; i < leaderCardsNodeList.getLength(); i++) {
 			Node leaderCardNode = leaderCardsNodeList.item(i);
 			leaderCardBuilder = new LeaderCardBuilder();
-			
+
+			//Get id number
+			Element leaderElement = (Element) leaderCardNode;
+			leaderCardBuilder.setIdNumber(Integer.parseInt(leaderElement.getAttribute("number")));
+
 			if (leaderCardNode.getNodeType() == Node.ELEMENT_NODE) {
 				NodeList leaderCardElements = leaderCardNode.getChildNodes();
 				

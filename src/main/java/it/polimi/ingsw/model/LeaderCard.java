@@ -18,6 +18,7 @@ public class LeaderCard {
 	private final ArrayList<CardRequirement> cardRequirements; // list of development card requirements
 	private final ArrayList<AbilityEffectActivation> effectsActivation; // a single leader card supports multiple abilities
 	private boolean abilitiesActivated;
+	private final int idNumber;
 
 
 	/**
@@ -26,14 +27,16 @@ public class LeaderCard {
 	 * @param requirements arrayList of the resources needed to play the card
 	 * @param cardRequirements arrayList of the dev card required
 	 * @param effectsActivation instance of the ability
+	 * @param idNumber unique id of the card
 	 */
 	public LeaderCard(int victoryPoints, ArrayList<Resources> requirements, ArrayList<CardRequirement> cardRequirements,
-	                  ArrayList<AbilityEffectActivation> effectsActivation) {
+	                  ArrayList<AbilityEffectActivation> effectsActivation, int idNumber) {
 		this.victoryPoints = victoryPoints;
 		this.resourceRequirements = requirements;
 		this.cardRequirements = cardRequirements;
 		this.effectsActivation = effectsActivation;
 		abilitiesActivated = false;
+		this.idNumber = idNumber;
 	}
 
 	/**

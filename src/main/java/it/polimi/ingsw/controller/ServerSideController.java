@@ -570,7 +570,7 @@ public class ServerSideController {
 							false, false, false));
 					view.showLeaderCards(nicknameList.get(playerIndex), leaderCards);
 				} else {
-					view.showGenericMessage("Leader Card successfully played!");
+					view.showGenericMessage("Leader Card successfully discarded!");
 				}
 			}
 			checkVaticanReport();

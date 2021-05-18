@@ -14,6 +14,7 @@ public class LeaderCardBuilder {
 	private ArrayList<Resources> resourceRequirements;
 	private ArrayList<CardRequirement> cardRequirements;
 	private final ArrayList<AbilityEffectActivation> effects;
+	private int idNumber;
 	
 	/**
 	 * basic constructor
@@ -80,7 +81,10 @@ public class LeaderCardBuilder {
 	 */
 	public LeaderCard build() {
 		assert !effects.isEmpty();
-		return new LeaderCard(victoryPoints, resourceRequirements, cardRequirements, effects);
+		return new LeaderCard(victoryPoints, resourceRequirements, cardRequirements, effects, idNumber);
 	}
-	
+
+	public void setIdNumber(int idNumber) {
+		this.idNumber = idNumber;
+	}
 }
