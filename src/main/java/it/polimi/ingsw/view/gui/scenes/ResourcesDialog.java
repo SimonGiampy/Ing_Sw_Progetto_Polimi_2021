@@ -1,27 +1,20 @@
 package it.polimi.ingsw.view.gui.scenes;
 
-
 import it.polimi.ingsw.model.util.Resources;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
-import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
 import javafx.scene.control.*;
-import javafx.scene.input.MouseEvent;
-import javafx.util.Callback;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Objects;
 
 public class ResourcesDialog extends Dialog<ArrayList<Resources>> {
 	
-	private int number; // number of resources to reach in total
-	private ArrayList<Resources> selected;
-	
-	public ResourcesDialog(int number) {
-		this.number = number;
+	/**
+	 * Constructor of the dialog window
+	 * @param number of resources that the user needs to choose
+	 * @param prompt to be shown in a label on the top of the window
+	 */
+	public ResourcesDialog(int number, String prompt) {
 		
 		try {
 			FXMLLoader loader = new FXMLLoader();
@@ -32,21 +25,14 @@ public class ResourcesDialog extends Dialog<ArrayList<Resources>> {
 			ButtonType t = new ButtonType("Confirm Choices", ButtonBar.ButtonData.OK_DONE);
 			dialogPane.getButtonTypes().addAll(t);
 			Button confirm = (Button) dialogPane.lookupButton(t);
-			//confirm.setDisable(true);
 			
-			controller.setNumberOfResources(number);
+			controller.setNumberOfResources(number, prompt);
 			controller.setConfirmButton(confirm);
-			//controller.initialize();
 			
-			setDialogPane(dialogPane);
+			setDialogPane(dialogPane); // sets the content of the dialog window
 			setTitle("Choose the resources");
 			
-			
-			
-			//selected = new ArrayList<>();
-			//selected.add(Resources.COIN);
-			
-			setResultConverter(buttonType -> controller.getSelectedResources());
+			setResultConverter(buttonType -> controller.getSelectedResources()); // converts the output in a list of resources
 			
 		} catch (IOException e) {
 			e.printStackTrace();

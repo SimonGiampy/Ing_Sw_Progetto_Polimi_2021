@@ -10,7 +10,7 @@
 <DialogPane prefHeight="632.0" prefWidth="973.0" xmlns="http://javafx.com/javafx/" xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="it.polimi.ingsw.view.gui.scenes.ResourcesDialogController" stylesheets="@../../../../../assets/bootstrap3.css">
     <header>
-        <Label prefHeight="69.0" prefWidth="877.0" text="choose the resources" style="-fx-padding: 0 0 0 50;" styleClass="leaders_name" />
+        <Label prefHeight="69.0" prefWidth="877.0" text="Choose the resources" style="-fx-padding: 0 0 0 50;" styleClass="leaders_name" fx:id="lbl" />
     </header>
     <content>
         <AnchorPane prefHeight="200.0" prefWidth="200.0">
@@ -46,7 +46,6 @@
 
                 </items>
             </MenuButton>
-            <!--<Button fx:id="confirm" text="Confirm choices" prefHeight="60" prefWidth="200" layoutY="400" layoutX="400"/>-->
         </AnchorPane>
     </content>
 </DialogPane>
