@@ -101,5 +101,8 @@ public class LeaderCard {
 	public ArrayList<AbilityEffectActivation> getEffectsActivation() {
 		return effectsActivation;
 	}
-	
+
+	public int getIdNumber() {
+		return idNumber;
+	}
 }

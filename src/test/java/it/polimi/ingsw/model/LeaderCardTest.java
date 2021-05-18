@@ -114,7 +114,7 @@ class LeaderCardTest {
 		effectActivations.add(disc);
 		LeaderCard leaderCard = new LeaderCard(0,new ArrayList<>(), leaderInput, effectActivations,1);
 		
-		ReducedLeaderCard reduced = new ReducedLeaderCard(leaderCard, false, false, true);
+		ReducedLeaderCard reduced = new ReducedLeaderCard(leaderCard, false, false, true, leaderCard.getIdNumber());
 		assertFalse(reduced.isDiscarded());
 		assertTrue(reduced.isPlayable());
 	}

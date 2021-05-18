@@ -63,7 +63,7 @@ class XMLParserTest {
 		int i = 1;
 		for(LeaderCard leader: leaderCards) {
 			System.out.println("Card #" + i);
-			cli.showLeaderCard(new ReducedLeaderCard(leader, false, false, true));
+			cli.showLeaderCard(new ReducedLeaderCard(leader, false, false, true, leader.getIdNumber()));
 			System.out.print("\n");
 			i++;
 		}
