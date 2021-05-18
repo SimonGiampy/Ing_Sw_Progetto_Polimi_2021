@@ -6,10 +6,14 @@ import it.polimi.ingsw.model.reducedClasses.ReducedDevelopmentCardsDeck;
 import it.polimi.ingsw.model.reducedClasses.ReducedMarket;
 import it.polimi.ingsw.model.util.Marbles;
 import it.polimi.ingsw.observers.ViewObservable;
+import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.Dragboard;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.input.TransferMode;
 import javafx.scene.layout.GridPane;
 
 import java.util.ArrayList;
@@ -53,10 +57,31 @@ public class CommonBoard extends ViewObservable implements SceneController{
 
 	ImageView[][] cardsImages;
 
+	@FXML ImageView row1;
+	@FXML ImageView row2;
+	@FXML ImageView row3;
+
+	@FXML ImageView normalRow1;
+	@FXML ImageView normalRow2;
+	@FXML ImageView normalRow3;
+
+
+	@FXML ImageView col1;
+	@FXML ImageView col2;
+	@FXML ImageView col3;
+	@FXML ImageView col4;
+
+	@FXML ImageView normalCol1;
+	@FXML ImageView normalCol2;
+	@FXML ImageView normalCol3;
+	@FXML ImageView normalCol4;
+
+	private boolean marketAble; //TODO: to be set true at the start of the turn
+
 
 	@FXML
 	public void initialize(){
-
+		marketAble=true;
 		cardsImages= new ImageView[3][4];
 		cardsImages[0][0]= cards00;
 		cardsImages[0][1]= cards01;
@@ -85,9 +110,6 @@ public class CommonBoard extends ViewObservable implements SceneController{
 		marketImages[2][2]= market22;
 		marketImages[2][3]= market23;
 
-
-
-
 	}
 
 	public void setMarket(ReducedMarket market){
@@ -101,6 +123,120 @@ public class CommonBoard extends ViewObservable implements SceneController{
 		}
 		marble=market.getExtraBall();
 		extraBall.setImage(new Image(marble.path));
+
+	}
+
+	public void onMouseEnteredRow1(){
+		if(marketAble)
+		row1.setVisible(true);
+	}
+
+	public void onMouseEnteredRow2(){
+		if(marketAble)
+		row2.setVisible(true);
+	}
+
+	public void onMouseEnteredRow3(){
+		if(marketAble)
+		row3.setVisible(true);
+	}
+
+
+	public void onMouseEnteredCol1(){
+		if(marketAble)
+		col1.setVisible(true);
+	}
+
+	public void onMouseEnteredCol2(){
+		if(marketAble)
+		col2.setVisible(true);
+	}
+
+	public void onMouseEnteredCol3(){
+		if(marketAble)
+		col3.setVisible(true);
+	}
+
+	public void onMouseEnteredCol4(){
+		if(marketAble)
+		col4.setVisible(true);
+	}
+
+	public void onMouseExitedRow1(){
+		row1.setVisible(false);
+	}
+
+	public void onMouseExitedRow2(){
+		row2.setVisible(false);
+	}
+
+	public void onMouseExitedRow3(){
+		row3.setVisible(false);
+	}
+
+	public void onMouseExitedCol1(){
+		col1.setVisible(false);
+	}
+
+	public void onMouseExitedCol2(){
+		col2.setVisible(false);
+	}
+
+	public void onMouseExitedCol3(){
+		col3.setVisible(false);
+	}
+
+	public void onMouseExitedCol4(){
+		col4.setVisible(false);
+	}
+
+	public void onMouseClickedRow1(){
+		if(marketAble) {
+			notifyObserver(obs -> obs.onUpdateMarketAction("row", 1));
+			marketAble=false;
+		}
+	}
+
+	public void onMouseClickedRow2(){
+		if(marketAble) {
+			notifyObserver(obs -> obs.onUpdateMarketAction("row", 2));
+			marketAble=false;
+		}
+	}
+
+	public void onMouseClickedRow3(){
+		if(marketAble) {
+			notifyObserver(obs -> obs.onUpdateMarketAction("row", 3));
+			marketAble = false;
+		}
+	}
+
+	public void onMouseClickedCol1(){
+		if(marketAble) {
+			notifyObserver(obs -> obs.onUpdateMarketAction("COL", 1));
+			marketAble = false;
+		}
+	}
+
+	public void onMouseClickedCol2(){
+		if(marketAble) {
+			notifyObserver(obs -> obs.onUpdateMarketAction("COL", 2));
+			marketAble = false;
+		}
+	}
+
+	public void onMouseClickedCol3(){
+		if(marketAble) {
+			notifyObserver(obs -> obs.onUpdateMarketAction("COL", 3));
+			marketAble = false;
+		}
+	}
+
+	public void onMouseClickedCol4(){
+		if(marketAble) {
+			notifyObserver(obs -> obs.onUpdateMarketAction("COL", 4));
+			marketAble = false;
+		}
 	}
 
 	public void setDeck(ReducedDevelopmentCardsDeck deck){
