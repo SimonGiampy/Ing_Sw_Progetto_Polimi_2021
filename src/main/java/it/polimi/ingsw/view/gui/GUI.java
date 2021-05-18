@@ -13,6 +13,7 @@ import javafx.scene.Scene;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.stream.Collectors;
 
 public class GUI extends ViewObservable implements View {
 	
@@ -99,13 +100,8 @@ public class GUI extends ViewObservable implements View {
 	@Override
 	public void askCustomGame() {
 		Platform.runLater(() -> {
-			//just for testing the dialog
-			ResourcesDialog dialog = new ResourcesDialog(3);
-			dialog.showAndWait();
 			notifyObserver(obs->obs.onUpdateGameConfiguration("standard"));
 		});
-		
-
 	}
 
 	@Override
@@ -122,8 +118,23 @@ public class GUI extends ViewObservable implements View {
 	
 	@Override
 	public void askInitResources(int number) {
-
-	
+		Platform.runLater(() -> {
+			ResourcesDialog dialog = new ResourcesDialog(number, "Choose a total of " + number + " initial resources.");
+			dialog.showAndWait().ifPresent(resources -> {
+				ArrayList<Integer> numbers = new ArrayList<>();
+				if (number == 2) {
+					if (resources.get(0).equals(resources.get(1))) {
+						numbers.add(2);
+					} else {
+						numbers.add(1);
+						numbers.add(1);
+					}
+				} else {
+					numbers.add(1);
+				}
+				notifyObserver(obs -> obs.onUpdateResourceChoice(resources, numbers,0));
+			});
+		});
 	}
 	
 	@Override
@@ -166,12 +177,48 @@ public class GUI extends ViewObservable implements View {
 	
 	@Override
 	public void askFreeInput(int number) {
-	
+		Platform.runLater(() -> {
+			ResourcesDialog dialog = new ResourcesDialog(number, "Choose a total of " + number + " resources for the production input.");
+			freeChoice(dialog);
+		});
 	}
 	
 	@Override
 	public void askFreeOutput(int number) {
+		Platform.runLater(() -> {
+			ResourcesDialog dialog = new ResourcesDialog(number, "Choose a total of " + number + " resources for the production output.");
+			freeChoice(dialog);
+		});
+	}
 	
+	/**
+	 * starts a free choices dialog and asks for a number of resources, updating the observer with the result in output
+	 * @param dialog to be shown to the user asking for a list of resources
+	 */
+	private void freeChoice(ResourcesDialog dialog) {
+		dialog.showAndWait().ifPresent(resources -> {
+			ArrayList<Integer> numbers = getQuantitiesFromResources(resources);
+			ArrayList<Resources> finalResources = resources.stream().distinct().collect(Collectors.toCollection(ArrayList::new));
+			notifyObserver(obs -> obs.onUpdateResourceChoice(finalResources, numbers,0));
+		});
+	}
+	
+	/**
+	 * calculates the quantities for each resources
+	 * @param resources a list of resources with duplicates
+	 * @return the quantities of resources per single resource
+	 */
+	private ArrayList<Integer> getQuantitiesFromResources(ArrayList<Resources> resources) {
+		ArrayList<Integer> num = new ArrayList<>();
+		for (Resources r: Resources.values()) {
+			if (!r.equals(Resources.EMPTY) && !r.equals(Resources.FREE_CHOICE)) {
+				int x = ListSet.count(resources, r);
+				if (x != 0) {
+					num.add(x);
+				}
+			}
+		}
+		return num;
 	}
 
 	@Override

@@ -16,8 +16,9 @@ public class ReducedLeaderCard implements Serializable {
 	private final boolean abilitiesActivated;
 	private final boolean discarded;
 	private final boolean playable;
+	private final int idNumber;
 
-	public ReducedLeaderCard(LeaderCard leaderCard, boolean abilitiesActivated,boolean discarded, boolean playable){
+	public ReducedLeaderCard(LeaderCard leaderCard, boolean abilitiesActivated,boolean discarded, boolean playable, int idNumber){
 		victoryPoints=leaderCard.getVictoryPoints();
 		resourceRequirements= leaderCard.getResourceRequirements();
 		cardRequirements=leaderCard.getCardRequirements();
@@ -25,6 +26,7 @@ public class ReducedLeaderCard implements Serializable {
 		this.abilitiesActivated=abilitiesActivated;
 		this.discarded=discarded;
 		this.playable=playable;
+		this.idNumber = idNumber;
 	}
 
 	public int getVictoryPoints() {
@@ -53,5 +55,9 @@ public class ReducedLeaderCard implements Serializable {
 
 	public boolean isPlayable() {
 		return playable;
+	}
+
+	public int getIdNumber() {
+		return idNumber;
 	}
 }
