@@ -204,11 +204,11 @@ public class XMLParser {
 			Node leaderCardNode = leaderCardsNodeList.item(i);
 			leaderCardBuilder = new LeaderCardBuilder();
 
-			//Get id number
-			Element leaderElement = (Element) leaderCardNode;
-			leaderCardBuilder.setIdNumber(Integer.parseInt(leaderElement.getAttribute("number")));
-
 			if (leaderCardNode.getNodeType() == Node.ELEMENT_NODE) {
+				//Get id number
+				Element leaderElement = (Element) leaderCardNode;
+				leaderCardBuilder.setIdNumber(Integer.parseInt(leaderElement.getAttribute("number")));
+
 				NodeList leaderCardElements = leaderCardNode.getChildNodes();
 				
 				Element victoryElementNode = (Element) (leaderCardElements.item(1));

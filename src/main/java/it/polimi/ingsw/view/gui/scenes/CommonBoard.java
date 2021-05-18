@@ -107,7 +107,7 @@ public class CommonBoard extends ViewObservable implements SceneController{
 		for (int i = 0; i < 3; i++) {
 			for (int j = 0; j < 4; j++) {
 				DevelopmentCard card=deck.getCardStackStructure()[i][j].get(0);
-				cardsImages[i][j].setImage(new Image("/assets/board/Cards/"+card.getCardNumber()+".png"));
+				cardsImages[i][j].setImage(new Image("/assets/devCards/"+card.getCardNumber()+".png"));
 
 			}
 		}
