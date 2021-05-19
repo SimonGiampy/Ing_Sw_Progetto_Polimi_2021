@@ -149,7 +149,9 @@ public class GUI extends ViewObservable implements View {
 	
 	@Override
 	public void askAction(ArrayList<PlayerActions> availableAction) {
-	
+		Platform.runLater(() -> {
+			//notifyObserver(obs -> obs.onUpdateAction(PlayerActions.BUY_CARD));
+		});
 	}
 	
 	@Override
@@ -164,7 +166,11 @@ public class GUI extends ViewObservable implements View {
 	
 	@Override
 	public void askBuyCardAction(ArrayList<DevelopmentCard> cardsAvailable, boolean wrongSlot) {
-	
+		Platform.runLater(() -> {
+			PlayerTabs playerTabs= (PlayerTabs) controller;
+			playerTabs.commonBoard.setGreen(cardsAvailable);
+
+		});
 	}
 	
 	@Override

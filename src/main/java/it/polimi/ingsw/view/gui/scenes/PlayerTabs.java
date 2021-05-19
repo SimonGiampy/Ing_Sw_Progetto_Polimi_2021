@@ -24,7 +24,7 @@ public class PlayerTabs extends ViewObservable implements SceneController{
 	@FXML  Tab commonBoardTab;
 	@FXML AnchorPane commonPane;
 	private HashMap <String, Board> playersMap;
-	private CommonBoard commonBoard;
+	public CommonBoard commonBoard;
 
 	public void instantiateTabs(ArrayList<String> nicknameList) {
 

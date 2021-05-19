@@ -138,6 +138,66 @@
             <ImageView fx:id="cards01" fitHeight="302.0" fitWidth="225.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER" />
             <ImageView fx:id="cards02" fitHeight="302.0" fitWidth="225.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER" />
             <ImageView fx:id="cards03" fitHeight="302.0" fitWidth="225.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER" />
+            <ImageView fx:id="greenCards20" fitHeight="302.0" fitWidth="225.0" pickOnBounds="true" preserveRatio="true" visible="false" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+               <image>
+                  <Image url="@../../../../../assets/board/green.png" />
+               </image>
+            </ImageView>
+            <ImageView fx:id="greenCards21" fitHeight="302.0" fitWidth="225.0" pickOnBounds="true" preserveRatio="true" visible="false" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+               <image>
+                  <Image url="@../../../../../assets/board/green.png" />
+               </image>
+            </ImageView>
+            <ImageView fx:id="greenCards22" fitHeight="302.0" fitWidth="225.0" pickOnBounds="true" preserveRatio="true" visible="false" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+               <image>
+                  <Image url="@../../../../../assets/board/green.png" />
+               </image>
+            </ImageView>
+            <ImageView fx:id="greenCards23" fitHeight="302.0" fitWidth="225.0" pickOnBounds="true" preserveRatio="true" visible="false" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+               <image>
+                  <Image url="@../../../../../assets/board/green.png" />
+               </image>
+            </ImageView>
+            <ImageView fx:id="greenCards10" fitHeight="302.0" fitWidth="225.0" pickOnBounds="true" preserveRatio="true" visible="false" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
+               <image>
+                  <Image url="@../../../../../assets/board/green.png" />
+               </image>
+            </ImageView>
+            <ImageView fx:id="greenCards11" fitHeight="302.0" fitWidth="225.0" pickOnBounds="true" preserveRatio="true" visible="false" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
+               <image>
+                  <Image url="@../../../../../assets/board/green.png" />
+               </image>
+            </ImageView>
+            <ImageView fx:id="greenCards12" fitHeight="302.0" fitWidth="225.0" pickOnBounds="true" preserveRatio="true" visible="false" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
+               <image>
+                  <Image url="@../../../../../assets/board/green.png" />
+               </image>
+            </ImageView>
+            <ImageView fx:id="greenCards13" fitHeight="302.0" fitWidth="225.0" pickOnBounds="true" preserveRatio="true" visible="false" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
+               <image>
+                  <Image url="@../../../../../assets/board/green.png" />
+               </image>
+            </ImageView>
+            <ImageView fx:id="greenCards00" fitHeight="302.0" fitWidth="225.0" pickOnBounds="true" preserveRatio="true" visible="false" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER">
+               <image>
+                  <Image url="@../../../../../assets/board/green.png" />
+               </image>
+            </ImageView>
+            <ImageView fx:id="greenCards01" fitHeight="302.0" fitWidth="225.0" pickOnBounds="true" preserveRatio="true" visible="false" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER">
+               <image>
+                  <Image url="@../../../../../assets/board/green.png" />
+               </image>
+            </ImageView>
+            <ImageView fx:id="greenCards02" fitHeight="302.0" fitWidth="225.0" pickOnBounds="true" preserveRatio="true" visible="false" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER">
+               <image>
+                  <Image url="@../../../../../assets/board/green.png" />
+               </image>
+            </ImageView>
+            <ImageView fx:id="greenCards03" fitHeight="302.0" fitWidth="225.0" pickOnBounds="true" preserveRatio="true" visible="false" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER">
+               <image>
+                  <Image url="@../../../../../assets/board/green.png" />
+               </image>
+            </ImageView>
          </children>
       </GridPane>
    </children>

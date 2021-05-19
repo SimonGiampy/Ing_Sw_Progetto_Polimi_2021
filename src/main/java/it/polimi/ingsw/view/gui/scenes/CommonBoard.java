@@ -42,20 +42,6 @@ public class CommonBoard extends ViewObservable implements SceneController{
 
 	ImageView[][] marketImages;
 
-	@FXML ImageView cards00;
-	@FXML ImageView cards01;
-	@FXML ImageView cards02;
-	@FXML ImageView cards03;
-	@FXML ImageView cards10;
-	@FXML ImageView cards11;
-	@FXML ImageView cards12;
-	@FXML ImageView cards13;
-	@FXML ImageView cards20;
-	@FXML ImageView cards21;
-	@FXML ImageView cards22;
-	@FXML ImageView cards23;
-
-	ImageView[][] cardsImages;
 
 	@FXML ImageView row1;
 	@FXML ImageView row2;
@@ -76,12 +62,45 @@ public class CommonBoard extends ViewObservable implements SceneController{
 	@FXML ImageView normalCol3;
 	@FXML ImageView normalCol4;
 
+	@FXML ImageView cards00;
+	@FXML ImageView cards01;
+	@FXML ImageView cards02;
+	@FXML ImageView cards03;
+	@FXML ImageView cards10;
+	@FXML ImageView cards11;
+	@FXML ImageView cards12;
+	@FXML ImageView cards13;
+	@FXML ImageView cards20;
+	@FXML ImageView cards21;
+	@FXML ImageView cards22;
+	@FXML ImageView cards23;
+
+	ImageView[][] cardsImages;
+
+	@FXML ImageView greenCards00;
+	@FXML ImageView greenCards01;
+	@FXML ImageView greenCards02;
+	@FXML ImageView greenCards03;
+	@FXML ImageView greenCards10;
+	@FXML ImageView greenCards11;
+	@FXML ImageView greenCards12;
+	@FXML ImageView greenCards13;
+	@FXML ImageView greenCards20;
+	@FXML ImageView greenCards21;
+	@FXML ImageView greenCards22;
+	@FXML ImageView greenCards23;
+
+	ImageView[][] greenCardsImages;
+
 	private boolean marketAble; //TODO: to be set true at the start of the turn
+	private ReducedDevelopmentCardsDeck deck;
 
 
 	@FXML
 	public void initialize(){
 		marketAble=true;
+
+
 		cardsImages= new ImageView[3][4];
 		cardsImages[0][0]= cards00;
 		cardsImages[0][1]= cards01;
@@ -95,6 +114,20 @@ public class CommonBoard extends ViewObservable implements SceneController{
 		cardsImages[2][1]= cards21;
 		cardsImages[2][2]= cards22;
 		cardsImages[2][3]= cards23;
+
+		greenCardsImages= new ImageView[3][4];
+		greenCardsImages[0][0]= greenCards00;
+		greenCardsImages[0][1]= greenCards01;
+		greenCardsImages[0][2]= greenCards02;
+		greenCardsImages[0][3]= greenCards03;
+		greenCardsImages[1][0]= greenCards10;
+		greenCardsImages[1][1]= greenCards11;
+		greenCardsImages[1][2]= greenCards12;
+		greenCardsImages[1][3]= greenCards13;
+		greenCardsImages[2][0]= greenCards20;
+		greenCardsImages[2][1]= greenCards21;
+		greenCardsImages[2][2]= greenCards22;
+		greenCardsImages[2][3]= greenCards23;
 
 		marketImages= new ImageView[3][4];
 		marketImages[0][0]= market00;
@@ -240,11 +273,21 @@ public class CommonBoard extends ViewObservable implements SceneController{
 	}
 
 	public void setDeck(ReducedDevelopmentCardsDeck deck){
+		this.deck=deck;
 		for (int i = 0; i < 3; i++) {
 			for (int j = 0; j < 4; j++) {
 				DevelopmentCard card=deck.getCardStackStructure()[i][j].get(0);
 				cardsImages[i][j].setImage(new Image("/assets/devCards/"+card.getCardNumber()+".png"));
 
+			}
+		}
+	}
+
+	public void setGreen(ArrayList<DevelopmentCard> cards){
+		for (int i = 0; i < 3; i++) {
+			for (int j = 0; j < 4; j++) {
+				if(cards.contains(deck.getCardStackStructure()[i][j].get(0)))
+					greenCardsImages[i][j].setVisible(true);
 			}
 		}
 	}

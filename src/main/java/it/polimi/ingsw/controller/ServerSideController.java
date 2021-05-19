@@ -161,6 +161,17 @@ public class ServerSideController {
 		
 		//TODO: STOP CHEATING!
 		Resources[] resources={Resources.COIN,Resources.STONE,Resources.STONE,Resources.SHIELD,Resources.SHIELD,Resources.SHIELD};
+		ArrayList<Resources> set= new ArrayList<>();
+		set.add(Resources.COIN);
+		set.add(Resources.COIN);
+		set.add(Resources.COIN);
+		set.add(Resources.COIN);
+		set.add(Resources.SERVANT);
+		set.add(Resources.SERVANT);
+		set.add(Resources.SERVANT);
+		set.add(Resources.SERVANT);
+		set.add(Resources.SERVANT);
+		mechanics.getPlayer(0).getMyStrongbox().storeResources(set);
 		mechanics.getPlayer(0).getPlayersWarehouseDepot().setDepotForDebugging(resources);
 		
 		turnController.startTurn();

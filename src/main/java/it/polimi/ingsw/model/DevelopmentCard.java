@@ -5,6 +5,7 @@ import it.polimi.ingsw.model.util.Resources;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Objects;
 
 /**
  * this class handles single card management
@@ -72,5 +73,18 @@ public class DevelopmentCard implements Serializable {
 
 	public int getCardNumber() {
 		return cardNumber;
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+		DevelopmentCard card = (DevelopmentCard) o;
+		return level == card.level && victoryPoints == card.victoryPoints && cardNumber == card.cardNumber && color == card.color;
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(level, victoryPoints, color, resourcesRequirement, productionRules, cardNumber);
 	}
 }
