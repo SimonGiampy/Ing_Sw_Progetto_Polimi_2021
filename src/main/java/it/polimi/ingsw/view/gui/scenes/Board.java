@@ -2,8 +2,10 @@ package it.polimi.ingsw.view.gui.scenes;
 
 import it.polimi.ingsw.model.WarehouseDepot;
 import it.polimi.ingsw.model.reducedClasses.ReducedCardProductionManagement;
+import it.polimi.ingsw.model.reducedClasses.ReducedLeaderCard;
 import it.polimi.ingsw.model.reducedClasses.ReducedStrongbox;
 import it.polimi.ingsw.model.reducedClasses.ReducedWarehouseDepot;
+import it.polimi.ingsw.model.util.ListSet;
 import it.polimi.ingsw.model.util.Resources;
 import it.polimi.ingsw.observers.ViewObservable;
 import it.polimi.ingsw.view.gui.ResourcesGui;
@@ -12,6 +14,7 @@ import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.StackPane;
 import javafx.scene.text.Font;
 
 import java.util.ArrayList;
@@ -19,26 +22,39 @@ import java.util.ArrayList;
 public class Board extends ViewObservable implements SceneController {
 	
 	
-	@FXML private BorderPane slot1;
-	@FXML private ImageView img1;
-	@FXML private BorderPane slot2;
-	@FXML private ImageView img2;
-	@FXML private BorderPane slot3;
-	@FXML private ImageView img3;
+	@FXML private ImageView papal1;
+	@FXML private ImageView papal2;
+	@FXML private ImageView papal3;
+	@FXML private ImageView calamaio;
+	
+	@FXML private ImageView img11;
+	@FXML private ImageView img12;
+	@FXML private ImageView img13;
+	@FXML private ImageView img21;
+	@FXML private ImageView img22;
+	@FXML private ImageView img23;
+	@FXML private ImageView img31;
+	@FXML private ImageView img32;
+	@FXML private ImageView img33;
+	
+	
 	@FXML private ImageView leader1;
 	@FXML private ImageView leader2;
 	@FXML private Label lblLeader2;
+	@FXML private Label lblLeader1;
+	
 	@FXML private Label numCoin;
 	@FXML private Label numStone;
 	@FXML private Label numShield;
 	@FXML private Label numServant;
-	@FXML private Label lblLeader1;
+	
 	@FXML private ImageView depot1;
 	@FXML private ImageView depot2;
 	@FXML private ImageView depot3;
 	@FXML private ImageView depot4;
 	@FXML private ImageView depot5;
 	@FXML private ImageView depot6;
+	
 	@FXML private ImageView cross;
 	
 	ArrayList<Coordinates> coordinates;
@@ -47,6 +63,7 @@ public class Board extends ViewObservable implements SceneController {
 	public void initialize() {
 		Font.loadFont(getClass().getResourceAsStream("/assets/font/Caveat-Regular.ttf"), 40);
 		
+		// coordinates of the faith cross positions
 		coordinates = new ArrayList<>();
 		coordinates.add(new Coordinates(0, 61, 212));
 		coordinates.add(new Coordinates(1, 136, 212));
@@ -73,15 +90,32 @@ public class Board extends ViewObservable implements SceneController {
 		coordinates.add(new Coordinates(22, 1245, 66));
 		coordinates.add(new Coordinates(23, 1320, 66));
 		coordinates.add(new Coordinates(24, 1394, 66));
-		updateCrossCoords(0);
 		
+		updateCrossCoords(0); // initial position when the game starts
+		
+	}
+	
+	public void setStartingPlayer(boolean hasCalamaio) {
+		// if the player is the starting one
+		calamaio.setVisible(hasCalamaio);
+	}
+	
+	public void setSinglePlayerMode(boolean niBBaCross) {
 		// if game mode is single player
-		cross.setImage(new Image("/assets/board/black_cross.png", 73, 64, true, false));
+		if (niBBaCross) cross.setImage(new Image("/assets/board/black_cross.png", 73, 64, true, false));
 	}
 	
 	public void updateCrossCoords(int pos) {
 		cross.setLayoutX(coordinates.get(pos).getX());
 		cross.setLayoutY(coordinates.get(pos).getY());
+	}
+	
+	public void activatePapalZone(int num) {
+		switch (num) {
+			case 1 -> papal1.setVisible(true);
+			case 2 -> papal2.setVisible(true);
+			case 3 -> papal3.setVisible(true);
+		}
 	}
 	
 	public void setSlotImage(int slot, int cardNumber) {
@@ -90,10 +124,10 @@ public class Board extends ViewObservable implements SceneController {
 
 	public void setStrongbox(ReducedStrongbox strongbox){
 		ArrayList<Resources> content = strongbox.getContent();
-		setNumerosity(Resources.COIN, (int) content.stream().filter(i -> i.equals(Resources.COIN)).count());
-		setNumerosity(Resources.SERVANT, (int) content.stream().filter(i -> i.equals(Resources.SERVANT)).count());
-		setNumerosity(Resources.SHIELD, (int) content.stream().filter(i -> i.equals(Resources.SHIELD)).count());
-		setNumerosity(Resources.STONE, (int) content.stream().filter(i -> i.equals(Resources.STONE)).count());
+		setNumerosity(Resources.COIN, ListSet.count(content, Resources.COIN));
+		setNumerosity(Resources.SERVANT, ListSet.count(content, Resources.SERVANT));
+		setNumerosity(Resources.SHIELD, ListSet.count(content, Resources.SHIELD));
+		setNumerosity(Resources.STONE, ListSet.count(content, Resources.STONE));
 	}
 	
 	private void setNumerosity(Resources res, int num) {
@@ -104,25 +138,39 @@ public class Board extends ViewObservable implements SceneController {
 			case COIN -> numCoin.setText(String.valueOf(num));
 		}
 	}
-
-	public void setDepot(ReducedWarehouseDepot depot){
+	
+	public void setDepot(ReducedWarehouseDepot depot) {
 		Resources[] resources = depot.getDepot();
-		if(resources[0] != Resources.EMPTY && resources[0] != Resources.FREE_CHOICE)
-			depot1.setImage(new Image(resources[0].path));
-		if(resources[1] != Resources.EMPTY && resources[1] != Resources.FREE_CHOICE)
-			depot2.setImage(new Image(resources[1].path));
-		if(resources[2] != Resources.EMPTY && resources[2] != Resources.FREE_CHOICE)
-			depot3.setImage(new Image(resources[2].path));
-		if(resources[3] != Resources.EMPTY && resources[3] != Resources.FREE_CHOICE)
-			depot4.setImage(new Image(resources[3].path));
-		if(resources[4] != Resources.EMPTY && resources[4] != Resources.FREE_CHOICE)
-			depot5.setImage(new Image(resources[4].path));
-		if(resources[5] != Resources.EMPTY && resources[5] != Resources.FREE_CHOICE)
-			depot6.setImage(new Image(resources[5].path));
+		ImageView[] images = new ImageView[]{depot1, depot2, depot3, depot4, depot5, depot6};
+		for (int i = 0; i < 6; i++) {
+			if (resources[i] != Resources.EMPTY) {
+				images[i].setImage(null);
+				System.gc();
+			} else
+				images[i].setImage(new Image(resources[i].path));
+		}
 	}
-
-	public void setCardManager(ReducedCardProductionManagement cardManager){
-
+	
+	public void setCardManager(ReducedCardProductionManagement cardManager) {
+	
+	}
+	
+	public void setLeaderCards(ArrayList<ReducedLeaderCard> leaderCards) {
+		ImageView[] images = new ImageView[]{leader1, leader2};
+		for (int i = 0; i < leaderCards.size(); i++) {
+			if (leaderCards.get(i).isPlayable()) {
+				
+				//TODO: set visibility for button
+				
+			}
+			if (leaderCards.get(i).isDiscarded()) {
+				images[i].setImage(null);
+				//System.gc();
+			} else {
+				images[i].setImage(new Image("/assets/leaderCards/" +
+						leaderCards.get(i).getIdNumber() + ".png"));
+			}
+		}
 	}
 	
 	

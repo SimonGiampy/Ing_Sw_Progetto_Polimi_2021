@@ -4,36 +4,50 @@
 <?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane prefHeight="1043.0" prefWidth="1920.0" stylesheets="@../../../../../assets/bootstrap3.css" xmlns="http://javafx.com/javafx/"
-            xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.view.gui.scenes.Board">
+<AnchorPane prefHeight="1043.0" prefWidth="1920.0" stylesheets="@../../../../../assets/bootstrap3.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.view.gui.scenes.Board">
     <BorderPane prefHeight="200.0" prefWidth="200.0">
-        <center>
+      <top>
             <ImageView fitHeight="1043.0" fitWidth="1920.0" pickOnBounds="true" preserveRatio="true" BorderPane.alignment="CENTER">
                 <Image url="@../../../../../assets/board/personal_board.jpg" />
             </ImageView>
-        </center>
+      </top>
     </BorderPane>
-    <BorderPane fx:id="slot1" layoutX="583.0" layoutY="457.0" prefHeight="487.0" prefWidth="265.0">
-        <center>
-            <ImageView fx:id="img1" fitHeight="487.0" fitWidth="265.0" pickOnBounds="true" preserveRatio="true" BorderPane.alignment="CENTER">
-                <Image url="@../../../../../assets/test_dev_card.png" />
-            </ImageView>
-        </center>
-    </BorderPane>
-    <BorderPane fx:id="slot2" layoutX="867.0" layoutY="457.0" prefHeight="487.0" prefWidth="274.0">
-        <center>
-            <ImageView fx:id="img2" fitHeight="487.0" fitWidth="265.0" pickOnBounds="true" preserveRatio="true" BorderPane.alignment="CENTER">
-                <Image url="@../../../../../assets/test_dev_card.png" />
-            </ImageView>
-        </center>
-    </BorderPane>
-    <BorderPane fx:id="slot3" layoutX="1167.0" layoutY="457.0" prefHeight="487.0" prefWidth="274.0">
-        <center>
-            <ImageView fx:id="img3" fitHeight="400.0" fitWidth="317.0" pickOnBounds="true" preserveRatio="true" BorderPane.alignment="CENTER">
-                <Image url="@../../../../../assets/test_dev_card.png" />
-            </ImageView>
-        </center>
-    </BorderPane>
+    <StackPane fx:id="slot1" layoutX="580.0" layoutY="445.0" prefHeight="536.0" prefWidth="274.0">
+        <ImageView fx:id="img11" fitHeight="400.0" fitWidth="274.0" pickOnBounds="true" preserveRatio="true" StackPane.alignment="BOTTOM_CENTER">
+            <Image url="@../../../../../assets/test_dev_card.png" />
+        </ImageView>
+        <ImageView fx:id="img12" fitHeight="400.0" fitWidth="274.0" pickOnBounds="true" preserveRatio="true" StackPane.alignment="CENTER">
+            <Image url="@../../../../../assets/test_dev_card.png" />
+        </ImageView>
+        <ImageView fx:id="img13" fitHeight="400.0" fitWidth="274.0" pickOnBounds="true" preserveRatio="true" StackPane.alignment="TOP_CENTER">
+            <Image url="@../../../../../assets/test_dev_card.png" />
+        </ImageView>
+    </StackPane>
+    <StackPane fx:id="slot2" layoutX="867.0" layoutY="445.0" prefHeight="536.0" prefWidth="274.0">
+        <ImageView fx:id="img21" fitHeight="400.0" fitWidth="274.0" pickOnBounds="true" preserveRatio="true" StackPane.alignment="BOTTOM_CENTER">
+            <Image url="@../../../../../assets/test_dev_card.png" />
+        </ImageView>
+        <ImageView fx:id="img22" fitHeight="400.0" fitWidth="274.0" pickOnBounds="true" preserveRatio="true" StackPane.alignment="CENTER">
+            <Image url="@../../../../../assets/test_dev_card.png" />
+        </ImageView>
+        <ImageView fx:id="img23" fitHeight="400.0" fitWidth="274.0" pickOnBounds="true" preserveRatio="true" StackPane.alignment="TOP_CENTER">
+            <Image url="@../../../../../assets/test_dev_card.png" />
+        </ImageView>
+    </StackPane>
+    <StackPane fx:id="slot3" layoutX="1167.0" layoutY="445.0" prefHeight="536.0" prefWidth="274.0">
+        <ImageView fx:id="img31" fitHeight="400.0" fitWidth="274.0" pickOnBounds="true" preserveRatio="true" StackPane.alignment="BOTTOM_CENTER">
+            <Image url="@../../../../../assets/test_dev_card.png" />
+        </ImageView>
+
+        <ImageView fx:id="img32" fitHeight="400.0" fitWidth="274.0" pickOnBounds="true" preserveRatio="true" StackPane.alignment="CENTER">
+            <Image url="@../../../../../assets/test_dev_card.png" />
+        </ImageView>
+
+        <ImageView fx:id="img33" fitHeight="400.0" fitWidth="274.0" pickOnBounds="true" preserveRatio="true" StackPane.alignment="TOP_CENTER">
+            <Image url="@../../../../../assets/test_dev_card.png" />
+        </ImageView>
+
+    </StackPane>
    <BorderPane layoutX="1534.0" layoutY="57.0" prefHeight="951.0" prefWidth="366.0">
       <top>
           <ImageView fx:id="leader1" fitHeight="471.0" fitWidth="294.0" pickOnBounds="true" preserveRatio="true" BorderPane.alignment="CENTER">
@@ -86,5 +100,17 @@
    <ImageView fx:id="depot6" fitHeight="67.0" fitWidth="60.0" layoutX="223.0" layoutY="656.0" pickOnBounds="true" preserveRatio="true" />
     <ImageView fx:id="cross" fitHeight="64.0" fitWidth="73.0" layoutX="1394.0" layoutY="66.0" pickOnBounds="true" preserveRatio="true">
         <Image url="@../../../../../assets/board/red_cross.png" />
+    </ImageView>
+    <ImageView fx:id="calamaio" fitHeight="158.0" fitWidth="152.0" layoutX="16.0" layoutY="6.0" pickOnBounds="true" preserveRatio="true">
+        <Image url="@../../../../../assets/board/calamaio.png" />
+    </ImageView>
+    <ImageView fx:id="papal1" fitHeight="116.0" fitWidth="116.0" layoutX="367.0" layoutY="153.0" pickOnBounds="true" preserveRatio="true" visible="false">
+        <Image url="@../../../../../assets/board/zone1.png" />
+    </ImageView>
+    <ImageView fx:id="papal2" fitHeight="133.0" fitWidth="116.0" layoutX="737.0" layoutY="73.0" pickOnBounds="true" preserveRatio="true" visible="false">
+        <Image url="@../../../../../assets/board/zone2.png" />
+    </ImageView>
+    <ImageView fx:id="papal3" fitHeight="116.0" fitWidth="116.0" layoutX="1182.0" layoutY="152.0" pickOnBounds="true" preserveRatio="true" visible="false">
+        <Image url="@../../../../../assets/board/zone3.png" />
     </ImageView>
 </AnchorPane>
