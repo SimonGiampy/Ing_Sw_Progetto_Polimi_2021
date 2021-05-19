@@ -31,7 +31,7 @@ public class AppGui extends Application {
 		}
 		
 		Scene scene = new Scene(rootLayout);
-		GUI gui = new GUI(scene);
+		GUI gui = new GUI(scene, stage);
 		ClientSideController clientController = new ClientSideController(gui);
 		gui.attach(clientController);
 
