@@ -630,7 +630,7 @@ public class CLI extends ViewObservable implements View {
 		if(!lorenzo) markerColor.append(Unicode.RED_BOLD);
 		else markerColor.append(Unicode.BLACK_BOLD);
 
-		System.out.print(nickname + "'s Faith Track");
+		System.out.println(nickname + "'s Faith Track");
 		//Row for vatican reports
 		int count = 0;
 		for(int i = 0; i < faithTrack.getReportPoints().size(); i++) {

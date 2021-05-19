@@ -60,6 +60,12 @@ public class PlayerTabs extends ViewObservable implements SceneController{
 			}
 			tab.setContent(pane);
 			tabPane.getTabs().add(tab);
+
+			//test
+			tab.setOnSelectionChanged(e -> {
+				if(tab.isSelected())
+					tab.setStyle("-fx-text-base-color: green;");
+			});
 		}
 	}
 

@@ -127,10 +127,6 @@ public class Board extends ViewObservable implements SceneController {
 			case 3 -> papal3.setVisible(true);
 		}
 	}
-	
-	public void setSlotImage(int slot, int cardNumber) {
-	
-	}
 
 	public void setStrongbox(ReducedStrongbox strongbox){
 		ArrayList<Resources> content = strongbox.getContent();
@@ -153,7 +149,7 @@ public class Board extends ViewObservable implements SceneController {
 		Resources[] resources = depot.getDepot();
 		ImageView[] images = new ImageView[]{depot1, depot2, depot3, depot4, depot5, depot6};
 		for (int i = 0; i < 6; i++) {
-			if (resources[i] != Resources.EMPTY) {
+			if (resources[i] == Resources.EMPTY) {
 				images[i].setImage(null);
 				System.gc();
 			} else
