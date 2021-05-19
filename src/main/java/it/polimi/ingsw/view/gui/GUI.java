@@ -7,9 +7,11 @@ import it.polimi.ingsw.model.util.*;
 import it.polimi.ingsw.observers.ViewObservable;
 import it.polimi.ingsw.view.View;
 import it.polimi.ingsw.view.gui.scenes.*;
+import javafx.animation.PauseTransition;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.util.Duration;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -151,7 +153,19 @@ public class GUI extends ViewObservable implements View {
 	@Override
 	public void askAction(ArrayList<PlayerActions> availableAction) {
 		Platform.runLater(() -> {
-			//notifyObserver(obs -> obs.onUpdateAction(PlayerActions.BUY_CARD));
+			PlayerTabs playerTabs= (PlayerTabs) controller;
+
+
+			PauseTransition pause = new PauseTransition(Duration.seconds(1));
+			pause.setOnFinished(event ->
+					playerTabs.commonBoard.setTextVisible(true));
+			pause.play();
+			PauseTransition pause2 = new PauseTransition(Duration.seconds(3));
+			pause2.setOnFinished(event ->
+					playerTabs.commonBoard.setTextVisible(false));
+			pause2.play();
+			playerTabs.commonBoard.setButtonVisible(availableAction);
+
 		});
 	}
 	

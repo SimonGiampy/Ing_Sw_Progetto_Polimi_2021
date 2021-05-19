@@ -3,18 +3,17 @@ package it.polimi.ingsw.view.gui.scenes;
 import it.polimi.ingsw.observers.ViewObservable;
 import javafx.fxml.FXML;
 
+import javafx.scene.effect.DropShadow;
+import javafx.scene.effect.Glow;
 import javafx.scene.image.ImageView;
+import javafx.scene.paint.Color;
 
 public class NumberOfPlayers extends ViewObservable implements SceneController {
 
-	@FXML public ImageView onePlayerGlow;
 	@FXML public ImageView onePlayerNormal;
-	@FXML public ImageView twoPlayersNormal;
-	@FXML public ImageView twoPlayersGlow;
+	@FXML public ImageView twoPlayersNormal;;
 	@FXML public ImageView threePlayersNormal;
-	@FXML public ImageView threePlayersGlow;
 	@FXML public ImageView fourPlayersNormal;
-	@FXML public ImageView fourPlayersGlow;
 
 	@FXML
 	void onMouseClickedOne(){
@@ -29,46 +28,48 @@ public class NumberOfPlayers extends ViewObservable implements SceneController {
 		new Thread(() -> notifyObserver(obs -> obs.onUpdatePlayersNumber(3))).start();
 	}
 
-	public void onMouseClickedOFour(){
+	public void onMouseClickedFour(){
 		new Thread(() -> notifyObserver(obs -> obs.onUpdatePlayersNumber(4))).start();
 	}
 
 	public void onMouseEnteredOne(){
-		//onePlayerNormal.setVisible(false);
-		onePlayerGlow.setVisible(true);
 
+		setShadow(0.5,onePlayerNormal);
 	}
 
 	public void onMouseExitedOne(){
-		onePlayerGlow.setVisible(false);
-		//onePlayerNormal.setVisible(true);
+		setShadow(0,onePlayerNormal);
 	}
 
 	public void onMouseEnteredTwo(){
-		twoPlayersGlow.setVisible(true);
+		setShadow(0.5,twoPlayersNormal);
 	}
 
 	public void onMouseExitedTwo(){
-		twoPlayersGlow.setVisible(false);
-		//onePlayerNormal.setVisible(true);
+		setShadow(0,twoPlayersNormal);
 	}
 
 	public void onMouseEnteredThree(){
-		threePlayersGlow.setVisible(true);
+		setShadow(0.5,threePlayersNormal);
 	}
 
 	public void onMouseExitedThree(){
-		threePlayersGlow.setVisible(false);
-		//onePlayerNormal.setVisible(true);
+		setShadow(0,threePlayersNormal);
 	}
 
 	public void onMouseEnteredFour(){
-		fourPlayersGlow.setVisible(true);
+		setShadow(0.5,fourPlayersNormal);
 	}
 
 	public void onMouseExitedFour(){
-		fourPlayersGlow.setVisible(false);
-		//onePlayerNormal.setVisible(true);
+		setShadow(0,fourPlayersNormal);
+	}
+
+	public void setShadow(double value, ImageView img){
+		DropShadow dropShadow= new DropShadow();
+		dropShadow.setSpread(value);
+		dropShadow.setColor(Color.WHITE);
+		img.setEffect(dropShadow);
 	}
 
 	@FXML public void initialize(){

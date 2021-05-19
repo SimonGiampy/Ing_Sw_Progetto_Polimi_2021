@@ -4,17 +4,24 @@ import it.polimi.ingsw.model.DevelopmentCard;
 import it.polimi.ingsw.model.Market;
 import it.polimi.ingsw.model.reducedClasses.ReducedDevelopmentCardsDeck;
 import it.polimi.ingsw.model.reducedClasses.ReducedMarket;
+import it.polimi.ingsw.model.util.Colors;
 import it.polimi.ingsw.model.util.Marbles;
+import it.polimi.ingsw.model.util.PlayerActions;
 import it.polimi.ingsw.observers.ViewObservable;
 import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
+import javafx.scene.control.Button;
+import javafx.scene.effect.DropShadow;
+import javafx.scene.effect.Glow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.Dragboard;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.TransferMode;
 import javafx.scene.layout.GridPane;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Text;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -43,20 +50,10 @@ public class CommonBoard extends ViewObservable implements SceneController{
 	ImageView[][] marketImages;
 
 
-	@FXML ImageView row1;
-	@FXML ImageView row2;
-	@FXML ImageView row3;
 
 	@FXML ImageView normalRow1;
 	@FXML ImageView normalRow2;
 	@FXML ImageView normalRow3;
-
-
-	@FXML ImageView col1;
-	@FXML ImageView col2;
-	@FXML ImageView col3;
-	@FXML ImageView col4;
-
 	@FXML ImageView normalCol1;
 	@FXML ImageView normalCol2;
 	@FXML ImageView normalCol3;
@@ -77,30 +74,28 @@ public class CommonBoard extends ViewObservable implements SceneController{
 
 	ImageView[][] cardsImages;
 
-	@FXML ImageView greenCards00;
-	@FXML ImageView greenCards01;
-	@FXML ImageView greenCards02;
-	@FXML ImageView greenCards03;
-	@FXML ImageView greenCards10;
-	@FXML ImageView greenCards11;
-	@FXML ImageView greenCards12;
-	@FXML ImageView greenCards13;
-	@FXML ImageView greenCards20;
-	@FXML ImageView greenCards21;
-	@FXML ImageView greenCards22;
-	@FXML ImageView greenCards23;
 
-	ImageView[][] greenCardsImages;
+	@FXML ImageView text;
 
-	private boolean marketAble; //TODO: to be set true at the start of the turn
+	@FXML Button marketActivation;
+	@FXML Button cardsActivation;
+
+
+	private boolean marketAble;//TODO: to be set true at the start of the turn
+	private boolean cardsAble;
 	private ReducedDevelopmentCardsDeck deck;
+
+	private int level;
+	private Colors color;
+	private ArrayList<DevelopmentCard> buyableCards;
+
+
 
 
 	@FXML
 	public void initialize(){
-		marketAble=true;
-
-
+		marketAble=false;
+		cardsAble=false;
 		cardsImages= new ImageView[3][4];
 		cardsImages[0][0]= cards00;
 		cardsImages[0][1]= cards01;
@@ -115,19 +110,6 @@ public class CommonBoard extends ViewObservable implements SceneController{
 		cardsImages[2][2]= cards22;
 		cardsImages[2][3]= cards23;
 
-		greenCardsImages= new ImageView[3][4];
-		greenCardsImages[0][0]= greenCards00;
-		greenCardsImages[0][1]= greenCards01;
-		greenCardsImages[0][2]= greenCards02;
-		greenCardsImages[0][3]= greenCards03;
-		greenCardsImages[1][0]= greenCards10;
-		greenCardsImages[1][1]= greenCards11;
-		greenCardsImages[1][2]= greenCards12;
-		greenCardsImages[1][3]= greenCards13;
-		greenCardsImages[2][0]= greenCards20;
-		greenCardsImages[2][1]= greenCards21;
-		greenCardsImages[2][2]= greenCards22;
-		greenCardsImages[2][3]= greenCards23;
 
 		marketImages= new ImageView[3][4];
 		marketImages[0][0]= market00;
@@ -143,6 +125,26 @@ public class CommonBoard extends ViewObservable implements SceneController{
 		marketImages[2][2]= market22;
 		marketImages[2][3]= market23;
 
+	}
+
+	public void onMouseClickedActivateMarket(){
+		marketAble=true;
+		cardsActivation.setVisible(false);
+		marketActivation.setVisible(false);
+		notifyObserver(obs -> obs.onUpdateAction(PlayerActions.MARKET));
+	}
+
+	public void onMouseClickedActivateCards(){
+		cardsAble=false;
+		cardsActivation.setVisible(false);
+		marketActivation.setVisible(false);
+		notifyObserver(obs -> obs.onUpdateAction(PlayerActions.BUY_CARD));
+	}
+
+	public void setButtonVisible(ArrayList<PlayerActions> actions){
+		if (actions.contains(PlayerActions.BUY_CARD))
+			cardsActivation.setVisible(true);
+		marketActivation.setVisible(true);
 	}
 
 	public void setMarket(ReducedMarket market){
@@ -161,66 +163,68 @@ public class CommonBoard extends ViewObservable implements SceneController{
 
 	public void onMouseEnteredRow1(){
 		if(marketAble)
-		row1.setVisible(true);
+			normalRow1.setEffect(new Glow(1));
+		//row1.setVisible(true);
 	}
 
 	public void onMouseEnteredRow2(){
 		if(marketAble)
-		row2.setVisible(true);
+			normalRow2.setEffect(new Glow(1));
 	}
 
 	public void onMouseEnteredRow3(){
 		if(marketAble)
-		row3.setVisible(true);
+			normalRow3.setEffect(new Glow(1));
 	}
 
 
 	public void onMouseEnteredCol1(){
 		if(marketAble)
-		col1.setVisible(true);
+			normalCol1.setEffect(new Glow(1));
 	}
 
 	public void onMouseEnteredCol2(){
 		if(marketAble)
-		col2.setVisible(true);
+			normalCol2.setEffect(new Glow(1));
 	}
 
 	public void onMouseEnteredCol3(){
 		if(marketAble)
-		col3.setVisible(true);
+			normalCol3.setEffect(new Glow(1));
 	}
 
 	public void onMouseEnteredCol4(){
 		if(marketAble)
-		col4.setVisible(true);
+			normalCol4.setEffect(new Glow(1));
 	}
 
 	public void onMouseExitedRow1(){
-		row1.setVisible(false);
+		normalRow1.setEffect(new Glow(0.0));
 	}
 
 	public void onMouseExitedRow2(){
-		row2.setVisible(false);
+		normalRow2.setEffect(new Glow(0.0));
+
 	}
 
 	public void onMouseExitedRow3(){
-		row3.setVisible(false);
+		normalRow3.setEffect(new Glow(0.0));
 	}
 
 	public void onMouseExitedCol1(){
-		col1.setVisible(false);
+		normalCol1.setEffect(new Glow(0.0));
 	}
 
 	public void onMouseExitedCol2(){
-		col2.setVisible(false);
+		normalCol2.setEffect(new Glow(0.0));
 	}
 
 	public void onMouseExitedCol3(){
-		col3.setVisible(false);
+		normalCol3.setEffect(new Glow(0.0));
 	}
 
 	public void onMouseExitedCol4(){
-		col4.setVisible(false);
+		normalCol4.setEffect(new Glow(0.0));
 	}
 
 	public void onMouseClickedRow1(){
@@ -272,6 +276,98 @@ public class CommonBoard extends ViewObservable implements SceneController{
 		}
 	}
 
+	public void onMouseClickedCards00(){
+		if(cardsAble && buyableCards.contains(deck.getCardStackStructure()[0][0].get(0))){
+			level=1;
+			color=Colors.GREEN;
+		}
+	}
+
+	public void onMouseClickedCards01(){
+		if(cardsAble && buyableCards.contains(deck.getCardStackStructure()[0][1].get(0))){
+			level=1;
+			color=Colors.BLUE;
+		}
+
+	}
+
+	public void onMouseClickedCards02(){
+		if(cardsAble && buyableCards.contains(deck.getCardStackStructure()[0][2].get(0))){
+			level=1;
+			color=Colors.YELLOW;
+		}
+
+	}
+
+	public void onMouseClickedCards03(){
+		if(cardsAble && buyableCards.contains(deck.getCardStackStructure()[0][3].get(0))){
+			level=1;
+			color=Colors.PURPLE;
+		}
+	}
+
+	public void onMouseClickedCards10(){
+		if(cardsAble && buyableCards.contains(deck.getCardStackStructure()[1][0].get(0))){
+			level=2;
+			color=Colors.GREEN;
+		}
+
+	}
+
+	public void onMouseClickedCards11(){
+		if(cardsAble && buyableCards.contains(deck.getCardStackStructure()[1][1].get(0))){
+			level=2;
+			color=Colors.BLUE;
+		}
+
+	}
+
+	public void onMouseClickedCards12(){
+		if(cardsAble && buyableCards.contains(deck.getCardStackStructure()[1][2].get(0))){
+			level=2;
+			color=Colors.YELLOW;
+		}
+	}
+
+	public void onMouseClickedCards13(){
+		if(cardsAble && buyableCards.contains(deck.getCardStackStructure()[1][3].get(0))){
+			level=2;
+			color=Colors.PURPLE;
+		}
+
+	}
+
+	public void onMouseClickedCards20(){
+		if(cardsAble && buyableCards.contains(deck.getCardStackStructure()[2][0].get(0))){
+			level=3;
+			color=Colors.GREEN;
+		}
+
+	}
+
+	public void onMouseClickedCards21(){
+		if(cardsAble && buyableCards.contains(deck.getCardStackStructure()[2][1].get(0))){
+			level=3;
+			color=Colors.BLUE;
+		}
+
+	}
+
+	public void onMouseClickedCards22(){
+		if(cardsAble && buyableCards.contains(deck.getCardStackStructure()[2][2].get(0))){
+			level=3;
+			color=Colors.YELLOW;
+		}
+
+	}
+
+	public void onMouseClickedCards23(){
+		if(cardsAble && buyableCards.contains(deck.getCardStackStructure()[2][3].get(0))){
+			level=3;
+			color=Colors.PURPLE;
+		}
+	}
+
 	public void setDeck(ReducedDevelopmentCardsDeck deck){
 		this.deck=deck;
 		for (int i = 0; i < 3; i++) {
@@ -284,12 +380,26 @@ public class CommonBoard extends ViewObservable implements SceneController{
 	}
 
 	public void setGreen(ArrayList<DevelopmentCard> cards){
+		buyableCards=cards;
 		for (int i = 0; i < 3; i++) {
 			for (int j = 0; j < 4; j++) {
-				if(cards.contains(deck.getCardStackStructure()[i][j].get(0)))
-					greenCardsImages[i][j].setVisible(true);
+				if(cards.contains(deck.getCardStackStructure()[i][j].get(0))) {
+					setShadow(0.7, cardsImages[i][j]);
+				}
 			}
 		}
+	}
+
+	public void setTextVisible(Boolean visible){
+		text.setVisible(visible);
+		text.setEffect(new Glow(0.7));
+	}
+
+	public void setShadow(double value, ImageView img){
+		DropShadow dropShadow= new DropShadow();
+		dropShadow.setSpread(value);
+		dropShadow.setColor(Color.GREEN);
+		img.setEffect(dropShadow);
 	}
 
 
