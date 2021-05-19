@@ -57,6 +57,7 @@ public class ResourcesDialogController implements SceneController {
 	protected void setConfirmButton(Button confirmButton) {
 		confirmButton.setDisable(true);
 		this.confirm = confirmButton;
+		confirm.getStyleClass().add("success");
 	}
 	
 	@FXML

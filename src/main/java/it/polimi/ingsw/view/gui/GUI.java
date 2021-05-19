@@ -13,6 +13,7 @@ import javafx.scene.Scene;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
 public class GUI extends ViewObservable implements View {
@@ -136,10 +137,10 @@ public class GUI extends ViewObservable implements View {
 	
 	@Override
 	public void askInitLeaders(String nickname, ArrayList<ReducedLeaderCard> leaderCards) {
-		ArrayList<Integer> leaderSelection= new ArrayList<>();
-		leaderSelection.add(1);
-		leaderSelection.add(2);
-		notifyObserver(obs-> obs.onUpdateInitLeaders(leaderSelection));
+		Platform.runLater(() -> {
+			LeadersDialog dialog = new LeadersDialog(leaderCards);
+			dialog.showAndWait().ifPresent(integers -> notifyObserver(obs -> obs.onUpdateInitLeaders(integers)));
+		});
 	}
 	
 	@Override
