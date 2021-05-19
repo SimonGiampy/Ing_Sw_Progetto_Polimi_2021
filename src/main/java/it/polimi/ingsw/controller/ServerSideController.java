@@ -302,9 +302,11 @@ public class ServerSideController {
 				ArrayList<PlayerActions> leaderActions=player.checkAvailableLeaderActions();
 				boolean checkLeader1=leaderActions.contains(PlayerActions.PLAY_LEADER_1);
 				boolean checkLeader2=leaderActions.contains(PlayerActions.PLAY_LEADER_2);
-				leaderCards.add(new ReducedLeaderCard(player.getLeaderCards()[0], player.isActiveAbilityLeader1(), player.isDiscardedLeader1(),checkLeader1,
+				leaderCards.add(new ReducedLeaderCard(player.getLeaderCards()[0], player.isActiveAbilityLeader1(),
+						player.isDiscardedLeader1(),checkLeader1,
 						player.getLeaderCards()[0].getIdNumber()));
-				leaderCards.add(new ReducedLeaderCard(player.getLeaderCards()[1], player.isActiveAbilityLeader2(), player.isDiscardedLeader2(),checkLeader2,
+				leaderCards.add(new ReducedLeaderCard(player.getLeaderCards()[1], player.isActiveAbilityLeader2(),
+						player.isDiscardedLeader2(),checkLeader2,
 						player.getLeaderCards()[1].getIdNumber()));
 				view.askLeaderAction(nicknameList.get(playerIndex), leaderCards);
 			}
@@ -430,6 +432,9 @@ public class ServerSideController {
 					new ReducedCardProductionManagement(mechanics.getPlayer(playerIndex).getPlayersCardManager()));
 			for (String s : nicknameList) {
 				view = virtualViewMap.get(s);
+				view.showGenericMessage(nicknameList.get(playerIndex) + "has bought a development card!");
+				view.showPlayerCardsAndProduction(nicknameList.get(playerIndex),
+						new ReducedCardProductionManagement(mechanics.getPlayer(playerIndex).getPlayersCardManager()));
 				view.showGenericMessage("This is the Development Cards Deck now!");
 				view.showCardsDeck(new ReducedDevelopmentCardsDeck(mechanics.getGameDevCardsDeck()));
 			}
@@ -561,7 +566,7 @@ public class ServerSideController {
 		String nickname = nicknameList.get(playerIndex);
 
 		if(message.getAction()==1) { // play leader
-			mechanics.getPlayer(playerIndex).activateLeaderCard(message.getSelectedLeader());
+			mechanics.getPlayer(playerIndex).activateLeaderCard(message.getSelectedLeader() - 1);
 
 			for (String s : nicknameList) {
 				VirtualView view = virtualViewMap.get(s);
@@ -569,10 +574,10 @@ public class ServerSideController {
 				if (!s.equals(nickname)) {
 					ArrayList<ReducedLeaderCard> leaderCards = new ArrayList<>();
 
-					view.showGenericMessage(nickname + " played this Leader Card :");
-					leaderCards.add(new ReducedLeaderCard(mechanics.getPlayer(playerIndex).getLeaderCards()[message.getSelectedLeader()],
+					view.showGenericMessage(nickname + " played a Leader Card");
+					leaderCards.add(new ReducedLeaderCard(mechanics.getPlayer(playerIndex).getLeaderCards()[message.getSelectedLeader()-1],
 							true, false, false,
-							mechanics.getPlayer(playerIndex).getLeaderCards()[message.getSelectedLeader()].getIdNumber()));
+							mechanics.getPlayer(playerIndex).getLeaderCards()[message.getSelectedLeader()-1].getIdNumber()));
 					view.showLeaderCards(nicknameList.get(playerIndex), leaderCards);
 				} else {
 					view.showGenericMessage("Leader Card successfully played!");
@@ -582,21 +587,34 @@ public class ServerSideController {
 
 		} else if(message.getAction()==2){ // discard leader
 
-			mechanics.getPlayer(playerIndex).discardLeaderCard(message.getSelectedLeader());
+			mechanics.getPlayer(playerIndex).discardLeaderCard(message.getSelectedLeader()-1);
 			for (String s : nicknameList) {
 				VirtualView view = virtualViewMap.get(s);
+				ArrayList<ReducedLeaderCard> leaderCards = new ArrayList<>();
+				Player player = mechanics.getPlayer(playerIndex);
 
 				if (!s.equals(nickname)) {
-					ArrayList<ReducedLeaderCard> leaderCards = new ArrayList<>();
 
-					view.showGenericMessage(nickname + " discarded this Leader Card:");
-					leaderCards.add(new ReducedLeaderCard(mechanics.getPlayer(playerIndex).getLeaderCards()[message.getSelectedLeader()],
-							false, false, false,
-							mechanics.getPlayer(playerIndex).getLeaderCards()[message.getSelectedLeader()].getIdNumber()));
-					view.showLeaderCards(nicknameList.get(playerIndex), leaderCards);
+					view.showGenericMessage(nickname + " discarded a Leader Card");
+					leaderCards.add(new ReducedLeaderCard(player.getLeaderCards()[0],
+							false, player.isDiscardedLeader1(), false,
+							player.getLeaderCards()[0].getIdNumber()));
+					leaderCards.add(new ReducedLeaderCard(player.getLeaderCards()[1],false,
+							player.isDiscardedLeader2(), false,
+							player.getLeaderCards()[1].getIdNumber()));
 				} else {
 					view.showGenericMessage("Leader Card successfully discarded!");
+					ArrayList<PlayerActions> leaderActions = player.checkAvailableLeaderActions();
+					boolean checkLeader1 = leaderActions.contains(PlayerActions.PLAY_LEADER_1);
+					boolean checkLeader2 = leaderActions.contains(PlayerActions.PLAY_LEADER_2);
+					leaderCards.add(new ReducedLeaderCard(player.getLeaderCards()[0],
+							player.isActiveAbilityLeader1(), player.isDiscardedLeader1(),
+							checkLeader1, player.getLeaderCards()[0].getIdNumber()));
+					leaderCards.add(new ReducedLeaderCard(player.getLeaderCards()[1],
+							player.isActiveAbilityLeader2(), mechanics.getPlayer(playerIndex).isDiscardedLeader2(),
+							checkLeader2, player.getLeaderCards()[1].getIdNumber()));
 				}
+				view.showLeaderCards(nicknameList.get(playerIndex), leaderCards);
 			}
 			checkVaticanReport();
 			turnController.setTurnPhase(TurnPhase.LEADER_ACTION);

@@ -630,7 +630,7 @@ public class CLI extends ViewObservable implements View {
 		if(!lorenzo) markerColor.append(Unicode.RED_BOLD);
 		else markerColor.append(Unicode.BLACK_BOLD);
 
-		System.out.println(nickname + "'s Faith Track");
+		System.out.print(nickname + "'s Faith Track");
 		//Row for vatican reports
 		int count = 0;
 		for(int i = 0; i < faithTrack.getReportPoints().size(); i++) {
@@ -803,9 +803,9 @@ public class CLI extends ViewObservable implements View {
 		ArrayList<Resources> incomingResources = depot.getIncomingResources();
 		Resources[] pyr = depot.getDepot();
 		if(nickname.equals(""))
-			System.out.println("Your Warehouse Depot");
+			System.out.print("Your Warehouse Depot");
 		else
-			System.out.println(nickname + "'s Warehouse Depot");
+			System.out.print(nickname + "'s Warehouse Depot");
 		// shows the incoming resource from the deck if there are any
 		if (incomingResources.size() > 0) System.out.print("Resource deck contains: \t");
 		for (int i = 1; i <= incomingResources.size(); i++) {

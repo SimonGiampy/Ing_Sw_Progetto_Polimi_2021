@@ -100,9 +100,9 @@ public class Player {
 	 * @param indexCard index of the leader card to discard
 	 */
 	public void discardLeaderCard(int indexCard) {
-		if (indexCard == 1 && !activeAbilityLeader1) {
+		if (indexCard == 0 && !activeAbilityLeader1) {
 			discardedLeader1 = true;
-		} else if (indexCard == 2 && !activeAbilityLeader2) {
+		} else if (indexCard == 1 && !activeAbilityLeader2) {
 			discardedLeader2 = true;
 		}
 		myFaithTrack.moveMarker(1);
