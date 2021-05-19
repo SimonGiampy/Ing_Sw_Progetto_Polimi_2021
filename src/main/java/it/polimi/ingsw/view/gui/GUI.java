@@ -11,6 +11,8 @@ import javafx.animation.PauseTransition;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.stage.Stage;
 import javafx.util.Duration;
 
 import java.io.IOException;
@@ -20,12 +22,14 @@ import java.util.stream.Collectors;
 
 public class GUI extends ViewObservable implements View {
 	
-	private Scene scene;
+	private final Scene scene;
+	private final Stage stage;
 	private SceneController controller;
 	private String currentFXML;
 	
-	public GUI(Scene scene) {
+	public GUI(Scene scene, Stage stage) {
 		this.scene = scene;
+		this.stage = stage;
 		currentFXML = "connection.fxml"; // initial window
 	}
 	
@@ -120,6 +124,7 @@ public class GUI extends ViewObservable implements View {
 	public void askInitResources(int number) {
 		Platform.runLater(() -> {
 			ResourcesDialog dialog = new ResourcesDialog(number, "Choose a total of " + number + " initial resources.");
+			dialog.initOwner(stage);
 			dialog.showAndWait().ifPresent(resources -> {
 				ArrayList<Integer> numbers = new ArrayList<>();
 				if (number == 2) {
@@ -141,6 +146,7 @@ public class GUI extends ViewObservable implements View {
 	public void askInitLeaders(String nickname, ArrayList<ReducedLeaderCard> leaderCards) {
 		Platform.runLater(() -> {
 			LeadersDialog dialog = new LeadersDialog(leaderCards);
+			dialog.initOwner(stage);
 			dialog.showAndWait().ifPresent(integers -> notifyObserver(obs -> obs.onUpdateInitLeaders(integers)));
 		});
 	}
@@ -241,7 +247,14 @@ public class GUI extends ViewObservable implements View {
 
 	@Override
 	public void showGenericMessage(String genericMessage) {
-	
+		Platform.runLater(() -> {
+			Alert alert = new Alert(Alert.AlertType.INFORMATION);
+			alert.setHeaderText("Message from the Server");
+			alert.setContentText(genericMessage);
+			alert.setTitle("Message");
+			alert.initOwner(stage);
+			alert.show();
+		});
 	}
 	
 	@Override

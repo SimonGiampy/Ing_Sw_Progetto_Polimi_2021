@@ -153,7 +153,7 @@ public class Board extends ViewObservable implements SceneController {
 		Resources[] resources = depot.getDepot();
 		ImageView[] images = new ImageView[]{depot1, depot2, depot3, depot4, depot5, depot6};
 		for (int i = 0; i < 6; i++) {
-			if (resources[i] != Resources.EMPTY) {
+			if (resources[i] == Resources.EMPTY) {
 				images[i].setImage(null);
 				System.gc();
 			} else
