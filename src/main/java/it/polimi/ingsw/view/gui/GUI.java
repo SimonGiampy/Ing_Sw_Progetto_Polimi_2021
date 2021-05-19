@@ -254,7 +254,10 @@ public class GUI extends ViewObservable implements View {
 	
 	@Override
 	public void showLeaderCards(String nickname, ArrayList<ReducedLeaderCard> availableLeaders) {
-	
+		Platform.runLater(() -> {
+			PlayerTabs playerTabs= (PlayerTabs) controller;
+			playerTabs.update(nickname, availableLeaders);
+		});
 	}
 	
 	@Override

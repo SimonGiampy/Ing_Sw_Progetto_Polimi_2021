@@ -1,5 +1,6 @@
 package it.polimi.ingsw.view.gui.scenes;
 
+import it.polimi.ingsw.model.DevelopmentCard;
 import it.polimi.ingsw.model.WarehouseDepot;
 import it.polimi.ingsw.model.reducedClasses.ReducedCardProductionManagement;
 import it.polimi.ingsw.model.reducedClasses.ReducedLeaderCard;
@@ -8,7 +9,6 @@ import it.polimi.ingsw.model.reducedClasses.ReducedWarehouseDepot;
 import it.polimi.ingsw.model.util.ListSet;
 import it.polimi.ingsw.model.util.Resources;
 import it.polimi.ingsw.observers.ViewObservable;
-import it.polimi.ingsw.view.gui.ResourcesGui;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
@@ -18,6 +18,7 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.text.Font;
 
 import java.util.ArrayList;
+import java.util.Stack;
 
 public class Board extends ViewObservable implements SceneController {
 	
@@ -152,7 +153,25 @@ public class Board extends ViewObservable implements SceneController {
 	}
 	
 	public void setCardManager(ReducedCardProductionManagement cardManager) {
-	
+		ImageView[] slot1 = new ImageView[]{img11, img12, img13};
+		ImageView[] slot2 = new ImageView[]{img21, img22, img23};
+		ImageView[] slot3 = new ImageView[]{img31, img32, img33};
+		ArrayList<Stack<DevelopmentCard>> cards = cardManager.getCards();
+		for(int i = 0; i < cards.get(0).size(); i++){
+			if(slot1[i].equals(null)){
+				slot1[i].setImage(new Image("/assets/devCards/" + cards.get(0).get(i).getCardNumber() + ".png"));
+			}
+		}
+		for(int i = 0; i < cards.get(1).size(); i++){
+			if(slot2[i].equals(null)){
+				slot2[i].setImage(new Image("/assets/devCards/" + cards.get(1).get(i).getCardNumber() + ".png"));
+			}
+		}
+		for(int i = 0; i < cards.get(2).size(); i++){
+			if(slot3[i].equals(null)){
+				slot3[i].setImage(new Image("/assets/devCards/" + cards.get(2).get(i).getCardNumber() + ".png"));
+			}
+		}
 	}
 	
 	public void setLeaderCards(ArrayList<ReducedLeaderCard> leaderCards) {

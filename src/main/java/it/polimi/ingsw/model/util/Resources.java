@@ -4,10 +4,10 @@ import java.io.Serializable;
 
 public enum Resources implements Serializable {
 
-	COIN(Unicode.YELLOW_BRIGHT+"\uD83D\uDCB0"+Unicode.RESET,"/it/polimi/ingsw/resources/assets/board/Coin.png"), // 💰
-	SERVANT(Unicode.PURPLE_BOLD+"\uD83D\uDC64"+Unicode.RESET, "/it/polimi/ingsw/resources/assets/board/Servant.png"), // 🙇
-	SHIELD(Unicode.BLUE_BOLD+"\uD83D\uDEE1"+Unicode.RESET, "/it/polimi/ingsw/resources/assets/board/Shield.png"), // 🛡
-	STONE(Unicode.BLACK_BOLD+"\uD83D\uDDFF"+Unicode.RESET, "/it/polimi/ingsw/resources/assets/board/Stone.png"), // 🗿 █
+	COIN(Unicode.YELLOW_BRIGHT+"\uD83D\uDCB0"+Unicode.RESET,"/assets/board/Coin.png"), // 💰
+	SERVANT(Unicode.PURPLE_BOLD+"\uD83D\uDC64"+Unicode.RESET, "/assets/board/Servant.png"), // 🙇
+	SHIELD(Unicode.BLUE_BOLD+"\uD83D\uDEE1"+Unicode.RESET, "/assets/board/Shield.png"), // 🛡
+	STONE(Unicode.BLACK_BOLD+"\uD83D\uDDFF"+Unicode.RESET, "/assets/board/Stone.png"), // 🗿 █
 	FREE_CHOICE(Unicode.BLACK_BOLD+"\u2753"+Unicode.RESET, ""),
 	EMPTY("  ", ""); // indicates an empty slot resources in the warehouse depot
 	

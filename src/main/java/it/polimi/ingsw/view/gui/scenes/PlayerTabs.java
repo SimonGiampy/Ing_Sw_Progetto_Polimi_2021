@@ -78,8 +78,9 @@ public class PlayerTabs extends ViewObservable implements SceneController{
 		board.setStrongbox(strongbox);
 	}
 
-	public void update(String nickname, ReducedLeaderCard leaderCard){
+	public void update(String nickname, ArrayList<ReducedLeaderCard> leaderCards){
 		Board board = playersMap.get(nickname);
+		board.setLeaderCards(leaderCards);
 	}
 
 	public void update(String nickname, ReducedCardProductionManagement cardProductionManagement){
