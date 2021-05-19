@@ -1,7 +1,6 @@
 package it.polimi.ingsw.view.gui.scenes;
 
 import it.polimi.ingsw.model.DevelopmentCard;
-import it.polimi.ingsw.model.WarehouseDepot;
 import it.polimi.ingsw.model.reducedClasses.ReducedCardProductionManagement;
 import it.polimi.ingsw.model.reducedClasses.ReducedLeaderCard;
 import it.polimi.ingsw.model.reducedClasses.ReducedStrongbox;
@@ -10,11 +9,10 @@ import it.polimi.ingsw.model.util.ListSet;
 import it.polimi.ingsw.model.util.Resources;
 import it.polimi.ingsw.observers.ViewObservable;
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.StackPane;
 import javafx.scene.text.Font;
 
 import java.util.ArrayList;
@@ -22,12 +20,15 @@ import java.util.Stack;
 
 public class Board extends ViewObservable implements SceneController {
 	
+	@FXML private Button actProductions; // used for activating a production
 	
+	// papal zones visible after a vatican report
 	@FXML private ImageView papal1;
 	@FXML private ImageView papal2;
 	@FXML private ImageView papal3;
 	@FXML private ImageView calamaio;
 	
+	// 3 development cards per slot. 3 slots present on the main board
 	@FXML private ImageView img11;
 	@FXML private ImageView img12;
 	@FXML private ImageView img13;
@@ -38,17 +39,21 @@ public class Board extends ViewObservable implements SceneController {
 	@FXML private ImageView img32;
 	@FXML private ImageView img33;
 	
-	
+	// leader card with the relative buttons for the interaction
 	@FXML private ImageView leader1;
 	@FXML private ImageView leader2;
-	@FXML private Label lblLeader2;
-	@FXML private Label lblLeader1;
+	@FXML private Button act1;
+	@FXML private Button dis1;
+	@FXML private Button act2;
+	@FXML private Button dis2;
 	
+	//strongbox text boxes with the quantities of the resources stored
 	@FXML private Label numCoin;
 	@FXML private Label numStone;
 	@FXML private Label numShield;
 	@FXML private Label numServant;
 	
+	// warehouse depot images
 	@FXML private ImageView depot1;
 	@FXML private ImageView depot2;
 	@FXML private ImageView depot3;
@@ -56,13 +61,14 @@ public class Board extends ViewObservable implements SceneController {
 	@FXML private ImageView depot5;
 	@FXML private ImageView depot6;
 	
+	// faith track marker
 	@FXML private ImageView cross;
 	
 	ArrayList<Coordinates> coordinates;
 	
 	@FXML
 	public void initialize() {
-		Font.loadFont(getClass().getResourceAsStream("/assets/font/Caveat-Regular.ttf"), 40);
+		Font.loadFont(getClass().getResourceAsStream("/assets/font/Caveat-Regular.ttf"), 10);
 		
 		// coordinates of the faith cross positions
 		coordinates = new ArrayList<>();
@@ -94,6 +100,9 @@ public class Board extends ViewObservable implements SceneController {
 		
 		updateCrossCoords(0); // initial position when the game starts
 		
+		//TODO: buttons used for user interaction must be disabled by default, and enabled only when the user can interact with them
+		
+		//TODO: add incoming resources UI management and drag-and-drop functionality for using the depot
 	}
 	
 	public void setStartingPlayer(boolean hasCalamaio) {
@@ -194,12 +203,10 @@ public class Board extends ViewObservable implements SceneController {
 	
 	
 	private class Coordinates {
-		private int pos;
 		private double x;
 		private double y;
 		
 		Coordinates(int pos, double x, double y) {
-			this.pos = pos;
 			this.x = x;
 			this.y = y;
 		}
