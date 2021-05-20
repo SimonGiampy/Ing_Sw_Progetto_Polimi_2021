@@ -254,7 +254,7 @@ public class Board extends ViewObservable implements SceneController {
 	 * sets the calamaio visible if this is the first's player board
 	 */
 	public void setStartingPlayer(){
-		calamaio.setVisible(true);
+		calamaio.setVisible(false);
 	}
 
 	private class Coordinates {

@@ -73,7 +73,6 @@ public class PlayerTabs extends ViewObservable implements SceneController{
 					tab.setStyle("-fx-text-fill: red;"); //standard color #337ab7
 			});
 		}
-		playersMap.get(nicknameList.get(0)).setStartingPlayer();
 	}
 
 	public void update(String nickname, ReducedFaithTrack track){

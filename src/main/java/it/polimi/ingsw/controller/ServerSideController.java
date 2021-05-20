@@ -230,8 +230,8 @@ public class ServerSideController {
 					else {
 						view.showGenericMessage("These are " + nicknameList.get(j)+"'s Depot and Faith Track!");
 					}
-					view.showDepot(nicknameList.get(i), new ReducedWarehouseDepot(mechanics.getPlayer(j).getPlayersWarehouseDepot()));
-					view.showFaithTrack(nicknameList.get(i), new ReducedFaithTrack(mechanics.getPlayer(j).getPlayerFaithTrack()));
+					view.showDepot(nicknameList.get(j), new ReducedWarehouseDepot(mechanics.getPlayer(j).getPlayersWarehouseDepot()));
+					view.showFaithTrack(nicknameList.get(j), new ReducedFaithTrack(mechanics.getPlayer(j).getPlayerFaithTrack()));
 				}
 			}
 			controllerAskLeaders();
