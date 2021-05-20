@@ -369,9 +369,9 @@ public class CLI extends ViewObservable implements View {
 		System.out.println("You have two White Marbles leaders activated: ");
 		System.out.print("1. " + marble.repeat(whiteMarblesInput1) + "-->" + fromWhiteMarble1);
 		System.out.print("2. " + marble.repeat(whiteMarblesInput2) + "-->" + fromWhiteMarble2);
-		System.out.println("You have obtained " + howMany + "white marbles from the market, choose how many times to activate" +
-				"each leader (You can't discard white marbles if it's possible to convert them)");
-		System.out.println("Type [quantity1,quantity2] (ex. [1,1])");
+		System.out.println("You have obtained " + howMany + " white marbles from the market, choose how many times to activate " +
+				"each leader. (You can't discard white marbles if it's possible to convert them)");
+		System.out.println("Type <quantity1>,<quantity2>. (for example: [1,1])");
 		String input;
 		boolean check;
 		do{

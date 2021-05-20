@@ -20,10 +20,14 @@ public class Nickname extends ViewObservable implements SceneController {
 	}
 
 	@FXML public void initialize(){
-
+		confirm.setDefaultButton(true);
 	}
 	
 	public void setInvalid() {
 		nicknameValid.setVisible(true);
+	}
+
+	public String getNickname() {
+		return nickname.getText();
 	}
 }

@@ -185,7 +185,11 @@ public class GUI extends ViewObservable implements View {
 	
 	@Override
 	public void askWhiteMarbleChoice(ArrayList<Resources> fromWhiteMarble1, ArrayList<Resources> fromWhiteMarble2, int whiteMarblesInput1, int whiteMarblesInput2, int howMany) {
-	
+		Platform.runLater(() -> {
+			WhiteMarblesDialog dialog = new WhiteMarblesDialog(fromWhiteMarble1, fromWhiteMarble2, howMany);
+			dialog.initOwner(stage);
+			dialog.showAndWait().ifPresent(x -> notifyObserver(obs -> obs.onUpdateWhiteMarbleChoice(x[0], x[1])));
+		});
 	}
 	
 	@Override

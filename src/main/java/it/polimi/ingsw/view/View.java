@@ -140,6 +140,7 @@ public interface View {
 
 	/**
 	 * it shows player leader cards
+	 * @param nickname of the relative player
 	 * @param availableLeaders is a list of leader cards
 	 */
 	void showLeaderCards(String nickname, ArrayList<ReducedLeaderCard> availableLeaders);
@@ -172,6 +173,7 @@ public interface View {
 
 	/**
 	 * it shows player's strongbox
+	 * @param nickname of the relative player
 	 * @param strongbox is the strongbox
 	 */
 	void showStrongBox(String nickname, ReducedStrongbox strongbox);
@@ -192,6 +194,7 @@ public interface View {
 	/**
 	 * it shows the winner of the game
 	 * @param winner is the winner
+	 * @param points number of total points gained by the winner or winners
 	 */
 	void showWinMessage(String winner, int points);
 
