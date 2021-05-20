@@ -18,37 +18,37 @@
     <!-- 3 slots, each one containing a stack of 3 development cards -->
     <StackPane fx:id="slot1" layoutX="580.0" layoutY="445.0" prefHeight="536.0" prefWidth="274.0">
         <ImageView fx:id="img11" fitHeight="400.0" fitWidth="274.0" pickOnBounds="true" preserveRatio="true" StackPane.alignment="BOTTOM_CENTER">
-            <Image url="@../../../../../assets/test_dev_card.png" />
+            <!--<Image url="@../../../../../assets/test_dev_card.png" />-->
         </ImageView>
         <ImageView fx:id="img12" fitHeight="400.0" fitWidth="274.0" pickOnBounds="true" preserveRatio="true" StackPane.alignment="CENTER">
-            <Image url="@../../../../../assets/test_dev_card.png" />
+            <!--<Image url="@../../../../../assets/test_dev_card.png" />-->
         </ImageView>
         <ImageView fx:id="img13" fitHeight="400.0" fitWidth="274.0" pickOnBounds="true" preserveRatio="true" StackPane.alignment="TOP_CENTER">
-            <Image url="@../../../../../assets/test_dev_card.png" />
+            <!--<Image url="@../../../../../assets/test_dev_card.png" />-->
         </ImageView>
     </StackPane>
     <StackPane fx:id="slot2" layoutX="867.0" layoutY="445.0" prefHeight="536.0" prefWidth="274.0">
         <ImageView fx:id="img21" fitHeight="400.0" fitWidth="274.0" pickOnBounds="true" preserveRatio="true" StackPane.alignment="BOTTOM_CENTER">
-            <Image url="@../../../../../assets/test_dev_card.png" />
+            <!--<Image url="@../../../../../assets/test_dev_card.png" />-->
         </ImageView>
         <ImageView fx:id="img22" fitHeight="400.0" fitWidth="274.0" pickOnBounds="true" preserveRatio="true" StackPane.alignment="CENTER">
-            <Image url="@../../../../../assets/test_dev_card.png" />
+            <!--<Image url="@../../../../../assets/test_dev_card.png" />-->
         </ImageView>
         <ImageView fx:id="img23" fitHeight="400.0" fitWidth="274.0" pickOnBounds="true" preserveRatio="true" StackPane.alignment="TOP_CENTER">
-            <Image url="@../../../../../assets/test_dev_card.png" />
+            <!--<Image url="@../../../../../assets/test_dev_card.png" />-->
         </ImageView>
     </StackPane>
     <StackPane fx:id="slot3" layoutX="1167.0" layoutY="445.0" prefHeight="536.0" prefWidth="274.0">
         <ImageView fx:id="img31" fitHeight="400.0" fitWidth="274.0" pickOnBounds="true" preserveRatio="true" StackPane.alignment="BOTTOM_CENTER">
-            <Image url="@../../../../../assets/test_dev_card.png" />
+            <!--<Image url="@../../../../../assets/test_dev_card.png" />-->
         </ImageView>
 
         <ImageView fx:id="img32" fitHeight="400.0" fitWidth="274.0" pickOnBounds="true" preserveRatio="true" StackPane.alignment="CENTER">
-            <Image url="@../../../../../assets/test_dev_card.png" />
+            <!--<Image url="@../../../../../assets/test_dev_card.png" />-->
         </ImageView>
 
         <ImageView fx:id="img33" fitHeight="400.0" fitWidth="274.0" pickOnBounds="true" preserveRatio="true" StackPane.alignment="TOP_CENTER">
-            <Image url="@../../../../../assets/test_dev_card.png" />
+            <!--<Image url="@../../../../../assets/test_dev_card.png" />-->
         </ImageView>
 
     </StackPane>
@@ -77,10 +77,10 @@
         <ImageView fitHeight="71.0" fitWidth="83.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="2" GridPane.rowIndex="1">
             <Image url="@../../../../../assets/board/Servant.png" />
         </ImageView>
-        <Label fx:id="numCoin" prefHeight="45.0" prefWidth="76.0" styleClass="numerosity" text="8" GridPane.columnIndex="1" />
-        <Label fx:id="numStone" prefHeight="73.0" prefWidth="74.0" styleClass="numerosity" text="3" GridPane.columnIndex="3" />
-        <Label fx:id="numShield" prefHeight="73.0" prefWidth="78.0" styleClass="numerosity" text="2" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-        <Label fx:id="numServant" prefHeight="73.0" prefWidth="75.0" styleClass="numerosity" text="7" GridPane.columnIndex="3" GridPane.rowIndex="1" />
+        <Label fx:id="numCoin" prefHeight="45.0" prefWidth="76.0" styleClass="numerosity" GridPane.columnIndex="1" />
+        <Label fx:id="numStone" prefHeight="73.0" prefWidth="74.0" styleClass="numerosity"  GridPane.columnIndex="3" />
+        <Label fx:id="numShield" prefHeight="73.0" prefWidth="78.0" styleClass="numerosity"  GridPane.columnIndex="1" GridPane.rowIndex="1" />
+        <Label fx:id="numServant" prefHeight="73.0" prefWidth="75.0" styleClass="numerosity"  GridPane.columnIndex="3" GridPane.rowIndex="1" />
     </GridPane>
 
     <!-- warehouse depot images -->

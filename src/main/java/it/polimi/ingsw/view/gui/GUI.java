@@ -148,6 +148,9 @@ public class GUI extends ViewObservable implements View {
 			LeadersDialog dialog = new LeadersDialog(leaderCards);
 			dialog.initOwner(stage);
 			dialog.showAndWait().ifPresent(integers -> notifyObserver(obs -> obs.onUpdateInitLeaders(integers)));
+			
+			//TODO: if the code reaches this point without having called the method askInitRes, then it means that this
+			//      this player is the starting one. So the inkwell must be shown on the interface
 		});
 	}
 	
@@ -247,14 +250,7 @@ public class GUI extends ViewObservable implements View {
 
 	@Override
 	public void showGenericMessage(String genericMessage) {
-		Platform.runLater(() -> {
-			Alert alert = new Alert(Alert.AlertType.INFORMATION);
-			alert.setHeaderText("Message from the Server");
-			alert.setContentText(genericMessage);
-			alert.setTitle("Message");
-			alert.initOwner(stage);
-			alert.show();
-		});
+	
 	}
 	
 	@Override

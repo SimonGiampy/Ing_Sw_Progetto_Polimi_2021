@@ -11,6 +11,7 @@ import it.polimi.ingsw.observers.ViewObservable;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.effect.ColorAdjust;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.text.Font;
@@ -151,7 +152,6 @@ public class Board extends ViewObservable implements SceneController {
 		for (int i = 0; i < 6; i++) {
 			if (resources[i] == Resources.EMPTY) {
 				images[i].setImage(null);
-				System.gc();
 			} else
 				images[i].setImage(new Image(resources[i].path));
 		}
@@ -163,17 +163,17 @@ public class Board extends ViewObservable implements SceneController {
 		ImageView[] slot3 = new ImageView[]{img31, img32, img33};
 		ArrayList<Stack<DevelopmentCard>> cards = cardManager.getCards();
 		for(int i = 0; i < cards.get(0).size(); i++){
-			if(slot1[i].equals(null)){
+			if(slot1[i].getImage() == null){
 				slot1[i].setImage(new Image("/assets/devCards/" + cards.get(0).get(i).getCardNumber() + ".png"));
 			}
 		}
 		for(int i = 0; i < cards.get(1).size(); i++){
-			if(slot2[i].equals(null)){
+			if(slot2[i].getImage() == null){
 				slot2[i].setImage(new Image("/assets/devCards/" + cards.get(1).get(i).getCardNumber() + ".png"));
 			}
 		}
 		for(int i = 0; i < cards.get(2).size(); i++){
-			if(slot3[i].equals(null)){
+			if(slot3[i].getImage() == null){
 				slot3[i].setImage(new Image("/assets/devCards/" + cards.get(2).get(i).getCardNumber() + ".png"));
 			}
 		}
@@ -183,16 +183,22 @@ public class Board extends ViewObservable implements SceneController {
 		ImageView[] images = new ImageView[]{leader1, leader2};
 		for (int i = 0; i < leaderCards.size(); i++) {
 			if (leaderCards.get(i).isPlayable()) {
-				
-				//TODO: set visibility for button
-				
+				if (i == 0) {
+					act1.setDisable(false);
+					dis1.setDisable(false);
+				} else if (i == 1) {
+					act2.setDisable(false);
+					dis2.setDisable(false);
+				}
+				//TODO: set visibility of interaction buttons only when the client is the player in the current tab
 			}
-			if (leaderCards.get(i).isDiscarded()) {
-				images[i].setImage(null);
-				//System.gc();
+			if (leaderCards.get(i).isDiscarded()) { // card is less bright to indicate that it has been discarded
+				ColorAdjust colorAdjust = new ColorAdjust();
+				colorAdjust.setBrightness(-0.5);
+				images[i].setEffect(colorAdjust);
 			} else {
-				images[i].setImage(new Image("/assets/leaderCards/" +
-						leaderCards.get(i).getIdNumber() + ".png"));
+				images[i].setImage(new Image("/assets/leaderCards/" + leaderCards.get(i).getIdNumber() + ".png"));
+				
 			}
 		}
 	}
