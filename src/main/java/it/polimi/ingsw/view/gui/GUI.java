@@ -1,7 +1,6 @@
 package it.polimi.ingsw.view.gui;
 
 import it.polimi.ingsw.model.DevelopmentCard;
-import it.polimi.ingsw.model.Market;
 import it.polimi.ingsw.model.reducedClasses.*;
 import it.polimi.ingsw.model.util.*;
 import it.polimi.ingsw.observers.ViewObservable;
@@ -11,13 +10,11 @@ import javafx.animation.PauseTransition;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
 public class GUI extends ViewObservable implements View {
@@ -26,6 +23,7 @@ public class GUI extends ViewObservable implements View {
 	private final Stage stage;
 	private SceneController controller;
 	private String currentFXML;
+	private String playerNickname;
 	
 	public GUI(Scene scene, Stage stage) {
 		this.scene = scene;
@@ -96,8 +94,10 @@ public class GUI extends ViewObservable implements View {
 		Platform.runLater(() -> {
 			Nickname nickname = (Nickname) controller;
 			nickname.addAllObservers(observers);
-			if (nicknameAccepted)
+			if (nicknameAccepted) {
+				playerNickname = nickname.getNickname();
 				setRoot("nicknameAccepted.fxml");
+			}
 			else {
 				nickname.setInvalid();
 			}
@@ -115,7 +115,7 @@ public class GUI extends ViewObservable implements View {
 			setRoot("tabs.fxml");
 			PlayerTabs playerTabs = (PlayerTabs) controller;;
 			playerTabs.addAllObservers(observers);
-			playerTabs.instantiateTabs(players);
+			playerTabs.instantiateTabs(players, playerNickname);
 		});
 
 	}

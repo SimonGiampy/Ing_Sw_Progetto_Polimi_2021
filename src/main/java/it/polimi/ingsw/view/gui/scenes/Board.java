@@ -66,7 +66,7 @@ public class Board extends ViewObservable implements SceneController {
 	@FXML private ImageView cross;
 	
 	ArrayList<Coordinates> coordinates;
-	
+
 	@FXML
 	public void initialize() {
 		Font.loadFont(getClass().getResourceAsStream("/assets/font/Caveat-Regular.ttf"), 10);
@@ -104,11 +104,6 @@ public class Board extends ViewObservable implements SceneController {
 		//TODO: buttons used for user interaction must be disabled by default, and enabled only when the user can interact with them
 		
 		//TODO: add incoming resources UI management and drag-and-drop functionality for using the depot
-	}
-	
-	public void setStartingPlayer(boolean hasCalamaio) {
-		// if the player is the starting one
-		calamaio.setVisible(hasCalamaio);
 	}
 	
 	public void setSinglePlayerMode(boolean niBBaCross) {
@@ -178,8 +173,12 @@ public class Board extends ViewObservable implements SceneController {
 			}
 		}
 	}
-	
-	public void setLeaderCards(ArrayList<ReducedLeaderCard> leaderCards) {
+
+	/**
+	 * sets leader card of the player
+	 * @param leaderCards player's leader cards
+	 */
+	public void setMyLeaderCards(ArrayList<ReducedLeaderCard> leaderCards) {
 		ImageView[] images = new ImageView[]{leader1, leader2};
 		for (int i = 0; i < leaderCards.size(); i++) {
 			if (leaderCards.get(i).isPlayable()) {
@@ -190,20 +189,74 @@ public class Board extends ViewObservable implements SceneController {
 					act2.setDisable(false);
 					dis2.setDisable(false);
 				}
-				//TODO: set visibility of interaction buttons only when the client is the player in the current tab
-			}
-			if (leaderCards.get(i).isDiscarded()) { // card is less bright to indicate that it has been discarded
+			} else if(leaderCards.get(i).isAbilitiesActivated()){
+				if(i==0) {
+					act1.setDisable(true);
+					dis1.setDisable(true);
+				}else {
+					act2.setDisable(true);
+					dis2.setDisable(true);
+				}
+			}else if (leaderCards.get(i).isDiscarded()) { // card is less bright to indicate that it has been discarded
 				ColorAdjust colorAdjust = new ColorAdjust();
 				colorAdjust.setBrightness(-0.5);
 				images[i].setEffect(colorAdjust);
+				if(i==0) {
+					act1.setDisable(true);
+					dis1.setDisable(true);
+				} else {
+					act2.setDisable(true);
+					dis2.setDisable(true);
+				}
 			} else {
 				images[i].setImage(new Image("/assets/leaderCards/" + leaderCards.get(i).getIdNumber() + ".png"));
-				
+				act1.setDisable(true);
+				act2.setDisable(true);
+				dis1.setDisable(false);
+				dis2.setDisable(false);
 			}
 		}
 	}
-	
-	
+
+	/**
+	 * sets opponent's leader cards
+	 * @param leaderCards opponent's leader card
+	 */
+	public void setOthersLeaderCards(ArrayList<ReducedLeaderCard> leaderCards){
+		ImageView[] images = new ImageView[]{leader1, leader2};
+		for (int i = 0; i < leaderCards.size(); i++) {
+			if(leaderCards.get(i).isAbilitiesActivated()){
+				images[i].setImage(new Image("/assets/leaderCards/" + leaderCards.get(i).getIdNumber() + ".png"));
+			}
+			if (leaderCards.get(i).isDiscarded()) { // card is less bright to indicate that it has been discarded
+				images[i].setImage(new Image("/assets/leaderCards/" + leaderCards.get(i).getIdNumber() + ".png"));
+				ColorAdjust colorAdjust = new ColorAdjust();
+				colorAdjust.setBrightness(-0.5);
+				images[i].setEffect(colorAdjust);
+			}
+		}
+	}
+
+	/**
+	 * sets the visibility of buttons for opponent's boards
+	 */
+	public void setOpponentBoard(){
+		act1.setVisible(false);
+		dis1.setVisible(false);
+		act2.setVisible(false);
+		dis2.setVisible(false);
+		actProductions.setVisible(false);
+		leader1.setImage(new Image("/assets/leaderCards/retro.png"));
+		leader2.setImage(new Image("/assets/leaderCards/retro.png"));
+	}
+
+	/**
+	 * sets the calamaio visible if this is the first's player board
+	 */
+	public void setStartingPlayer(){
+		calamaio.setVisible(true);
+	}
+
 	private class Coordinates {
 		private double x;
 		private double y;
