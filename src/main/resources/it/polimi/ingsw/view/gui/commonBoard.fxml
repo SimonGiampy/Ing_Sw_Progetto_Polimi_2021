@@ -92,18 +92,18 @@
           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
-            <ImageView fx:id="cards20" fitHeight="302.0" fitWidth="225.0" pickOnBounds="true" preserveRatio="true" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
-            <ImageView fx:id="cards21" fitHeight="302.0" fitWidth="225.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
-            <ImageView fx:id="cards22" fitHeight="302.0" fitWidth="225.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
-            <ImageView fx:id="cards23" fitHeight="302.0" fitWidth="225.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
-            <ImageView fx:id="cards10" fitHeight="302.0" fitWidth="225.0" pickOnBounds="true" preserveRatio="true" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
-            <ImageView fx:id="cards11" fitHeight="302.0" fitWidth="225.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
-            <ImageView fx:id="cards12" fitHeight="302.0" fitWidth="225.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
-            <ImageView fx:id="cards13" fitHeight="302.0" fitWidth="225.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
-            <ImageView fx:id="cards00" fitHeight="302.0" fitWidth="225.0" pickOnBounds="true" preserveRatio="true" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER" />
-            <ImageView fx:id="cards01" fitHeight="302.0" fitWidth="225.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER" />
-            <ImageView fx:id="cards02" fitHeight="302.0" fitWidth="225.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER" />
-            <ImageView fx:id="cards03" fitHeight="302.0" fitWidth="225.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER" />
+            <ImageView fx:id="cards20" fitHeight="302.0" fitWidth="225.0" onMouseClicked="#onMouseClickedCards20" pickOnBounds="true" preserveRatio="true" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
+            <ImageView fx:id="cards21" fitHeight="302.0" fitWidth="225.0" onMouseClicked="#onMouseClickedCards21" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
+            <ImageView fx:id="cards22" fitHeight="302.0" fitWidth="225.0" onMouseClicked="#onMouseClickedCards22" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
+            <ImageView fx:id="cards23" fitHeight="302.0" fitWidth="225.0" onMouseClicked="#onMouseClickedCards23" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
+            <ImageView fx:id="cards10" fitHeight="302.0" fitWidth="225.0" onMouseClicked="#onMouseClickedCards10" pickOnBounds="true" preserveRatio="true" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
+            <ImageView fx:id="cards11" fitHeight="302.0" fitWidth="225.0" onMouseClicked="#onMouseClickedCards11" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
+            <ImageView fx:id="cards12" fitHeight="302.0" fitWidth="225.0" onMouseClicked="#onMouseClickedCards12" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
+            <ImageView fx:id="cards13" fitHeight="302.0" fitWidth="225.0" onMouseClicked="#onMouseClickedCards13" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
+            <ImageView fx:id="cards00" fitHeight="302.0" fitWidth="225.0" onMouseClicked="#onMouseClickedCards00" pickOnBounds="true" preserveRatio="true" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER" />
+            <ImageView fx:id="cards01" fitHeight="302.0" fitWidth="225.0" onMouseClicked="#onMouseClickedCards01" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER" />
+            <ImageView fx:id="cards02" fitHeight="302.0" fitWidth="225.0" onMouseClicked="#onMouseClickedCards02" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER" />
+            <ImageView fx:id="cards03" fitHeight="302.0" fitWidth="225.0" onMouseClicked="#onMouseClickedCards03" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER" />
          </children>
       </GridPane>
       <ImageView fx:id="text" fitHeight="943.0" fitWidth="1676.0" layoutX="140.0" layoutY="65.0" pickOnBounds="true" preserveRatio="true" visible="false">
@@ -111,7 +111,10 @@
             <Image url="@../../../../../assets/board/text.png" />
          </image>
       </ImageView>
-      <Button fx:id="cardsActivation" layoutX="1326.0" layoutY="838.0" mnemonicParsing="false" onMouseClicked="#onMouseClickedActivateCards" text="Button" />
-      <Button fx:id="marketActivation" layoutX="1684.0" layoutY="838.0" mnemonicParsing="false" onMouseClicked="#onMouseClickedActivateMarket" text="Button" />
+      <Button fx:id="slot3" layoutX="1638.0" layoutY="838.0" mnemonicParsing="false" onMouseClicked="#onMouseClickedSlot3" text="Slot 3" visible="false" />
+      <Button fx:id="slot2" layoutX="1521.0" layoutY="838.0" mnemonicParsing="false" onMouseClicked="#onMouseClickedSlot2" text="Slot 2" visible="false" />
+      <Button fx:id="slot1" layoutX="1405.0" layoutY="838.0" mnemonicParsing="false" onMouseClicked="#onMouseClickedSlot1" text="Slot 1" visible="false" />
+      <Button fx:id="cardsActivation" layoutX="1326.0" layoutY="838.0" mnemonicParsing="false" onMouseClicked="#onMouseClickedActivateCards" text="Buy Card" visible="false" />
+      <Button fx:id="marketActivation" layoutX="1684.0" layoutY="838.0" mnemonicParsing="false" onMouseClicked="#onMouseClickedActivateMarket" text="Go to the Market" visible="false" />
    </children>
 </AnchorPane>

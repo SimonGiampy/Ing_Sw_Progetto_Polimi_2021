@@ -80,6 +80,10 @@ public class CommonBoard extends ViewObservable implements SceneController{
 	@FXML Button marketActivation;
 	@FXML Button cardsActivation;
 
+	@FXML Button slot1;
+	@FXML Button slot2;
+	@FXML Button slot3;
+
 
 	private boolean marketAble;//TODO: to be set true at the start of the turn
 	private boolean cardsAble;
@@ -135,7 +139,7 @@ public class CommonBoard extends ViewObservable implements SceneController{
 	}
 
 	public void onMouseClickedActivateCards(){
-		cardsAble=false;
+		cardsAble=true;
 		cardsActivation.setVisible(false);
 		marketActivation.setVisible(false);
 		notifyObserver(obs -> obs.onUpdateAction(PlayerActions.BUY_CARD));
@@ -145,6 +149,19 @@ public class CommonBoard extends ViewObservable implements SceneController{
 		if (actions.contains(PlayerActions.BUY_CARD))
 			cardsActivation.setVisible(true);
 		marketActivation.setVisible(true);
+	}
+
+	public void setSlotsButtonVisible( boolean visible){
+		if (visible) {
+			slot1.setVisible(true);
+			slot2.setVisible(true);
+			slot3.setVisible(true);
+		}
+		else{
+			slot1.setVisible(false);
+			slot2.setVisible(false);
+			slot3.setVisible(false);
+		}
 	}
 
 	public void setMarket(ReducedMarket market){
@@ -280,6 +297,9 @@ public class CommonBoard extends ViewObservable implements SceneController{
 		if(cardsAble && buyableCards.contains(deck.getCardStackStructure()[0][0].get(0))){
 			level=1;
 			color=Colors.GREEN;
+			setGlow();
+			cardsImages[0][0].setEffect(new Glow(0.5));
+			setSlotsButtonVisible(true);
 		}
 	}
 
@@ -287,6 +307,9 @@ public class CommonBoard extends ViewObservable implements SceneController{
 		if(cardsAble && buyableCards.contains(deck.getCardStackStructure()[0][1].get(0))){
 			level=1;
 			color=Colors.BLUE;
+			setGlow();
+			cardsImages[0][1].setEffect(new Glow(0.5));
+			setSlotsButtonVisible(true);
 		}
 
 	}
@@ -295,6 +318,9 @@ public class CommonBoard extends ViewObservable implements SceneController{
 		if(cardsAble && buyableCards.contains(deck.getCardStackStructure()[0][2].get(0))){
 			level=1;
 			color=Colors.YELLOW;
+			setGlow();
+			cardsImages[0][2].setEffect(new Glow(0.5));
+			setSlotsButtonVisible(true);
 		}
 
 	}
@@ -303,6 +329,9 @@ public class CommonBoard extends ViewObservable implements SceneController{
 		if(cardsAble && buyableCards.contains(deck.getCardStackStructure()[0][3].get(0))){
 			level=1;
 			color=Colors.PURPLE;
+			setGlow();
+			cardsImages[0][3].setEffect(new Glow(0.5));
+			setSlotsButtonVisible(true);
 		}
 	}
 
@@ -310,6 +339,9 @@ public class CommonBoard extends ViewObservable implements SceneController{
 		if(cardsAble && buyableCards.contains(deck.getCardStackStructure()[1][0].get(0))){
 			level=2;
 			color=Colors.GREEN;
+			setGlow();
+			cardsImages[1][0].setEffect(new Glow(0.5));
+			setSlotsButtonVisible(true);
 		}
 
 	}
@@ -318,6 +350,9 @@ public class CommonBoard extends ViewObservable implements SceneController{
 		if(cardsAble && buyableCards.contains(deck.getCardStackStructure()[1][1].get(0))){
 			level=2;
 			color=Colors.BLUE;
+			setGlow();
+			cardsImages[1][1].setEffect(new Glow(0.5));
+			setSlotsButtonVisible(true);
 		}
 
 	}
@@ -326,6 +361,9 @@ public class CommonBoard extends ViewObservable implements SceneController{
 		if(cardsAble && buyableCards.contains(deck.getCardStackStructure()[1][2].get(0))){
 			level=2;
 			color=Colors.YELLOW;
+			setGlow();
+			cardsImages[1][2].setEffect(new Glow(0.5));
+			setSlotsButtonVisible(true);
 		}
 	}
 
@@ -333,6 +371,9 @@ public class CommonBoard extends ViewObservable implements SceneController{
 		if(cardsAble && buyableCards.contains(deck.getCardStackStructure()[1][3].get(0))){
 			level=2;
 			color=Colors.PURPLE;
+			setGlow();
+			cardsImages[1][3].setEffect(new Glow(0.5));
+			setSlotsButtonVisible(true);
 		}
 
 	}
@@ -341,6 +382,9 @@ public class CommonBoard extends ViewObservable implements SceneController{
 		if(cardsAble && buyableCards.contains(deck.getCardStackStructure()[2][0].get(0))){
 			level=3;
 			color=Colors.GREEN;
+			setGlow();
+			cardsImages[2][0].setEffect(new Glow(0.5));
+			setSlotsButtonVisible(true);
 		}
 
 	}
@@ -349,6 +393,9 @@ public class CommonBoard extends ViewObservable implements SceneController{
 		if(cardsAble && buyableCards.contains(deck.getCardStackStructure()[2][1].get(0))){
 			level=3;
 			color=Colors.BLUE;
+			setGlow();
+			cardsImages[2][1].setEffect(new Glow(0.5));
+			setSlotsButtonVisible(true);
 		}
 
 	}
@@ -357,6 +404,9 @@ public class CommonBoard extends ViewObservable implements SceneController{
 		if(cardsAble && buyableCards.contains(deck.getCardStackStructure()[2][2].get(0))){
 			level=3;
 			color=Colors.YELLOW;
+			setGlow();
+			cardsImages[2][2].setEffect(new Glow(0.5));
+			setSlotsButtonVisible(true);
 		}
 
 	}
@@ -365,7 +415,28 @@ public class CommonBoard extends ViewObservable implements SceneController{
 		if(cardsAble && buyableCards.contains(deck.getCardStackStructure()[2][3].get(0))){
 			level=3;
 			color=Colors.PURPLE;
+			setGlow();
+			cardsImages[2][3].setEffect(new Glow(0.5));
+			setSlotsButtonVisible(true);
 		}
+	}
+
+	public void onMouseClickedSlot1(){
+		notifyObserver(obs -> obs.onUpdateBuyCardAction(color,level,1));
+		cardsAble=false;
+		setSlotsButtonVisible(false);
+	}
+
+	public void onMouseClickedSlot2(){
+		notifyObserver(obs -> obs.onUpdateBuyCardAction(color,level,2));
+		cardsAble=false;
+		setSlotsButtonVisible(false);
+	}
+
+	public void onMouseClickedSlot3(){
+		notifyObserver(obs -> obs.onUpdateBuyCardAction(color,level,3));
+		cardsAble=false;
+		setSlotsButtonVisible(false);
 	}
 
 	public void setDeck(ReducedDevelopmentCardsDeck deck){
@@ -374,7 +445,7 @@ public class CommonBoard extends ViewObservable implements SceneController{
 			for (int j = 0; j < 4; j++) {
 				DevelopmentCard card=deck.getCardStackStructure()[i][j].get(0);
 				cardsImages[i][j].setImage(new Image("/assets/devCards/"+card.getCardNumber()+".png"));
-
+				cardsImages[i][j].setEffect(new Glow(0));
 			}
 		}
 	}
@@ -389,6 +460,17 @@ public class CommonBoard extends ViewObservable implements SceneController{
 			}
 		}
 	}
+
+	public void setGlow(){
+		for (int k = 0; k < 3; k++) {
+			for (int l = 0; l < 4; l++) {
+					if(buyableCards.contains(deck.getCardStackStructure()[k][l].get(0)))
+							setShadow(0.7, cardsImages[k][l]);
+					else cardsImages[k][l].setEffect(new Glow(0));
+			}
+		}
+	}
+
 
 	public void setTextVisible(Boolean visible){
 		text.setVisible(visible);
