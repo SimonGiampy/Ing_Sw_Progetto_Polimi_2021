@@ -84,6 +84,8 @@ public class CommonBoard extends ViewObservable implements SceneController{
 	@FXML Button slot2;
 	@FXML Button slot3;
 
+	@FXML Text slotText;
+
 
 	private boolean marketAble;//TODO: to be set true at the start of the turn
 	private boolean cardsAble;
@@ -156,11 +158,13 @@ public class CommonBoard extends ViewObservable implements SceneController{
 			slot1.setVisible(true);
 			slot2.setVisible(true);
 			slot3.setVisible(true);
+			slotText.setVisible(true);
 		}
 		else{
 			slot1.setVisible(false);
 			slot2.setVisible(false);
 			slot3.setVisible(false);
+			slotText.setVisible(false);
 		}
 	}
 
