@@ -5,6 +5,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyCode;
 
 
 public class Nickname extends ViewObservable implements SceneController {
@@ -20,7 +21,12 @@ public class Nickname extends ViewObservable implements SceneController {
 	}
 
 	@FXML public void initialize(){
-		confirm.setDefaultButton(true);
+		nickname.setOnKeyPressed(keyEvent -> {
+			if (keyEvent.getCode() == KeyCode.ENTER) {
+				confirmation();
+			}
+		});
+		confirm.setOnMouseClicked(event -> confirmation());
 	}
 	
 	public void setInvalid() {

@@ -25,13 +25,22 @@ public class GUI extends ViewObservable implements View {
 	private String currentFXML;
 	private String playerNickname;
 	
+	/**
+	 * constructor with UI parameters
+	 * @param scene created by the app
+	 * @param stage general stage
+	 */
 	public GUI(Scene scene, Stage stage) {
 		this.scene = scene;
 		this.stage = stage;
 		currentFXML = "connection.fxml"; // initial window
 	}
 	
-	public void setRoot(String fxml) {
+	/**
+	 * changes the content and loads the fxml file
+	 * @param fxml name of the file with its extension
+	 */
+	private void setRoot(String fxml) {
 		FXMLLoader fxmlLoader = new FXMLLoader(GUI.class.getResource(fxml));
 		//scene.setUserData(fxmlLoader); // this is most likely not needed
 		currentFXML = fxml;
