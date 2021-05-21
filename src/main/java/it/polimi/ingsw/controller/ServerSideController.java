@@ -72,6 +72,7 @@ public class ServerSideController {
 		
 		// sends a message to all the players containing a list of the nicknames the players in the match
 		lobby.broadcastMessage(new MatchInfo(nicknameList));
+		startPreGame();
 	}
 	
 	/**
@@ -115,7 +116,7 @@ public class ServerSideController {
 		
 		Lobby.LOGGER.info("Game configuration has been read and applied to the lobby settings");
 		
-		startPreGame();
+
 	}
 
 	/**
