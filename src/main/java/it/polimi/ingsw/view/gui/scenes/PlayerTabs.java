@@ -83,9 +83,9 @@ public class PlayerTabs extends ViewObservable implements SceneController{
 				if(tab.isSelected())
 					tab.getGraphic().setStyle("-fx-text-fill: #337ab7;");
 			});
-			
 		}
 		playersMap.get(nicknameList.get(0)).setStartingPlayer();
+		tabPane.getSelectionModel().select(tabMap.get(playersMap.get(playerNickname)));
 	}
 
 	public void update(String nickname, ReducedFaithTrack track){
@@ -144,22 +144,20 @@ public class PlayerTabs extends ViewObservable implements SceneController{
 
 	public void update(ReducedDevelopmentCardsDeck deck){
 		commonBoard.setDeck(deck);
-		commonBoardTab.getGraphic().setStyle("-fx-text-fill: #d43f3a;");
+		if(!commonBoardTab.isSelected())
+			commonBoardTab.getGraphic().setStyle("-fx-text-fill: #d43f3a;");
 	}
 
 	public void update(ReducedMarket market){
 		commonBoard.setMarket(market);
-		commonBoardTab.getGraphic().setStyle("-fx-text-fill: #d43f3a;");
+		if(!commonBoardTab.isSelected())
+			commonBoardTab.getGraphic().setStyle("-fx-text-fill: #d43f3a;");
 	}
 
 	public void setTabToRead(Board board){
 		Tab tab = tabMap.get(board);
-		tab.getGraphic().setStyle("-fx-text-fill: #d43f3a;");
-	}
-
-	public void testSwitch(){
-		//code for switch focus
-		tabPane.getSelectionModel().select(playersMap.size());
+		if(!tab.isSelected())
+			tab.getGraphic().setStyle("-fx-text-fill: #d43f3a;");
 	}
 
 	@FXML public void initialize(){

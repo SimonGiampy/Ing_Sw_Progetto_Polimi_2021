@@ -122,7 +122,7 @@ public class GUI extends ViewObservable implements View {
 	public void showMatchInfo(ArrayList<String> players) {
 		Platform.runLater(() -> {
 			setRoot("tabs.fxml");
-			PlayerTabs playerTabs = (PlayerTabs) controller;;
+			PlayerTabs playerTabs = (PlayerTabs) controller;
 			playerTabs.addAllObservers(observers);
 			playerTabs.instantiateTabs(players, playerNickname);
 		});
