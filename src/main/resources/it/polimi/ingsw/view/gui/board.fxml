@@ -112,13 +112,13 @@
     <VBox layoutX="1551.0" layoutY="16.0" prefHeight="1001.0" prefWidth="292.0" style="-fx-padding: 0 10 0 10">
         <BorderPane style="-fx-padding: 10 10 15 10">
             <left>
-                <Label style="-fx-text-fill: #fff0f0" styleClass="leaders_name" text="Leader 1" BorderPane.alignment="CENTER_LEFT" />
+                <Label style="-fx-text-fill: #fff0f0" styleClass="fancy_font" text="Leader 1" BorderPane.alignment="CENTER_LEFT" />
             </left>
             <center>
-                <Button fx:id="act1" styleClass="primary, leaders_name" text="Activate" />
+                <Button fx:id="act1" styleClass="primary, fancy_font" text="Activate" />
             </center>
             <right>
-                <Button fx:id="dis1" styleClass="warning, leaders_name" text="Discard" BorderPane.alignment="CENTER_RIGHT" />
+                <Button fx:id="dis1" styleClass="warning, fancy_font" text="Discard" BorderPane.alignment="CENTER_RIGHT" />
             </right>
         </BorderPane>
         <ImageView fx:id="leader1" fitHeight="422.0" fitWidth="332.0" pickOnBounds="true" preserveRatio="true">
@@ -126,13 +126,13 @@
         </ImageView>
         <BorderPane style="-fx-padding: 30 10 15 10">
             <left>
-                <Label style="-fx-text-fill: #fff0f0" styleClass="leaders_name" text="Leader 2" BorderPane.alignment="CENTER_LEFT" />
+                <Label style="-fx-text-fill: #fff0f0" styleClass="fancy_font" text="Leader 2" BorderPane.alignment="CENTER_LEFT" />
             </left>
             <center>
-                <Button fx:id="act2" styleClass="primary, leaders_name" text="Activate" />
+                <Button fx:id="act2" styleClass="primary, fancy_font" text="Activate" />
             </center>
             <right>
-                <Button fx:id="dis2" styleClass="warning, leaders_name" text="Discard" BorderPane.alignment="CENTER_RIGHT" />
+                <Button fx:id="dis2" styleClass="warning, fancy_font" text="Discard" BorderPane.alignment="CENTER_RIGHT" />
             </right>
         </BorderPane>
         <ImageView fx:id="leader2" fitHeight="422.0" fitWidth="332.0" pickOnBounds="true" preserveRatio="true">
@@ -141,5 +141,5 @@
     </VBox>
 
    <Button fx:id="actProductions" layoutX="370.0" layoutY="920.0" mnemonicParsing="false" prefHeight="39.0" prefWidth="186.0"
-           styleClass="leaders_name, primary" text="Activate Productions" />
+           styleClass="fancy_font, primary" text="Activate Productions" />
 </AnchorPane>

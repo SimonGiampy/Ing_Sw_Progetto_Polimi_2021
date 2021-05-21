@@ -5,9 +5,9 @@
 <?import javafx.scene.layout.*?>
 
 <DialogPane prefHeight="583.0" prefWidth="1376.0" stylesheets="@../../../../../assets/bootstrap3.css" xmlns="http://javafx.com/javafx/"
-            xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.view.gui.scenes.LeadersDialogController">
+            xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.view.gui.scenes.LeadersDialogController" styleClass="wood_background">
    <content>
-      <AnchorPane prefHeight="532.0" prefWidth="1213.0">
+      <AnchorPane prefHeight="532.0" prefWidth="1213.0" >
          <ImageView fx:id="img1" fitHeight="440.0" fitWidth="278.0" layoutX="53.0" layoutY="88.0" pickOnBounds="true" preserveRatio="true">
             <Image url="@../../../../../assets/test_lead_card.png" />
          </ImageView>
@@ -20,7 +20,7 @@
          <ImageView fx:id="img4" fitHeight="440.0" fitWidth="278.0" layoutX="1030.0" layoutY="88.0" pickOnBounds="true" preserveRatio="true">
             <Image url="@../../../../../assets/test_lead_card.png" />
          </ImageView>
-         <Label layoutX="380.0" layoutY="26.0" style="-fx-font-size: 30" styleClass="leaders_name"
+         <Label layoutX="380.0" layoutY="26.0" style="-fx-font-size: 30; -fx-text-fill: white" styleClass="fancy_font"
                 text="Choose 2 Leader Cards among these 4 to use during the game" />
       </AnchorPane>
    </content>
