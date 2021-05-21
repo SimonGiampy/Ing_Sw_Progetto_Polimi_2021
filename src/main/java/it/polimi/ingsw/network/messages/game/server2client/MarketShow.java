@@ -12,8 +12,8 @@ public class MarketShow extends Message {
 	 private final ReducedMarket market;
 	 private final boolean askAction; // false: only shows the market, true: ask action
 
-	public MarketShow(ReducedMarket market, boolean action){
-		super("Lobby", MessageType.MARKET_SHOW);
+	public MarketShow(String nickname,ReducedMarket market, boolean action){
+		super(nickname, MessageType.MARKET_SHOW);
 		this.market = market;
 		this.askAction = action;
 	}

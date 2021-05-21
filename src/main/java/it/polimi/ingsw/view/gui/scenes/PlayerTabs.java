@@ -1,6 +1,8 @@
 package it.polimi.ingsw.view.gui.scenes;
 
+import it.polimi.ingsw.model.DevelopmentCard;
 import it.polimi.ingsw.model.reducedClasses.*;
+import it.polimi.ingsw.model.util.PlayerActions;
 import it.polimi.ingsw.observers.ViewObservable;
 import it.polimi.ingsw.view.gui.GUI;
 import javafx.fxml.FXML;
@@ -21,7 +23,7 @@ public class PlayerTabs extends ViewObservable implements SceneController{
 	@FXML AnchorPane commonPane;
 	private HashMap <String, Board> playersMap;
 	private HashMap <Board, Tab> tabMap;
-	public CommonBoard commonBoard;
+	private CommonBoard commonBoard;
 	private String playerNickname;
 
 	public void instantiateTabs(ArrayList<String> nicknameList, String playerNickname) {
@@ -108,6 +110,25 @@ public class PlayerTabs extends ViewObservable implements SceneController{
 		Board board = playersMap.get(nickname);
 		board.setCardManager(cardProductionManagement);
 		setTabToRead(board);
+	}
+
+	public void update(String nickname, boolean value){
+		Board board = playersMap.get(nickname);
+		System.out.println(nickname);
+		board.setActProductions(value);
+		setTabToRead(board);
+	}
+
+	public void update(boolean value){
+		commonBoard.setButtonVisible(value);
+	}
+
+	public void updateActions(ArrayList<PlayerActions> actions){
+		commonBoard.setButtonVisible(actions);
+	}
+
+	public void update(ArrayList<DevelopmentCard> cards){
+		commonBoard.setGreen(cards);
 	}
 
 	public void update(ReducedDevelopmentCardsDeck deck){

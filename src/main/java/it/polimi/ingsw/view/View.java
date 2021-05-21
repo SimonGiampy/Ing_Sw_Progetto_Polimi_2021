@@ -47,13 +47,13 @@ public interface View {
 	 * it asks which action the player wants to do
 	 * @param availableAction is a list of available action
 	 */
-	void askAction(ArrayList<PlayerActions> availableAction);
+	void askAction(String nickname,ArrayList<PlayerActions> availableAction);
 
 	/**
 	 * it asks what the player wants to do in the market
 	 * @param market is the market
 	 */
-	void askMarketAction(ReducedMarket market);
+	void askMarketAction(String nickname, ReducedMarket market);
 
 	/**
 	 * it asks which leader to use to convert the white marbles obtained
@@ -71,7 +71,7 @@ public interface View {
 	 * @param cardsAvailable is a list of available card
 	 * @param wrongSlot if the chosen slot was incorrect
 	 */
-	void askBuyCardAction(ArrayList<DevelopmentCard> cardsAvailable, boolean wrongSlot);
+	void askBuyCardAction(String nickname, ArrayList<DevelopmentCard> cardsAvailable, boolean wrongSlot);
 
 	/**
 	 * the server asks the client what productions to do, and sends them a list of the available ones

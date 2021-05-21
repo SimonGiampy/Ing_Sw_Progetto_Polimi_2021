@@ -78,7 +78,7 @@ public class ClientSideController implements ViewObserver, Observer {
 					if (!marketShow.isAskAction())
 						view.showMarket(marketShow.getMarket());
 					else
-						view.askMarketAction(marketShow.getMarket());
+						view.askMarketAction(message.getNickname(),marketShow.getMarket());
 				});
 				case WHITE_MARBLE_REQUEST -> userTask.execute(() -> {
 					WhiteMarbleRequest m = (WhiteMarbleRequest) message;
@@ -100,9 +100,9 @@ public class ClientSideController implements ViewObserver, Observer {
 						view.showPlayerCardsAndProduction(message.getNickname(),
 								((PlayerCardsAndProductionShow) message).getCardProductionManagement()));
 				case ACTION_REQUEST -> userTask.execute(() ->
-						view.askAction(((ActionRequest) message).getAvailableAction()));
+						view.askAction(message.getNickname(),((ActionRequest) message).getAvailableAction()));
 				case CARDS_SHOW -> userTask.execute(() ->
-						view.askBuyCardAction(((BuyableDevCards) message).getCards(), ((BuyableDevCards) message).isWrongSlot()));
+						view.askBuyCardAction(message.getNickname(),((BuyableDevCards) message).getCards(), ((BuyableDevCards) message).isWrongSlot()));
 				case PRODUCTION_SHOW -> userTask.execute(() ->
 						view.askProductionAction(((ProductionsAvailable) message).getAvailableProduction()));
 				case WIN_MESSAGE -> userTask.execute(() ->

@@ -62,13 +62,13 @@ public class VirtualView implements View, Observer {
 	}
 
 	@Override
-	public void askAction(ArrayList<PlayerActions> availableAction) {
-		clientHandler.sendMessage(new ActionRequest(availableAction));
+	public void askAction(String nickname,ArrayList<PlayerActions> availableAction) {
+		clientHandler.sendMessage(new ActionRequest(nickname,availableAction));
 	}
 
 	@Override
-	public void askMarketAction(ReducedMarket market) {
-		clientHandler.sendMessage(new MarketShow(market, true));
+	public void askMarketAction(String nickname,ReducedMarket market) {
+		clientHandler.sendMessage(new MarketShow(nickname,market, true));
 	}
 
 	@Override
@@ -84,8 +84,8 @@ public class VirtualView implements View, Observer {
 	}
 
 	@Override
-	public void askBuyCardAction(ArrayList<DevelopmentCard> cardsAvailable, boolean wrongSlot) {
-		clientHandler.sendMessage(new BuyableDevCards(cardsAvailable, wrongSlot));
+	public void askBuyCardAction(String nickname, ArrayList<DevelopmentCard> cardsAvailable, boolean wrongSlot) {
+		clientHandler.sendMessage(new BuyableDevCards(nickname,cardsAvailable, wrongSlot));
 	}
 
 	@Override
@@ -160,7 +160,7 @@ public class VirtualView implements View, Observer {
 
 	@Override
 	public void showMarket(ReducedMarket market) {
-		clientHandler.sendMessage(new MarketShow(market, false));
+		clientHandler.sendMessage(new MarketShow("",market, false));
 	}
 
 	@Override

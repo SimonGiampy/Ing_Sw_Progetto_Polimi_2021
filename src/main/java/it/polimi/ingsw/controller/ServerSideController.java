@@ -285,8 +285,8 @@ public class ServerSideController {
 		VirtualView view= virtualViewMap.get(message.getNickname());
 		int playerIndex=nicknameList.indexOf(message.getNickname());
 		switch (message.getSelectedAction()){
-			case MARKET -> view.askMarketAction(new ReducedMarket(mechanics.getMarket()));
-			case BUY_CARD -> view.askBuyCardAction(new ArrayList<>
+			case MARKET -> view.askMarketAction(nicknameList.get(playerIndex),new ReducedMarket(mechanics.getMarket()));
+			case BUY_CARD -> view.askBuyCardAction(nicknameList.get(playerIndex),new ArrayList<>
 				(mechanics.getGameDevCardsDeck().buyableCards(mechanics.getPlayer(playerIndex).gatherAllPlayersResources(),
 						mechanics.getPlayer(playerIndex).getPlayersCardManager())), false);
 			case PRODUCTIONS -> {
@@ -430,7 +430,7 @@ public class ServerSideController {
 			}
 			turnController.setTurnPhase(TurnPhase.MAIN_ACTION);
 		} else { //incorrect
-			view.askBuyCardAction(mechanics.getGameDevCardsDeck().buyableCards(mechanics.getPlayer(playerIndex).gatherAllPlayersResources(),
+			view.askBuyCardAction(nicknameList.get(playerIndex),mechanics.getGameDevCardsDeck().buyableCards(mechanics.getPlayer(playerIndex).gatherAllPlayersResources(),
 					management), true);
 		}
 		

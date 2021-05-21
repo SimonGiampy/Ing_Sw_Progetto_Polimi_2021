@@ -66,9 +66,9 @@ public class TurnController {
 		VirtualView view = virtualViewMap.get(activePlayer);
 		int playerIndex= nicknameList.indexOf(activePlayer);
 		if(leaderAction)
-			view.askAction(mechanics.getPlayer(playerIndex).checkAvailableNormalActions());
+			view.askAction(nicknameList.get(playerIndex),mechanics.getPlayer(playerIndex).checkAvailableNormalActions());
 		else
-			view.askAction(mechanics.getPlayer(playerIndex).checkAvailableActions());
+			view.askAction(nicknameList.get(playerIndex),mechanics.getPlayer(playerIndex).checkAvailableActions());
 	}
 
 	private void tokenActivation(){

@@ -319,7 +319,7 @@ public class CLI extends ViewObservable implements View {
 	}
 	
 	@Override
-	public void askAction(ArrayList<PlayerActions> availableAction) {
+	public void askAction(String nickname,ArrayList<PlayerActions> availableAction) {
 		int x = 1;
 		for (PlayerActions s: availableAction) {
 			System.out.println(x + ": " + s);
@@ -341,7 +341,7 @@ public class CLI extends ViewObservable implements View {
 	}
 	
 	@Override
-	public void askMarketAction(ReducedMarket market) {
+	public void askMarketAction(String nickname, ReducedMarket market) {
 		String input;
 		String regex = "((COL\s[1-4])|(ROW\s[1-3]))";
 		System.out.println("This is the Market in this moment!\n" +
@@ -472,7 +472,7 @@ public class CLI extends ViewObservable implements View {
 	
 	
 	@Override
-	public void askBuyCardAction(ArrayList<DevelopmentCard> cardsAvailable, boolean wrongSlot) {
+	public void askBuyCardAction(String nickname, ArrayList<DevelopmentCard> cardsAvailable, boolean wrongSlot) {
 		String input;
 		
 		if (wrongSlot) {

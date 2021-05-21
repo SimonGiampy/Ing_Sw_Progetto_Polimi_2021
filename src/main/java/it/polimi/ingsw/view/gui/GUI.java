@@ -169,11 +169,11 @@ public class GUI extends ViewObservable implements View {
 	}
 	
 	@Override
-	public void askAction(ArrayList<PlayerActions> availableAction) {
+	public void askAction(String nickname,ArrayList<PlayerActions> availableAction) {
 		Platform.runLater(() -> {
 			PlayerTabs playerTabs= (PlayerTabs) controller;
 
-
+			/*
 			PauseTransition pause = new PauseTransition(Duration.seconds(1));
 			pause.setOnFinished(event ->
 					playerTabs.commonBoard.setTextVisible(true));
@@ -182,13 +182,21 @@ public class GUI extends ViewObservable implements View {
 			pause2.setOnFinished(event ->
 					playerTabs.commonBoard.setTextVisible(false));
 			pause2.play();
-			playerTabs.commonBoard.setButtonVisible(availableAction);
+
+			 */
+			playerTabs.updateActions(availableAction);
+			playerTabs.update(nickname,true);
+
 
 		});
 	}
 	
 	@Override
-	public void askMarketAction(ReducedMarket market) {
+	public void askMarketAction(String nickname,ReducedMarket market) {
+		Platform.runLater(() -> {
+			PlayerTabs playerTabs= (PlayerTabs) controller;
+			playerTabs.update(nickname,false);
+		});
 	
 	}
 	
@@ -202,16 +210,21 @@ public class GUI extends ViewObservable implements View {
 	}
 	
 	@Override
-	public void askBuyCardAction(ArrayList<DevelopmentCard> cardsAvailable, boolean wrongSlot) {
+	public void askBuyCardAction(String nickname, ArrayList<DevelopmentCard> cardsAvailable, boolean wrongSlot) {
 		Platform.runLater(() -> {
 			PlayerTabs playerTabs= (PlayerTabs) controller;
-			playerTabs.commonBoard.setGreen(cardsAvailable);
+			playerTabs.update(cardsAvailable);
+			playerTabs.update(nickname,false);
 
 		});
 	}
 	
 	@Override
 	public void askProductionAction(ArrayList<Productions> productionAvailable) {
+		Platform.runLater(() -> {
+			PlayerTabs playerTabs= (PlayerTabs) controller;
+			playerTabs.update(false);
+		});
 	
 	}
 	
@@ -286,6 +299,7 @@ public class GUI extends ViewObservable implements View {
 	
 	@Override
 	public void replyDepot(ReducedWarehouseDepot depot, boolean initialMove, boolean confirmationAvailable, boolean inputValid) {
+
 	
 	}
 	

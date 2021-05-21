@@ -1,31 +1,22 @@
 package it.polimi.ingsw.view.gui.scenes;
 
 import it.polimi.ingsw.model.DevelopmentCard;
-import it.polimi.ingsw.model.Market;
 import it.polimi.ingsw.model.reducedClasses.ReducedDevelopmentCardsDeck;
 import it.polimi.ingsw.model.reducedClasses.ReducedMarket;
 import it.polimi.ingsw.model.util.Colors;
 import it.polimi.ingsw.model.util.Marbles;
 import it.polimi.ingsw.model.util.PlayerActions;
 import it.polimi.ingsw.observers.ViewObservable;
-import javafx.event.Event;
 import javafx.fxml.FXML;
-import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.effect.Glow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.Dragboard;
-import javafx.scene.input.MouseEvent;
-import javafx.scene.input.TransferMode;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
-
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
 
 
 public class CommonBoard extends ViewObservable implements SceneController{
@@ -48,8 +39,6 @@ public class CommonBoard extends ViewObservable implements SceneController{
 	@FXML ImageView extraBall;
 
 	ImageView[][] marketImages;
-
-
 
 	@FXML ImageView normalRow1;
 	@FXML ImageView normalRow2;
@@ -74,8 +63,7 @@ public class CommonBoard extends ViewObservable implements SceneController{
 
 	ImageView[][] cardsImages;
 
-
-	@FXML ImageView text;
+	@FXML ImageView text; //useless
 
 	@FXML Button marketActivation;
 	@FXML Button cardsActivation;
@@ -86,8 +74,7 @@ public class CommonBoard extends ViewObservable implements SceneController{
 
 	@FXML Text slotText;
 
-
-	private boolean marketAble;//TODO: to be set true at the start of the turn
+	private boolean marketAble;
 	private boolean cardsAble;
 	private ReducedDevelopmentCardsDeck deck;
 
@@ -144,6 +131,7 @@ public class CommonBoard extends ViewObservable implements SceneController{
 		cardsAble=true;
 		cardsActivation.setVisible(false);
 		marketActivation.setVisible(false);
+
 		notifyObserver(obs -> obs.onUpdateAction(PlayerActions.BUY_CARD));
 	}
 
@@ -151,6 +139,17 @@ public class CommonBoard extends ViewObservable implements SceneController{
 		if (actions.contains(PlayerActions.BUY_CARD))
 			cardsActivation.setVisible(true);
 		marketActivation.setVisible(true);
+	}
+
+	public void setButtonVisible(boolean value){
+		if(value){
+			cardsActivation.setVisible(true);
+			marketActivation.setVisible(true);
+		}
+		else {
+			cardsActivation.setVisible(false);
+			marketActivation.setVisible(false);
+		}
 	}
 
 	public void setSlotsButtonVisible( boolean visible){
@@ -185,7 +184,6 @@ public class CommonBoard extends ViewObservable implements SceneController{
 	public void onMouseEnteredRow1(){
 		if(marketAble)
 			normalRow1.setEffect(new Glow(1));
-		//row1.setVisible(true);
 	}
 
 	public void onMouseEnteredRow2(){

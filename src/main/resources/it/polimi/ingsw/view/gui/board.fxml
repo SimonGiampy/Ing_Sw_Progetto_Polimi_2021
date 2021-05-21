@@ -78,9 +78,9 @@
             <Image url="@../../../../../assets/board/Servant.png" />
         </ImageView>
         <Label fx:id="numCoin" prefHeight="45.0" prefWidth="76.0" styleClass="numerosity" GridPane.columnIndex="1" />
-        <Label fx:id="numStone" prefHeight="73.0" prefWidth="74.0" styleClass="numerosity"  GridPane.columnIndex="3" />
-        <Label fx:id="numShield" prefHeight="73.0" prefWidth="78.0" styleClass="numerosity"  GridPane.columnIndex="1" GridPane.rowIndex="1" />
-        <Label fx:id="numServant" prefHeight="73.0" prefWidth="75.0" styleClass="numerosity"  GridPane.columnIndex="3" GridPane.rowIndex="1" />
+        <Label fx:id="numStone" prefHeight="73.0" prefWidth="74.0" styleClass="numerosity" GridPane.columnIndex="3" />
+        <Label fx:id="numShield" prefHeight="73.0" prefWidth="78.0" styleClass="numerosity" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+        <Label fx:id="numServant" prefHeight="73.0" prefWidth="75.0" styleClass="numerosity" GridPane.columnIndex="3" GridPane.rowIndex="1" />
     </GridPane>
 
     <!-- warehouse depot images -->
@@ -140,6 +140,5 @@
         </ImageView>
     </VBox>
 
-   <Button fx:id="actProductions" layoutX="370.0" layoutY="920.0" mnemonicParsing="false" prefHeight="39.0" prefWidth="186.0"
-           styleClass="leaders_name, primary" text="Activate Productions" />
+   <Button fx:id="actProductions" layoutX="370.0" layoutY="920.0" mnemonicParsing="false" prefHeight="39.0" prefWidth="186.0" styleClass="leaders_name, primary" text="Activate Productions" visible="false" />
 </AnchorPane>

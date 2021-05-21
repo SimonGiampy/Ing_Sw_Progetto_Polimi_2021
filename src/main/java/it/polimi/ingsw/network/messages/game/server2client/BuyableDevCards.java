@@ -14,8 +14,8 @@ public class BuyableDevCards extends Message {
 	private final ArrayList<DevelopmentCard> cards;
 	private final boolean wrongSlot; // true if the chosen slot was incorrect
 
-	public BuyableDevCards(ArrayList<DevelopmentCard> cards, boolean wrongSlot){
-		super("server", MessageType.CARDS_SHOW);
+	public BuyableDevCards(String nickname, ArrayList<DevelopmentCard> cards, boolean wrongSlot){
+		super(nickname, MessageType.CARDS_SHOW);
 		this.cards = cards;
 		this.wrongSlot = wrongSlot;
 	}

@@ -14,8 +14,8 @@ public class ActionRequest extends Message {
 	private final ArrayList<PlayerActions> availableAction;
 
 
-	public ActionRequest(ArrayList<PlayerActions> availableAction) {
-		super("lobby", MessageType.ACTION_REQUEST);
+	public ActionRequest(String nickname,ArrayList<PlayerActions> availableAction) {
+		super(nickname, MessageType.ACTION_REQUEST);
 		this.availableAction = availableAction;
 	}
 

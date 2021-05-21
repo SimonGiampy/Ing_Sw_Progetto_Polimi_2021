@@ -274,5 +274,11 @@ public class Board extends ViewObservable implements SceneController {
 			return y;
 		}
 	}
-	
+
+	public void setActProductions(boolean value){
+		if(value)
+			actProductions.setVisible(true);
+		else
+			actProductions.setVisible(false);
+	}
 }
