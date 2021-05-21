@@ -121,28 +121,28 @@
       </Text>
       <Button fx:id="slot3" layoutX="1638.0" layoutY="838.0" mnemonicParsing="false" onMouseClicked="#onMouseClickedSlot3" prefHeight="44.0" prefWidth="143.0" stylesheets="@../../../../../assets/bootstrap3.css" text="Slot 3" visible="false">
          <styleClass>
-            <String fx:value="leaders_name" />
+            <String fx:value="fancy_font" />
             <String fx:value="primary" />
          </styleClass></Button>
       <Button fx:id="slot2" layoutX="1459.0" layoutY="838.0" mnemonicParsing="false" onMouseClicked="#onMouseClickedSlot2" prefHeight="44.0" prefWidth="143.0" stylesheets="@../../../../../assets/bootstrap3.css" text="Slot 2" visible="false">
          <styleClass>
             <String fx:value="primary" />
-            <String fx:value="leaders_name" />
+            <String fx:value="fancy_font" />
          </styleClass></Button>
       <Button fx:id="slot1" layoutX="1287.0" layoutY="838.0" mnemonicParsing="false" onMouseClicked="#onMouseClickedSlot1" prefHeight="44.0" prefWidth="143.0" stylesheets="@../../../../../assets/bootstrap3.css" text="Slot 1" visible="false">
          <styleClass>
-            <String fx:value="leaders_name" />
+            <String fx:value="fancy_font" />
             <String fx:value="primary" />
          </styleClass></Button>
       <Button fx:id="cardsActivation" layoutX="1287.0" layoutY="838.0" mnemonicParsing="false" onMouseClicked="#onMouseClickedActivateCards" prefHeight="44.0" prefWidth="186.0" stylesheets="@../../../../../assets/bootstrap3.css" text="Buy Card" visible="false">
          <styleClass>
             <String fx:value="primary" />
-            <String fx:value="leaders_name" />
+            <String fx:value="fancy_font" />
          </styleClass></Button>
       <Button fx:id="marketActivation" layoutX="1594.0" layoutY="838.0" mnemonicParsing="false" onMouseClicked="#onMouseClickedActivateMarket" prefHeight="44.0" prefWidth="186.0" stylesheets="@../../../../../assets/bootstrap3.css" text="Go to the Market" visible="false">
          <styleClass>
             <String fx:value="primary" />
-            <String fx:value="leaders_name" />
+            <String fx:value="fancy_font" />
          </styleClass></Button>
    </children>
 </AnchorPane>
