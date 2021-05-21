@@ -19,11 +19,7 @@ public interface View {
 	 * it asks which nickname the player wants
 	 */
 	void askNickname();
-
-	/**
-	 * it asks to the host of the lobby which game configuration he wants
-	 */
-	void askCustomGame();
+	
 
 	/**
 	 * it asks to all the player except the first which resources they wants at the start of the game

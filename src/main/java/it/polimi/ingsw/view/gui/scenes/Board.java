@@ -257,9 +257,9 @@ public class Board extends ViewObservable implements SceneController {
 		calamaio.setVisible(true);
 	}
 
-	private class Coordinates {
-		private double x;
-		private double y;
+	private static class Coordinates {
+		private final double x;
+		private final double y;
 		
 		Coordinates(int pos, double x, double y) {
 			this.x = x;
@@ -276,9 +276,6 @@ public class Board extends ViewObservable implements SceneController {
 	}
 
 	public void setActProductions(boolean value){
-		if(value)
-			actProductions.setVisible(true);
-		else
-			actProductions.setVisible(false);
+		actProductions.setVisible(value);
 	}
 }

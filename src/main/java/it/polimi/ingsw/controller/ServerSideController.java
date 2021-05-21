@@ -54,7 +54,8 @@ public class ServerSideController {
 		
 		initResources= new boolean[numberOfPlayers-1];
 		gameReady= new boolean[numberOfPlayers];
-		gameState = GameState.CONFIG;
+		//gameState = GameState.CONFIG;
+		gameState = GameState.INIT;
 	}
 	
 	
@@ -66,6 +67,10 @@ public class ServerSideController {
 		this.virtualViewMap = virtualViewMap;
 		nicknameList = new ArrayList<>(virtualViewMap.keySet());
 		Collections.shuffle(nicknameList);
+		
+		setGameConfig();
+		
+		// sends a message to all the players containing a list of the nicknames the players in the match
 		lobby.broadcastMessage(new MatchInfo(nicknameList));
 	}
 	
@@ -75,36 +80,32 @@ public class ServerSideController {
 	 */
 	public void onMessageReceived(Message receivedMessage){
 		switch (gameState){
-			case CONFIG -> configHandler(receivedMessage);
+			//case CONFIG -> configHandler(receivedMessage);
 			case INIT -> initState(receivedMessage);
 			case GAME -> inGameState(receivedMessage);
 			default -> throw new IllegalStateException("Unexpected value: " + gameState);
 		}
 	}
 	
-	/**
+	/*
 	 * sets the game configuration
 	 * @param config message
-	 */
 	private void configHandler(Message config) {
 		if (config != null && config.getMessageType() == MessageType.GAME_CONFIG_REPLY) {
 			GameConfigReply gameConfigReply = (GameConfigReply) config;
 			setGameConfig(gameConfigReply.getGameConfiguration());
 		}
 	}
+	 */
 	
 	/**
 	 * set the game configuration
-	 * @param path standard or full path of custom config
 	 */
-	public void setGameConfig(String path) {
-		if (path.equalsIgnoreCase("standard")) {
-			String fileName = "game_configuration_complete.xml";
-			ClassLoader classLoader = getClass().getClassLoader();
-			File file = new File(Objects.requireNonNull(classLoader.getResource(fileName)).getFile());
-			path = file.getAbsolutePath();
-		}
-		XMLParser parser = new XMLParser(path);
+	public void setGameConfig() {
+		String fileName = "game_configuration_complete.xml";
+		ClassLoader classLoader = getClass().getClassLoader();
+		File file = new File(Objects.requireNonNull(classLoader.getResource(fileName)).getFile());
+		XMLParser parser = new XMLParser(file.getAbsolutePath());
 		ArrayList<Tile> tiles = parser.readTiles();
 		ArrayList<Integer> report = parser.readReportPoints();
 		ArrayList<DevelopmentCard> devCards = parser.readDevCards();

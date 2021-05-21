@@ -152,18 +152,6 @@ public class Lobby {
 			virtualViewHashMap.put(user.getNickname(), user.getView());
 		}
 		serverSideController.setVirtualViews(virtualViewHashMap);
-		
-		// sends a message to all the players containing a list of the nicknames the players in the match
-		/*
-		ArrayList<String> players = new ArrayList<>();
-		for (User user: clients) {
-			players.add(user.getNickname());
-		}
-		broadcastMessage(new MatchInfo(players));
-		*/
-		//ask the game configuration when all the players are ready and the match is about to start
-		host.sendMessage(new GameConfigRequest());
-		
 	}
 	
 	/**

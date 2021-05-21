@@ -4,7 +4,8 @@
 <?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane prefHeight="1043.0" prefWidth="1920.0" stylesheets="@../../../../../assets/bootstrap3.css" xmlns="http://javafx.com/javafx/" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.view.gui.scenes.Board">
+<AnchorPane prefHeight="1043.0" prefWidth="1920.0" stylesheets="@../../../../../assets/bootstrap3.css"
+            xmlns="http://javafx.com/javafx/" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.view.gui.scenes.Board">
 
     <BorderPane prefHeight="200.0" prefWidth="200.0">
         <top>
@@ -16,40 +17,28 @@
 
 
     <!-- 3 slots, each one containing a stack of 3 development cards -->
-    <StackPane fx:id="slot1" layoutX="580.0" layoutY="445.0" prefHeight="536.0" prefWidth="274.0">
-        <ImageView fx:id="img11" fitHeight="400.0" fitWidth="274.0" pickOnBounds="true" preserveRatio="true" StackPane.alignment="BOTTOM_CENTER">
-            <!--<Image url="@../../../../../assets/test_dev_card.png" />-->
-        </ImageView>
-        <ImageView fx:id="img12" fitHeight="400.0" fitWidth="274.0" pickOnBounds="true" preserveRatio="true" StackPane.alignment="CENTER">
-            <!--<Image url="@../../../../../assets/test_dev_card.png" />-->
-        </ImageView>
-        <ImageView fx:id="img13" fitHeight="400.0" fitWidth="274.0" pickOnBounds="true" preserveRatio="true" StackPane.alignment="TOP_CENTER">
-            <!--<Image url="@../../../../../assets/test_dev_card.png" />-->
-        </ImageView>
-    </StackPane>
-    <StackPane fx:id="slot2" layoutX="867.0" layoutY="445.0" prefHeight="536.0" prefWidth="274.0">
-        <ImageView fx:id="img21" fitHeight="400.0" fitWidth="274.0" pickOnBounds="true" preserveRatio="true" StackPane.alignment="BOTTOM_CENTER">
-            <!--<Image url="@../../../../../assets/test_dev_card.png" />-->
-        </ImageView>
-        <ImageView fx:id="img22" fitHeight="400.0" fitWidth="274.0" pickOnBounds="true" preserveRatio="true" StackPane.alignment="CENTER">
-            <!--<Image url="@../../../../../assets/test_dev_card.png" />-->
-        </ImageView>
-        <ImageView fx:id="img23" fitHeight="400.0" fitWidth="274.0" pickOnBounds="true" preserveRatio="true" StackPane.alignment="TOP_CENTER">
-            <!--<Image url="@../../../../../assets/test_dev_card.png" />-->
-        </ImageView>
-    </StackPane>
-    <StackPane fx:id="slot3" layoutX="1167.0" layoutY="445.0" prefHeight="536.0" prefWidth="274.0">
-        <ImageView fx:id="img31" fitHeight="400.0" fitWidth="274.0" pickOnBounds="true" preserveRatio="true" StackPane.alignment="BOTTOM_CENTER">
-            <!--<Image url="@../../../../../assets/test_dev_card.png" />-->
-        </ImageView>
+    <StackPane layoutX="580.0" layoutY="445.0" prefHeight="536.0" prefWidth="274.0">
+        <ImageView fx:id="img11" fitHeight="400.0" fitWidth="274.0" pickOnBounds="true" preserveRatio="true" StackPane.alignment="BOTTOM_CENTER"/>
 
-        <ImageView fx:id="img32" fitHeight="400.0" fitWidth="274.0" pickOnBounds="true" preserveRatio="true" StackPane.alignment="CENTER">
-            <!--<Image url="@../../../../../assets/test_dev_card.png" />-->
-        </ImageView>
+        <ImageView fx:id="img12" fitHeight="400.0" fitWidth="274.0" pickOnBounds="true" preserveRatio="true" StackPane.alignment="CENTER"/>
 
-        <ImageView fx:id="img33" fitHeight="400.0" fitWidth="274.0" pickOnBounds="true" preserveRatio="true" StackPane.alignment="TOP_CENTER">
-            <!--<Image url="@../../../../../assets/test_dev_card.png" />-->
-        </ImageView>
+        <ImageView fx:id="img13" fitHeight="400.0" fitWidth="274.0" pickOnBounds="true" preserveRatio="true" StackPane.alignment="TOP_CENTER"/>
+
+    </StackPane>
+    <StackPane layoutX="867.0" layoutY="445.0" prefHeight="536.0" prefWidth="274.0">
+        <ImageView fx:id="img21" fitHeight="400.0" fitWidth="274.0" pickOnBounds="true" preserveRatio="true" StackPane.alignment="BOTTOM_CENTER"/>
+
+        <ImageView fx:id="img22" fitHeight="400.0" fitWidth="274.0" pickOnBounds="true" preserveRatio="true" StackPane.alignment="CENTER"/>
+
+        <ImageView fx:id="img23" fitHeight="400.0" fitWidth="274.0" pickOnBounds="true" preserveRatio="true" StackPane.alignment="TOP_CENTER"/>
+
+    </StackPane>
+    <StackPane layoutX="1167.0" layoutY="445.0" prefHeight="536.0" prefWidth="274.0">
+        <ImageView fx:id="img31" fitHeight="400.0" fitWidth="274.0" pickOnBounds="true" preserveRatio="true" StackPane.alignment="BOTTOM_CENTER"/>
+
+        <ImageView fx:id="img32" fitHeight="400.0" fitWidth="274.0" pickOnBounds="true" preserveRatio="true" StackPane.alignment="CENTER"/>
+
+        <ImageView fx:id="img33" fitHeight="400.0" fitWidth="274.0" pickOnBounds="true" preserveRatio="true" StackPane.alignment="TOP_CENTER"/>
 
     </StackPane>
 
@@ -121,9 +110,9 @@
                 <Button fx:id="dis1" styleClass="warning, fancy_font" text="Discard" BorderPane.alignment="CENTER_RIGHT" />
             </right>
         </BorderPane>
-        <ImageView fx:id="leader1" fitHeight="422.0" fitWidth="332.0" pickOnBounds="true" preserveRatio="true">
-            <Image url="@../../../../../assets/test_lead_card.png" />
-        </ImageView>
+
+        <ImageView fx:id="leader1" fitHeight="422.0" fitWidth="332.0" pickOnBounds="true" preserveRatio="true"/>
+
         <BorderPane style="-fx-padding: 30 10 15 10">
             <left>
                 <Label style="-fx-text-fill: #fff0f0" styleClass="fancy_font" text="Leader 2" BorderPane.alignment="CENTER_LEFT" />
@@ -135,10 +124,9 @@
                 <Button fx:id="dis2" styleClass="warning, fancy_font" text="Discard" BorderPane.alignment="CENTER_RIGHT" />
             </right>
         </BorderPane>
-        <ImageView fx:id="leader2" fitHeight="422.0" fitWidth="332.0" pickOnBounds="true" preserveRatio="true">
-            <Image url="@../../../../../assets/test_lead_card.png" />
-        </ImageView>
+
+        <ImageView fx:id="leader2" fitHeight="422.0" fitWidth="332.0" pickOnBounds="true" preserveRatio="true"/>
     </VBox>
 
-   <Button fx:id="actProductions" layoutX="370.0" layoutY="920.0" mnemonicParsing="false" prefHeight="39.0" prefWidth="186.0" styleClass="fancy_font, primary" text="Activate Productions" visible="false" />
+    <Button fx:id="actProductions" layoutX="370.0" layoutY="920.0" mnemonicParsing="false" prefHeight="39.0" prefWidth="186.0" styleClass="fancy_font, primary" text="Activate Productions" visible="false" />
 </AnchorPane>

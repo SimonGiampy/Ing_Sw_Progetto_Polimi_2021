@@ -52,7 +52,7 @@ public class ClientSideController implements ViewObserver, Observer {
 				case NICKNAME_REQUEST -> userTask.execute(view::askNickname);
 				case NICKNAME_CONFIRMATION -> userTask.execute(() ->
 						view.showNicknameConfirmation(((NicknameConfirmation) message).isConfirmed()));
-				case GAME_CONFIG_REQUEST -> userTask.execute(view::askCustomGame);
+				//case GAME_CONFIG_REQUEST -> userTask.execute(view::askCustomGame);
 				case MATCH_INFO -> userTask.execute(() -> view.showMatchInfo(((MatchInfo) message).getPlayers()));
 				case RESOURCE_CHOICE -> userTask.execute(() -> {
 					ResourceChoice choice = (ResourceChoice) message;

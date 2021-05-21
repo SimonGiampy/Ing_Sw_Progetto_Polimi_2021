@@ -113,10 +113,12 @@ public class GUI extends ViewObservable implements View {
 		});
 	}
 	
+	/*
 	@Override
 	public void askCustomGame() {
 		Platform.runLater(() -> notifyObserver(obs->obs.onUpdateGameConfiguration("standard")));
 	}
+	 */
 
 	@Override
 	public void showMatchInfo(ArrayList<String> players) {
@@ -157,9 +159,6 @@ public class GUI extends ViewObservable implements View {
 			LeadersDialog dialog = new LeadersDialog(leaderCards);
 			dialog.initOwner(stage);
 			dialog.showAndWait().ifPresent(integers -> notifyObserver(obs -> obs.onUpdateInitLeaders(integers)));
-			
-			//TODO: if the code reaches this point without having called the method askInitRes, then it means that this
-			//      this player is the starting one. So the inkwell must be shown on the interface
 		});
 	}
 	

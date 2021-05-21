@@ -177,10 +177,9 @@ public class CLI extends ViewObservable implements View {
 		}
 	}
 	
-	
+	/*
 	@Override
 	public void askCustomGame() {
-		/*
 		System.out.println("Choose game configuration!, Type [standard] for standard game, or the full path for a custom game!");
 		String input;
 		boolean check = true;
@@ -198,9 +197,9 @@ public class CLI extends ViewObservable implements View {
 		if (input.equals("")) input = "standard";
 		// assumes that the selected file has a correct schema and is a valid configuration file
 		String finalInput = input;
-		 */
 		notifyObserver(obs->obs.onUpdateGameConfiguration("standard"));
 	}
+	 */
 	
 	@Override
 	public void askInitResources(int number) {
