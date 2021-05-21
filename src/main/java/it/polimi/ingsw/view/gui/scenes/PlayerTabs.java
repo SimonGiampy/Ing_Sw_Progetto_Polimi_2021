@@ -6,6 +6,7 @@ import it.polimi.ingsw.view.gui.GUI;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
+import javafx.scene.control.Label;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.layout.AnchorPane;
@@ -35,9 +36,15 @@ public class PlayerTabs extends ViewObservable implements SceneController{
 			SceneController controller = loader.getController();
 			commonBoard = (CommonBoard) controller;
 			commonBoard.addAllObservers(observers);
+			commonBoardTab.setGraphic(new Label("Common Board"));
+			commonBoardTab.getGraphic().setStyle("-fx-text-fill: #337ab7;");
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		commonBoardTab.setOnSelectionChanged(e -> {
+			if(commonBoardTab.isSelected())
+				commonBoardTab.getGraphic().setStyle("-fx-text-fill: #337ab7;");
+		});
 
 		playersMap = new HashMap<>();
 		tabMap = new HashMap<>();
@@ -46,10 +53,13 @@ public class PlayerTabs extends ViewObservable implements SceneController{
 
 			Tab tab = new Tab();
 			AnchorPane pane = new AnchorPane();
-			if(s.equals(playerNickname))
-				tab.setText("Your Board");
-			else
-				tab.setText(s + "'s Board");
+			if(s.equals(playerNickname)) {
+				tab.setGraphic(new Label("Your Board"));
+			}
+			else {
+				tab.setGraphic(new Label(s + "'s Board"));
+			}
+			tab.getGraphic().setStyle("-fx-text-fill: #337ab7;");
 			try {
 				FXMLLoader loader = new FXMLLoader(GUI.class.getResource("/it/polimi/ingsw/view/gui/board.fxml"));
 				node = loader.load();
@@ -67,10 +77,9 @@ public class PlayerTabs extends ViewObservable implements SceneController{
 			tab.setContent(pane);
 			tabPane.getTabs().add(tab);
 
-			//test
 			tab.setOnSelectionChanged(e -> {
 				if(tab.isSelected())
-					tab.setStyle("-fx-text-fill: red;"); //standard color #337ab7
+					tab.getGraphic().setStyle("-fx-text-fill: #337ab7;");
 			});
 		}
 	}
@@ -112,17 +121,17 @@ public class PlayerTabs extends ViewObservable implements SceneController{
 
 	public void update(ReducedDevelopmentCardsDeck deck){
 		commonBoard.setDeck(deck);
-		commonBoardTab.setStyle("-fx-text-fill: #d43f3a;");
+		commonBoardTab.getGraphic().setStyle("-fx-text-fill: #d43f3a;");
 	}
 
 	public void update(ReducedMarket market){
 		commonBoard.setMarket(market);
-		commonBoardTab.setStyle("-fx-text-fill: #d43f3a;");
+		commonBoardTab.getGraphic().setStyle("-fx-text-fill: #d43f3a;");
 	}
 
 	public void setTabToRead(Board board){
 		Tab tab = tabMap.get(board);
-		tab.setStyle("-fx-text-fill: #d43f3a;");
+		tab.getGraphic().setStyle("-fx-text-fill: #d43f3a;");
 	}
 
 	public void testSwitch(){

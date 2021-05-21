@@ -7,7 +7,7 @@
             stylesheets="@../../../../../assets/bootstrap3.css" xmlns="http://javafx.com/javafx/" xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="it.polimi.ingsw.view.gui.scenes.PlayerTabs">
     <TabPane fx:id="tabPane" prefHeight="1080.0" prefWidth="1920.0" tabClosingPolicy="UNAVAILABLE">
-        <Tab fx:id="commonBoardTab" closable="false" text="Common Board">
+        <Tab fx:id="commonBoardTab" closable="false">
             <AnchorPane fx:id="commonPane" minHeight="0.0" minWidth="0.0" prefHeight="1043.0" prefWidth="1920.0"/>
         </Tab>
     </TabPane>
