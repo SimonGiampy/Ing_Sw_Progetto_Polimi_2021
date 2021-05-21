@@ -10,6 +10,7 @@ import it.polimi.ingsw.model.util.Resources;
 import it.polimi.ingsw.network.messages.*;
 import it.polimi.ingsw.network.messages.game.client2server.*;
 import it.polimi.ingsw.network.messages.login.GameConfigReply;
+import it.polimi.ingsw.network.messages.login.MatchInfo;
 import it.polimi.ingsw.network.server.Lobby;
 import it.polimi.ingsw.view.VirtualView;
 import it.polimi.ingsw.xml_parsers.XMLParser;
@@ -65,6 +66,7 @@ public class ServerSideController {
 		this.virtualViewMap = virtualViewMap;
 		nicknameList = new ArrayList<>(virtualViewMap.keySet());
 		Collections.shuffle(nicknameList);
+		lobby.broadcastMessage(new MatchInfo(nicknameList));
 	}
 	
 	/**
@@ -140,7 +142,7 @@ public class ServerSideController {
 		vv.showGenericMessage("You are the first player! Wait!");
 		for(String s: nicknameList) {
 			VirtualView view = virtualViewMap.get(s);
-			view.showCardsDeck(new ReducedDevelopmentCardsDeck(mechanics.getGameDevCardsDeck())); //TODO: just for test
+			view.showCardsDeck(new ReducedDevelopmentCardsDeck(mechanics.getGameDevCardsDeck()));
 			view.showMarket(new ReducedMarket(mechanics.getMarket()));
 		}
 		if(numberOfPlayers == 1) { //single player

@@ -83,7 +83,9 @@ public class PlayerTabs extends ViewObservable implements SceneController{
 				if(tab.isSelected())
 					tab.getGraphic().setStyle("-fx-text-fill: #337ab7;");
 			});
+			
 		}
+		playersMap.get(nicknameList.get(0)).setStartingPlayer();
 	}
 
 	public void update(String nickname, ReducedFaithTrack track){
