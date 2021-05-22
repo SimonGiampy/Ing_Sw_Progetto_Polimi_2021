@@ -18,7 +18,7 @@ public class ResourcesDialog extends Dialog<ArrayList<Resources>> {
 		
 		try {
 			FXMLLoader loader = new FXMLLoader();
-			loader.setLocation(getClass().getClassLoader().getResource("it/polimi/ingsw/view/gui/resources_choices.fxml"));
+			loader.setLocation(getClass().getClassLoader().getResource("it/polimi/ingsw/view/gui/choose_resources.fxml"));
 			DialogPane dialogPane = loader.load();
 			ResourcesDialogController controller = loader.getController();
 			

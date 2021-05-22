@@ -8,18 +8,12 @@
             xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.view.gui.scenes.LeadersDialogController" styleClass="wood_background">
    <content>
       <AnchorPane prefHeight="532.0" prefWidth="1213.0" >
-         <ImageView fx:id="img1" fitHeight="440.0" fitWidth="278.0" layoutX="53.0" layoutY="88.0" pickOnBounds="true" preserveRatio="true">
-            <Image url="@../../../../../assets/test_lead_card.png" />
-         </ImageView>
-         <ImageView fx:id="img2" fitHeight="440.0" fitWidth="278.0" layoutX="380.0" layoutY="88.0" pickOnBounds="true" preserveRatio="true">
-            <Image url="@../../../../../assets/test_lead_card.png" />
-         </ImageView>
-         <ImageView fx:id="img3" fitHeight="440.0" fitWidth="278.0" layoutX="706.0" layoutY="88.0" pickOnBounds="true" preserveRatio="true">
-            <Image url="@../../../../../assets/test_lead_card.png" />
-         </ImageView>
-         <ImageView fx:id="img4" fitHeight="440.0" fitWidth="278.0" layoutX="1030.0" layoutY="88.0" pickOnBounds="true" preserveRatio="true">
-            <Image url="@../../../../../assets/test_lead_card.png" />
-         </ImageView>
+
+         <ImageView fx:id="img1" fitHeight="440.0" fitWidth="278.0" layoutX="53.0" layoutY="88.0" pickOnBounds="true" preserveRatio="true"/>
+         <ImageView fx:id="img2" fitHeight="440.0" fitWidth="278.0" layoutX="380.0" layoutY="88.0" pickOnBounds="true" preserveRatio="true"/>
+         <ImageView fx:id="img3" fitHeight="440.0" fitWidth="278.0" layoutX="706.0" layoutY="88.0" pickOnBounds="true" preserveRatio="true"/>
+         <ImageView fx:id="img4" fitHeight="440.0" fitWidth="278.0" layoutX="1030.0" layoutY="88.0" pickOnBounds="true" preserveRatio="true"/>
+
          <Label layoutX="380.0" layoutY="26.0" style="-fx-font-size: 30; -fx-text-fill: white" styleClass="fancy_font"
                 text="Choose 2 Leader Cards among these 4 to use during the game" />
       </AnchorPane>

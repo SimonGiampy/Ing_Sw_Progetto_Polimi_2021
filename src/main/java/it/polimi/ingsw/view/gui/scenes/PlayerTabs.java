@@ -23,10 +23,13 @@ public class PlayerTabs extends ViewObservable implements SceneController{
 	@FXML TabPane tabPane;
 	@FXML Tab commonBoardTab;
 	@FXML AnchorPane commonPane;
-	private HashMap <String, Board> playersMap;
-	private HashMap <Board, Tab> tabMap;
-	private CommonBoard commonBoard;
+	private HashMap <String, Board> playersMap; // maps every player to its board
+	private HashMap <Board, Tab> tabMap; //maps every player board on the screen to its corresponding tab
+	private CommonBoard commonBoard; // shared board among the players
 	private String playerNickname;
+	
+	private static final String hexa_blue_color = "-fx-text-fill: #337ab7;";
+	private static final String hexa_red_color = "-fx-text-fill: #d43f3a;";
 
 	public void instantiateTabs(ArrayList<String> nicknameList, String playerNickname) {
 
@@ -40,13 +43,13 @@ public class PlayerTabs extends ViewObservable implements SceneController{
 			commonBoard = (CommonBoard) controller;
 			commonBoard.addAllObservers(observers);
 			commonBoardTab.setGraphic(new Label("Common Board"));
-			commonBoardTab.getGraphic().setStyle("-fx-text-fill: #337ab7;");
+			commonBoardTab.getGraphic().setStyle(hexa_blue_color);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 		commonBoardTab.setOnSelectionChanged(e -> {
 			if(commonBoardTab.isSelected())
-				commonBoardTab.getGraphic().setStyle("-fx-text-fill: #337ab7;");
+				commonBoardTab.getGraphic().setStyle(hexa_blue_color);
 		});
 
 		playersMap = new HashMap<>();
@@ -58,11 +61,10 @@ public class PlayerTabs extends ViewObservable implements SceneController{
 			AnchorPane pane = new AnchorPane();
 			if(s.equals(playerNickname)) {
 				tab.setGraphic(new Label("Your Board"));
-			}
-			else {
+			} else {
 				tab.setGraphic(new Label(s + "'s Board"));
 			}
-			tab.getGraphic().setStyle("-fx-text-fill: #337ab7;");
+			tab.getGraphic().setStyle(hexa_blue_color);
 			try {
 				FXMLLoader loader = new FXMLLoader(GUI.class.getResource("/it/polimi/ingsw/view/gui/board.fxml"));
 				node = loader.load();
@@ -82,11 +84,14 @@ public class PlayerTabs extends ViewObservable implements SceneController{
 
 			tab.setOnSelectionChanged(e -> {
 				if(tab.isSelected())
-					tab.getGraphic().setStyle("-fx-text-fill: #337ab7;");
+					tab.getGraphic().setStyle(hexa_blue_color);
 			});
 		}
 		playersMap.get(nicknameList.get(0)).setStartingPlayer();
 		//tabPane.getSelectionModel().select(tabMap.get(playersMap.get(playerNickname)));
+		
+		//sets the single player mode
+		playersMap.get(nicknameList.get(0)).setSinglePlayerMode(nicknameList.size() == 1);
 	}
 
 	public void update(String nickname, ReducedFaithTrack track){
@@ -97,13 +102,13 @@ public class PlayerTabs extends ViewObservable implements SceneController{
 
 	public void update(String nickname, ReducedWarehouseDepot depot){
 		Board board = playersMap.get(nickname);
-		board.setDepot(depot);
+		board.updateDepots(depot);
 		setTabToRead(board);
 	}
 
 	public void update(String nickname, ReducedStrongbox strongbox){
 		Board board = playersMap.get(nickname);
-		board.setStrongbox(strongbox);
+		board.updateStrongbox(strongbox);
 		setTabToRead(board);
 	}
 
@@ -120,7 +125,7 @@ public class PlayerTabs extends ViewObservable implements SceneController{
 
 	public void update(String nickname, ReducedCardProductionManagement cardProductionManagement){
 		Board board = playersMap.get(nickname);
-		board.setCardManager(cardProductionManagement);
+		board.updateDevCardsSlots(cardProductionManagement);
 		setTabToRead(board);
 	}
 
@@ -156,22 +161,27 @@ public class PlayerTabs extends ViewObservable implements SceneController{
 	public void update(ReducedDevelopmentCardsDeck deck){
 		commonBoard.setDeck(deck);
 		if(!commonBoardTab.isSelected())
-			commonBoardTab.getGraphic().setStyle("-fx-text-fill: #d43f3a;");
+			commonBoardTab.getGraphic().setStyle(hexa_red_color);
 	}
 
 	public void update(ReducedMarket market){
 		commonBoard.setMarket(market);
 		if(!commonBoardTab.isSelected())
-			commonBoardTab.getGraphic().setStyle("-fx-text-fill: #d43f3a;");
+			commonBoardTab.getGraphic().setStyle(hexa_red_color);
 	}
 
 	public void setTabToRead(Board board){
 		Tab tab = tabMap.get(board);
 		if(!tab.isSelected())
-			tab.getGraphic().setStyle("-fx-text-fill: #d43f3a;");
+			tab.getGraphic().setStyle(hexa_red_color);
 	}
 
 	@FXML public void initialize(){
 
+	}
+	
+	public void depotInteraction(ReducedWarehouseDepot depot, boolean initialMove, boolean confirmationAvailable, boolean inputValid) {
+		Board board = playersMap.get(playerNickname);
+		board.depotInteraction(depot, initialMove, confirmationAvailable, inputValid);
 	}
 }

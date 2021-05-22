@@ -186,13 +186,16 @@ public class WarehouseDepot {
 	
 	/**
 	 * Moves the resources to both additional depots automatically, giving priority to the leader specified in input
+	 * @return the number of resources that have been moved automatically to the additional depots
 	 */
-	public void moveResourcesToAdditionalDepots()  {
-		moveResourcesToLeaderDepot(0);
-		moveResourcesToLeaderDepot(1);
+	public int moveResourcesToAdditionalDepots()  {
+		int num = 0;
+		num += moveResourcesToLeaderDepot(0);
+		num += moveResourcesToLeaderDepot(1);
 		
 		//removes the empty spots in the incoming deck
 		incomingResources = removeEmptySpaces(incomingResources);
+		return num;
 	}
 	
 	/**
@@ -201,8 +204,10 @@ public class WarehouseDepot {
 	 * if there are any spots available. Otherwise, it does nothing if the resources can't be inserted. This method is automatic.
 	 * 	 This function is called exclusively from the method above
 	 * @param whichLeader the index of the leader to move the resources to (0 or 1)
+	 * @return the number of resources moved to the additional depots
 	 */
-	private void moveResourcesToLeaderDepot(int whichLeader) {
+	private int moveResourcesToLeaderDepot(int whichLeader) {
+		int num = 0;
 		if (isLeaderActivated(whichLeader)) { //selected depot is enabled
 			
 			for (int i = 0; i < incomingResources.size(); i++) { //cycles for every position in the incoming deck
@@ -211,6 +216,7 @@ public class WarehouseDepot {
 					if (incomingResources.get(i) == extraDepotResources.get(whichLeader).get(j) &&
 							!extraDepotContents.get(whichLeader).get(j)) {
 						extraDepotContents.get(whichLeader).set(j, true);
+						num += 1;
 						incomingResources.set(i, Resources.EMPTY);
 					}
 					
@@ -218,6 +224,7 @@ public class WarehouseDepot {
 			}
 			
 		}
+		return num;
 	}
 	
 	

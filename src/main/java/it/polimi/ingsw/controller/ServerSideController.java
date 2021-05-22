@@ -240,7 +240,7 @@ public class ServerSideController {
 		VirtualView view= virtualViewMap.get(message.getNickname());
 		Player player = mechanics.getPlayer(playerIndex);
 		player.chooseTwoLeaders(message.getLeaderSelection().get(0),message.getLeaderSelection().get(1));
-		view.showGenericMessage("Your Leader Cards now!");
+		//view.showGenericMessage("Your Leader Cards now!"); //TODO: USELESS
 		view.showLeaderCards(nicknameList.get(playerIndex), getLeadersForShow(player));
 		gameReady[playerIndex]=true;
 		if(allTrue(gameReady))
@@ -348,8 +348,14 @@ public class ServerSideController {
 			deck.setFaithPoint(0);
 			checkVaticanReport();
 		}
+		
 		//moves the resources automatically to the additional depots if possible
-		mechanics.getPlayer(playerIndex).getPlayersWarehouseDepot().moveResourcesToAdditionalDepots();
+		//sends a message to the player if any resources were moved automatically
+		int moved = mechanics.getPlayer(playerIndex).getPlayersWarehouseDepot().moveResourcesToAdditionalDepots();
+		if (moved > 0) {
+			view.showGenericMessage(moved + " resources have been moved automatically to the leaders' additional depots.");
+		}
+		
 		//sends confirmation of the completed action
 		view.replyDepot(new ReducedWarehouseDepot(mechanics.getPlayer(playerIndex).getPlayersWarehouseDepot()),
 				true,true,true);

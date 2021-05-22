@@ -9,6 +9,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.text.Font;
 
 import java.util.HashMap;
 
@@ -22,6 +23,7 @@ public class Connection extends ViewObservable implements SceneController {
 	
 	@FXML
 	public void initialize() {
+		Font.loadFont(getClass().getResourceAsStream("/assets/font/Caveat-Regular.ttf"), 10);
 		EventHandler<KeyEvent> event = keyEvent -> {
 			if (keyEvent.getCode() == KeyCode.ENTER) {
 				connection();

@@ -10,6 +10,7 @@ import it.polimi.ingsw.model.util.PlayerActions;
 import it.polimi.ingsw.model.util.Productions;
 import it.polimi.ingsw.model.util.Resources;
 import it.polimi.ingsw.observers.ViewObservable;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -18,11 +19,11 @@ import javafx.scene.effect.DropShadow;
 import javafx.scene.effect.Glow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Stack;
 
 public class Board extends ViewObservable implements SceneController {
@@ -68,25 +69,44 @@ public class Board extends ViewObservable implements SceneController {
 	@FXML private ImageView depot5;
 	@FXML private ImageView depot6;
 	
+	// additional depot resources images
+	@FXML private ImageView res11;
+	@FXML private ImageView res12;
+	@FXML private ImageView res21;
+	@FXML private ImageView res22;
+	
+	// resource deck with the resources incoming from the market
+	@FXML private ImageView deckContainer;
+	@FXML private ImageView deck1;
+	@FXML private ImageView deck2;
+	@FXML private ImageView deck3;
+	@FXML private ImageView deck4;
+	
+	// controls used for the depot interaction
+	@FXML private Button confirmationDepot;
+	@FXML private Label invalidMove;
+	
 	// faith track marker
 	@FXML private ImageView cross;
 
+	// image representing the base production, serves as clicking spot
 	@FXML private ImageView baseProduction;
 	
-	ArrayList<Coordinates> coordinates;
-
-	 ImageView[] slot1;
-	 ImageView[] slot2;
-	 ImageView[] slot3;
-
-	 int sizeSlot1;
-	 int sizeSlot2;
-	 int sizeSlot3;
-
-	ArrayList<Productions> selectedProduction;
-	ArrayList<Productions> availableProduction;
-	boolean productionAble;
-
+	private ArrayList<Coordinates> coordinates; // list of coordinates for the cross in the faith track
+	
+	//references to the dev cards in the 3 slots
+	private ImageView[] slot1;
+	private ImageView[] slot2;
+	private ImageView[] slot3;
+	private int sizeSlot1;
+	private int sizeSlot2;
+	private int sizeSlot3;
+	
+	// used for handling production on the main player board
+	private ArrayList<Productions> selectedProduction;
+	private ArrayList<Productions> availableProduction;
+	private boolean productionAble;
+	
 	@FXML
 	public void initialize() {
 		Font.loadFont(getClass().getResourceAsStream("/assets/font/Caveat-Regular.ttf"), 10);
@@ -129,21 +149,44 @@ public class Board extends ViewObservable implements SceneController {
 		
 		updateCrossCoords(0); // initial position when the game starts
 		
-		//TODO: buttons used for user interaction must be disabled by default, and enabled only when the user can interact with them
+		baseProduction.setOnMouseClicked(event -> productionSelectionHandler(Productions.BASE_PRODUCTION, baseProduction));
+		leader1.setOnMouseClicked(event -> productionSelectionHandler(Productions.LEADER_CARD_1_PRODUCTION, leader1));
+		leader2.setOnMouseClicked(event -> productionSelectionHandler(Productions.LEADER_CARD_2_PRODUCTION, leader2));
+		for (int i = 0; i < 3; i++) {
+			int finalI = i;
+			slot1[i].setOnMouseClicked(event -> productionSelectionHandler(Productions.STACK_1_CARD_PRODUCTION, slot1[finalI]));
+			slot2[i].setOnMouseClicked(event -> productionSelectionHandler(Productions.STACK_2_CARD_PRODUCTION, slot2[finalI]));
+			slot3[i].setOnMouseClicked(event -> productionSelectionHandler(Productions.STACK_3_CARD_PRODUCTION, slot3[finalI]));
+		}
 		
-		//TODO: add incoming resources UI management and drag-and-drop functionality for using the depot
 	}
 	
+	/**
+	 * if the mode is single player, adds a new black cross to the faith track. Also places the tokens in the same place where the inkwell is.
+	 * @param niBBaCross flag indicating if the game mode is single player
+	 */
 	public void setSinglePlayerMode(boolean niBBaCross) {
-		// if game mode is single player
+		// TODO: change this so that it shows the token stack in the inkwell's position
+		// TODO: add the black cross for Lorenzo's track
 		if (niBBaCross) cross.setImage(new Image("/assets/board/black_cross.png", 73, 64, true, false));
 	}
 	
+	/**
+	 * updates the position of the red cross on the faith track
+	 * @param pos new position on the track
+	 */
 	public void updateCrossCoords(int pos) {
+		//TODO: if the single player mode is active, then the black cross is added. And whether the positions of both crosses are
+		//      equal, then this function must reduce the sizes of both images so they can fit the same cell at the same time.
+		//      Add a new parameter to this function so that it knows which cross to consider when updating its position.
 		cross.setLayoutX(coordinates.get(pos).getX());
 		cross.setLayoutY(coordinates.get(pos).getY());
 	}
 	
+	/**
+	 * sets the visibility of the papal zones
+	 * @param num ordinal number indicating the zone to be activated
+	 */
 	public void activatePapalZone(int num) {
 		switch (num) {
 			case 1 -> papal1.setVisible(true);
@@ -151,8 +194,12 @@ public class Board extends ViewObservable implements SceneController {
 			case 3 -> papal3.setVisible(true);
 		}
 	}
-
-	public void setStrongbox(ReducedStrongbox strongbox){
+	
+	/**
+	 * updates the strongbox contents
+	 * @param strongbox reduced class
+	 */
+	public void updateStrongbox(ReducedStrongbox strongbox){
 		ArrayList<Resources> content = strongbox.getContent();
 		setNumerosity(Resources.COIN, ListSet.count(content, Resources.COIN));
 		setNumerosity(Resources.SERVANT, ListSet.count(content, Resources.SERVANT));
@@ -160,6 +207,11 @@ public class Board extends ViewObservable implements SceneController {
 		setNumerosity(Resources.STONE, ListSet.count(content, Resources.STONE));
 	}
 	
+	/**
+	 * sets the number of resources present in the depot
+	 * @param res the specific resource
+	 * @param num quantity
+	 */
 	private void setNumerosity(Resources res, int num) {
 		switch (res) {
 			case STONE -> numStone.setText(String.valueOf(num));
@@ -169,18 +221,93 @@ public class Board extends ViewObservable implements SceneController {
 		}
 	}
 	
-	public void setDepot(ReducedWarehouseDepot depot) {
+	/**
+	 * Updates the images on the warehouse depots and the additional depots (if the relative ability is activated).
+	 * Sets the incoming resources deposit if there are any and makes it visible.
+	 * @param depot reduced class containing the incoming resources, warehouse depots and additional depots
+	 */
+	public void updateDepots(ReducedWarehouseDepot depot) {
+		// updates the warehouse depots
 		Resources[] resources = depot.getDepot();
 		ImageView[] images = new ImageView[]{depot1, depot2, depot3, depot4, depot5, depot6};
 		for (int i = 0; i < 6; i++) {
 			if (resources[i] == Resources.EMPTY) {
 				images[i].setImage(null);
-			} else
+			} else {
 				images[i].setImage(new Image(resources[i].path));
+			}
+		}
+		
+		//updates the additional depots if they're set and the abilities are activated (only if the image hasn't been set yet)
+		//TODO: there is 100% a bug where if the leader activated with the additional depots is the second one (visually) then
+		//      the resources will be put over the first leader image. This is because the Model treats the leaders activated regardless
+		//      of the order in which the leaders are displayed.
+		//  Solution: use variables to identify which leader has been activated and sets the corresponding images accordingly
+		if (depot.isLeaderActivated(0)) {
+			if (depot.getExtraDepotContents().get(0).get(0)) {
+				if (res11.getImage() == null) {
+					res11.setImage(new Image(depot.getExtraDepotResources().get(0).get(0).path));
+				}
+			}
+			if (depot.getExtraDepotContents().get(0).get(1)) {
+				if (res12.getImage() == null) {
+					res12.setImage(new Image(depot.getExtraDepotResources().get(0).get(1).path));
+				}
+			}
+		}
+		if (depot.isLeaderActivated(1)) {
+			if (depot.getExtraDepotContents().get(1).get(0)) {
+				if (res21.getImage() == null) {
+					res21.setImage(new Image(depot.getExtraDepotResources().get(1).get(0).path));
+				}
+			}
+			if (depot.getExtraDepotContents().get(1).get(1)) {
+				if (res22.getImage() == null) {
+					res22.setImage(new Image(depot.getExtraDepotResources().get(1).get(1).path));
+				}
+			}
+		}
+		
+		// update incoming resource deck contents. Deck must not contain any empty resources
+		ArrayList<Resources> incomingDeck = depot.getIncomingResources();
+		if (!incomingDeck.isEmpty()) {
+			deckContainer.setVisible(true);
+			if (incomingDeck.size() >= 1) {
+				deck1.setImage(new Image(incomingDeck.get(0).path));
+			} else {
+				deck1.setImage(null);
+				deck2.setImage(null);
+				deck3.setImage(null);
+				deck4.setImage(null);
+			}
+			if (incomingDeck.size() >= 2) {
+				deck2.setImage(new Image(incomingDeck.get(1).path));
+			} else {
+				deck2.setImage(null);
+				deck3.setImage(null);
+				deck4.setImage(null);
+			}
+			if (incomingDeck.size() >= 3) {
+				deck3.setImage(new Image(incomingDeck.get(2).path));
+			} else {
+				deck3.setImage(null);
+				deck4.setImage(null);
+			}
+			if (incomingDeck.size() >= 4) {
+				deck4.setImage(new Image(incomingDeck.get(3).path));
+			} else {
+				deck4.setImage(null);
+			}
+		} else {
+			deckContainer.setVisible(false);
 		}
 	}
 	
-	public void setCardManager(ReducedCardProductionManagement cardManager) {
+	/**
+	 * updates the development cards in the slots, setting the images if not set yet.
+	 * @param cardManager reduces class containing the stacks of the dev cards on the player board.
+	 */
+	public void updateDevCardsSlots(ReducedCardProductionManagement cardManager) {
 
 		ArrayList<Stack<DevelopmentCard>> cards = cardManager.getCards();
 		sizeSlot1=cards.get(0).size();
@@ -220,7 +347,8 @@ public class Board extends ViewObservable implements SceneController {
 	}
 
 	/**
-	 * sets leader card of the player
+	 * sets leader card of the player. Also activates or deactivates the buttons relative to the leader cards based on the game status and
+	 * who is the player in this board.
 	 * @param leaderCards player's leader cards
 	 */
 	public void setMyLeaderCards(ArrayList<ReducedLeaderCard> leaderCards) {
@@ -296,9 +424,10 @@ public class Board extends ViewObservable implements SceneController {
 	}
 
 	/**
-	 * sets the calamaio visible if this is the first's player board
+	 * sets the inkwell visible if this is the first's player board
 	 */
 	public void setStartingPlayer(){
+		//TODO: if this is not single player mode
 		calamaio.setVisible(true);
 	}
 
@@ -338,7 +467,23 @@ public class Board extends ViewObservable implements SceneController {
 			setNormal();
 		}
 	}
+	
+	public void productionSelectionHandler(Productions production, ImageView image) {
+		if(productionAble && availableProduction.contains(production)) {
+			if (!selectedProduction.contains(production)) {
+				image.setEffect(new Glow(0.5));
+				selectedProduction.add(production);
+				actProductions.setVisible(true);
+			} else {
+				setShadow(0.5, image);
+				selectedProduction.remove(production);
+				if(selectedProduction.size()==0)
+					actProductions.setVisible(false);
+			}
+		}
+	}
 
+	/*
 	public void onMouseClickedBaseProduction(){
 		if(productionAble && availableProduction.contains(Productions.BASE_PRODUCTION)) {
 			if (!selectedProduction.contains(Productions.BASE_PRODUCTION)) {
@@ -438,6 +583,7 @@ public class Board extends ViewObservable implements SceneController {
 			}
 		}
 	}
+	 */
 
 	public void setAvailableProductionGreen(ArrayList<Productions> productions){
 		availableProduction=productions;
@@ -488,5 +634,16 @@ public class Board extends ViewObservable implements SceneController {
 		i= sizeSlot3;
 		if(i>0)
 			slot3[i-1].setEffect(new Glow(0));
+	}
+	
+	
+	public void depotInteraction(ReducedWarehouseDepot depot, boolean initialMove, boolean confirmationAvailable, boolean inputValid) {
+		updateDepots(depot);
+		
+		confirmationDepot.setVisible(true);
+		confirmationDepot.setDisable(confirmationAvailable);
+		invalidMove.setVisible(inputValid);
+		
+		
 	}
 }

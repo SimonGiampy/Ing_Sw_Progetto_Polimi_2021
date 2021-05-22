@@ -11,22 +11,22 @@
     <content>
         <AnchorPane >
             <Label fx:id="lbl" prefHeight="69.0" style="-fx-padding: 0 0 0 50; -fx-font-size: 25"
-                   styleClass="fancy_font" text="Choose the resources" layoutX="20" layoutY="20" />
+                   styleClass="fancy_font" text="Choose the resources" layoutX="100" layoutY="20" />
 
-            <ImageView fitHeight="115.0" fitWidth="121.0" layoutX="52.0" layoutY="116.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView fitHeight="115.0" fitWidth="121.0" layoutX="52.0" layoutY="122.0" pickOnBounds="true" preserveRatio="true">
                 <Image url="@../../../../../assets/board/Coin.png" />
             </ImageView>
             <MenuButton fx:id="numCoins" layoutX="78.0" layoutY="298.0" mnemonicParsing="false" styleClass="primary" text="Coins">
                 <items>
                 </items>
             </MenuButton>
-            <ImageView fitHeight="120.0" fitWidth="129.0" layoutX="231.0" layoutY="99.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView fitHeight="120.0" fitWidth="129.0" layoutX="231.0" layoutY="115.0" pickOnBounds="true" preserveRatio="true">
                 <Image url="@../../../../../assets/board/Shield.png" />
             </ImageView>
-            <ImageView fitHeight="117.0" fitWidth="132.0" layoutX="383.0" layoutY="101.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView fitHeight="117.0" fitWidth="132.0" layoutX="383.0" layoutY="115.0" pickOnBounds="true" preserveRatio="true">
                 <Image url="@../../../../../assets/board/Servant.png" />
             </ImageView>
-            <ImageView fitHeight="127.0" fitWidth="129.0" layoutX="558.0" layoutY="101.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView fitHeight="127.0" fitWidth="129.0" layoutX="558.0" layoutY="115.0" pickOnBounds="true" preserveRatio="true">
                 <Image url="@../../../../../assets/board/Stone.png" />
             </ImageView>
             <MenuButton fx:id="numShields" layoutX="234.0" layoutY="299.0" mnemonicParsing="false" styleClass="primary" text="Shields">

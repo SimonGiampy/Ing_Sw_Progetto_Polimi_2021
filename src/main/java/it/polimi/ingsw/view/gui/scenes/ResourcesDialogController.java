@@ -40,7 +40,7 @@ public class ResourcesDialogController implements SceneController {
 	 */
 	protected void setNumberOfResources(int number, String prompt) {
 		this.number = number;
-		lbl.setText(prompt + " Confirm your choices when you're done");
+		lbl.setText(prompt + "\nConfirm your choices when you're done.");
 		
 		// adds the option to the menus
 		setMenus(numCoins, "Coins: ", Resources.COIN);

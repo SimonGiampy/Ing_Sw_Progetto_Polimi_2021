@@ -241,7 +241,6 @@ public class GUI extends ViewObservable implements View {
 	@Override
 	public void askFreeOutput(int number) {
 		Platform.runLater(() -> {
-			System.out.println("here");
 			ResourcesDialog dialog = new ResourcesDialog(number, "Choose a total of " + number + " resources for the production output.");
 			dialog.initOwner(stage);
 			freeChoice(dialog,2);
@@ -303,7 +302,11 @@ public class GUI extends ViewObservable implements View {
 	
 	@Override
 	public void replyDepot(ReducedWarehouseDepot depot, boolean initialMove, boolean confirmationAvailable, boolean inputValid) {
-
+		//TODO: check if this shit actually works
+		Platform.runLater(() -> {
+			PlayerTabs playerTabs= (PlayerTabs) controller;
+			playerTabs.depotInteraction(depot, initialMove, confirmationAvailable, inputValid);
+		});
 	
 	}
 	
@@ -325,9 +328,6 @@ public class GUI extends ViewObservable implements View {
 	
 	@Override
 	public void showDepot(String nickname, ReducedWarehouseDepot depot) {
-		//TODO: actual interaction
-
-		//This is only the update
 		Platform.runLater(() -> {
 			PlayerTabs playerTabs= (PlayerTabs) controller;
 			playerTabs.update(nickname, depot);
@@ -336,8 +336,7 @@ public class GUI extends ViewObservable implements View {
 	
 	@Override
 	public void showPlayerCardsAndProduction(String nickname, ReducedCardProductionManagement cardProductionsManagement) {
-
-		//This is only the update
+		//This is just the update of the card productions
 		Platform.runLater(() -> {
 			PlayerTabs playerTabs= (PlayerTabs) controller;
 			playerTabs.update(nickname, cardProductionsManagement);
@@ -355,6 +354,7 @@ public class GUI extends ViewObservable implements View {
 	
 	@Override
 	public void showStrongBox(String nickname, ReducedStrongbox strongbox) {
+		// updates the player' strongbox
 		Platform.runLater(() -> {
 			PlayerTabs playerTabs= (PlayerTabs) controller;
 			playerTabs.update(nickname, strongbox);
