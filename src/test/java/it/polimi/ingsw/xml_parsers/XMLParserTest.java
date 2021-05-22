@@ -6,6 +6,7 @@ import it.polimi.ingsw.model.reducedClasses.ReducedLeaderCard;
 import it.polimi.ingsw.model.util.ListSet;
 import it.polimi.ingsw.model.util.Resources;
 import it.polimi.ingsw.view.CLI;
+import it.polimi.ingsw.view.CLIUtils;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -39,7 +40,7 @@ class XMLParserTest {
 		System.out.println("Faith Track");
 		cli.showFaithTrack("test", faithTrack);
 		System.out.println("\n");
-		cli.helpFaithTrack();
+		CLIUtils.helpFaithTrack();
 		System.out.println("\n");
 	}
 	
@@ -50,7 +51,7 @@ class XMLParserTest {
 		int i = 1;
 		for(DevelopmentCard card: devCards) {
 			System.out.println("Card #" + i);
-			cli.showDevCard(card);
+			CLIUtils.showDevCard(card);
 			System.out.print("\n");
 			i++;
 		}
@@ -63,7 +64,7 @@ class XMLParserTest {
 		int i = 1;
 		for(LeaderCard leader: leaderCards) {
 			System.out.println("Card #" + i);
-			cli.showLeaderCard(new ReducedLeaderCard(leader, false, false, true, leader.getIdNumber()));
+			CLIUtils.showLeaderCard(new ReducedLeaderCard(leader, false, false, true, leader.getIdNumber()));
 			System.out.print("\n");
 			i++;
 		}

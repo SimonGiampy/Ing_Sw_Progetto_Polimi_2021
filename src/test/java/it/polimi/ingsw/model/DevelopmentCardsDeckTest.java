@@ -5,6 +5,7 @@ import it.polimi.ingsw.model.util.Colors;
 import it.polimi.ingsw.model.util.ListSet;
 import it.polimi.ingsw.model.util.Resources;
 import it.polimi.ingsw.view.CLI;
+import it.polimi.ingsw.view.CLIUtils;
 import it.polimi.ingsw.xml_parsers.XMLParser;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -70,7 +71,7 @@ class DevelopmentCardsDeckTest {
 		System.out.println("Stack of level 1, Blue colored development cards");
 		for (int i = 0; i < stackSize; i++) {
 			card = deck.claimCard(1, Colors.BLUE);
-			cli.showDevCard(card);
+			CLIUtils.showDevCard(card);
 		}
 		
 		// all the cards of level 1 and color blue are finished, so the blue colored cards are available only for level 2 and 3
@@ -116,7 +117,7 @@ class DevelopmentCardsDeckTest {
 		System.out.println("\nList of buyable dev cards with this set of resources: " + ListSet.listMultiplicityToString(resources) + "\n");
 		ArrayList<DevelopmentCard> cards = deck.buyableCards(resources, management); // the player has not bought any development cards yet
 		for (DevelopmentCard card: cards) {
-			cli.showDevCard(card);
+			CLIUtils.showDevCard(card);
 		}
 		
 	}

@@ -129,11 +129,11 @@ class PlayerTest {
 	void discardLeaderCard() {
 		player.chooseTwoLeaders(2,4);
 
-		player.discardLeaderCard(1);
+		player.discardLeaderCard(0);
 		assertTrue(player.isDiscardedLeader1());
 		assertSame(player.getPlayerFaithTrack().getCurrentPosition(), 1);
 
-		player.discardLeaderCard(2);
+		player.discardLeaderCard(1);
 		assertTrue(player.isDiscardedLeader2());
 		assertSame(player.getPlayerFaithTrack().getCurrentPosition(), 2);
 	}
