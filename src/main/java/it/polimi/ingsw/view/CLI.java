@@ -2,7 +2,6 @@ package it.polimi.ingsw.view;
 
 import it.polimi.ingsw.controller.ClientSideController;
 import it.polimi.ingsw.model.DevelopmentCard;
-import it.polimi.ingsw.model.abilities.AbilityEffectActivation;
 import it.polimi.ingsw.model.reducedClasses.*;
 import it.polimi.ingsw.model.util.*;
 import it.polimi.ingsw.observers.ViewObservable;
@@ -146,30 +145,6 @@ public class CLI extends ViewObservable implements View {
 			System.out.println("Login failed! Your nickname is already taken");
 		}
 	}
-	
-	/*
-	@Override
-	public void askCustomGame() {
-		System.out.println("Choose game configuration!, Type [standard] for standard game, or the full path for a custom game!");
-		String input;
-		boolean check = true;
-		do {
-			input = scanner.nextLine();
-			if (!input.equals("standard") && !input.equals("")) {
-				if (!input.endsWith(".xml")) {
-					System.out.println("Invalid file extension: XML file expected");
-					check = false;
-				} else {
-					check = true;
-				}
-			}
-		} while (!check);
-		if (input.equals("")) input = "standard";
-		// assumes that the selected file has a correct schema and is a valid configuration file
-		String finalInput = input;
-		notifyObserver(obs->obs.onUpdateGameConfiguration("standard"));
-	}
-	 */
 	
 	@Override
 	public void askInitResources(int number) {
@@ -581,247 +556,32 @@ public class CLI extends ViewObservable implements View {
 	 */
 	@Override
 	public void showFaithTrack(String nickname , ReducedFaithTrack faithTrack) {
-
-		StringBuilder string = new StringBuilder();
-		StringBuilder markerColor = new StringBuilder();
-		
-		boolean lorenzo = faithTrack.isSinglePlayer();
-		if(!lorenzo) markerColor.append(Unicode.RED_BOLD);
-		else markerColor.append(Unicode.BLACK_BOLD);
-
-		System.out.println(nickname + "'s Faith Track");
-		//Row for vatican reports
-		int count = 0;
-		for(int i = 0; i < faithTrack.getReportPoints().size(); i++) {
-			while (!faithTrack.getTrack().get(count).isPapalSpace()) {
-				string.append("      ");
-				count++;
-			}
-			/*if(i > lastReportClaimed){
-				string.append(Unicode.BLUE_BOLD).append("   ?  ");
-
-			 */
-				if(faithTrack.getVaticanReports().get(i)){
-					string.append(Unicode.GREEN_BOLD).append("  ").append(Unicode.TICK).append(" ").append(Unicode.RESET)
-							.append(faithTrack.getReportPoints().get(i));
-				}else{
-					string.append(Unicode.RED_BOLD).append("  ").append(Unicode.CROSS_REPORT).append(" ").append(Unicode.RESET)
-							.append(faithTrack.getReportPoints().get(i));
-				}
-				//✖ ✕ ✔ ✓
-				count++;
-			}
-			string.append("\n").append(Unicode.RESET);
-
-			//First row of "-"
-			CLIUtils.appendTopFrame(string, faithTrack);
-
-			//Second row of "|", spaces and marker
-			int k = 0;
-			String currentColor = Unicode.RESET;
-			for(int i = 0; i < faithTrack.getTrack().size(); i++){
-				if (k < faithTrack.getReportPoints().size() && faithTrack.getTrack().get(i).isInsideVatican(k)) {
-					currentColor = Unicode.ANSI_YELLOW.toString();
-					k++;
-				}
-				if(faithTrack.getTrack().get(i).isPapalSpace()){
-					currentColor = Unicode.ANSI_RED.toString();
-				}
-				if(i > 1 && faithTrack.getTrack().get(i-2).isPapalSpace()){
-					currentColor = Unicode.RESET;
-				}
-				if(i == faithTrack.getCurrentPosition()){
-					string.append(currentColor).append(Unicode.VERTICAL).append(Unicode.WHITE_BACKGROUND_BRIGHT).append("  ");
-					string.append(markerColor).append(Unicode.CROSS_MARKER)
-							.append("  ").append(currentColor);
-				}
-				else{
-					string.append(currentColor).append(Unicode.VERTICAL).append("  ");
-					string.append("   ");
-				}
-			}
-			string.append(currentColor).append(Unicode.VERTICAL).append("\n").append(Unicode.RESET);
-
-			//Third row of "|", spaces and victory points (printed only in the tile where they change)
-			int currentVictoryPoints = -1;
-			int l = 0;
-			currentColor = Unicode.RESET;
-			for(int i = 0; i < faithTrack.getTrack().size(); i++){
-				if (l < faithTrack.getReportPoints().size() && faithTrack.getTrack().get(i).isInsideVatican(l)) {
-					currentColor = Unicode.ANSI_YELLOW.toString();
-					l++;
-				}
-				if(faithTrack.getTrack().get(i).isPapalSpace()){
-					currentColor = Unicode.ANSI_RED.toString();
-				}
-				if(i > 1 && faithTrack.getTrack().get(i-2).isPapalSpace()){
-					currentColor = Unicode.RESET;
-				}
-				string.append(currentColor).append(Unicode.VERTICAL);
-				if(i == faithTrack.getCurrentPosition()) {
-					string.append(Unicode.WHITE_BACKGROUND_BRIGHT);
-				}
-				string.append("  ");
-				if(faithTrack.getTrack().get(i).getVictoryPoints() != currentVictoryPoints){
-					if(i == faithTrack.getCurrentPosition()) {
-						string.append(Unicode.BLACK_BOLD).append(faithTrack.getTrack().get(i).getVictoryPoints())
-								.append(Unicode.WHITE_BACKGROUND_BRIGHT);
-					}else{
-						string.append(Unicode.RESET).append(faithTrack.getTrack().get(i).getVictoryPoints());
-					}
-					if(faithTrack.getTrack().get(i).getVictoryPoints() < 10){
-						string.append("  ");
-					}
-					else{
-						string.append(" ");
-					}
-					string.append(currentColor);
-					currentVictoryPoints = faithTrack.getTrack().get(i).getVictoryPoints();
-				}else{
-					string.append("   ");
-				}
-				string.append(Unicode.RESET);
-			}
-			string.append(Unicode.ANSI_RED).append(Unicode.VERTICAL).append("\n").append(Unicode.RESET);
-
-			//Last row of "-"
-			CLIUtils.appendBottomFrame(string, faithTrack);
-
-			//Number of the tiles
-			string.append(Unicode.RESET);
-			for(int i = 0; i < faithTrack.getTrack().size(); i++){
-				string.append("   ").append(i);
-				if(i < 10){
-					string.append("  ");
-				}
-				else{
-					string.append(" ");
-				}
-			}
-			System.out.println(string);
+		CLIUtils.showFaithTrack(nickname, faithTrack);
 	}
 	
 	@Override
 	public void showDepot(String nickname, ReducedWarehouseDepot depot) {
-		ArrayList<Resources> incomingResources = depot.getIncomingResources();
-		Resources[] pyr = depot.getDepot();
-		if(nickname.equals(""))
-			System.out.print("Your Warehouse Depot");
-		else
-			System.out.print(nickname + "'s Warehouse Depot");
-		// shows the incoming resource from the deck if there are any
-		if (incomingResources.size() > 0) System.out.print("Resource deck contains: \t");
-		for (int i = 1; i <= incomingResources.size(); i++) {
-			System.out.print(i + ": " + incomingResources.get(i - 1).toString() + "\t");
-		}
-		System.out.print("\n");
-		
-		// shows the pyramid with the resources in it
-		String string = "            " + Unicode.TOP_LEFT + Unicode.HORIZONTAL + Unicode.HORIZONTAL +
-				Unicode.HORIZONTAL + Unicode.HORIZONTAL + Unicode.TOP_RIGHT + "\n" +
-				"            " + Unicode.VERTICAL + " " + pyr[0].toString() +
-				" " + Unicode.VERTICAL + "\n" +
-				"        " + Unicode.TOP_LEFT + Unicode.HORIZONTAL + Unicode.HORIZONTAL +
-				Unicode.HORIZONTAL + Unicode.BOTTOM_RIGHT + "    " +
-				Unicode.BOTTOM_LEFT + Unicode.HORIZONTAL + Unicode.HORIZONTAL +
-				Unicode.HORIZONTAL + Unicode.TOP_RIGHT + "\n" +
-				"        " + Unicode.VERTICAL + " " + pyr[1].toString() + "      " +
-				pyr[2].toString() + " " + Unicode.VERTICAL + "\n" +
-				"    " + Unicode.TOP_LEFT + Unicode.HORIZONTAL + Unicode.HORIZONTAL +
-				Unicode.HORIZONTAL + Unicode.BOTTOM_RIGHT + "            " +
-				Unicode.BOTTOM_LEFT + Unicode.HORIZONTAL + Unicode.HORIZONTAL +
-				Unicode.HORIZONTAL + Unicode.TOP_RIGHT + "\n" +
-				"    " + Unicode.VERTICAL + " " + pyr[3].toString() +
-				"      " + pyr[4].toString() + "  " + "    " + pyr[5].toString() +
-				" " + Unicode.VERTICAL + "\n" +
-				"    " + Unicode.BOTTOM_LEFT +
-				String.valueOf(Unicode.HORIZONTAL).repeat(20) + Unicode.BOTTOM_RIGHT + "\n";
-		System.out.println(string);
-		
-		// shows additional leaders if activated
-		for (int i = 0; i <= 1; i++) {
-			if (depot.isLeaderActivated(i)) {
-				System.out.print("Leader #" + (i+1) + "'s additional depot = ");
-				for (int r = 0; r < depot.getExtraDepotResources().get(i).size(); r++) {
-					if (depot.getExtraDepotContents().get(i).get(r)) {
-						System.out.println(depot.getExtraDepotResources().get(i).get(r).toString() + "  ");
-					}
-				}
-				System.out.print("\n");
-			}
-		}
+		CLIUtils.showDepot(nickname, depot);
 	}
 
 	@Override
 	public void showLeaderCards(String nickname, ArrayList<ReducedLeaderCard> availableLeaders) {
-		System.out.println(nickname + "'s Leader cards:");
-		for (int i = 0; i < availableLeaders.size(); i++) {
-			System.out.println("Card's number: " + (i + 1));
-			if (availableLeaders.get(i).isPlayable()) {
-				System.out.print("PLAYABLE\n");
-			} else if(availableLeaders.get(i).isDiscarded()){
-				System.out.print("DISCARDED\n");
-			} else{
-				System.out.print("\n");
-			}
-			if(!availableLeaders.get(i).isDiscarded())
-				CLIUtils.showLeaderCard(availableLeaders.get(i));
-		}
+		CLIUtils.showLeaderCards(nickname, availableLeaders);
 	}
 
 	@Override
 	public void showMarket(ReducedMarket market) {
-		System.out.println(Unicode.RESET + "Extra ball = " + market.getExtraBall().colorCode + "\uD83D\uDFE3");
-		for (int i = 0; i < 3; i++) { // rows
-			for (int j = 0; j < 4; j++) { // columns
-				System.out.print(market.getMarket()[i][j].colorCode + "\uD83D\uDFE3\t");
-			}
-			System.out.println(Unicode.RESET+"←");
-		}
-		for (int j = 0; j < 4; j++) {
-			System.out.print(" ↑\t");
-		}
-		System.out.print("\n");
+		CLIUtils.showMarket(market);
 	}
 	
 	@Override
 	public void showPlayerCardsAndProduction(String nickname, ReducedCardProductionManagement cardProductionsManagement) {
-		System.out.println(nickname+ "'s card and production manager");
-		for (int i = 0; i < 3; i++) {
-			if(cardProductionsManagement.getCards().get(i).size()>0)
-				CLIUtils.showDevCard(cardProductionsManagement.getCards().get(i).peek());
-			else {
-				String string = Unicode.TOP_LEFT +
-						String.valueOf(Unicode.HORIZONTAL).repeat(26) +
-						Unicode.TOP_RIGHT + "\n\n" +
-						"  EMPTY\n  SLOT\n\n" +
-						Unicode.BOTTOM_LEFT +
-						String.valueOf(Unicode.HORIZONTAL).repeat(26) +
-						Unicode.BOTTOM_RIGHT + "\n";
-				System.out.println(string);
-			}
-		}
+		CLIUtils.showPlayerCardsAndProduction(nickname, cardProductionsManagement);
 	}
 	
 	@Override
 	public void showCardsDeck(ReducedDevelopmentCardsDeck deck) {
-		for (int i = 0; i < 3; i++) {
-			for (int j = 0; j < 4; j++) {
-				if (deck.getCardStackStructure()[i][j].isEmpty()) { // shows empty card slot
-					String string = Unicode.TOP_LEFT +
-							String.valueOf(Unicode.HORIZONTAL).repeat(26) +
-							Unicode.TOP_RIGHT + "\n\n" +
-							"  EMPTY\n  SLOT\n\n" +
-							Unicode.BOTTOM_LEFT +
-							String.valueOf(Unicode.HORIZONTAL).repeat(26) +
-							Unicode.BOTTOM_RIGHT + "\n";
-					System.out.println(string);
-				} else {
-					CLIUtils.showDevCard(deck.getCardStackStructure()[i][j].get(0));
-				}
-			}
-			System.out.println("\n");
-		}
+		CLIUtils.showCardsDeck(deck);
 	}
 	
 	@Override
@@ -841,13 +601,7 @@ public class CLI extends ViewObservable implements View {
 
 	@Override
 	public void showToken(TokenType token, Colors color){
-		if(token==TokenType.DISCARD_TOKEN)
-			System.out.println("Discard Token activated: 2 "+color+" cards are discarded from the deck!");
-		else if(token==TokenType.BLACK_CROSS_TOKEN)
-			System.out.println("Black Cross Token activated: Lorenzo marker has moved 2 position forward!");
-		else
-			System.out.println("Black Cross Token with shuffle activated: Lorenzo marker has moved 1 position forward! " +
-					"The stack will be shuffled!");
+		CLIUtils.showToken(token, color);
 	}
 
 	
