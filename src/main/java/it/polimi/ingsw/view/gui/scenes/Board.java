@@ -203,6 +203,22 @@ public class Board extends ViewObservable implements SceneController {
 		}
 	}
 
+	public void onMouseClickDis1(){
+		notifyObserver(obs->obs.onUpdateLeaderAction(1,2));
+	}
+
+	public void onMouseClickDis2(){
+		notifyObserver(obs->obs.onUpdateLeaderAction(2,2));
+	}
+
+	public void onMouseClickAct1(){
+		notifyObserver(obs->obs.onUpdateLeaderAction(1,1));
+	}
+
+	public void onMouseClickAct2(){
+		notifyObserver(obs->obs.onUpdateLeaderAction(2,2));
+	}
+
 	/**
 	 * sets leader card of the player
 	 * @param leaderCards player's leader cards

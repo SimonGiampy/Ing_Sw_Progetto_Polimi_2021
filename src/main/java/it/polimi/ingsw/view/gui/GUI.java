@@ -184,7 +184,8 @@ public class GUI extends ViewObservable implements View {
 
 			 */
 			playerTabs.updateActions(nickname,availableAction);
-			playerTabs.update(nickname,true);
+			if(availableAction.contains(PlayerActions.PRODUCTIONS))
+				playerTabs.update(nickname,true);
 
 
 		});
