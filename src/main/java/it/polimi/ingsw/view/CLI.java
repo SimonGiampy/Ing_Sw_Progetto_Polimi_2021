@@ -16,6 +16,7 @@ import java.util.regex.Pattern;
 public class CLI extends ViewObservable implements View {
 	
 	private final Scanner scanner;
+	private String playerNickname;
 
 	public CLI() {
 		scanner = new Scanner(System.in);
@@ -118,6 +119,7 @@ public class CLI extends ViewObservable implements View {
 			if (nickname.equals("")) System.out.println("Wrong input, type again");
 		}while(nickname.equals(""));
 		String finalNickname = nickname;
+		playerNickname = nickname;
 		notifyObserver(obs -> obs.onUpdateNickname(finalNickname));
 	}
 	
@@ -555,18 +557,30 @@ public class CLI extends ViewObservable implements View {
 	 * @param faithTrack to be shown on console
 	 */
 	@Override
-	public void showFaithTrack(String nickname , ReducedFaithTrack faithTrack) {
-		CLIUtils.showFaithTrack(nickname, faithTrack);
+	public void showFaithTrack(String nickname, ReducedFaithTrack faithTrack) {
+		if(nickname.equals(playerNickname))
+			System.out.println("Your Faith Track");
+		else
+			System.out.println(nickname + "'s Faith Track");
+		CLIUtils.showFaithTrack(faithTrack);
 	}
 	
 	@Override
 	public void showDepot(String nickname, ReducedWarehouseDepot depot) {
-		CLIUtils.showDepot(nickname, depot);
+		if(nickname.equals(playerNickname))
+			System.out.println("Your Warehouse Depot");
+		else
+			System.out.println(nickname + "'s Warehouse Depot");
+		CLIUtils.showDepot(depot);
 	}
 
 	@Override
 	public void showLeaderCards(String nickname, ArrayList<ReducedLeaderCard> availableLeaders) {
-		CLIUtils.showLeaderCards(nickname, availableLeaders);
+		if(nickname.equals(playerNickname))
+			System.out.println("Your Leader Cards");
+		else
+			System.out.println(nickname + "'s Leader Cards");
+		CLIUtils.showLeaderCards(availableLeaders);
 	}
 
 	@Override
@@ -576,7 +590,11 @@ public class CLI extends ViewObservable implements View {
 	
 	@Override
 	public void showPlayerCardsAndProduction(String nickname, ReducedCardProductionManagement cardProductionsManagement) {
-		CLIUtils.showPlayerCardsAndProduction(nickname, cardProductionsManagement);
+		if(nickname.equals(playerNickname))
+			System.out.println("Your Cards and Production Management");
+		else
+			System.out.println(nickname + "'s Cards and Production Management");
+		CLIUtils.showPlayerCardsAndProduction(cardProductionsManagement);
 	}
 	
 	@Override
@@ -586,7 +604,10 @@ public class CLI extends ViewObservable implements View {
 	
 	@Override
 	public void showStrongBox(String nickname, ReducedStrongbox strongbox) {
-		System.out.println(nickname + "'s Strongbox");
+		if(nickname.equals(playerNickname))
+			System.out.println("Your Strongbox");
+		else
+			System.out.println(nickname + "'s Strongbox");
 		System.out.println(ListSet.listMultiplicityToString(strongbox.getContent()));
 	}
 	

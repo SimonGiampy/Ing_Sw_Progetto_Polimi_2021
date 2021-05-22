@@ -242,7 +242,7 @@ public class Board extends ViewObservable implements SceneController {
 					act2.setDisable(true);
 					dis2.setDisable(true);
 				}
-			}else if (leaderCards.get(i).isDiscarded()) { // card is less bright to indicate that it has been discarded
+			} else if (leaderCards.get(i).isDiscarded()) { // card is less bright to indicate that it has been discarded
 				ColorAdjust colorAdjust = new ColorAdjust();
 				colorAdjust.setBrightness(-0.5);
 				images[i].setEffect(colorAdjust);

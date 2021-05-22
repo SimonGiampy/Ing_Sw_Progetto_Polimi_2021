@@ -86,7 +86,7 @@ public class PlayerTabs extends ViewObservable implements SceneController{
 			});
 		}
 		playersMap.get(nicknameList.get(0)).setStartingPlayer();
-		tabPane.getSelectionModel().select(tabMap.get(playersMap.get(playerNickname)));
+		//tabPane.getSelectionModel().select(tabMap.get(playersMap.get(playerNickname)));
 	}
 
 	public void update(String nickname, ReducedFaithTrack track){

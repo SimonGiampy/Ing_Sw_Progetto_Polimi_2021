@@ -57,7 +57,7 @@ public class TurnController {
 		leaderAction=false;
 		mainActionDone=false;
 		VirtualView view= virtualViewMap.get(activePlayer);
-		view.showGenericMessage("It's your turn!");
+		view.showGenericMessage("It's your turn!"); //TODO: NOT USELESS
 		turnAskAction();
 		setTurnPhase(TurnPhase.SELECTING_ACTION);
 	}

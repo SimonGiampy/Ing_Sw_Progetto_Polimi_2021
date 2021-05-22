@@ -1,6 +1,5 @@
 package it.polimi.ingsw.controller;
 
-import it.polimi.ingsw.exceptions.InvalidInputException;
 import it.polimi.ingsw.exceptions.InvalidUserRequestException;
 import it.polimi.ingsw.model.*;
 import it.polimi.ingsw.model.reducedClasses.*;
@@ -9,7 +8,6 @@ import it.polimi.ingsw.model.util.PlayerActions;
 import it.polimi.ingsw.model.util.Resources;
 import it.polimi.ingsw.network.messages.*;
 import it.polimi.ingsw.network.messages.game.client2server.*;
-import it.polimi.ingsw.network.messages.login.GameConfigReply;
 import it.polimi.ingsw.network.messages.login.MatchInfo;
 import it.polimi.ingsw.network.server.Lobby;
 import it.polimi.ingsw.view.VirtualView;
@@ -88,17 +86,6 @@ public class ServerSideController {
 		}
 	}
 	
-	/*
-	 * sets the game configuration
-	 * @param config message
-	private void configHandler(Message config) {
-		if (config != null && config.getMessageType() == MessageType.GAME_CONFIG_REPLY) {
-			GameConfigReply gameConfigReply = (GameConfigReply) config;
-			setGameConfig(gameConfigReply.getGameConfiguration());
-		}
-	}
-	 */
-	
 	/**
 	 * set the game configuration
 	 */
@@ -115,7 +102,6 @@ public class ServerSideController {
 		mechanics.instantiateGame(devCards, leaderCards, baseProduction, tiles, report);
 		
 		Lobby.LOGGER.info("Game configuration has been read and applied to the lobby settings");
-		
 
 	}
 
@@ -141,7 +127,7 @@ public class ServerSideController {
 		lobby.matchStart();
 		
 		VirtualView vv = virtualViewMap.get(nicknameList.get(0));
-		vv.showGenericMessage("You are the first player! Wait!");
+		vv.showGenericMessage("You are the first player! Wait!"); //TODO: NOT USELESS
 		for(String s: nicknameList) {
 			VirtualView view = virtualViewMap.get(s);
 			view.showCardsDeck(new ReducedDevelopmentCardsDeck(mechanics.getGameDevCardsDeck()));
@@ -216,7 +202,7 @@ public class ServerSideController {
 
 	/**
 	 * it handles initial Resources phase, adds incoming resources to the depot and moves the marker in the faith track (only third and fourth player).
-	 * When all the players are ready,ask for leader cards selection
+	 * When all the players are ready, ask for leader cards selection
 	 * @param message contains the initial resources chosen by the client
 	 */
 	private void initialResourcesHandler(ResourcesList message){
@@ -228,12 +214,15 @@ public class ServerSideController {
 			for (int i = 0; i < nicknameList.size(); i++) {
 				view=virtualViewMap.get(nicknameList.get(i));
 				for (int j = 0; j < nicknameList.size(); j++) {
+					//TODO: USELESS
+					/*
 					if(i==j) {
 						view.showGenericMessage("These are your Depot and your Faith Track now!");
 					}
 					else {
 						view.showGenericMessage("These are " + nicknameList.get(j)+"'s Depot and Faith Track!");
 					}
+					 */
 					view.showDepot(nicknameList.get(j), new ReducedWarehouseDepot(mechanics.getPlayer(j).getPlayersWarehouseDepot()));
 					view.showFaithTrack(nicknameList.get(j), new ReducedFaithTrack(mechanics.getPlayer(j).getPlayerFaithTrack()));
 				}
@@ -321,7 +310,7 @@ public class ServerSideController {
 
 		for (String s : nicknameList) {
 			view = virtualViewMap.get(s);
-			view.showGenericMessage("This is the market after player interaction!");
+			view.showGenericMessage("This is the market after player interaction!"); //TODO: NOT USELESS
 			view.showMarket(new ReducedMarket(mechanics.getMarket()));
 		}
 
@@ -380,7 +369,7 @@ public class ServerSideController {
 				if(i != playerIndex) {
 					mechanics.getPlayer(i).getPlayerFaithTrack().moveMarker(n);
 					virtualViewMap.get(nicknameList.get(i)).showGenericMessage(message.getNickname()+ " discarded " + n +
-							" resources, you get " + n + " faith points" );
+							" resources, you get " + n + " faith points" ); //TODO: NOT USELESS
 					virtualViewMap.get(nicknameList.get(i)).showFaithTrack(nicknameList.get(i),
 							new ReducedFaithTrack(mechanics.getPlayer(i).getPlayerFaithTrack()));
 				}
@@ -426,10 +415,10 @@ public class ServerSideController {
 					new ReducedCardProductionManagement(mechanics.getPlayer(playerIndex).getPlayersCardManager()));
 			for (String s : nicknameList) {
 				view = virtualViewMap.get(s);
-				view.showGenericMessage(nicknameList.get(playerIndex) + "has bought a development card!");
+				view.showGenericMessage(nicknameList.get(playerIndex) + "has bought a development card!"); //TODO: NOT USELESS
 				view.showPlayerCardsAndProduction(nicknameList.get(playerIndex),
 						new ReducedCardProductionManagement(mechanics.getPlayer(playerIndex).getPlayersCardManager()));
-				view.showGenericMessage("This is the Development Cards Deck now!");
+				//view.showGenericMessage("This is the Development Cards Deck now!"); //TODO: USELESS
 				view.showCardsDeck(new ReducedDevelopmentCardsDeck(mechanics.getGameDevCardsDeck()));
 			}
 			turnController.setTurnPhase(TurnPhase.MAIN_ACTION);
@@ -479,7 +468,7 @@ public class ServerSideController {
 	 * @param playerIndex index
 	 */
 	private void sendBoxes(VirtualView view, int playerIndex, boolean forAll){
-		//view.showGenericMessage("Your Boxes now!");
+		//view.showGenericMessage("Your Boxes now!"); //TODO: USELESS
 		if(forAll){
 			for (String s : nicknameList) {
 				view = virtualViewMap.get(s);
@@ -568,9 +557,9 @@ public class ServerSideController {
 				VirtualView view = virtualViewMap.get(s);
 
 				if (!s.equals(nickname)) {
-					view.showGenericMessage(nickname + " played a Leader Card");
+					view.showGenericMessage(nickname + " played a Leader Card"); //TODO: NOT USELESS
 				} else {
-					view.showGenericMessage("Leader Card successfully played!");
+					view.showGenericMessage("Leader Card successfully played!"); //TODO: NOT USELESS
 				}
 				view.showLeaderCards(nicknameList.get(playerIndex), getLeadersForShow(player));
 			}
@@ -584,9 +573,9 @@ public class ServerSideController {
 				VirtualView view = virtualViewMap.get(s);
 
 				if (!s.equals(nickname)) {
-					view.showGenericMessage(nickname + " discarded a Leader Card");
+					view.showGenericMessage(nickname + " discarded a Leader Card"); //TODO: NOT USELESS
 				} else {
-					view.showGenericMessage("Leader Card successfully discarded!");
+					view.showGenericMessage("Leader Card successfully discarded!"); //TODO: NOT USELESS
 				}
 				view.showLeaderCards(nicknameList.get(playerIndex), getLeadersForShow(player));
 			}
@@ -655,7 +644,7 @@ public class ServerSideController {
 			else
 				nick = nickname;
 			virtualViewMap.get(nicknameList.get(i)).showGenericMessage(nick + " triggered Vatican Report" +
-					" n." + (mechanics.getLastReportClaimed()) + "!");
+					" n." + (mechanics.getLastReportClaimed()) + "!"); //TODO: NOT USELESS
 			virtualViewMap.get(nicknameList.get(i)).showFaithTrack(nickname, new ReducedFaithTrack(mechanics.getPlayer(i).getPlayerFaithTrack()));
 		}
 	}

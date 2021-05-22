@@ -52,15 +52,13 @@ public class CLIUtils {
 		System.out.println("The positional number in the warehouse is between 1 and 6: origin top to bottom, and origin left to right");
 	}
 
-	public static void showFaithTrack(String nickname , ReducedFaithTrack faithTrack){
+	public static void showFaithTrack(ReducedFaithTrack faithTrack){
 
 		StringBuilder string = new StringBuilder();
 		StringBuilder markerColor = new StringBuilder();
 		boolean lorenzo = faithTrack.isSinglePlayer();
 		if(!lorenzo) markerColor.append(Unicode.RED_BOLD);
 		else markerColor.append(Unicode.BLACK_BOLD);
-
-		System.out.println(nickname + "'s Faith Track");
 		//Row for vatican reports
 		int count = 0;
 		for(int i = 0; i < faithTrack.getReportPoints().size(); i++) {
@@ -228,13 +226,9 @@ public class CLIUtils {
 		string.append(Unicode.BOTTOM_RIGHT).append("\n").append(Unicode.RESET);
 	}
 
-	public static void showDepot(String nickname, ReducedWarehouseDepot depot){
+	public static void showDepot(ReducedWarehouseDepot depot){
 		ArrayList<Resources> incomingResources = depot.getIncomingResources();
 		Resources[] pyr = depot.getDepot();
-		if(nickname.equals(""))
-			System.out.print("Your Warehouse Depot");
-		else
-			System.out.print(nickname + "'s Warehouse Depot");
 		// shows the incoming resource from the deck if there are any
 		if (incomingResources.size() > 0) System.out.print("Resource deck contains: \t");
 		for (int i = 1; i <= incomingResources.size(); i++) {
@@ -278,15 +272,14 @@ public class CLIUtils {
 		}
 	}
 
-	public static void showLeaderCards(String nickname, ArrayList<ReducedLeaderCard> availableLeaders){
-		System.out.println(nickname + "'s Leader cards:");
+	public static void showLeaderCards(ArrayList<ReducedLeaderCard> availableLeaders){
 		for (int i = 0; i < availableLeaders.size(); i++) {
 			System.out.println("Card's number: " + (i + 1));
 			if (availableLeaders.get(i).isPlayable()) {
 				System.out.print("PLAYABLE\n");
 			} else if(availableLeaders.get(i).isDiscarded()){
 				System.out.print("DISCARDED\n");
-			} else{
+			} else {
 				System.out.print("\n");
 			}
 			if(!availableLeaders.get(i).isDiscarded())
@@ -389,8 +382,7 @@ public class CLIUtils {
 		System.out.print("\n");
 	}
 
-	public static void showPlayerCardsAndProduction(String nickname, ReducedCardProductionManagement cardProductionsManagement) {
-		System.out.println(nickname+ "'s card and production manager");
+	public static void showPlayerCardsAndProduction(ReducedCardProductionManagement cardProductionsManagement) {
 		for (int i = 0; i < 3; i++) {
 			if(cardProductionsManagement.getCards().get(i).size()>0)
 				CLIUtils.showDevCard(cardProductionsManagement.getCards().get(i).peek());
