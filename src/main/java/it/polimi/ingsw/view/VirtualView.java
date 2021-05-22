@@ -91,8 +91,8 @@ public class VirtualView implements View, Observer {
 	}
 
 	@Override
-	public void askProductionAction(ArrayList<Productions> productionAvailable) {
-		clientHandler.sendMessage(new ProductionsAvailable(productionAvailable));
+	public void askProductionAction(String nickname,ArrayList<Productions> productionAvailable) {
+		clientHandler.sendMessage(new ProductionsAvailable(nickname,productionAvailable));
 	}
 
 	@Override

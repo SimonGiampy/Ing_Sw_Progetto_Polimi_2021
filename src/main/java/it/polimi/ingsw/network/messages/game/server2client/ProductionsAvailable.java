@@ -12,8 +12,8 @@ import java.util.ArrayList;
 public class ProductionsAvailable extends Message {
 	private final ArrayList<Productions> availableProduction;
 
-	public ProductionsAvailable(ArrayList<Productions> availableProduction){
-		super("Lobby", MessageType.PRODUCTION_SHOW);
+	public ProductionsAvailable(String nickname,ArrayList<Productions> availableProduction){
+		super(nickname, MessageType.PRODUCTION_SHOW);
 		this.availableProduction =availableProduction;
 	}
 

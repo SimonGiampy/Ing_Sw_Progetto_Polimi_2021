@@ -104,7 +104,7 @@ public class ClientSideController implements ViewObserver, Observer {
 				case CARDS_SHOW -> userTask.execute(() ->
 						view.askBuyCardAction(message.getNickname(),((BuyableDevCards) message).getCards(), ((BuyableDevCards) message).isWrongSlot()));
 				case PRODUCTION_SHOW -> userTask.execute(() ->
-						view.askProductionAction(((ProductionsAvailable) message).getAvailableProduction()));
+						view.askProductionAction(message.getNickname(),((ProductionsAvailable) message).getAvailableProduction()));
 				case WIN_MESSAGE -> userTask.execute(() ->
 						view.showWinMessage(((WinMessage) message).getWinner(),((WinMessage) message).getPoints()));
 				case DISCONNECTION_MESSAGE -> { // the only one which must not use taskQueue to show the message

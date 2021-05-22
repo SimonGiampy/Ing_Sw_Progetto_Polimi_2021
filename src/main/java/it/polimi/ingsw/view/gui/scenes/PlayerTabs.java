@@ -3,6 +3,7 @@ package it.polimi.ingsw.view.gui.scenes;
 import it.polimi.ingsw.model.DevelopmentCard;
 import it.polimi.ingsw.model.reducedClasses.*;
 import it.polimi.ingsw.model.util.PlayerActions;
+import it.polimi.ingsw.model.util.Productions;
 import it.polimi.ingsw.observers.ViewObservable;
 import it.polimi.ingsw.view.gui.GUI;
 import javafx.fxml.FXML;
@@ -125,7 +126,6 @@ public class PlayerTabs extends ViewObservable implements SceneController{
 
 	public void update(String nickname, boolean value){
 		Board board = playersMap.get(nickname);
-		System.out.println(nickname);
 		board.setActProductions(value);
 		setTabToRead(board);
 	}
@@ -134,8 +134,19 @@ public class PlayerTabs extends ViewObservable implements SceneController{
 		commonBoard.setButtonVisible(value);
 	}
 
-	public void updateActions(ArrayList<PlayerActions> actions){
+	public void updateActions(String nickname, ArrayList<PlayerActions> actions){
 		commonBoard.setButtonVisible(actions);
+		Board board = playersMap.get(nickname);
+		if(actions.contains(PlayerActions.PRODUCTIONS))
+			board.setActProductions(true);
+		setTabToRead(board);
+
+	}
+
+	public void updateProduction(String nickname, ArrayList<Productions> productions){
+		Board board = playersMap.get(nickname);
+		board.setAvailableProductionGreen(productions);
+		board.setProductionAble(true);
 	}
 
 	public void update(ArrayList<DevelopmentCard> cards){

@@ -6,17 +6,23 @@ import it.polimi.ingsw.model.reducedClasses.ReducedLeaderCard;
 import it.polimi.ingsw.model.reducedClasses.ReducedStrongbox;
 import it.polimi.ingsw.model.reducedClasses.ReducedWarehouseDepot;
 import it.polimi.ingsw.model.util.ListSet;
+import it.polimi.ingsw.model.util.PlayerActions;
+import it.polimi.ingsw.model.util.Productions;
 import it.polimi.ingsw.model.util.Resources;
 import it.polimi.ingsw.observers.ViewObservable;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.effect.ColorAdjust;
+import javafx.scene.effect.DropShadow;
+import javafx.scene.effect.Glow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Stack;
 
 public class Board extends ViewObservable implements SceneController {
@@ -64,8 +70,22 @@ public class Board extends ViewObservable implements SceneController {
 	
 	// faith track marker
 	@FXML private ImageView cross;
+
+	@FXML private ImageView baseProduction;
 	
 	ArrayList<Coordinates> coordinates;
+
+	 ImageView[] slot1;
+	 ImageView[] slot2;
+	 ImageView[] slot3;
+
+	 int sizeSlot1;
+	 int sizeSlot2;
+	 int sizeSlot3;
+
+	ArrayList<Productions> selectedProduction;
+	ArrayList<Productions> availableProduction;
+	boolean productionAble;
 
 	@FXML
 	public void initialize() {
@@ -98,6 +118,14 @@ public class Board extends ViewObservable implements SceneController {
 		coordinates.add(new Coordinates(22, 1245, 66));
 		coordinates.add(new Coordinates(23, 1320, 66));
 		coordinates.add(new Coordinates(24, 1394, 66));
+
+		slot1 = new ImageView[]{img11, img12, img13};
+		slot2 = new ImageView[]{img21, img22, img23};
+		slot3 = new ImageView[]{img31, img32, img33};
+		selectedProduction=new ArrayList<>();
+		sizeSlot1=0;
+		sizeSlot2=0;
+		sizeSlot3=0;
 		
 		updateCrossCoords(0); // initial position when the game starts
 		
@@ -153,10 +181,11 @@ public class Board extends ViewObservable implements SceneController {
 	}
 	
 	public void setCardManager(ReducedCardProductionManagement cardManager) {
-		ImageView[] slot1 = new ImageView[]{img11, img12, img13};
-		ImageView[] slot2 = new ImageView[]{img21, img22, img23};
-		ImageView[] slot3 = new ImageView[]{img31, img32, img33};
+
 		ArrayList<Stack<DevelopmentCard>> cards = cardManager.getCards();
+		sizeSlot1=cards.get(0).size();
+		sizeSlot2=cards.get(1).size();
+		sizeSlot3=cards.get(2).size();
 		for(int i = 0; i < cards.get(0).size(); i++){
 			if(slot1[i].getImage() == null){
 				slot1[i].setImage(new Image("/assets/devCards/" + cards.get(0).get(i).getCardNumber() + ".png"));
@@ -277,5 +306,171 @@ public class Board extends ViewObservable implements SceneController {
 
 	public void setActProductions(boolean value){
 		actProductions.setVisible(value);
+	}
+
+	public void activateProduction(){
+		if(actProductions.getText().equals("Activate Productions")) {
+			notifyObserver(obs -> obs.onUpdateAction(PlayerActions.PRODUCTIONS));
+			actProductions.setVisible(false);
+			actProductions.setText("Confirm Productions");
+		}
+		else{
+			notifyObserver(obs->obs.onUpdateProductionAction(selectedProduction));
+			actProductions.setText("Activate Productions");
+			actProductions.setVisible(false);
+			productionAble=false;
+			setNormal();
+		}
+	}
+
+	public void onMouseClickedBaseProduction(){
+		if(productionAble && availableProduction.contains(Productions.BASE_PRODUCTION)) {
+			if (!selectedProduction.contains(Productions.BASE_PRODUCTION)) {
+				baseProduction.setEffect(new Glow(0.5));
+				selectedProduction.add(Productions.BASE_PRODUCTION);
+				actProductions.setVisible(true);
+			} else {
+				setShadow(0.5,baseProduction);
+				selectedProduction.remove(Productions.BASE_PRODUCTION);
+				if(selectedProduction.size()==0)
+					actProductions.setVisible(false);
+			}
+		}
+	}
+
+	public void onMouseClickedDevCard1(){
+		if(productionAble && availableProduction.contains(Productions.STACK_1_CARD_PRODUCTION)){
+			if(!selectedProduction.contains(Productions.STACK_1_CARD_PRODUCTION)){
+				slot1[sizeSlot1-1].setEffect(new Glow(0.5));
+				selectedProduction.add(Productions.STACK_1_CARD_PRODUCTION);
+				actProductions.setVisible(true);
+			}
+			else {
+				setShadow(0.5,slot1[sizeSlot1-1]);
+				selectedProduction.remove(Productions.STACK_1_CARD_PRODUCTION);
+				if(selectedProduction.size()==0){
+					actProductions.setVisible(false);
+				}
+			}
+		}
+	}
+
+	public void onMouseClickedDevCard2(){
+		if(productionAble && availableProduction.contains(Productions.STACK_2_CARD_PRODUCTION)){
+			if(!selectedProduction.contains(Productions.STACK_2_CARD_PRODUCTION)){
+				slot2[sizeSlot2-1].setEffect(new Glow(0.5));
+				selectedProduction.add(Productions.STACK_2_CARD_PRODUCTION);
+				actProductions.setVisible(true);
+			}
+			else {
+				setShadow(0.5,slot2[sizeSlot2-1]);
+				selectedProduction.remove(Productions.STACK_2_CARD_PRODUCTION);
+				if(selectedProduction.size()==0){
+					actProductions.setVisible(false);
+				}
+			}
+		}
+	}
+
+	public void onMouseClickedDevCard3(){
+		if(productionAble && availableProduction.contains(Productions.STACK_3_CARD_PRODUCTION)){
+			if(!selectedProduction.contains(Productions.STACK_3_CARD_PRODUCTION)){
+				slot3[sizeSlot3-1].setEffect(new Glow(0.5));
+				selectedProduction.add(Productions.STACK_3_CARD_PRODUCTION);
+				actProductions.setVisible(true);
+			}
+			else {
+				setShadow(0.5,slot3[sizeSlot3-1]);
+				selectedProduction.remove(Productions.STACK_3_CARD_PRODUCTION);
+				if(selectedProduction.size()==0){
+					actProductions.setVisible(false);
+				}
+			}
+		}
+	}
+
+	public void onMouseClickedLeaderCard1(){
+		if(productionAble && availableProduction.contains(Productions.LEADER_CARD_1_PRODUCTION)){
+			if(!selectedProduction.contains(Productions.LEADER_CARD_1_PRODUCTION)){
+				leader1.setEffect(new Glow(0.5));
+				selectedProduction.add(Productions.LEADER_CARD_1_PRODUCTION);
+				actProductions.setVisible(true);
+			}
+			else {
+				setShadow(0.5,leader1);
+				selectedProduction.remove(Productions.LEADER_CARD_1_PRODUCTION);
+				if(selectedProduction.size()==0){
+					actProductions.setVisible(false);
+				}
+			}
+		}
+	}
+
+	public void onMouseClickedLeaderCard2(){
+		if(productionAble && availableProduction.contains(Productions.LEADER_CARD_2_PRODUCTION)){
+			if(!selectedProduction.contains(Productions.LEADER_CARD_2_PRODUCTION)){
+				leader2.setEffect(new Glow(0.5));
+				selectedProduction.add(Productions.LEADER_CARD_2_PRODUCTION);
+				actProductions.setVisible(true);
+			}
+			else {
+				setShadow(0.5,leader2);
+				selectedProduction.remove(Productions.LEADER_CARD_2_PRODUCTION);
+				if(selectedProduction.size()==0){
+					actProductions.setVisible(false);
+				}
+			}
+		}
+	}
+
+	public void setAvailableProductionGreen(ArrayList<Productions> productions){
+		availableProduction=productions;
+		if(productions.contains(Productions.BASE_PRODUCTION))
+			setShadow(0.5,baseProduction);
+		if(productions.contains(Productions.STACK_1_CARD_PRODUCTION)) {
+			int i= sizeSlot1;
+			setShadow(0.5,slot1[i-1]);
+		}
+		if(productions.contains(Productions.STACK_2_CARD_PRODUCTION)){
+			int i= sizeSlot2;
+			setShadow(0.5,slot2[i-1]);
+		}
+		if(productions.contains(Productions.STACK_3_CARD_PRODUCTION)){
+			int i= sizeSlot3;
+			setShadow(0.5,slot3[i-1]);
+		}
+		if(productions.contains(Productions.LEADER_CARD_1_PRODUCTION)){
+			setShadow(0.5,leader1);
+		}
+		if(productions.contains(Productions.LEADER_CARD_2_PRODUCTION)){
+			setShadow(0.5,leader2);
+		}
+
+	}
+
+	public void setShadow(double value, ImageView img){
+		DropShadow dropShadow= new DropShadow();
+		dropShadow.setSpread(value);
+		dropShadow.setColor(Color.GREEN);
+		img.setEffect(dropShadow);
+	}
+
+	public void setProductionAble(boolean productionAble) {
+		this.productionAble = productionAble;
+	}
+
+	public void setNormal(){
+		baseProduction.setEffect(new Glow(0));
+		leader1.setEffect(new Glow(0));
+		leader2.setEffect(new Glow(0));
+		int i= sizeSlot1;
+		if(i>0)
+			slot1[i-1].setEffect(new Glow(0));
+		i= sizeSlot2;
+		if(i>0)
+			slot2[i-1].setEffect(new Glow(0));
+		i= sizeSlot3;
+		if(i>0)
+			slot3[i-1].setEffect(new Glow(0));
 	}
 }

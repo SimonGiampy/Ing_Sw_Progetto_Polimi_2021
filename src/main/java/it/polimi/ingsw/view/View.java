@@ -73,7 +73,7 @@ public interface View {
 	 * the server asks the client what productions to do, and sends them a list of the available ones
 	 * @param productionAvailable list of available productions
 	 */
-	void askProductionAction(ArrayList<Productions> productionAvailable);
+	void askProductionAction(String nickname,ArrayList<Productions> productionAvailable);
 
 	/**
 	 * it asks which free choice resources the player wants in input

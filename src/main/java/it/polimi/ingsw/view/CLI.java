@@ -445,7 +445,7 @@ public class CLI extends ViewObservable implements View {
 	}
 	
 	@Override
-	public void askProductionAction(ArrayList<Productions> productionAvailable) {
+	public void askProductionAction(String nickname,ArrayList<Productions> productionAvailable) {
 		System.out.println("These are your available production! Remember that not necessarily all productions " +
 				"can be activated at the same time!");
 		

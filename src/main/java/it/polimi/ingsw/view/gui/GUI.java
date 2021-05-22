@@ -164,7 +164,7 @@ public class GUI extends ViewObservable implements View {
 	
 	@Override
 	public void askLeaderAction(String nickname, ArrayList<ReducedLeaderCard> availableLeaders) {
-	
+		notifyObserver(obs-> obs.onUpdateLeaderAction(0, 0));
 	}
 	
 	@Override
@@ -183,7 +183,7 @@ public class GUI extends ViewObservable implements View {
 			pause2.play();
 
 			 */
-			playerTabs.updateActions(availableAction);
+			playerTabs.updateActions(nickname,availableAction);
 			playerTabs.update(nickname,true);
 
 
@@ -219,10 +219,11 @@ public class GUI extends ViewObservable implements View {
 	}
 	
 	@Override
-	public void askProductionAction(ArrayList<Productions> productionAvailable) {
+	public void askProductionAction(String nickname,ArrayList<Productions> productionAvailable) {
 		Platform.runLater(() -> {
 			PlayerTabs playerTabs= (PlayerTabs) controller;
 			playerTabs.update(false);
+			playerTabs.updateProduction(nickname,productionAvailable);
 		});
 	
 	}
@@ -231,15 +232,18 @@ public class GUI extends ViewObservable implements View {
 	public void askFreeInput(int number) {
 		Platform.runLater(() -> {
 			ResourcesDialog dialog = new ResourcesDialog(number, "Choose a total of " + number + " resources for the production input.");
-			freeChoice(dialog);
+			dialog.initOwner(stage);
+			freeChoice(dialog,1);
 		});
 	}
 	
 	@Override
 	public void askFreeOutput(int number) {
 		Platform.runLater(() -> {
+			System.out.println("here");
 			ResourcesDialog dialog = new ResourcesDialog(number, "Choose a total of " + number + " resources for the production output.");
-			freeChoice(dialog);
+			dialog.initOwner(stage);
+			freeChoice(dialog,2);
 		});
 	}
 	
@@ -247,11 +251,11 @@ public class GUI extends ViewObservable implements View {
 	 * starts a free choices dialog and asks for a number of resources, updating the observer with the result in output
 	 * @param dialog to be shown to the user asking for a list of resources
 	 */
-	private void freeChoice(ResourcesDialog dialog) {
+	private void freeChoice(ResourcesDialog dialog, int flag) {
 		dialog.showAndWait().ifPresent(resources -> {
 			ArrayList<Integer> numbers = getQuantitiesFromResources(resources);
 			ArrayList<Resources> finalResources = resources.stream().distinct().collect(Collectors.toCollection(ArrayList::new));
-			notifyObserver(obs -> obs.onUpdateResourceChoice(finalResources, numbers,0));
+			notifyObserver(obs -> obs.onUpdateResourceChoice(finalResources, numbers,flag));
 		});
 	}
 	

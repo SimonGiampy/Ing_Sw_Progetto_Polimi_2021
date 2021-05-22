@@ -297,7 +297,7 @@ public class ServerSideController {
 				view.showPlayerCardsAndProduction(nicknameList.get(playerIndex),
 						new ReducedCardProductionManagement(mechanics.getPlayer(playerIndex).getPlayersCardManager()));
 				sendBoxes(view,playerIndex,false); //it sends player boxes before production
-				view.askProductionAction(mechanics.getPlayer(playerIndex).getPlayersCardManager().availableProductions());
+				view.askProductionAction(nicknameList.get(playerIndex),mechanics.getPlayer(playerIndex).getPlayersCardManager().availableProductions());
 			}
 			case LEADER -> {
 				Player player = mechanics.getPlayer(playerIndex);
@@ -469,7 +469,7 @@ public class ServerSideController {
 		} else { // productions cannot be completed
 			view.showPlayerCardsAndProduction(nicknameList.get(playerIndex),
 					new ReducedCardProductionManagement(mechanics.getPlayer(playerIndex).getPlayersCardManager()));
-			view.askProductionAction(cardProductionsManagement.availableProductions());
+			view.askProductionAction(nicknameList.get(playerIndex),cardProductionsManagement.availableProductions());
 		}
 	}
 	
