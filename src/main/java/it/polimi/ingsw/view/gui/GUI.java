@@ -213,7 +213,7 @@ public class GUI extends ViewObservable implements View {
 	public void askBuyCardAction(String nickname, ArrayList<DevelopmentCard> cardsAvailable, boolean wrongSlot) {
 		Platform.runLater(() -> {
 			PlayerTabs playerTabs= (PlayerTabs) controller;
-			playerTabs.update(cardsAvailable);
+			playerTabs.update(cardsAvailable,wrongSlot);
 			playerTabs.update(nickname,false);
 
 		});

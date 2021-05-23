@@ -154,8 +154,8 @@ public class PlayerTabs extends ViewObservable implements SceneController{
 		board.setProductionAble(true);
 	}
 
-	public void update(ArrayList<DevelopmentCard> cards){
-		commonBoard.setGreen(cards);
+	public void update(ArrayList<DevelopmentCard> cards, boolean wrong){
+		commonBoard.setGreen(cards,wrong);
 	}
 
 	public void update(ReducedDevelopmentCardsDeck deck){

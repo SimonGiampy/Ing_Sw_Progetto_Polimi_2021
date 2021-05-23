@@ -38,8 +38,6 @@ public class CommonBoard extends ViewObservable implements SceneController{
 	@FXML ImageView market23;
 	@FXML ImageView extraBall;
 
-	ImageView[][] marketImages;
-
 	@FXML ImageView normalRow1;
 	@FXML ImageView normalRow2;
 	@FXML ImageView normalRow3;
@@ -61,35 +59,34 @@ public class CommonBoard extends ViewObservable implements SceneController{
 	@FXML ImageView cards22;
 	@FXML ImageView cards23;
 
-	ImageView[][] cardsImages;
-
 	@FXML ImageView text; //useless
-
 	@FXML Button marketActivation;
 	@FXML Button cardsActivation;
-
 	@FXML Button slot1;
 	@FXML Button slot2;
 	@FXML Button slot3;
-
 	@FXML Text slotText;
 
+	private ImageView[][] marketImages;
+	private ImageView[][] cardsImages;
 	private boolean marketAble;
 	private boolean cardsAble;
 	private ReducedDevelopmentCardsDeck deck;
-
 	private int level;
 	private Colors color;
 	private ArrayList<DevelopmentCard> buyableCards;
 
-
-
-
 	@FXML
 	public void initialize(){
+
 		marketAble=false;
 		cardsAble=false;
-		cardsImages= new ImageView[3][4];
+
+		//set cards imageview matrix
+		cardsImages= new ImageView[][]{new ImageView[]{cards00,cards01,cards02,cards03},
+				new ImageView[]{cards10,cards11,cards12,cards13},
+				new ImageView[]{cards20,cards21,cards22,cards23}};
+		/*
 		cardsImages[0][0]= cards00;
 		cardsImages[0][1]= cards01;
 		cardsImages[0][2]= cards02;
@@ -103,8 +100,13 @@ public class CommonBoard extends ViewObservable implements SceneController{
 		cardsImages[2][2]= cards22;
 		cardsImages[2][3]= cards23;
 
+		 */
 
-		marketImages= new ImageView[3][4];
+		//set market imageview matrix
+		marketImages= new ImageView[][]{new ImageView[]{market00,market01,market02,market03},
+				new ImageView[]{market10,market11,market12,market13},
+				new ImageView[]{market20,market21,market22,market23}};
+		/*
 		marketImages[0][0]= market00;
 		marketImages[0][1]= market01;
 		marketImages[0][2]= market02;
@@ -118,21 +120,72 @@ public class CommonBoard extends ViewObservable implements SceneController{
 		marketImages[2][2]= market22;
 		marketImages[2][3]= market23;
 
+		 */
+
+		//set rows images array
+		ImageView[] rows= new ImageView[]{normalRow1,normalRow2,normalRow3};
+
+		//set cols images array
+		ImageView[] cols= new ImageView[]{normalCol1,normalCol2,normalCol3,normalCol4};
+
+		//set slots
+		Button[] slots= new Button[]{slot1,slot2,slot3};
+
+
+		//set action buttons click event
+		marketActivation.setOnMouseClicked(event->actionSelectionHandler(PlayerActions.MARKET));
+		cardsActivation.setOnMouseClicked(event->actionSelectionHandler(PlayerActions.BUY_CARD));
+
+		//set cards click event
+		for (int i = 0; i < 3; i++) {
+			for (int j = 0; j < 4; j++) {
+				int finalI = i;
+				int finalJ = j;
+				cardsImages[i][j].setOnMouseClicked(event -> cardsSelectionHandler(finalI+1,Colors.values()[finalJ],finalI,finalJ));
+			}
+		}
+
+		//set rows events
+		for (int i = 0; i < 3; i++) {
+			int finalI = i;
+			rows[i].setOnMouseEntered(event->marketEnteredHandler(rows[finalI]));
+			rows[i].setOnMouseExited(event->marketExitedHandler(rows[finalI]));
+			rows[i].setOnMouseClicked(event->marketCLickHandler("ROW", finalI+1));
+		}
+
+		//set cols events
+		for (int i = 0; i < 4; i++) {
+			int finalI = i;
+			cols[i].setOnMouseEntered(event->marketEnteredHandler(cols[finalI]));
+			cols[i].setOnMouseExited(event->marketExitedHandler(cols[finalI]));
+			cols[i].setOnMouseClicked(event->marketCLickHandler("COL", finalI+1));
+		}
+
+		//set slots event
+		for (int i = 0; i < 3; i++) {
+			int finalI = i;
+			slots[i].setOnMouseClicked(event->slotClickHandler(finalI +1));
+		}
+
 	}
 
-	public void onMouseClickedActivateMarket(){
-		marketAble=true;
-		cardsActivation.setVisible(false);
-		marketActivation.setVisible(false);
-		notifyObserver(obs -> obs.onUpdateAction(PlayerActions.MARKET));
+	public void cardsSelectionHandler(int level, Colors color, int i, int j){
+		if(cardsAble && buyableCards.contains(deck.getCardStackStructure()[i][j].get(0))){
+			this.level=level;
+			this.color=color;
+			setGlow();
+			cardsImages[i][j].setEffect(new Glow(0.5));
+			setSlotsButtonVisible(true);
+			slotText.setText("Select a Slot!");
+		}
 	}
 
-	public void onMouseClickedActivateCards(){
-		cardsAble=true;
+	public void actionSelectionHandler(PlayerActions action){
+		if(action.equals(PlayerActions.MARKET))
+			marketAble=true;
 		cardsActivation.setVisible(false);
 		marketActivation.setVisible(false);
-
-		notifyObserver(obs -> obs.onUpdateAction(PlayerActions.BUY_CARD));
+		notifyObserver(obs -> obs.onUpdateAction(action));
 	}
 
 	public void setButtonVisible(ArrayList<PlayerActions> actions){
@@ -181,262 +234,24 @@ public class CommonBoard extends ViewObservable implements SceneController{
 
 	}
 
-	public void onMouseEnteredRow1(){
+	public void marketEnteredHandler(ImageView img){
 		if(marketAble)
-			normalRow1.setEffect(new Glow(1));
+			img.setEffect(new Glow(1));
 	}
 
-	public void onMouseEnteredRow2(){
-		if(marketAble)
-			normalRow2.setEffect(new Glow(1));
+	public void marketExitedHandler(ImageView img){
+		img.setEffect(new Glow(0.0));
 	}
 
-	public void onMouseEnteredRow3(){
-		if(marketAble)
-			normalRow3.setEffect(new Glow(1));
-	}
-
-
-	public void onMouseEnteredCol1(){
-		if(marketAble)
-			normalCol1.setEffect(new Glow(1));
-	}
-
-	public void onMouseEnteredCol2(){
-		if(marketAble)
-			normalCol2.setEffect(new Glow(1));
-	}
-
-	public void onMouseEnteredCol3(){
-		if(marketAble)
-			normalCol3.setEffect(new Glow(1));
-	}
-
-	public void onMouseEnteredCol4(){
-		if(marketAble)
-			normalCol4.setEffect(new Glow(1));
-	}
-
-	public void onMouseExitedRow1(){
-		normalRow1.setEffect(new Glow(0.0));
-	}
-
-	public void onMouseExitedRow2(){
-		normalRow2.setEffect(new Glow(0.0));
-
-	}
-
-	public void onMouseExitedRow3(){
-		normalRow3.setEffect(new Glow(0.0));
-	}
-
-	public void onMouseExitedCol1(){
-		normalCol1.setEffect(new Glow(0.0));
-	}
-
-	public void onMouseExitedCol2(){
-		normalCol2.setEffect(new Glow(0.0));
-	}
-
-	public void onMouseExitedCol3(){
-		normalCol3.setEffect(new Glow(0.0));
-	}
-
-	public void onMouseExitedCol4(){
-		normalCol4.setEffect(new Glow(0.0));
-	}
-
-	public void onMouseClickedRow1(){
+	public void marketCLickHandler(String which, int where){
 		if(marketAble) {
-			notifyObserver(obs -> obs.onUpdateMarketAction("row", 1));
+			notifyObserver(obs -> obs.onUpdateMarketAction(which, where));
 			marketAble=false;
 		}
 	}
 
-	public void onMouseClickedRow2(){
-		if(marketAble) {
-			notifyObserver(obs -> obs.onUpdateMarketAction("row", 2));
-			marketAble=false;
-		}
-	}
-
-	public void onMouseClickedRow3(){
-		if(marketAble) {
-			notifyObserver(obs -> obs.onUpdateMarketAction("row", 3));
-			marketAble = false;
-		}
-	}
-
-	public void onMouseClickedCol1(){
-		if(marketAble) {
-			notifyObserver(obs -> obs.onUpdateMarketAction("COL", 1));
-			marketAble = false;
-		}
-	}
-
-	public void onMouseClickedCol2(){
-		if(marketAble) {
-			notifyObserver(obs -> obs.onUpdateMarketAction("COL", 2));
-			marketAble = false;
-		}
-	}
-
-	public void onMouseClickedCol3(){
-		if(marketAble) {
-			notifyObserver(obs -> obs.onUpdateMarketAction("COL", 3));
-			marketAble = false;
-		}
-	}
-
-	public void onMouseClickedCol4(){
-		if(marketAble) {
-			notifyObserver(obs -> obs.onUpdateMarketAction("COL", 4));
-			marketAble = false;
-		}
-	}
-
-	public void onMouseClickedCards00(){
-		if(cardsAble && buyableCards.contains(deck.getCardStackStructure()[0][0].get(0))){
-			level=1;
-			color=Colors.GREEN;
-			setGlow();
-			cardsImages[0][0].setEffect(new Glow(0.5));
-			setSlotsButtonVisible(true);
-		}
-	}
-
-	public void onMouseClickedCards01(){
-		if(cardsAble && buyableCards.contains(deck.getCardStackStructure()[0][1].get(0))){
-			level=1;
-			color=Colors.BLUE;
-			setGlow();
-			cardsImages[0][1].setEffect(new Glow(0.5));
-			setSlotsButtonVisible(true);
-		}
-
-	}
-
-	public void onMouseClickedCards02(){
-		if(cardsAble && buyableCards.contains(deck.getCardStackStructure()[0][2].get(0))){
-			level=1;
-			color=Colors.YELLOW;
-			setGlow();
-			cardsImages[0][2].setEffect(new Glow(0.5));
-			setSlotsButtonVisible(true);
-		}
-
-	}
-
-	public void onMouseClickedCards03(){
-		if(cardsAble && buyableCards.contains(deck.getCardStackStructure()[0][3].get(0))){
-			level=1;
-			color=Colors.PURPLE;
-			setGlow();
-			cardsImages[0][3].setEffect(new Glow(0.5));
-			setSlotsButtonVisible(true);
-		}
-	}
-
-	public void onMouseClickedCards10(){
-		if(cardsAble && buyableCards.contains(deck.getCardStackStructure()[1][0].get(0))){
-			level=2;
-			color=Colors.GREEN;
-			setGlow();
-			cardsImages[1][0].setEffect(new Glow(0.5));
-			setSlotsButtonVisible(true);
-		}
-
-	}
-
-	public void onMouseClickedCards11(){
-		if(cardsAble && buyableCards.contains(deck.getCardStackStructure()[1][1].get(0))){
-			level=2;
-			color=Colors.BLUE;
-			setGlow();
-			cardsImages[1][1].setEffect(new Glow(0.5));
-			setSlotsButtonVisible(true);
-		}
-
-	}
-
-	public void onMouseClickedCards12(){
-		if(cardsAble && buyableCards.contains(deck.getCardStackStructure()[1][2].get(0))){
-			level=2;
-			color=Colors.YELLOW;
-			setGlow();
-			cardsImages[1][2].setEffect(new Glow(0.5));
-			setSlotsButtonVisible(true);
-		}
-	}
-
-	public void onMouseClickedCards13(){
-		if(cardsAble && buyableCards.contains(deck.getCardStackStructure()[1][3].get(0))){
-			level=2;
-			color=Colors.PURPLE;
-			setGlow();
-			cardsImages[1][3].setEffect(new Glow(0.5));
-			setSlotsButtonVisible(true);
-		}
-
-	}
-
-	public void onMouseClickedCards20(){
-		if(cardsAble && buyableCards.contains(deck.getCardStackStructure()[2][0].get(0))){
-			level=3;
-			color=Colors.GREEN;
-			setGlow();
-			cardsImages[2][0].setEffect(new Glow(0.5));
-			setSlotsButtonVisible(true);
-		}
-
-	}
-
-	public void onMouseClickedCards21(){
-		if(cardsAble && buyableCards.contains(deck.getCardStackStructure()[2][1].get(0))){
-			level=3;
-			color=Colors.BLUE;
-			setGlow();
-			cardsImages[2][1].setEffect(new Glow(0.5));
-			setSlotsButtonVisible(true);
-		}
-
-	}
-
-	public void onMouseClickedCards22(){
-		if(cardsAble && buyableCards.contains(deck.getCardStackStructure()[2][2].get(0))){
-			level=3;
-			color=Colors.YELLOW;
-			setGlow();
-			cardsImages[2][2].setEffect(new Glow(0.5));
-			setSlotsButtonVisible(true);
-		}
-
-	}
-
-	public void onMouseClickedCards23(){
-		if(cardsAble && buyableCards.contains(deck.getCardStackStructure()[2][3].get(0))){
-			level=3;
-			color=Colors.PURPLE;
-			setGlow();
-			cardsImages[2][3].setEffect(new Glow(0.5));
-			setSlotsButtonVisible(true);
-		}
-	}
-
-	public void onMouseClickedSlot1(){
-		notifyObserver(obs -> obs.onUpdateBuyCardAction(color,level,1));
-		cardsAble=false;
-		setSlotsButtonVisible(false);
-	}
-
-	public void onMouseClickedSlot2(){
-		notifyObserver(obs -> obs.onUpdateBuyCardAction(color,level,2));
-		cardsAble=false;
-		setSlotsButtonVisible(false);
-	}
-
-	public void onMouseClickedSlot3(){
-		notifyObserver(obs -> obs.onUpdateBuyCardAction(color,level,3));
+	public void slotClickHandler(int slot){
+		notifyObserver(obs -> obs.onUpdateBuyCardAction(color,level,slot));
 		cardsAble=false;
 		setSlotsButtonVisible(false);
 	}
@@ -445,14 +260,24 @@ public class CommonBoard extends ViewObservable implements SceneController{
 		this.deck=deck;
 		for (int i = 0; i < 3; i++) {
 			for (int j = 0; j < 4; j++) {
-				DevelopmentCard card=deck.getCardStackStructure()[i][j].get(0);
-				cardsImages[i][j].setImage(new Image("/assets/devCards/"+card.getCardNumber()+".png"));
-				cardsImages[i][j].setEffect(new Glow(0));
+				if(deck.getCardStackStructure()[i][j].size()>0) {
+					DevelopmentCard card = deck.getCardStackStructure()[i][j].get(0);
+					cardsImages[i][j].setImage(new Image("/assets/devCards/" + card.getCardNumber() + ".png"));
+					cardsImages[i][j].setEffect(new Glow(0));
+				}
+				else
+					cardsImages[i][j].setVisible(false);
 			}
 		}
 	}
 
-	public void setGreen(ArrayList<DevelopmentCard> cards){
+	public void setGreen(ArrayList<DevelopmentCard> cards, boolean wrong){
+		if(wrong) {
+			slotText.setVisible(true);
+			slotText.setText("Wrong Slot!");
+
+		}
+		cardsAble=true;
 		buyableCards=cards;
 		for (int i = 0; i < 3; i++) {
 			for (int j = 0; j < 4; j++) {
@@ -473,18 +298,11 @@ public class CommonBoard extends ViewObservable implements SceneController{
 		}
 	}
 
-
-	public void setTextVisible(Boolean visible){
-		text.setVisible(visible);
-		text.setEffect(new Glow(0.7));
-	}
-
 	public void setShadow(double value, ImageView img){
 		DropShadow dropShadow= new DropShadow();
 		dropShadow.setSpread(value);
 		dropShadow.setColor(Color.GREEN);
 		img.setEffect(dropShadow);
 	}
-
 
 }
