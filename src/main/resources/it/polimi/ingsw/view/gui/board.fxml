@@ -83,10 +83,10 @@
     </GridPane>
 
     <!-- warehouse depot images -->
-    <ImageView fx:id="depot1" fitHeight="64.0" fitWidth="74.0" layoutX="165.0" layoutY="461.0" pickOnBounds="true" preserveRatio="true" />
-    <ImageView fx:id="depot2" fitHeight="71.0" fitWidth="74.0" layoutX="118.0" layoutY="559.0" pickOnBounds="true" preserveRatio="true" />
-    <ImageView fx:id="depot3" fitHeight="79.0" fitWidth="74.0" layoutX="200.0" layoutY="555.0" pickOnBounds="true" preserveRatio="true" />
-    <ImageView fx:id="depot4" fitHeight="71.0" fitWidth="74.0" layoutX="98.0" layoutY="656.0" pickOnBounds="true" preserveRatio="true" />
+    <ImageView fx:id="depot1" fitHeight="67.0" fitWidth="60.0" layoutX="168.0" layoutY="465.0" pickOnBounds="true" preserveRatio="true" />
+    <ImageView fx:id="depot2" fitHeight="67.0" fitWidth="60.0" layoutX="132.0" layoutY="562.0" pickOnBounds="true" preserveRatio="true" />
+    <ImageView fx:id="depot3" fitHeight="67.0" fitWidth="60.0" layoutX="200.0" layoutY="562.0" pickOnBounds="true" preserveRatio="true" />
+    <ImageView fx:id="depot4" fitHeight="67.0" fitWidth="60.0" layoutX="103.0" layoutY="656.0" pickOnBounds="true" preserveRatio="true" />
     <ImageView fx:id="depot5" fitHeight="67.0" fitWidth="60.0" layoutX="167.0" layoutY="656.0" pickOnBounds="true" preserveRatio="true" />
     <ImageView fx:id="depot6" fitHeight="67.0" fitWidth="60.0" layoutX="223.0" layoutY="656.0" pickOnBounds="true" preserveRatio="true" />
 
@@ -162,10 +162,10 @@
             <Image url="@../../../../../assets/board/resources_deck.png" />
         </ImageView>
         <VBox alignment="CENTER" prefHeight="295.0" prefWidth="116.0" spacing="10">
-            <ImageView fx:id="deck1" fitHeight="70.0" fitWidth="70.0" pickOnBounds="true" preserveRatio="true" />
-            <ImageView fx:id="deck2" fitHeight="70.0" fitWidth="70.0" pickOnBounds="true" preserveRatio="true" />
-            <ImageView fx:id="deck3" fitHeight="70.0" fitWidth="70.0" pickOnBounds="true" preserveRatio="true" />
-            <ImageView fx:id="deck4" fitHeight="70.0" fitWidth="70.0" pickOnBounds="true" preserveRatio="true" />
+            <ImageView fx:id="deck1" fitHeight="67.0" fitWidth="60.0" pickOnBounds="true" preserveRatio="true" />
+            <ImageView fx:id="deck2" fitHeight="67.0" fitWidth="60.0" pickOnBounds="true" preserveRatio="true" />
+            <ImageView fx:id="deck3" fitHeight="67.0" fitWidth="60.0" pickOnBounds="true" preserveRatio="true" />
+            <ImageView fx:id="deck4" fitHeight="67.0" fitWidth="60.0" pickOnBounds="true" preserveRatio="true" />
         </VBox>
     </StackPane>
 
