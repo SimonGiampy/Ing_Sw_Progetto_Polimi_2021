@@ -12,6 +12,8 @@ import it.polimi.ingsw.model.util.Resources;
 import it.polimi.ingsw.observers.ViewObservable;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.scene.Cursor;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.effect.ColorAdjust;
@@ -19,11 +21,12 @@ import javafx.scene.effect.DropShadow;
 import javafx.scene.effect.Glow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.MouseEvent;
+import javafx.scene.input.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Stack;
 
 public class Board extends ViewObservable implements SceneController {
@@ -107,6 +110,11 @@ public class Board extends ViewObservable implements SceneController {
 	private ArrayList<Productions> availableProduction;
 	private boolean productionAble;
 	
+	// integer flags indicating the corresponding leader card (ordinal integer number) to the list of extra depot leaders
+	//TODO: add code that modifies these parameters when the player decides to activate a leader card with the extra depot ability
+	private int extraDepotLeader1Activation; // = 0 if not active, = 1 if it's the first leader, =2 if it's the second leader
+	private int extraDepotLeader2Activation; // = 0 if not active, = 1 if it's the first leader, =2 if it's the second leader
+	
 	@FXML
 	public void initialize() {
 		Font.loadFont(getClass().getResourceAsStream("/assets/font/Caveat-Regular.ttf"), 10);
@@ -139,6 +147,7 @@ public class Board extends ViewObservable implements SceneController {
 		coordinates.add(new Coordinates(23, 1320, 66));
 		coordinates.add(new Coordinates(24, 1394, 66));
 
+		//development card slots
 		slot1 = new ImageView[]{img11, img12, img13};
 		slot2 = new ImageView[]{img21, img22, img23};
 		slot3 = new ImageView[]{img31, img32, img33};
@@ -149,6 +158,7 @@ public class Board extends ViewObservable implements SceneController {
 		
 		updateCrossCoords(0); // initial position when the game starts
 		
+		//mouse click handlers for the series of productions available on the board
 		baseProduction.setOnMouseClicked(event -> productionSelectionHandler(Productions.BASE_PRODUCTION, baseProduction));
 		leader1.setOnMouseClicked(event -> productionSelectionHandler(Productions.LEADER_CARD_1_PRODUCTION, leader1));
 		leader2.setOnMouseClicked(event -> productionSelectionHandler(Productions.LEADER_CARD_2_PRODUCTION, leader2));
@@ -159,6 +169,8 @@ public class Board extends ViewObservable implements SceneController {
 			slot3[i].setOnMouseClicked(event -> productionSelectionHandler(Productions.STACK_3_CARD_PRODUCTION, slot3[finalI]));
 		}
 		
+		extraDepotLeader1Activation = 0;
+		extraDepotLeader2Activation = 0;
 	}
 	
 	/**
@@ -221,87 +233,7 @@ public class Board extends ViewObservable implements SceneController {
 		}
 	}
 	
-	/**
-	 * Updates the images on the warehouse depots and the additional depots (if the relative ability is activated).
-	 * Sets the incoming resources deposit if there are any and makes it visible.
-	 * @param depot reduced class containing the incoming resources, warehouse depots and additional depots
-	 */
-	public void updateDepots(ReducedWarehouseDepot depot) {
-		// updates the warehouse depots
-		Resources[] resources = depot.getDepot();
-		ImageView[] images = new ImageView[]{depot1, depot2, depot3, depot4, depot5, depot6};
-		for (int i = 0; i < 6; i++) {
-			if (resources[i] == Resources.EMPTY) {
-				images[i].setImage(null);
-			} else {
-				images[i].setImage(new Image(resources[i].path));
-			}
-		}
-		
-		//updates the additional depots if they're set and the abilities are activated (only if the image hasn't been set yet)
-		//TODO: there is 100% a bug where if the leader activated with the additional depots is the second one (visually) then
-		//      the resources will be put over the first leader image. This is because the Model treats the leaders activated regardless
-		//      of the order in which the leaders are displayed.
-		//  Solution: use variables to identify which leader has been activated and sets the corresponding images accordingly
-		if (depot.isLeaderActivated(0)) {
-			if (depot.getExtraDepotContents().get(0).get(0)) {
-				if (res11.getImage() == null) {
-					res11.setImage(new Image(depot.getExtraDepotResources().get(0).get(0).path));
-				}
-			}
-			if (depot.getExtraDepotContents().get(0).get(1)) {
-				if (res12.getImage() == null) {
-					res12.setImage(new Image(depot.getExtraDepotResources().get(0).get(1).path));
-				}
-			}
-		}
-		if (depot.isLeaderActivated(1)) {
-			if (depot.getExtraDepotContents().get(1).get(0)) {
-				if (res21.getImage() == null) {
-					res21.setImage(new Image(depot.getExtraDepotResources().get(1).get(0).path));
-				}
-			}
-			if (depot.getExtraDepotContents().get(1).get(1)) {
-				if (res22.getImage() == null) {
-					res22.setImage(new Image(depot.getExtraDepotResources().get(1).get(1).path));
-				}
-			}
-		}
-		
-		// update incoming resource deck contents. Deck must not contain any empty resources
-		ArrayList<Resources> incomingDeck = depot.getIncomingResources();
-		if (!incomingDeck.isEmpty()) {
-			deckContainer.setVisible(true);
-			if (incomingDeck.size() >= 1) {
-				deck1.setImage(new Image(incomingDeck.get(0).path));
-			} else {
-				deck1.setImage(null);
-				deck2.setImage(null);
-				deck3.setImage(null);
-				deck4.setImage(null);
-			}
-			if (incomingDeck.size() >= 2) {
-				deck2.setImage(new Image(incomingDeck.get(1).path));
-			} else {
-				deck2.setImage(null);
-				deck3.setImage(null);
-				deck4.setImage(null);
-			}
-			if (incomingDeck.size() >= 3) {
-				deck3.setImage(new Image(incomingDeck.get(2).path));
-			} else {
-				deck3.setImage(null);
-				deck4.setImage(null);
-			}
-			if (incomingDeck.size() >= 4) {
-				deck4.setImage(new Image(incomingDeck.get(3).path));
-			} else {
-				deck4.setImage(null);
-			}
-		} else {
-			deckContainer.setVisible(false);
-		}
-	}
+	
 	
 	/**
 	 * updates the development cards in the slots, setting the images if not set yet.
@@ -637,13 +569,210 @@ public class Board extends ViewObservable implements SceneController {
 	}
 	
 	
+	/**
+	 * Updates the images on the warehouse depots and the additional depots (if the relative ability is activated).
+	 * Sets the incoming resources deposit if there are any and makes it visible.
+	 * @param depot reduced class containing the incoming resources, warehouse depots and additional depots
+	 */
+	public void updateDepots(ReducedWarehouseDepot depot) {
+		// updates the warehouse depots
+		Resources[] resources = depot.getDepot();
+		//System.out.println("depot arrived like this = " + Arrays.toString(resources));
+		ImageView[] images = new ImageView[]{depot1, depot2, depot3, depot4, depot5, depot6};
+		for (int i = 0; i < 6; i++) {
+			if (resources[i] == Resources.EMPTY) {
+				images[i].setImage(null);
+			} else {
+				images[i].setImage(new Image(resources[i].path));
+			}
+		}
+		
+		//updates the additional depots if they're set and the abilities are activated (only if the image hasn't been set yet)
+		//TODO: there is 100% a bug where if the leader activated with the additional depots is the second one (visually) then
+		//      the resources will be put over the first leader image. This is because the Model treats the leaders activated regardless
+		//      of the order in which the leaders are displayed.
+		//  Solution: use variables to identify which leader has been activated and sets the corresponding images accordingly
+		//  TODO (Update) : solved the bug, but the 2 integer flags must be set when a leader is activated (read above)
+		if (depot.isLeaderActivated(0)) {
+			if (depot.getExtraDepotContents().get(0).get(0)) {
+				if (extraDepotLeader1Activation == 1) {
+					res11.setImage(new Image(depot.getExtraDepotResources().get(0).get(0).path));
+				} else if (extraDepotLeader1Activation == 2) {
+					res21.setImage(new Image(depot.getExtraDepotResources().get(0).get(0).path));
+				}
+			}
+			if (depot.getExtraDepotContents().get(0).get(1)) {
+				if (extraDepotLeader1Activation == 1) {
+					res12.setImage(new Image(depot.getExtraDepotResources().get(0).get(1).path));
+				} else if (extraDepotLeader1Activation == 2) {
+					res22.setImage(new Image(depot.getExtraDepotResources().get(0).get(1).path));
+				}
+			}
+		}
+		if (depot.isLeaderActivated(1)) {
+			if (depot.getExtraDepotContents().get(1).get(0)) {
+				if (extraDepotLeader2Activation == 1) {
+					res11.setImage(new Image(depot.getExtraDepotResources().get(1).get(0).path));
+				} else if (extraDepotLeader2Activation == 2) {
+					res21.setImage(new Image(depot.getExtraDepotResources().get(1).get(0).path));
+				}
+			}
+			if (depot.getExtraDepotContents().get(1).get(1)) {
+				if (extraDepotLeader2Activation == 1) {
+					res12.setImage(new Image(depot.getExtraDepotResources().get(1).get(0).path));
+				} else if (extraDepotLeader2Activation == 2) {
+					res22.setImage(new Image(depot.getExtraDepotResources().get(1).get(0).path));
+				}
+			}
+		}
+		
+		// update incoming resource deck contents. Deck must not contain any empty resources
+		ArrayList<Resources> incomingDeck = depot.getIncomingResources();
+		if (!incomingDeck.isEmpty()) {
+			deck1.setImage(new Image(incomingDeck.get(0).path));
+			if (incomingDeck.size() >= 2) {
+				deck2.setImage(new Image(incomingDeck.get(1).path));
+			} else {
+				deck2.setImage(null);
+				deck3.setImage(null);
+				deck4.setImage(null);
+			}
+			if (incomingDeck.size() >= 3) {
+				deck3.setImage(new Image(incomingDeck.get(2).path));
+			} else {
+				deck3.setImage(null);
+				deck4.setImage(null);
+			}
+			if (incomingDeck.size() >= 4) {
+				deck4.setImage(new Image(incomingDeck.get(3).path));
+			} else {
+				deck4.setImage(null);
+			}
+		} else {
+			deck1.setImage(null);
+			deck2.setImage(null);
+			deck3.setImage(null);
+			deck4.setImage(null);
+		}
+	}
+	
 	public void depotInteraction(ReducedWarehouseDepot depot, boolean initialMove, boolean confirmationAvailable, boolean inputValid) {
+		//System.out.println("new depot reply: initial = " + initialMove + ", confirm = " + confirmationAvailable + ", valid = " + inputValid + ":");
 		updateDepots(depot);
 		
+		//TODO: the sizes of the imageviews in the warehouse depot are not homogeneous: resize them properly
+		
 		confirmationDepot.setVisible(true);
-		confirmationDepot.setDisable(confirmationAvailable);
-		invalidMove.setVisible(inputValid);
+		confirmationDepot.setDisable(!confirmationAvailable);
+		confirmationDepot.setOnMouseClicked(event -> {
+			invalidMove.setVisible(false);
+			deckContainer.setVisible(false);
+			confirmationDepot.setVisible(false);
+			deck1.setImage(null);
+			deck2.setImage(null);
+			deck3.setImage(null);
+			deck4.setImage(null);
+			notifyObserver(obs -> obs.onUpdateDepotMove("", "", 0, 0, true));
+			
+			//TODO: disable drag and drop functionality among the deck and depot after user confirmation
+		});
+		invalidMove.setVisible(!inputValid);
 		
-		
+		// drag and drop functionality
+		if (initialMove) { //activates drag and drop
+			deckContainer.setVisible(true);
+			
+			ImageView[] decks = new ImageView[] {deck1, deck2, deck3, deck4};
+			for (int i = 1; i <= 4; i++) {
+				if (depot.getIncomingResources().size() >= i) {
+					dragOrigin(decks[i-1], i + "deck");
+				}
+				dragDestination(decks[i-1], true, i + "deck");
+			}
+			/*
+			if (depot.getIncomingResources().size() >= 1) {
+				dragOrigin(deck1, "1deck");
+			}
+			if (depot.getIncomingResources().size() >= 2) {
+				dragOrigin(deck2, "2deck");
+			}
+			if (depot.getIncomingResources().size() >= 3) {
+				dragOrigin(deck3, "3deck");
+			}
+			if (depot.getIncomingResources().size() == 4) {
+				dragOrigin(deck4, "4deck");
+			}
+			
+			dragDestination(deck1, true, "1deck");
+			dragDestination(deck2, true, "2deck");
+			dragDestination(deck3, true, "3deck");
+			dragDestination(deck4, true, "4deck");
+			*/
+			
+			ImageView[] deps = new ImageView[] {depot1, depot2, depot3, depot4, depot5, depot6};
+			for (int i = 1; i <= 6; i++) {
+				dragOrigin(deps[i-1], i + "depot");
+				dragDestination(deps[i-1], false, i + "depot");
+			}
+			/*
+			dragOrigin(depot1, "1depot");
+			dragOrigin(depot2, "2depot");
+			dragOrigin(depot3, "3depot");
+			dragOrigin(depot4, "4depot");
+			dragOrigin(depot5, "5depot");
+			dragOrigin(depot6, "6depot");
+			
+			dragDestination(depot1, false, "1depot");
+			dragDestination(depot2, false, "2depot");
+			dragDestination(depot3, false, "3depot");
+			dragDestination(depot4, false, "4depot");
+			dragDestination(depot5, false, "5depot");
+			dragDestination(depot6, false, "6depot");
+			 */
+		}
+	}
+	
+	private void dragOrigin(ImageView image, String origin) {
+		image.setOnDragDetected(event -> {
+			Dragboard db = image.startDragAndDrop(TransferMode.MOVE);
+			ClipboardContent content = new ClipboardContent();
+			content.putString(origin);
+			db.setContent(content);
+		});
+		image.setOnMouseEntered(this::onMouseHover);
+	}
+	
+	private void dragDestination(ImageView image, boolean notFromDecks, String destination) {
+		image.setOnDragOver(event -> {
+			if (notFromDecks) {
+				if (event.getGestureSource() != deck1 && event.getGestureSource() != deck2 && event.getGestureSource() != deck3
+						&& event.getGestureSource() != deck4 && event.getDragboard().hasString()) {
+					event.acceptTransferModes(TransferMode.MOVE);
+				}
+			} else {
+				if (event.getGestureSource() != image && event.getDragboard().hasString()) {
+					event.acceptTransferModes(TransferMode.MOVE);
+				}
+			}
+			event.consume();
+		});
+		image.setOnDragDropped(event -> {
+			Dragboard db = event.getDragboard();
+			event.setDropCompleted(true);
+			event.consume();
+			notifyMove(db.getString(), destination);
+		});
+	}
+	
+	private void onMouseHover(MouseEvent event) {
+		((Node) event.getSource()).setCursor(Cursor.HAND);
+	}
+	
+	private void notifyMove(String origin, String destination) {
+		int originPos = Character.getNumericValue(origin.charAt(0));
+		String fromWhere = origin.substring(1);
+		int destinationPos = Character.getNumericValue(destination.charAt(0));
+		String toWhere = destination.substring(1);
+		notifyObserver(obs -> obs.onUpdateDepotMove(fromWhere, toWhere, originPos, destinationPos, false));
 	}
 }
