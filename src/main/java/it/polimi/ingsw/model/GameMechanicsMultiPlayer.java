@@ -49,9 +49,9 @@ public class GameMechanicsMultiPlayer {
 		for (int i = 0; i < numberOfPlayers * 4; i++) {
 			gameLeaders[i / 4][i % 4] = allLeaderCards.get(i);
 		}
-		boolean single = numberOfPlayers == 1;
+		//boolean single = numberOfPlayers == 1;
 		for (int i = 0; i < numberOfPlayers; i++) {
-			playersTracks[i] = new FaithTrack(xmlTiles, reportPoints, single);
+			playersTracks[i] = new FaithTrack(xmlTiles, reportPoints, false);
 			players[i] = instantiatePlayer(gameLeaders[i], playersTracks[i], rules, i);
 		}
 		

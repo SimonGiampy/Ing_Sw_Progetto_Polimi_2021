@@ -26,7 +26,7 @@ class FaithTrackTest {
 		ArrayList<Integer> reportPoints = parser.readReportPoints();
 		faithTrack = new FaithTrack(tilesTrack, reportPoints, false);
 		faithTrack2 = new FaithTrack(tilesTrack, reportPoints, false);
-		assertFalse(faithTrack.isSinglePlayer());
+		assertFalse(faithTrack.isLorenzosTrack());
 		ArrayList<Boolean> reports = new ArrayList<>();
 		reports.add(false);
 		reports.add(false);

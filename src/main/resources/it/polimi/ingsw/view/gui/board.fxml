@@ -18,36 +18,36 @@
 
 
     <!-- 3 slots, each one containing a stack of 3 development cards -->
-    <StackPane layoutX="580.0" layoutY="445.0" prefHeight="536.0" prefWidth="274.0">
-        <ImageView fx:id="img11" fitHeight="400.0" fitWidth="274.0" pickOnBounds="true"
+    <StackPane layoutX="580.0" layoutY="445.0" prefHeight="536.0" prefWidth="274.0" pickOnBounds="false">
+        <ImageView fx:id="img11" fitHeight="400.0" fitWidth="274.0"
                    preserveRatio="true" StackPane.alignment="BOTTOM_CENTER" />
 
-        <ImageView fx:id="img12" fitHeight="400.0" fitWidth="274.0" pickOnBounds="true"
+        <ImageView fx:id="img12" fitHeight="400.0" fitWidth="274.0"
                    preserveRatio="true" StackPane.alignment="CENTER" />
 
-        <ImageView fx:id="img13" fitHeight="400.0" fitWidth="274.0" pickOnBounds="true"
+        <ImageView fx:id="img13" fitHeight="400.0" fitWidth="274.0"
                    preserveRatio="true" StackPane.alignment="TOP_CENTER" />
 
     </StackPane>
-    <StackPane layoutX="867.0" layoutY="445.0" prefHeight="536.0" prefWidth="274.0">
-        <ImageView fx:id="img21" fitHeight="400.0" fitWidth="274.0" pickOnBounds="true"
+    <StackPane layoutX="867.0" layoutY="445.0" prefHeight="536.0" prefWidth="274.0" pickOnBounds="false">
+        <ImageView fx:id="img21" fitHeight="400.0" fitWidth="274.0"
                    preserveRatio="true" StackPane.alignment="BOTTOM_CENTER" />
 
-        <ImageView fx:id="img22" fitHeight="400.0" fitWidth="274.0" pickOnBounds="true"
+        <ImageView fx:id="img22" fitHeight="400.0" fitWidth="274.0"
                    preserveRatio="true" StackPane.alignment="CENTER" />
 
-        <ImageView fx:id="img23" fitHeight="400.0" fitWidth="274.0" pickOnBounds="true"
+        <ImageView fx:id="img23" fitHeight="400.0" fitWidth="274.0"
                    preserveRatio="true" StackPane.alignment="TOP_CENTER" />
 
     </StackPane>
-    <StackPane layoutX="1167.0" layoutY="445.0" prefHeight="536.0" prefWidth="274.0">
-        <ImageView fx:id="img31" fitHeight="400.0" fitWidth="274.0" pickOnBounds="true"
+    <StackPane layoutX="1167.0" layoutY="445.0" prefHeight="536.0" prefWidth="274.0" pickOnBounds="false">
+        <ImageView fx:id="img31" fitHeight="400.0" fitWidth="274.0"
                    preserveRatio="true" StackPane.alignment="BOTTOM_CENTER" />
 
-        <ImageView fx:id="img32" fitHeight="400.0" fitWidth="274.0" pickOnBounds="true"
+        <ImageView fx:id="img32" fitHeight="400.0" fitWidth="274.0"
                    preserveRatio="true" StackPane.alignment="CENTER" />
 
-        <ImageView fx:id="img33" fitHeight="400.0" fitWidth="274.0" pickOnBounds="true"
+        <ImageView fx:id="img33" fitHeight="400.0" fitWidth="274.0"
                    preserveRatio="true" StackPane.alignment="TOP_CENTER" />
 
     </StackPane>
@@ -148,7 +148,7 @@
     </ImageView>
 
     <Button fx:id="actProductions" layoutX="370.0" layoutY="920.0" mnemonicParsing="false" onMouseClicked="#activateProduction"
-            prefHeight="39.0" prefWidth="186.0" styleClass="fancy_font, primary" text="Activate Productions" visible="false" />
+            prefHeight="39.0" prefWidth="186.0" styleClass="fancy_font, primary" text="Activate Productions" visible="true" />
 
     <!-- additional depot resources -->
     <ImageView fx:id="res11" fitHeight="88.0" fitWidth="92.0" layoutX="1605.0" layoutY="390.0" pickOnBounds="true" preserveRatio="true" />

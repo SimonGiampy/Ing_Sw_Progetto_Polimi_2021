@@ -9,16 +9,16 @@ public class FaithTrack {
 	private Integer currentPosition;
 	private final ArrayList<Tile> track;
 	private final ArrayList<Integer> reportPoints;
-	private final boolean singlePlayer;
+	private final boolean lorenzo;
 	private int lastReportClaimed;
 	
 	/**
 	 * Constructor that initializes the entire faith track
 	 * @param tiles all the tiles contained in the faith track
 	 * @param reportPoints the points gained from each report
-	 * @param singlePlayer flag indicating if this is a single player match
+	 * @param lorenzo flag indicating if this is a single player match
 	 */
-	public FaithTrack(ArrayList<Tile> tiles, ArrayList<Integer> reportPoints, boolean singlePlayer) {
+	public FaithTrack(ArrayList<Tile> tiles, ArrayList<Integer> reportPoints, boolean lorenzo) {
 		track = tiles;
 		currentPosition = 0;
 		vaticanReports = new ArrayList<>();
@@ -28,7 +28,7 @@ public class FaithTrack {
 			reportsActivated.add(false);
 		}
 		this.reportPoints = reportPoints;
-		this.singlePlayer = singlePlayer;
+		this.lorenzo = lorenzo;
 	}
 
 	
@@ -119,8 +119,8 @@ public class FaithTrack {
 		return vaticanReports;
 	}
 	
-	public boolean isSinglePlayer() {
-		return singlePlayer;
+	public boolean isLorenzosTrack() {
+		return lorenzo;
 	}
 
 	public int getLastReportClaimed() {

@@ -56,7 +56,7 @@ public class CLIUtils {
 
 		StringBuilder string = new StringBuilder();
 		StringBuilder markerColor = new StringBuilder();
-		boolean lorenzo = faithTrack.isSinglePlayer();
+		boolean lorenzo = faithTrack.isLorenzosTrack();
 		if(!lorenzo) markerColor.append(Unicode.RED_BOLD);
 		else markerColor.append(Unicode.BLACK_BOLD);
 		//Row for vatican reports

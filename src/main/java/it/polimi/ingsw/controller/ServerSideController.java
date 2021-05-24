@@ -153,21 +153,45 @@ public class ServerSideController {
 		gameState = GameState.GAME;
 		
 		//TODO: STOP CHEATING!
-		/*
+		
 		Resources[] resources={Resources.COIN,Resources.STONE,Resources.STONE,Resources.SHIELD,Resources.SHIELD,Resources.SHIELD};
 		ArrayList<Resources> set= new ArrayList<>();
 		set.add(Resources.COIN);
 		set.add(Resources.COIN);
 		set.add(Resources.COIN);
 		set.add(Resources.COIN);
+		set.add(Resources.COIN);
+		set.add(Resources.COIN);
+		set.add(Resources.COIN);
+		set.add(Resources.COIN);
 		set.add(Resources.SERVANT);
 		set.add(Resources.SERVANT);
 		set.add(Resources.SERVANT);
 		set.add(Resources.SERVANT);
 		set.add(Resources.SERVANT);
+		set.add(Resources.SERVANT);
+		set.add(Resources.SERVANT);
+		set.add(Resources.SERVANT);
+		set.add(Resources.SHIELD);
+		set.add(Resources.SHIELD);
+		set.add(Resources.SHIELD);
+		set.add(Resources.SHIELD);
+		set.add(Resources.SHIELD);
+		set.add(Resources.SHIELD);
+		set.add(Resources.SHIELD);
+		set.add(Resources.STONE);
+		set.add(Resources.STONE);
+		set.add(Resources.STONE);
+		set.add(Resources.STONE);
+		set.add(Resources.STONE);
+		set.add(Resources.STONE);
+		set.add(Resources.STONE);
+		set.add(Resources.STONE);
+		set.add(Resources.STONE);
+		
 		mechanics.getPlayer(0).getMyStrongbox().storeResources(set);
 		mechanics.getPlayer(0).getPlayersWarehouseDepot().setDepotForDebugging(resources);
-		*/
+		
 		turnController.startTurn();
 	}
 
@@ -376,7 +400,7 @@ public class ServerSideController {
 				if(i != playerIndex) {
 					mechanics.getPlayer(i).getPlayerFaithTrack().moveMarker(n);
 					virtualViewMap.get(nicknameList.get(i)).showGenericMessage(message.getNickname()+ " discarded " + n +
-							" resources, you get " + n + " faith points" ); //TODO: NOT USELESS
+							" resources, you get " + n + " faith points" );
 					virtualViewMap.get(nicknameList.get(i)).showFaithTrack(nicknameList.get(i),
 							new ReducedFaithTrack(mechanics.getPlayer(i).getPlayerFaithTrack()));
 				}
@@ -391,14 +415,14 @@ public class ServerSideController {
 				try {
 					confirmable = depot.moveResourcesToDepot(message.getFromWhere(), message.getOrigin(), message.getDestination());
 				} catch (InvalidUserRequestException e) {
-					view.replyDepot(new ReducedWarehouseDepot(depot), false, message.isConfirmed(), false);
+					view.replyDepot(new ReducedWarehouseDepot(depot), false, depot.isCombinationCorrect(), false);
 					return;
 				}
 			} else if (message.getToWhere().equals("deck")) {
 				try {
 					confirmable = depot.moveResourcesBackToDeck(message.getOrigin());
 				} catch (InvalidUserRequestException e) {
-					view.replyDepot(new ReducedWarehouseDepot(depot), false, message.isConfirmed(), false);
+					view.replyDepot(new ReducedWarehouseDepot(depot), false, depot.isCombinationCorrect(), false);
 					return;
 				}
 			}

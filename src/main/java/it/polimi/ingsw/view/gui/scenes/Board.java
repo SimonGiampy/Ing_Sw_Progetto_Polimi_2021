@@ -151,7 +151,8 @@ public class Board extends ViewObservable implements SceneController {
 		slot1 = new ImageView[]{img11, img12, img13};
 		slot2 = new ImageView[]{img21, img22, img23};
 		slot3 = new ImageView[]{img31, img32, img33};
-		selectedProduction=new ArrayList<>();
+		selectedProduction = new ArrayList<>();
+		availableProduction = new ArrayList<>();
 		sizeSlot1=0;
 		sizeSlot2=0;
 		sizeSlot3=0;
@@ -162,13 +163,14 @@ public class Board extends ViewObservable implements SceneController {
 		baseProduction.setOnMouseClicked(event -> productionSelectionHandler(Productions.BASE_PRODUCTION, baseProduction));
 		leader1.setOnMouseClicked(event -> productionSelectionHandler(Productions.LEADER_CARD_1_PRODUCTION, leader1));
 		leader2.setOnMouseClicked(event -> productionSelectionHandler(Productions.LEADER_CARD_2_PRODUCTION, leader2));
+		/*
 		for (int i = 0; i < 3; i++) {
 			int finalI = i;
 			slot1[i].setOnMouseClicked(event -> productionSelectionHandler(Productions.STACK_1_CARD_PRODUCTION, slot1[finalI]));
 			slot2[i].setOnMouseClicked(event -> productionSelectionHandler(Productions.STACK_2_CARD_PRODUCTION, slot2[finalI]));
 			slot3[i].setOnMouseClicked(event -> productionSelectionHandler(Productions.STACK_3_CARD_PRODUCTION, slot3[finalI]));
 		}
-		
+		*/
 		extraDepotLeader1Activation = 0;
 		extraDepotLeader2Activation = 0;
 	}
@@ -240,26 +242,45 @@ public class Board extends ViewObservable implements SceneController {
 	 * @param cardManager reduces class containing the stacks of the dev cards on the player board.
 	 */
 	public void updateDevCardsSlots(ReducedCardProductionManagement cardManager) {
-
 		ArrayList<Stack<DevelopmentCard>> cards = cardManager.getCards();
-		sizeSlot1=cards.get(0).size();
-		sizeSlot2=cards.get(1).size();
-		sizeSlot3=cards.get(2).size();
-		for(int i = 0; i < cards.get(0).size(); i++){
-			if(slot1[i].getImage() == null){
-				slot1[i].setImage(new Image("/assets/devCards/" + cards.get(0).get(i).getCardNumber() + ".png"));
+		sizeSlot1 = cards.get(0).size();
+		sizeSlot2 = cards.get(1).size();
+		sizeSlot3 = cards.get(2).size();
+		
+		//slot 1 old dev cards and new dev cards
+		if (sizeSlot1 > 0) {
+			if (slot1[sizeSlot1 - 1].getImage() == null) {
+				slot1[sizeSlot1 - 1].setImage(new Image("/assets/devCards/" + cards.get(0).get(sizeSlot1 - 1).getCardNumber() + ".png"));
+				slot1[sizeSlot1 - 1].setOnMouseClicked(event -> productionSelectionHandler(Productions.STACK_1_CARD_PRODUCTION, slot1[sizeSlot1 - 1]));
+			}
+			for (int i = 0; i < sizeSlot1 - 1; i++) {
+				slot1[i].setOnMouseClicked(null);
 			}
 		}
-		for(int i = 0; i < cards.get(1).size(); i++){
-			if(slot2[i].getImage() == null){
-				slot2[i].setImage(new Image("/assets/devCards/" + cards.get(1).get(i).getCardNumber() + ".png"));
+		
+		//slot 2 old dev cards and new dev cards
+		if (sizeSlot2 > 0) {
+			if (slot2[sizeSlot2 - 1].getImage() == null) {
+				slot2[sizeSlot2 - 1].setImage(new Image("/assets/devCards/" + cards.get(1).get(sizeSlot2 - 1).getCardNumber() + ".png"));
+				slot2[sizeSlot2 - 1].setOnMouseClicked(event -> productionSelectionHandler(Productions.STACK_2_CARD_PRODUCTION, slot2[sizeSlot2 - 1]));
+			}
+			for (int i = 0; i < sizeSlot2 - 1; i++) {
+				slot2[i].setOnMouseClicked(null);
 			}
 		}
-		for(int i = 0; i < cards.get(2).size(); i++){
-			if(slot3[i].getImage() == null){
-				slot3[i].setImage(new Image("/assets/devCards/" + cards.get(2).get(i).getCardNumber() + ".png"));
+		
+		
+		//slot 3 old dev cards and new dev cards
+		if (sizeSlot3 > 0) {
+			if (slot3[sizeSlot3 - 1].getImage() == null) {
+				slot3[sizeSlot3 - 1].setImage(new Image("/assets/devCards/" + cards.get(2).get(sizeSlot3 - 1).getCardNumber() + ".png"));
+				slot3[sizeSlot3 - 1].setOnMouseClicked(event -> productionSelectionHandler(Productions.STACK_3_CARD_PRODUCTION, slot3[sizeSlot3 - 1]));
+			}
+			for (int i = 0; i < sizeSlot3 - 1; i++) {
+				slot3[i].setOnMouseClicked(null);
 			}
 		}
+		
 	}
 
 	public void onMouseClickDis1(){
@@ -363,181 +384,67 @@ public class Board extends ViewObservable implements SceneController {
 		calamaio.setVisible(true);
 	}
 
-	private static class Coordinates {
-		private final double x;
-		private final double y;
-		
-		Coordinates(int pos, double x, double y) {
-			this.x = x;
-			this.y = y;
-		}
-		
-		public double getX() {
-			return x;
-		}
-		
-		public double getY() {
-			return y;
-		}
-	}
+	
 
 	public void setActProductions(boolean value){
 		actProductions.setVisible(value);
 	}
 
 	public void activateProduction(){
+		//TODO: cannot do 2 productions in a row
 		if(actProductions.getText().equals("Activate Productions")) {
 			notifyObserver(obs -> obs.onUpdateAction(PlayerActions.PRODUCTIONS));
-			actProductions.setVisible(false);
+			actProductions.setDisable(true);
 			actProductions.setText("Confirm Productions");
-		}
-		else{
+			productionAble = true;
+		} else {
 			notifyObserver(obs->obs.onUpdateProductionAction(selectedProduction));
 			actProductions.setText("Activate Productions");
-			actProductions.setVisible(false);
+			actProductions.setDisable(true); // TODO: enable this button if there are productions available
 			productionAble=false;
 			setNormal();
 		}
 	}
 	
 	public void productionSelectionHandler(Productions production, ImageView image) {
+		System.out.println("clicked on " + image.getId() + ".");
 		if(productionAble && availableProduction.contains(production)) {
+			System.out.println("productionable");
 			if (!selectedProduction.contains(production)) {
 				image.setEffect(new Glow(0.5));
+				System.out.println("glow set on " + image.getId() + ".");
 				selectedProduction.add(production);
-				actProductions.setVisible(true);
+				actProductions.setDisable(false);
 			} else {
 				setShadow(0.5, image);
 				selectedProduction.remove(production);
 				if(selectedProduction.size()==0)
-					actProductions.setVisible(false);
+					actProductions.setDisable(true);
 			}
 		}
 	}
 
-	/*
-	public void onMouseClickedBaseProduction(){
-		if(productionAble && availableProduction.contains(Productions.BASE_PRODUCTION)) {
-			if (!selectedProduction.contains(Productions.BASE_PRODUCTION)) {
-				baseProduction.setEffect(new Glow(0.5));
-				selectedProduction.add(Productions.BASE_PRODUCTION);
-				actProductions.setVisible(true);
-			} else {
-				setShadow(0.5,baseProduction);
-				selectedProduction.remove(Productions.BASE_PRODUCTION);
-				if(selectedProduction.size()==0)
-					actProductions.setVisible(false);
-			}
-		}
-	}
 
-	public void onMouseClickedDevCard1(){
-		if(productionAble && availableProduction.contains(Productions.STACK_1_CARD_PRODUCTION)){
-			if(!selectedProduction.contains(Productions.STACK_1_CARD_PRODUCTION)){
-				slot1[sizeSlot1-1].setEffect(new Glow(0.5));
-				selectedProduction.add(Productions.STACK_1_CARD_PRODUCTION);
-				actProductions.setVisible(true);
-			}
-			else {
-				setShadow(0.5,slot1[sizeSlot1-1]);
-				selectedProduction.remove(Productions.STACK_1_CARD_PRODUCTION);
-				if(selectedProduction.size()==0){
-					actProductions.setVisible(false);
-				}
-			}
-		}
-	}
-
-	public void onMouseClickedDevCard2(){
-		if(productionAble && availableProduction.contains(Productions.STACK_2_CARD_PRODUCTION)){
-			if(!selectedProduction.contains(Productions.STACK_2_CARD_PRODUCTION)){
-				slot2[sizeSlot2-1].setEffect(new Glow(0.5));
-				selectedProduction.add(Productions.STACK_2_CARD_PRODUCTION);
-				actProductions.setVisible(true);
-			}
-			else {
-				setShadow(0.5,slot2[sizeSlot2-1]);
-				selectedProduction.remove(Productions.STACK_2_CARD_PRODUCTION);
-				if(selectedProduction.size()==0){
-					actProductions.setVisible(false);
-				}
-			}
-		}
-	}
-
-	public void onMouseClickedDevCard3(){
-		if(productionAble && availableProduction.contains(Productions.STACK_3_CARD_PRODUCTION)){
-			if(!selectedProduction.contains(Productions.STACK_3_CARD_PRODUCTION)){
-				slot3[sizeSlot3-1].setEffect(new Glow(0.5));
-				selectedProduction.add(Productions.STACK_3_CARD_PRODUCTION);
-				actProductions.setVisible(true);
-			}
-			else {
-				setShadow(0.5,slot3[sizeSlot3-1]);
-				selectedProduction.remove(Productions.STACK_3_CARD_PRODUCTION);
-				if(selectedProduction.size()==0){
-					actProductions.setVisible(false);
-				}
-			}
-		}
-	}
-
-	public void onMouseClickedLeaderCard1(){
-		if(productionAble && availableProduction.contains(Productions.LEADER_CARD_1_PRODUCTION)){
-			if(!selectedProduction.contains(Productions.LEADER_CARD_1_PRODUCTION)){
-				leader1.setEffect(new Glow(0.5));
-				selectedProduction.add(Productions.LEADER_CARD_1_PRODUCTION);
-				actProductions.setVisible(true);
-			}
-			else {
-				setShadow(0.5,leader1);
-				selectedProduction.remove(Productions.LEADER_CARD_1_PRODUCTION);
-				if(selectedProduction.size()==0){
-					actProductions.setVisible(false);
-				}
-			}
-		}
-	}
-
-	public void onMouseClickedLeaderCard2(){
-		if(productionAble && availableProduction.contains(Productions.LEADER_CARD_2_PRODUCTION)){
-			if(!selectedProduction.contains(Productions.LEADER_CARD_2_PRODUCTION)){
-				leader2.setEffect(new Glow(0.5));
-				selectedProduction.add(Productions.LEADER_CARD_2_PRODUCTION);
-				actProductions.setVisible(true);
-			}
-			else {
-				setShadow(0.5,leader2);
-				selectedProduction.remove(Productions.LEADER_CARD_2_PRODUCTION);
-				if(selectedProduction.size()==0){
-					actProductions.setVisible(false);
-				}
-			}
-		}
-	}
-	 */
 
 	public void setAvailableProductionGreen(ArrayList<Productions> productions){
 		availableProduction=productions;
-		if(productions.contains(Productions.BASE_PRODUCTION))
-			setShadow(0.5,baseProduction);
-		if(productions.contains(Productions.STACK_1_CARD_PRODUCTION)) {
-			int i= sizeSlot1;
-			setShadow(0.5,slot1[i-1]);
+		System.out.println("available productions = " + availableProduction.toString());
+		if (productions.contains(Productions.BASE_PRODUCTION))
+			setShadow(0.5, baseProduction);
+		if (productions.contains(Productions.STACK_1_CARD_PRODUCTION)) {
+			setShadow(0.5, slot1[sizeSlot1-1]);
 		}
-		if(productions.contains(Productions.STACK_2_CARD_PRODUCTION)){
-			int i= sizeSlot2;
-			setShadow(0.5,slot2[i-1]);
+		if (productions.contains(Productions.STACK_2_CARD_PRODUCTION)){
+			setShadow(0.5, slot2[sizeSlot2-1]);
 		}
-		if(productions.contains(Productions.STACK_3_CARD_PRODUCTION)){
-			int i= sizeSlot3;
-			setShadow(0.5,slot3[i-1]);
+		if (productions.contains(Productions.STACK_3_CARD_PRODUCTION)){
+			setShadow(0.5, slot3[sizeSlot3-1]);
 		}
-		if(productions.contains(Productions.LEADER_CARD_1_PRODUCTION)){
-			setShadow(0.5,leader1);
+		if (productions.contains(Productions.LEADER_CARD_1_PRODUCTION)){
+			setShadow(0.5, leader1);
 		}
-		if(productions.contains(Productions.LEADER_CARD_2_PRODUCTION)){
-			setShadow(0.5,leader2);
+		if (productions.contains(Productions.LEADER_CARD_2_PRODUCTION)){
+			setShadow(0.5, leader2);
 		}
 
 	}
@@ -545,7 +452,7 @@ public class Board extends ViewObservable implements SceneController {
 	public void setShadow(double value, ImageView img){
 		DropShadow dropShadow= new DropShadow();
 		dropShadow.setSpread(value);
-		dropShadow.setColor(Color.GREEN);
+		dropShadow.setColor(Color.LIGHTCORAL);
 		img.setEffect(dropShadow);
 	}
 
@@ -659,23 +566,8 @@ public class Board extends ViewObservable implements SceneController {
 	public void depotInteraction(ReducedWarehouseDepot depot, boolean initialMove, boolean confirmationAvailable, boolean inputValid) {
 		//System.out.println("new depot reply: initial = " + initialMove + ", confirm = " + confirmationAvailable + ", valid = " + inputValid + ":");
 		updateDepots(depot);
-		
-		//TODO: the sizes of the imageviews in the warehouse depot are not homogeneous: resize them properly
-		
 		confirmationDepot.setVisible(true);
 		confirmationDepot.setDisable(!confirmationAvailable);
-		confirmationDepot.setOnMouseClicked(event -> {
-			invalidMove.setVisible(false);
-			deckContainer.setVisible(false);
-			confirmationDepot.setVisible(false);
-			deck1.setImage(null);
-			deck2.setImage(null);
-			deck3.setImage(null);
-			deck4.setImage(null);
-			notifyObserver(obs -> obs.onUpdateDepotMove("", "", 0, 0, true));
-			
-			//TODO: disable drag and drop functionality among the deck and depot after user confirmation
-		});
 		invalidMove.setVisible(!inputValid);
 		
 		// drag and drop functionality
@@ -689,47 +581,33 @@ public class Board extends ViewObservable implements SceneController {
 				}
 				dragDestination(decks[i-1], true, i + "deck");
 			}
-			/*
-			if (depot.getIncomingResources().size() >= 1) {
-				dragOrigin(deck1, "1deck");
-			}
-			if (depot.getIncomingResources().size() >= 2) {
-				dragOrigin(deck2, "2deck");
-			}
-			if (depot.getIncomingResources().size() >= 3) {
-				dragOrigin(deck3, "3deck");
-			}
-			if (depot.getIncomingResources().size() == 4) {
-				dragOrigin(deck4, "4deck");
-			}
 			
-			dragDestination(deck1, true, "1deck");
-			dragDestination(deck2, true, "2deck");
-			dragDestination(deck3, true, "3deck");
-			dragDestination(deck4, true, "4deck");
-			*/
-			
-			ImageView[] deps = new ImageView[] {depot1, depot2, depot3, depot4, depot5, depot6};
+			ImageView[] pyramid = new ImageView[] {depot1, depot2, depot3, depot4, depot5, depot6};
 			for (int i = 1; i <= 6; i++) {
-				dragOrigin(deps[i-1], i + "depot");
-				dragDestination(deps[i-1], false, i + "depot");
+				dragOrigin(pyramid[i-1], i + "depot");
+				dragDestination(pyramid[i-1], false, i + "depot");
 			}
-			/*
-			dragOrigin(depot1, "1depot");
-			dragOrigin(depot2, "2depot");
-			dragOrigin(depot3, "3depot");
-			dragOrigin(depot4, "4depot");
-			dragOrigin(depot5, "5depot");
-			dragOrigin(depot6, "6depot");
 			
-			dragDestination(depot1, false, "1depot");
-			dragDestination(depot2, false, "2depot");
-			dragDestination(depot3, false, "3depot");
-			dragDestination(depot4, false, "4depot");
-			dragDestination(depot5, false, "5depot");
-			dragDestination(depot6, false, "6depot");
-			 */
+			confirmationDepot.setOnMouseClicked(event -> {
+				invalidMove.setVisible(false);
+				deckContainer.setVisible(false);
+				confirmationDepot.setVisible(false);
+				deck1.setImage(null);
+				deck2.setImage(null);
+				deck3.setImage(null);
+				deck4.setImage(null);
+				notifyObserver(obs -> obs.onUpdateDepotMove("", "", 0, 0, true));
+				
+				//TODO: disable drag and drop functionality among the deck and depot after user confirmation
+				for (int i = 1; i <= 6; i++) {
+					disableDragAndDrop(pyramid[i-1]);
+				}
+				for (int i = 1; i <= 4; i++) {
+					disableDragAndDrop(decks[i-1]);
+				}
+			});
 		}
+		
 	}
 	
 	private void dragOrigin(ImageView image, String origin) {
@@ -775,4 +653,30 @@ public class Board extends ViewObservable implements SceneController {
 		String toWhere = destination.substring(1);
 		notifyObserver(obs -> obs.onUpdateDepotMove(fromWhere, toWhere, originPos, destinationPos, false));
 	}
+	
+	private void disableDragAndDrop(ImageView image) {
+		image.setOnMouseEntered(event -> ((Node) event.getSource()).setCursor(Cursor.DEFAULT));
+		image.setOnDragDetected(null);
+		image.setOnDragOver(null);
+		image.setOnDragDropped(null);
+	}
+	
+	private static class Coordinates {
+		private final double x;
+		private final double y;
+		
+		Coordinates(int pos, double x, double y) {
+			this.x = x;
+			this.y = y;
+		}
+		
+		public double getX() {
+			return x;
+		}
+		
+		public double getY() {
+			return y;
+		}
+	}
+	
 }
