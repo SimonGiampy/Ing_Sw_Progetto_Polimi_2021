@@ -5,12 +5,8 @@ import it.polimi.ingsw.model.reducedClasses.ReducedCardProductionManagement;
 import it.polimi.ingsw.model.reducedClasses.ReducedLeaderCard;
 import it.polimi.ingsw.model.reducedClasses.ReducedStrongbox;
 import it.polimi.ingsw.model.reducedClasses.ReducedWarehouseDepot;
-import it.polimi.ingsw.model.util.ListSet;
-import it.polimi.ingsw.model.util.PlayerActions;
-import it.polimi.ingsw.model.util.Productions;
-import it.polimi.ingsw.model.util.Resources;
+import it.polimi.ingsw.model.util.*;
 import it.polimi.ingsw.observers.ViewObservable;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.Cursor;
 import javafx.scene.Node;
@@ -26,7 +22,6 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Stack;
 
 public class Board extends ViewObservable implements SceneController {
@@ -37,7 +32,7 @@ public class Board extends ViewObservable implements SceneController {
 	@FXML private ImageView papal1;
 	@FXML private ImageView papal2;
 	@FXML private ImageView papal3;
-	@FXML private ImageView calamaio;
+	@FXML private ImageView leftCornerImage;
 	
 	// 3 development cards per slot. 3 slots present on the main board
 	@FXML private ImageView img11;
@@ -171,6 +166,12 @@ public class Board extends ViewObservable implements SceneController {
 			slot3[i].setOnMouseClicked(event -> productionSelectionHandler(Productions.STACK_3_CARD_PRODUCTION, slot3[finalI]));
 		}
 		*/
+
+		act1.setOnMouseClicked(event -> leaderActionHandler(1,1));
+		act2.setOnMouseClicked(event -> leaderActionHandler(2,1));
+		dis1.setOnMouseClicked(event -> leaderActionHandler(1,2));
+		dis2.setOnMouseClicked(event -> leaderActionHandler(2,2));
+
 		extraDepotLeader1Activation = 0;
 		extraDepotLeader2Activation = 0;
 	}
@@ -182,9 +183,23 @@ public class Board extends ViewObservable implements SceneController {
 	public void setSinglePlayerMode(boolean niBBaCross) {
 		// TODO: change this so that it shows the token stack in the inkwell's position
 		// TODO: add the black cross for Lorenzo's track
-		if (niBBaCross) cross.setImage(new Image("/assets/board/black_cross.png", 73, 64, true, false));
+
+		if (niBBaCross){
+			cross.setImage(new Image("/assets/board/black_cross.png", 73, 64, true, false));
+			leftCornerImage.setImage(new Image("/assets/token/0.png"));
+		}
 	}
-	
+
+	public void updateToken(TokenType type,Colors color){
+
+		if(type.equals(TokenType.DISCARD_TOKEN))
+			leftCornerImage.setImage(new Image("/assets/token/"+(color.colorNumber+1)+".png"));
+		else if(type.equals(TokenType.BLACK_CROSS_TOKEN))
+			leftCornerImage.setImage(new Image("/assets/token/5.png"));
+		else
+			leftCornerImage.setImage(new Image("/assets/token/6.png"));
+
+	}
 	/**
 	 * updates the position of the red cross on the faith track
 	 * @param pos new position on the track
@@ -234,9 +249,7 @@ public class Board extends ViewObservable implements SceneController {
 			case COIN -> numCoin.setText(String.valueOf(num));
 		}
 	}
-	
-	
-	
+
 	/**
 	 * updates the development cards in the slots, setting the images if not set yet.
 	 * @param cardManager reduces class containing the stacks of the dev cards on the player board.
@@ -268,8 +281,7 @@ public class Board extends ViewObservable implements SceneController {
 				slot2[i].setOnMouseClicked(null);
 			}
 		}
-		
-		
+
 		//slot 3 old dev cards and new dev cards
 		if (sizeSlot3 > 0) {
 			if (slot3[sizeSlot3 - 1].getImage() == null) {
@@ -283,31 +295,17 @@ public class Board extends ViewObservable implements SceneController {
 		
 	}
 
-	public void onMouseClickDis1(){
-		notifyObserver(obs->obs.onUpdateLeaderAction(1,2));
-	}
-
-	public void onMouseClickDis2(){
-		notifyObserver(obs->obs.onUpdateLeaderAction(2,2));
-	}
-
-	public void onMouseClickAct1(){
-		notifyObserver(obs->obs.onUpdateLeaderAction(1,1));
-	}
-
-	public void onMouseClickAct2(){
-		notifyObserver(obs->obs.onUpdateLeaderAction(2,2));
-	}
-
 	/**
 	 * sets leader card of the player. Also activates or deactivates the buttons relative to the leader cards based on the game status and
 	 * who is the player in this board.
 	 * @param leaderCards player's leader cards
 	 */
 	public void setMyLeaderCards(ArrayList<ReducedLeaderCard> leaderCards) {
+		boolean done=false;
 		ImageView[] images = new ImageView[]{leader1, leader2};
 		for (int i = 0; i < leaderCards.size(); i++) {
 			if (leaderCards.get(i).isPlayable()) {
+				done=true;
 				if (i == 0) {
 					act1.setDisable(false);
 					dis1.setDisable(false);
@@ -316,6 +314,7 @@ public class Board extends ViewObservable implements SceneController {
 					dis2.setDisable(false);
 				}
 			} else if(leaderCards.get(i).isAbilitiesActivated()){
+				done=true;
 				if(i==0) {
 					act1.setDisable(true);
 					dis1.setDisable(true);
@@ -323,10 +322,12 @@ public class Board extends ViewObservable implements SceneController {
 					act2.setDisable(true);
 					dis2.setDisable(true);
 				}
-			} else if (leaderCards.get(i).isDiscarded()) { // card is less bright to indicate that it has been discarded
+			} else if (leaderCards.get(i).isDiscarded()) {
+				// card is less bright to indicate that it has been discarded
 				ColorAdjust colorAdjust = new ColorAdjust();
 				colorAdjust.setBrightness(-0.5);
 				images[i].setEffect(colorAdjust);
+				done=true;
 				if(i==0) {
 					act1.setDisable(true);
 					dis1.setDisable(true);
@@ -334,12 +335,15 @@ public class Board extends ViewObservable implements SceneController {
 					act2.setDisable(true);
 					dis2.setDisable(true);
 				}
+
 			} else {
-				images[i].setImage(new Image("/assets/leaderCards/" + leaderCards.get(i).getIdNumber() + ".png"));
-				act1.setDisable(true);
-				act2.setDisable(true);
-				dis1.setDisable(false);
-				dis2.setDisable(false);
+				if(!done) {
+					images[i].setImage(new Image("/assets/leaderCards/" + leaderCards.get(i).getIdNumber() + ".png"));
+					act1.setDisable(true);
+					act2.setDisable(true);
+					dis1.setDisable(false);
+					dis2.setDisable(false);
+				}
 			}
 		}
 	}
@@ -363,6 +367,10 @@ public class Board extends ViewObservable implements SceneController {
 		}
 	}
 
+	public void leaderActionHandler(int card, int action){
+			notifyObserver(obs -> obs.onUpdateLeaderAction(card,action));
+	}
+
 	/**
 	 * sets the visibility of buttons for opponent's boards
 	 */
@@ -381,7 +389,7 @@ public class Board extends ViewObservable implements SceneController {
 	 */
 	public void setStartingPlayer(){
 		//TODO: if this is not single player mode
-		calamaio.setVisible(true);
+		leftCornerImage.setVisible(true);
 	}
 
 	
@@ -426,7 +434,7 @@ public class Board extends ViewObservable implements SceneController {
 
 
 
-	public void setAvailableProductionGreen(ArrayList<Productions> productions){
+	public void setAvailableProductionRed(ArrayList<Productions> productions){
 		availableProduction=productions;
 		System.out.println("available productions = " + availableProduction.toString());
 		if (productions.contains(Productions.BASE_PRODUCTION))
@@ -653,7 +661,7 @@ public class Board extends ViewObservable implements SceneController {
 		String toWhere = destination.substring(1);
 		notifyObserver(obs -> obs.onUpdateDepotMove(fromWhere, toWhere, originPos, destinationPos, false));
 	}
-	
+
 	private void disableDragAndDrop(ImageView image) {
 		image.setOnMouseEntered(event -> ((Node) event.getSource()).setCursor(Cursor.DEFAULT));
 		image.setOnDragDetected(null);

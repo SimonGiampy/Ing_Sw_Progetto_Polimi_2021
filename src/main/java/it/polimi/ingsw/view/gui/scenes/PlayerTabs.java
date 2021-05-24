@@ -2,8 +2,10 @@ package it.polimi.ingsw.view.gui.scenes;
 
 import it.polimi.ingsw.model.DevelopmentCard;
 import it.polimi.ingsw.model.reducedClasses.*;
+import it.polimi.ingsw.model.util.Colors;
 import it.polimi.ingsw.model.util.PlayerActions;
 import it.polimi.ingsw.model.util.Productions;
+import it.polimi.ingsw.model.util.TokenType;
 import it.polimi.ingsw.observers.ViewObservable;
 import it.polimi.ingsw.view.gui.GUI;
 import javafx.fxml.FXML;
@@ -148,9 +150,14 @@ public class PlayerTabs extends ViewObservable implements SceneController{
 
 	}
 
+	public void update(TokenType type, Colors color){
+		Board board = playersMap.get(playerNickname);
+		board.updateToken(type,color);
+	}
+
 	public void updateProduction(String nickname, ArrayList<Productions> productions){
 		Board board = playersMap.get(nickname);
-		board.setAvailableProductionGreen(productions);
+		board.setAvailableProductionRed(productions);
 		board.setProductionAble(true);
 	}
 

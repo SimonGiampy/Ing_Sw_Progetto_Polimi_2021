@@ -143,7 +143,7 @@ public class CommonBoard extends ViewObservable implements SceneController{
 			for (int j = 0; j < 4; j++) {
 				int finalI = i;
 				int finalJ = j;
-				cardsImages[i][j].setOnMouseClicked(event -> cardsSelectionHandler(finalI+1,Colors.values()[finalJ],finalI,finalJ));
+				cardsImages[i][j].setOnMouseClicked(event -> cardsSelectionHandler(Colors.values()[finalJ],finalI,finalJ));
 			}
 		}
 
@@ -171,9 +171,9 @@ public class CommonBoard extends ViewObservable implements SceneController{
 
 	}
 
-	public void cardsSelectionHandler(int level, Colors color, int i, int j){
+	public void cardsSelectionHandler(Colors color, int i, int j){
 		if(cardsAble && buyableCards.contains(deck.getCardStackStructure()[i][j].get(0))){
-			this.level=level;
+			this.level=i+1;
 			this.color=color;
 			setGlow();
 			cardsImages[i][j].setEffect(new Glow(0.5));

@@ -6,13 +6,11 @@ import it.polimi.ingsw.model.util.*;
 import it.polimi.ingsw.observers.ViewObservable;
 import it.polimi.ingsw.view.View;
 import it.polimi.ingsw.view.gui.scenes.*;
-import javafx.animation.PauseTransition;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
-import javafx.util.Duration;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -378,6 +376,9 @@ public class GUI extends ViewObservable implements View {
 	
 	@Override
 	public void showToken(TokenType token, Colors color) {
-	
+		Platform.runLater(() -> {
+			PlayerTabs playerTabs= (PlayerTabs) controller;
+			playerTabs.update(token,color);
+		});
 	}
 }
