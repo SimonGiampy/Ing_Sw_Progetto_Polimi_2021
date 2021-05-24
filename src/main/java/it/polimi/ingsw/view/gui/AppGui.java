@@ -7,6 +7,7 @@ import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 
@@ -37,7 +38,8 @@ public class AppGui extends Application {
 
 		Connection controller = loader.getController();
 		controller.attach(clientController);
-		
+
+		stage.getIcons().add(new Image("/assets/board/calamaio.png"));
 		stage.setScene(scene);
 		stage.setResizable(false);
 		stage.setMaximized(true);

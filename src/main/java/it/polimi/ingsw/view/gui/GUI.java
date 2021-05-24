@@ -10,6 +10,7 @@ import javafx.animation.PauseTransition;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
@@ -24,7 +25,8 @@ public class GUI extends ViewObservable implements View {
 	private SceneController controller;
 	private String currentFXML;
 	private String playerNickname;
-	
+	private boolean [] notificationStack = {true, true, true, true};
+
 	/**
 	 * constructor with UI parameters
 	 * @param scene created by the app
@@ -279,7 +281,10 @@ public class GUI extends ViewObservable implements View {
 
 	@Override
 	public void showGenericMessage(String genericMessage) {
-	
+		Platform.runLater(() -> {
+			Notification notification = new Notification((AnchorPane) scene.getRoot(), genericMessage, notificationStack);
+			notification.showNotification();
+		});
 	}
 	
 	@Override

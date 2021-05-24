@@ -581,7 +581,7 @@ public class ServerSideController {
 		Player player = mechanics.getPlayer(playerIndex);
 
 		if(message.getAction()==1) { // play leader
-			mechanics.getPlayer(playerIndex).activateLeaderCard(message.getSelectedLeader() - 1);
+			player.activateLeaderCard(message.getSelectedLeader() - 1);
 
 			for (String s : nicknameList) {
 
@@ -598,7 +598,7 @@ public class ServerSideController {
 
 		} else if(message.getAction()==2){ // discard leader
 
-			mechanics.getPlayer(playerIndex).discardLeaderCard(message.getSelectedLeader()-1);
+			player.discardLeaderCard(message.getSelectedLeader()-1);
 			for (String s : nicknameList) {
 
 				VirtualView view = virtualViewMap.get(s);
@@ -609,6 +609,7 @@ public class ServerSideController {
 					view.showGenericMessage("Leader Card successfully discarded!"); //TODO: NOT USELESS
 				}
 				view.showLeaderCards(nicknameList.get(playerIndex), getLeadersForShow(player));
+				view.showFaithTrack(nicknameList.get(playerIndex), new ReducedFaithTrack(player.getPlayerFaithTrack()));
 			}
 			checkVaticanReport();
 			turnController.setTurnPhase(TurnPhase.LEADER_ACTION);
