@@ -1,8 +1,10 @@
 package it.polimi.ingsw.view.gui;
 
+import javafx.animation.Interpolator;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
+import javafx.beans.property.SimpleDoubleProperty;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -23,6 +25,8 @@ public class Notification {
 	private AnchorPane root;
 	private final boolean[] notificationStack;
 	private int index;
+	private final double layoutY;
+	private Timeline showAnimation;
 
 	public Notification(AnchorPane root, String text, boolean[] notificationStack){
 		this.notificationStack = notificationStack;
@@ -32,7 +36,8 @@ public class Notification {
 		notificationStack[index] = false;
 		double posX = 1420;
 		double posY = 980;
-		initNotification(root, text, posX, posY - 108*index);
+		layoutY = posY - 108*index;
+		initNotification(root, text, posX);
 	}
 
 	@FXML
@@ -41,7 +46,7 @@ public class Notification {
 	}
 
 
-	public void initNotification(AnchorPane root, String text, double layoutX, double layoutY){
+	public void initNotification(AnchorPane root, String text, double layoutX){
 		Node node;
 		this.root = root;
 
@@ -51,11 +56,13 @@ public class Notification {
 			fxmlLoader.setController(this);
 			node = fxmlLoader.load();
 
-			anchorPane.setLayoutX(layoutX);
-			anchorPane.setLayoutY(layoutY);
 			root.getChildren().addAll(node);
-
 			setNotification(text);
+
+			anchorPane.setLayoutX(layoutX);
+
+			showAnimation = setupShowAnimation();
+
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -76,17 +83,55 @@ public class Notification {
 		lblText.setVisible(true);
 		btnClose.setVisible(true);
 		img.setVisible(true);
+		showAnimation.play();
 	}
 
 	//TODO: code for animations, i have to understand how to adapt it
-	/*
 
+
+	private Timeline setupShowAnimation() {
+
+		Timeline tl = new Timeline();
+
+		/*
+
+		Animazione rimbalzina
+		//Sets the x location of the tray off the screen
+		KeyValue kvX = new KeyValue(anchorPane.layoutYProperty(), 1080);
+		KeyFrame kf1 = new KeyFrame(Duration.ZERO, kvX);
+
+		//Animates the Tray onto the screen and interpolates at a tangent for 300 millis
+		Interpolator interpolator = Interpolator.TANGENT(Duration.millis(300), 50);
+		KeyValue kvInter = new KeyValue(anchorPane.layoutYProperty(), layoutY, interpolator);
+		KeyFrame kf2 = new KeyFrame(Duration.millis(1300), kvInter);
+
+		 */
+
+		KeyValue kv1 = new KeyValue(anchorPane.layoutYProperty(), 1080);
+		KeyFrame kf1 = new KeyFrame(Duration.ZERO, kv1);
+
+		KeyValue kv2 = new KeyValue(anchorPane.layoutYProperty(), layoutY);
+		KeyFrame kf2 = new KeyFrame(Duration.millis(800), kv2);
+
+
+		KeyValue kv3 = new KeyValue(anchorPane.opacityProperty(), 0.0);
+		KeyFrame kf3 = new KeyFrame(Duration.ZERO, kv3);
+
+		KeyValue kv4 = new KeyValue(anchorPane.opacityProperty(), 1.0);
+		KeyFrame kf4 = new KeyFrame(Duration.millis(800), kv4);
+
+		tl.getKeyFrames().addAll(kf1, kf2, kf3, kf4);
+
+		return tl;
+	}
+
+	/*
 	private Timeline setupDismissAnimation() {
 
 
 		Timeline tl = new Timeline();
 
-		KeyValue kv1 = new KeyValue(1420, );
+		KeyValue kv1 = new KeyValue();
 		KeyFrame kf1 = new KeyFrame(Duration.millis(2000), kv1);
 
 		KeyValue kv2 = new KeyValue(stage.opacityProperty(), 0.0);
@@ -103,27 +148,19 @@ public class Notification {
 		return tl;
 	}
 
-	private Timeline setupShowAnimation() {
+	 */
 
-		Timeline tl = new Timeline();
-
-		KeyValue kv1 = new KeyValue(stage.yLocationProperty(), stage.getBottomRight().getY() + stage.getWidth());
-		KeyFrame kf1 = new KeyFrame(Duration.ZERO, kv1);
-
-		KeyValue kv2 = new KeyValue(stage.yLocationProperty(), stage.getBottomRight().getY());
-		KeyFrame kf2 = new KeyFrame(Duration.millis(1000), kv2);
-
-		KeyValue kv3 = new KeyValue(stage.opacityProperty(), 0.0);
-		KeyFrame kf3 = new KeyFrame(Duration.ZERO, kv3);
-
-		KeyValue kv4 = new KeyValue(stage.opacityProperty(), 1.0);
-		KeyFrame kf4 = new KeyFrame(Duration.millis(2000), kv4);
-
-		tl.getKeyFrames().addAll(kf1, kf2, kf3, kf4);
-
-		tl.setOnFinished(e -> trayIsShowing = true);
-
-		return tl;
+	private SimpleDoubleProperty getPaneYProperty(){
+		SimpleDoubleProperty y = new SimpleDoubleProperty();
+		return y;
 	}
-		 */
+
+	private SimpleDoubleProperty getPaneXProperty(){
+		SimpleDoubleProperty x = new SimpleDoubleProperty();
+		x.set(1420);
+		return x;
+	}
+
+
+
 }
