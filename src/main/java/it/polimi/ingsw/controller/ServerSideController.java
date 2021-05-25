@@ -310,7 +310,7 @@ public class ServerSideController {
 			case PRODUCTIONS -> {
 				view.showPlayerCardsAndProduction(nicknameList.get(playerIndex),
 						new ReducedCardProductionManagement(mechanics.getPlayer(playerIndex).getPlayersCardManager()));
-				sendBoxes(view,playerIndex,false); //it sends player boxes before production
+				sendBoxes(playerIndex,false); //it sends player boxes before production
 				view.askProductionAction(nicknameList.get(playerIndex),mechanics.getPlayer(playerIndex).getPlayersCardManager().availableProductions());
 			}
 			case LEADER -> {
@@ -481,8 +481,16 @@ public class ServerSideController {
 			} else { // no free choices present
 				int[] inputResources = new int[]{0, 0, 0, 0};
 				int[] outPutResources = new int[]{0, 0, 0, 0};
-				mechanics.getPlayer(playerIndex).activateProduction(message.getSelectedProductions(), inputResources, outPutResources);
-				sendBoxes(view, playerIndex,true);
+				boolean moved = mechanics.getPlayer(playerIndex).activateProduction(
+						message.getSelectedProductions(), inputResources, outPutResources);
+				sendBoxes(playerIndex,true);
+				if (moved) {
+					for (String s: nicknameList) {
+						virtualViewMap.get(s).showFaithTrack(nicknameList.get(playerIndex),
+								new ReducedFaithTrack(mechanics.getPlayer(playerIndex).getPlayerFaithTrack()));
+					}
+					checkVaticanReport();
+				}
 				turnController.setTurnPhase(TurnPhase.MAIN_ACTION);
 
 			}
@@ -494,22 +502,23 @@ public class ServerSideController {
 	}
 	
 	/**
-	 * shows depot and strongbox
-	 * @param view of the player
-	 * @param playerIndex index
+	 * shows depot and strongbox to the chosen player(s)
+	 * @param playerIndex index of the current playing player
+	 * @param forAll if it needs to be shown to all the players in the game
 	 */
-	private void sendBoxes(VirtualView view, int playerIndex, boolean forAll){
-		//view.showGenericMessage("Your Boxes now!"); //TODO: USELESS
-		if(forAll){
+	private void sendBoxes(int playerIndex, boolean forAll) {
+		Player player = mechanics.getPlayer(playerIndex);
+		VirtualView view;
+		if (forAll) {
 			for (String s : nicknameList) {
 				view = virtualViewMap.get(s);
-				view.showDepot(s, new ReducedWarehouseDepot(mechanics.getPlayer(playerIndex).getPlayersWarehouseDepot()));
-				view.showStrongBox(s, new ReducedStrongbox(mechanics.getPlayer(playerIndex).getMyStrongbox()));
+				view.showDepot(nicknameList.get(playerIndex), new ReducedWarehouseDepot(player.getPlayersWarehouseDepot()));
+				view.showStrongBox(nicknameList.get(playerIndex), new ReducedStrongbox(player.getMyStrongbox()));
 			}
-		}
-		else {
-			view.showDepot(nicknameList.get(playerIndex), new ReducedWarehouseDepot(mechanics.getPlayer(playerIndex).getPlayersWarehouseDepot()));
-			view.showStrongBox(nicknameList.get(playerIndex), new ReducedStrongbox(mechanics.getPlayer(playerIndex).getMyStrongbox()));
+		} else {
+			view = virtualViewMap.get(nicknameList.get(playerIndex));
+			view.showDepot(nicknameList.get(playerIndex), new ReducedWarehouseDepot(player.getPlayersWarehouseDepot()));
+			view.showStrongBox(nicknameList.get(playerIndex), new ReducedStrongbox(player.getMyStrongbox()));
 		}
 
 	}
@@ -525,7 +534,7 @@ public class ServerSideController {
 			} else {
 				int[] outputResources = new int[]{0, 0, 0, 0};
 				mechanics.getPlayer(playerIndex).activateProduction(cardProductionsManagement.getSelectedInput(), putResources(message), outputResources);
-				sendBoxes(view,playerIndex,true);
+				sendBoxes(playerIndex,true);
 				turnController.setTurnPhase(TurnPhase.MAIN_ACTION);
 			}
 		}
@@ -560,14 +569,13 @@ public class ServerSideController {
 	 */
 	private void freeOutputHandler(ResourcesList message){
 		int playerIndex = nicknameList.indexOf(message.getNickname());
-		VirtualView view = virtualViewMap.get(message.getNickname());
+		
 		CardProductionsManagement cardProductionsManagement = mechanics.getPlayer(playerIndex).getPlayersCardManager();
 		mechanics.getPlayer(playerIndex).activateProduction(cardProductionsManagement.getSelectedInput(),
 				cardProductionsManagement.getInputResources(), putResources(message));
 
-		sendBoxes(view,playerIndex,true);
+		sendBoxes(playerIndex,true);
 		turnController.setTurnPhase(TurnPhase.MAIN_ACTION);
-
 
 	}
 

@@ -93,12 +93,14 @@ public class PlayerTabs extends ViewObservable implements SceneController{
 		//tabPane.getSelectionModel().select(tabMap.get(playersMap.get(playerNickname)));
 		
 		//sets the single player mode
-		playersMap.get(nicknameList.get(0)).setSinglePlayerMode(nicknameList.size() == 1);
+		if (nicknameList.size() == 1) {
+			playersMap.get(nicknameList.get(0)).setSinglePlayerMode();
+		}
 	}
 
 	public void update(String nickname, ReducedFaithTrack track){
 		Board board = playersMap.get(nickname);
-		board.updateCrossCoords(track.getCurrentPosition());
+		board.updateCrossCoords(track.isLorenzosTrack(), track.getCurrentPosition());
 		setTabToRead(board);
 	}
 

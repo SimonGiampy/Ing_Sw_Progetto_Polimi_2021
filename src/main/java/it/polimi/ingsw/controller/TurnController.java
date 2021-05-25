@@ -57,7 +57,7 @@ public class TurnController {
 		leaderAction=false;
 		mainActionDone=false;
 		VirtualView view= virtualViewMap.get(activePlayer);
-		view.showGenericMessage("It's your turn!"); //TODO: NOT USELESS
+		view.showGenericMessage("It's your turn!");
 		turnAskAction();
 		setTurnPhase(TurnPhase.SELECTING_ACTION);
 	}
@@ -81,7 +81,7 @@ public class TurnController {
 		if(currentToken.getTokenType()==TokenType.DISCARD_TOKEN)
 			view.showCardsDeck(new ReducedDevelopmentCardsDeck(mechanics.getGameDevCardsDeck()));
 		else
-			view.showFaithTrack("Lorenzo", new ReducedFaithTrack(mechanicsSinglePlayer.getLorenzoFaithTrack()));
+			view.showFaithTrack(activePlayer, new ReducedFaithTrack(mechanicsSinglePlayer.getLorenzoFaithTrack()));
 
 		if(currentToken.isEndGame())
 			endOfGame=true;

@@ -92,7 +92,9 @@
         <Image url="@../../../../../assets/board/text.png" />
     </ImageView>
     <Text fx:id="slotText" fill="#4066bf" layoutX="1410.0" layoutY="808.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Select a Slot!"
-          visible="false" style="-fx-font-family: Caveat; -fx-font-size: 53"/>
+          visible="false">
+        <style>-fx-font-family: Caveat; -fx-font-size: 53</style>
+    </Text>
     <Button fx:id="slot3" layoutX="1638.0" layoutY="838.0" mnemonicParsing="false" prefHeight="44.0" prefWidth="143.0"  text="Slot 3" visible="false">
         <styleClass>
             <String fx:value="fancy_font" />

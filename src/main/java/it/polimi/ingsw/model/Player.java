@@ -1,7 +1,6 @@
 package it.polimi.ingsw.model;
 
 import it.polimi.ingsw.model.util.*;
-import it.polimi.ingsw.exceptions.InvalidInputException;
 import it.polimi.ingsw.exceptions.InvalidUserRequestException;
 
 import java.util.ArrayList;
@@ -19,9 +18,7 @@ public class Player {
 	private final CardProductionsManagement cardManager;
 	
 	private  Market commonMarket;
-
-
-
+	
 	private  DevelopmentCardsDeck commonCardsDeck;
 	
 	private LeaderCard[] leaderCards;
@@ -31,9 +28,6 @@ public class Player {
 	private boolean discardedLeader2;
 
 	private final int playerIndex;
-	private String nickname;
-
-
 
 	private int coinDiscount;
 	private int servantDiscount;
@@ -75,7 +69,6 @@ public class Player {
 		activeAbilityLeader2 = false;
 
 		this.playerIndex = playerIndex;
-		nickname = "";
 	}
 
 
@@ -268,20 +261,19 @@ public class Player {
 	}
 
 	/**
-	 * it activates production and recall the method to move faithTrack marker
+	 * activates the selected productions and moves the faithTrack marker accordingly
 	 * @param playerInput is a list of selected production
 	 * @param resourcesInput is an array of number of Resources [#COIN,#SERVANT,#SHIELD,#STONE].
 	 *                       When the production does not have ?, the caller set it to [0,0,0,0].
 	 * @param resourcesOutput is an array of number of Resources [#COIN,#SERVANT,#SHIELD,#STONE].
 	 *                       When the production does not have ?, the caller set it to [0,0,0,0].
+	 * @return true if the marker has been moved after a production
 	 */
-	public void activateProduction(ArrayList<Productions> playerInput, int[] resourcesInput, int[] resourcesOutput) {
-		
-		//if (!cardManager.isSelectedProductionAvailable(playerInput))
-			//throw new InvalidInputException("Selected production not available");
-		
+	public boolean activateProduction(ArrayList<Productions> playerInput, int[] resourcesInput, int[] resourcesOutput) {
 		cardManager.takeSelectedResources(playerInput,resourcesInput);
-		myFaithTrack.moveMarker(cardManager.activateSelectedProduction(playerInput,resourcesOutput));
+		int moves = cardManager.activateSelectedProduction(playerInput,resourcesOutput);
+		myFaithTrack.moveMarker(moves);
+		return moves > 0;
 	}
 
 
@@ -354,17 +346,7 @@ public class Player {
 	public boolean isActiveAbilityLeader2() {
 		return activeAbilityLeader2;
 	}
-
-
-
-
-	public String getNickname() {
-		return nickname;
-	}
-
-	public void setNickname(String nickname) {
-		this.nickname = nickname;
-	}
+	
 
 	public int getCoinDiscount() {
 		return coinDiscount;

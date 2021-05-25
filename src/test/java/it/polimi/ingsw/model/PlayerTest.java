@@ -327,12 +327,4 @@ class PlayerTest {
 		System.setOut(standardOut);
 	}
 	
-	/**
-	 * Fundamental Test
-	 */
-	@Test
-	void nickname() {
-		player.setNickname("Giorgio Mastrota");
-		assertEquals("Giorgio Mastrota", player.getNickname());
-	}
 }

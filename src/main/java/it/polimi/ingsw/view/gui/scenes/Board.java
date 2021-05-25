@@ -85,12 +85,15 @@ public class Board extends ViewObservable implements SceneController {
 	@FXML private Label invalidMove;
 	
 	// faith track marker
-	@FXML private ImageView cross;
+	@FXML private ImageView redCross;
+	@FXML private ImageView blackCross;
+	private ArrayList<Coordinates> coordinates; // list of coordinates for the cross in the faith track
+	private int redPosition, blackPosition;
 
 	// image representing the base production, serves as clicking spot
 	@FXML private ImageView baseProduction;
 	
-	private ArrayList<Coordinates> coordinates; // list of coordinates for the cross in the faith track
+	
 	
 	//references to the dev cards in the 3 slots
 	private ImageView[] slot1;
@@ -152,20 +155,14 @@ public class Board extends ViewObservable implements SceneController {
 		sizeSlot2=0;
 		sizeSlot3=0;
 		
-		updateCrossCoords(0); // initial position when the game starts
+		updateCrossCoords(false, 0); // initial position when the game starts
+		redPosition = 0;
+		blackPosition = -1;
 		
 		//mouse click handlers for the series of productions available on the board
 		baseProduction.setOnMouseClicked(event -> productionSelectionHandler(Productions.BASE_PRODUCTION, baseProduction));
 		leader1.setOnMouseClicked(event -> productionSelectionHandler(Productions.LEADER_CARD_1_PRODUCTION, leader1));
 		leader2.setOnMouseClicked(event -> productionSelectionHandler(Productions.LEADER_CARD_2_PRODUCTION, leader2));
-		/*
-		for (int i = 0; i < 3; i++) {
-			int finalI = i;
-			slot1[i].setOnMouseClicked(event -> productionSelectionHandler(Productions.STACK_1_CARD_PRODUCTION, slot1[finalI]));
-			slot2[i].setOnMouseClicked(event -> productionSelectionHandler(Productions.STACK_2_CARD_PRODUCTION, slot2[finalI]));
-			slot3[i].setOnMouseClicked(event -> productionSelectionHandler(Productions.STACK_3_CARD_PRODUCTION, slot3[finalI]));
-		}
-		*/
 
 		act1.setOnMouseClicked(event -> leaderActionHandler(1,1));
 		act2.setOnMouseClicked(event -> leaderActionHandler(2,1));
@@ -178,16 +175,11 @@ public class Board extends ViewObservable implements SceneController {
 	
 	/**
 	 * if the mode is single player, adds a new black cross to the faith track. Also places the tokens in the same place where the inkwell is.
-	 * @param niBBaCross flag indicating if the game mode is single player
 	 */
-	public void setSinglePlayerMode(boolean niBBaCross) {
-		// TODO: change this so that it shows the token stack in the inkwell's position
-		// TODO: add the black cross for Lorenzo's track
-
-		if (niBBaCross){
-			cross.setImage(new Image("/assets/board/black_cross.png", 73, 64, true, false));
-			leftCornerImage.setImage(new Image("/assets/token/0.png"));
-		}
+	public void setSinglePlayerMode() {
+		leftCornerImage.setImage(new Image("/assets/token/0.png"));
+		blackCross.setVisible(true);
+		updateCrossCoords(true, 0);
 	}
 
 	public void updateToken(TokenType type,Colors color){
@@ -204,12 +196,58 @@ public class Board extends ViewObservable implements SceneController {
 	 * updates the position of the red cross on the faith track
 	 * @param pos new position on the track
 	 */
-	public void updateCrossCoords(int pos) {
-		//TODO: if the single player mode is active, then the black cross is added. And whether the positions of both crosses are
-		//      equal, then this function must reduce the sizes of both images so they can fit the same cell at the same time.
-		//      Add a new parameter to this function so that it knows which cross to consider when updating its position.
-		cross.setLayoutX(coordinates.get(pos).getX());
-		cross.setLayoutY(coordinates.get(pos).getY());
+	public void updateCrossCoords(boolean lorenzo, int pos) {
+		
+		if (lorenzo) { // moving the black cross
+			if (redPosition == blackPosition) {
+				redCross.setLayoutX(coordinates.get(redPosition).getX());
+				redCross.setLayoutY(coordinates.get(redPosition).getY());
+				redCross.setFitWidth(73);
+				redCross.setFitHeight(64);
+				blackCross.setLayoutX(coordinates.get(pos).getX());
+				blackCross.setLayoutY(coordinates.get(pos).getY());
+				blackCross.setFitWidth(73);
+				blackCross.setFitHeight(64);
+			} else if (redPosition == pos) { // intercepts the red cross
+				redCross.setFitWidth(52);
+				redCross.setFitHeight(46);
+				blackCross.setLayoutX(coordinates.get(pos).getX() + 27);
+				blackCross.setLayoutY(coordinates.get(pos).getY() + 24);
+				blackCross.setFitWidth(52);
+				blackCross.setFitHeight(46);
+			} else {
+				blackCross.setLayoutX(coordinates.get(pos).getX());
+				blackCross.setLayoutY(coordinates.get(pos).getY());
+				blackCross.setFitWidth(73);
+				blackCross.setFitHeight(64);
+			}
+			blackPosition = pos;
+		} else { // moving the red cross
+			if (redPosition == blackPosition) {
+				redCross.setLayoutX(coordinates.get(pos).getX());
+				redCross.setLayoutY(coordinates.get(pos).getY());
+				redCross.setFitWidth(73);
+				redCross.setFitHeight(64);
+				blackCross.setLayoutX(coordinates.get(blackPosition).getX());
+				blackCross.setLayoutY(coordinates.get(blackPosition).getY());
+				blackCross.setFitWidth(73);
+				blackCross.setFitHeight(64);
+			} else if (blackPosition == pos) { //intercepts the black cross
+				blackCross.setFitWidth(52);
+				blackCross.setFitHeight(46);
+				redCross.setLayoutX(coordinates.get(pos).getX() + 27);
+				redCross.setLayoutY(coordinates.get(pos).getY() + 24);
+				redCross.setFitWidth(52);
+				redCross.setFitHeight(46);
+			} else {
+				redCross.setLayoutX(coordinates.get(pos).getX());
+				redCross.setLayoutY(coordinates.get(pos).getY());
+				redCross.setFitWidth(73);
+				redCross.setFitHeight(64);
+			}
+			redPosition = pos;
+		}
+		
 	}
 	
 	/**
@@ -408,19 +446,16 @@ public class Board extends ViewObservable implements SceneController {
 		} else {
 			notifyObserver(obs->obs.onUpdateProductionAction(selectedProduction));
 			actProductions.setText("Activate Productions");
-			actProductions.setDisable(true); // TODO: enable this button if there are productions available
+			actProductions.setDisable(false); // TODO: enable this button if there are productions available
 			productionAble=false;
 			setNormal();
 		}
 	}
 	
 	public void productionSelectionHandler(Productions production, ImageView image) {
-		System.out.println("clicked on " + image.getId() + ".");
 		if(productionAble && availableProduction.contains(production)) {
-			System.out.println("productionable");
 			if (!selectedProduction.contains(production)) {
 				image.setEffect(new Glow(0.5));
-				System.out.println("glow set on " + image.getId() + ".");
 				selectedProduction.add(production);
 				actProductions.setDisable(false);
 			} else {
@@ -435,8 +470,7 @@ public class Board extends ViewObservable implements SceneController {
 
 
 	public void setAvailableProductionRed(ArrayList<Productions> productions){
-		availableProduction=productions;
-		System.out.println("available productions = " + availableProduction.toString());
+		availableProduction = productions;
 		if (productions.contains(Productions.BASE_PRODUCTION))
 			setShadow(0.5, baseProduction);
 		if (productions.contains(Productions.STACK_1_CARD_PRODUCTION)) {
@@ -670,10 +704,12 @@ public class Board extends ViewObservable implements SceneController {
 	}
 	
 	private static class Coordinates {
+		private final int pos;
 		private final double x;
 		private final double y;
 		
 		Coordinates(int pos, double x, double y) {
+			this.pos = pos;
 			this.x = x;
 			this.y = y;
 		}
@@ -684,6 +720,10 @@ public class Board extends ViewObservable implements SceneController {
 		
 		public double getY() {
 			return y;
+		}
+		
+		public int getPosition() {
+			return pos;
 		}
 	}
 	

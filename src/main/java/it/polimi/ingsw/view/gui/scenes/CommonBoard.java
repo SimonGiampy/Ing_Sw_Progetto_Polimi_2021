@@ -283,7 +283,7 @@ public class CommonBoard extends ViewObservable implements SceneController{
 		buyableCards=cards;
 		for (int i = 0; i < 3; i++) {
 			for (int j = 0; j < 4; j++) {
-				if(cards.contains(deck.getCardStackStructure()[i][j].get(0))) {
+				if(!deck.getCardStackStructure()[i][j].isEmpty() && cards.contains(deck.getCardStackStructure()[i][j].get(0))) {
 					setShadow(0.7, cardsImages[i][j]);
 				}
 			}
