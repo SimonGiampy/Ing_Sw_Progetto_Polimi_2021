@@ -7,7 +7,6 @@ import it.polimi.ingsw.model.reducedClasses.ReducedFaithTrack;
 import it.polimi.ingsw.model.reducedClasses.ReducedLeaderCard;
 import it.polimi.ingsw.model.singleplayer.GameMechanicsSinglePlayer;
 import it.polimi.ingsw.model.singleplayer.Token;
-import it.polimi.ingsw.model.util.PlayerActions;
 import it.polimi.ingsw.model.util.TokenType;
 import it.polimi.ingsw.network.messages.game.server2client.WinMessage;
 import it.polimi.ingsw.view.VirtualView;
@@ -25,7 +24,6 @@ public class TurnController {
 	private boolean endgameStarted;
 	private int remainingTurn;
 	private boolean mainActionDone;
-	private boolean leaderAction;
 	private final GameMechanicsMultiPlayer mechanics;
 
 	private String activePlayer;
@@ -54,8 +52,7 @@ public class TurnController {
 
 	public void startTurn(){
 		//endOfTurn=false;
-		leaderAction=false;
-		mainActionDone=false;
+		mainActionDone = false;
 		VirtualView view= virtualViewMap.get(activePlayer);
 		view.showGenericMessage("It's your turn!");
 		turnAskAction();
@@ -65,10 +62,10 @@ public class TurnController {
 	public void turnAskAction(){
 		VirtualView view = virtualViewMap.get(activePlayer);
 		int playerIndex= nicknameList.indexOf(activePlayer);
-		if(leaderAction)
-			view.askAction(nicknameList.get(playerIndex),mechanics.getPlayer(playerIndex).checkAvailableNormalActions());
+		if(mainActionDone)
+			view.askAction(nicknameList.get(playerIndex), mechanics.getPlayer(playerIndex).checkAvailableLeaderActions());
 		else
-			view.askAction(nicknameList.get(playerIndex),mechanics.getPlayer(playerIndex).checkAvailableActions());
+			view.askAction(nicknameList.get(playerIndex), mechanics.getPlayer(playerIndex).checkAvailableActions());
 	}
 
 	private void tokenActivation(){
@@ -91,11 +88,12 @@ public class TurnController {
 	}
 
 	public void setTurnPhase(TurnPhase turnPhase) {
+		int playerIndex= nicknameList.indexOf(activePlayer);
+		Player player= mechanics.getPlayer(playerIndex);
 		if(turnPhase == TurnPhase.MAIN_ACTION){
-			mainActionDone=true;
-			int playerIndex= nicknameList.indexOf(activePlayer);
-			Player player= mechanics.getPlayer(playerIndex);
-			if(leaderAction || player.checkAvailableLeaderActions().size()==0){
+			mainActionDone = true;
+
+			if(player.checkAvailableLeaderActions().size()==0){
 				endTurn();
 			}
 			else {
@@ -104,11 +102,13 @@ public class TurnController {
 			}
 		}
 		else if (turnPhase == TurnPhase.LEADER_ACTION){
-			leaderAction=true;
-			if(mainActionDone){
+			if(!mainActionDone)
+				turnAskAction();
+			else if(player.checkAvailableLeaderActions().size() == 0){
 				endTurn();
 			}
-			else turnAskAction();
+			else
+				turnAskLeaderAction();
 		}
 
 		else if (turnPhase == TurnPhase.END_TURN){
@@ -140,7 +140,7 @@ public class TurnController {
 				if(i!=winnerInfo.length-1)
 					winner.append(", ");
 			}
-		String stringWinner=winner.toString();
+		String stringWinner = winner.toString();
 		serverSideController.getLobby().broadcastMessage(new WinMessage(stringWinner,winnerInfo[0]));
 		serverSideController.getLobby().endGame();
 	}

@@ -168,7 +168,7 @@ public class Player {
 		if(!activeAbilityLeader1 && !discardedLeader1){
 			actions.add(PlayerActions.DISCARD_LEADER_1);
 		}
-		if(!activeAbilityLeader1 && !discardedLeader2){
+		if(!activeAbilityLeader2 && !discardedLeader2){
 			actions.add(PlayerActions.DISCARD_LEADER_2);
 		}
 

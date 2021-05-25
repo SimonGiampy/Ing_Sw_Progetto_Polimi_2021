@@ -14,6 +14,9 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 public class GUI extends ViewObservable implements View {
@@ -23,7 +26,7 @@ public class GUI extends ViewObservable implements View {
 	private SceneController controller;
 	private String currentFXML;
 	private String playerNickname;
-	private final boolean [] notificationStack = {true, true, true, true};
+	private final NotificationHandler notificationHandler;
 
 	/**
 	 * constructor with UI parameters
@@ -34,6 +37,7 @@ public class GUI extends ViewObservable implements View {
 		this.scene = scene;
 		this.stage = stage;
 		currentFXML = "connection.fxml"; // initial window
+		notificationHandler = new NotificationHandler();
 	}
 	
 	/**
@@ -279,10 +283,7 @@ public class GUI extends ViewObservable implements View {
 
 	@Override
 	public void showGenericMessage(String genericMessage) {
-		Platform.runLater(() -> {
-			Notification notification = new Notification((AnchorPane) scene.getRoot(), genericMessage, notificationStack);
-			notification.showNotification();
-		});
+		Platform.runLater(() -> notificationHandler.addNotification(genericMessage, (AnchorPane) scene.getRoot()));
 	}
 	
 	@Override

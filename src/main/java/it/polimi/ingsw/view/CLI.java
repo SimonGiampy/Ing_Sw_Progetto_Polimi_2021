@@ -246,13 +246,19 @@ public class CLI extends ViewObservable implements View {
 					if (input.charAt(0) == 'p') { // plays the leader card
 						action = 1;
 						selectedLeader = Character.getNumericValue(input.charAt(5));
-						if (!availableLeaders.get(selectedLeader-1).isPlayable()) {
+						if (!availableLeaders.get(selectedLeader-1).isPlayable() ||
+								availableLeaders.get(selectedLeader-1).isAbilitiesActivated()) {
 							System.out.println("Selected leader card is not playable! Choose something else to do.");
 							check = false;
 						}
 					} else { // discards the leader card
 						action = 2;
 						selectedLeader = Character.getNumericValue(input.charAt(8));
+						if (availableLeaders.get(selectedLeader-1).isAbilitiesActivated() ||
+								availableLeaders.get(selectedLeader-1).isDiscarded()) {
+							System.out.println("Selected leader card is not discardable! Choose something else to do.");
+							check = false;
+						}
 					}
 				}
 			}
