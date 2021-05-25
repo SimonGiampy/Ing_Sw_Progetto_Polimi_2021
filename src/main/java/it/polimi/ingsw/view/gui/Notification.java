@@ -29,7 +29,6 @@ public class Notification {
 	private int index;
 	private double layoutY;
 	private Timeline showAnimation;
-	private Timeline dismissAnimation;
 	private final NotificationHandler notificationHandler;
 
 	public Notification(AnchorPane root, String text, NotificationHandler notificationHandler){
@@ -75,11 +74,23 @@ public class Notification {
 	}
 
 	public void setNotification(String text){
-		lblText.setText(text);
+		StringBuilder string = new StringBuilder();
+		boolean check = true;
+		int count = 1;
+		for (int i = 0; i < text.length(); i++) {
+
+			if(i > 20*count && text.charAt(i) == ' ' && check) {
+				string.append("\n");
+				check = false;
+				count++;
+			}else
+				string.append(text.charAt(i));
+		}
+		lblText.setText(string.toString());
 	}
 
 	public void dismissInit(){
-		dismissAnimation = setupDismissAnimation();
+		Timeline dismissAnimation = setupDismissAnimation();
 		dismissAnimation.play();
 		final ScheduledExecutorService executorService = Executors.newSingleThreadScheduledExecutor();
 		executorService.schedule(this::dismiss, 400, TimeUnit.MILLISECONDS);

@@ -339,7 +339,7 @@ public class Board extends ViewObservable implements SceneController {
 	 * @param leaderCards player's leader cards
 	 */
 	public void setMyLeaderCards(ArrayList<ReducedLeaderCard> leaderCards) {
-		boolean done=false;
+		boolean done = false;
 		ImageView[] images = new ImageView[]{leader1, leader2};
 		for (int i = 0; i < leaderCards.size(); i++) {
 			if (leaderCards.get(i).isPlayable()) {
@@ -379,11 +379,15 @@ public class Board extends ViewObservable implements SceneController {
 					images[i].setImage(new Image("/assets/leaderCards/" + leaderCards.get(i).getIdNumber() + ".png"));
 					act1.setDisable(true);
 					act2.setDisable(true);
-					dis1.setDisable(false);
-					dis2.setDisable(false);
+					dis1.setDisable(true);
+					dis2.setDisable(true);
 				}
 			}
 		}
+	}
+
+	public void setAvailableLeaderActions(){
+
 	}
 
 	/**

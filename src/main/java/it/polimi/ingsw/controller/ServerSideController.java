@@ -238,9 +238,9 @@ public class ServerSideController {
 		if(allTrue(initResources)){
 			VirtualView view;
 			for (int i = 0; i < nicknameList.size(); i++) {
-				view=virtualViewMap.get(nicknameList.get(i));
+				view = virtualViewMap.get(nicknameList.get(i));
 				for (int j = 0; j < nicknameList.size(); j++) {
-					view.showDepot(nicknameList.get(j), new ReducedWarehouseDepot(mechanics.getPlayer(j).getPlayersWarehouseDepot()));
+					sendBoxes(nicknameList.indexOf(nicknameList.get(j)), true);
 					view.showFaithTrack(nicknameList.get(j), new ReducedFaithTrack(mechanics.getPlayer(j).getPlayerFaithTrack()));
 				}
 			}
@@ -386,7 +386,7 @@ public class ServerSideController {
 		
 		if(message.isConfirmed()){ //if the player confirmed its actions
 			int n = mechanics.getPlayer(playerIndex).getPlayersWarehouseDepot().discardResourcesAfterUserConfirmation();
-			for (int i = 0; i < numberOfPlayers; i++) {
+			for (int i = 0; i < numberOfPlayers && n > 0; i++) {
 				if(i != playerIndex) {
 					mechanics.getPlayer(i).getPlayerFaithTrack().moveMarker(n);
 					virtualViewMap.get(nicknameList.get(i)).showGenericMessage(message.getNickname()+ " discarded " + n +

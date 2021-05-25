@@ -168,7 +168,9 @@ public class GUI extends ViewObservable implements View {
 	
 	@Override
 	public void askLeaderAction(String nickname, ArrayList<ReducedLeaderCard> availableLeaders) {
-		notifyObserver(obs-> obs.onUpdateLeaderAction(0, 0));
+		notifyObserver(obs -> obs.onUpdateLeaderAction(0,0));
+		//TODO: this method do the same thing of the following one
+		//showLeaderCards(nickname, availableLeaders);
 	}
 	
 	@Override
