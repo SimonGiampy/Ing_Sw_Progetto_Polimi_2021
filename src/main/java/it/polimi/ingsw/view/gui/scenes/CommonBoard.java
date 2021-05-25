@@ -68,6 +68,8 @@ public class CommonBoard extends ViewObservable implements SceneController{
 	@FXML Button slot3;
 	@FXML Text slotText;
 
+	@FXML Button endTurn;
+
 	private ImageView[][] marketImages;
 	private ImageView[][] cardsImages;
 	private boolean marketAble;
@@ -169,6 +171,9 @@ public class CommonBoard extends ViewObservable implements SceneController{
 			slots[i].setOnMouseClicked(event->slotClickHandler(finalI +1));
 		}
 
+		//set endTurn button event
+		endTurn.setOnMouseClicked(event->endTurnHandler());
+
 	}
 
 	public void cardsSelectionHandler(Colors color, int i, int j){
@@ -194,6 +199,15 @@ public class CommonBoard extends ViewObservable implements SceneController{
 		if (actions.contains(PlayerActions.BUY_CARD))
 			cardsActivation.setVisible(true);
 		marketActivation.setVisible(true);
+	}
+
+	public void setEndTurnVisible(){
+		endTurn.setVisible(true);
+	}
+
+	public void endTurnHandler(){
+		notifyObserver(obs->obs.onUpdateLeaderAction(0,0));
+		endTurn.setVisible(false);
 	}
 
 	public void setButtonVisible(boolean value){

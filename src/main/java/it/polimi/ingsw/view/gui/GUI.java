@@ -168,7 +168,10 @@ public class GUI extends ViewObservable implements View {
 	
 	@Override
 	public void askLeaderAction(String nickname, ArrayList<ReducedLeaderCard> availableLeaders) {
-		notifyObserver(obs -> obs.onUpdateLeaderAction(0,0));
+		Platform.runLater(() -> {
+			PlayerTabs playerTabs = (PlayerTabs) controller;
+			playerTabs.update();
+		});
 		//TODO: this method do the same thing of the following one
 		//showLeaderCards(nickname, availableLeaders);
 	}
@@ -194,6 +197,14 @@ public class GUI extends ViewObservable implements View {
 				playerTabs.update(nickname,true);
 
 
+		});
+	}
+
+	@Override
+	public void startTurn(String nickname){
+		Platform.runLater(() -> {
+			PlayerTabs playerTabs = (PlayerTabs) controller;
+			playerTabs.update(nickname);
 		});
 	}
 	

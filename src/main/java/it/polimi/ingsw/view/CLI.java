@@ -269,7 +269,12 @@ public class CLI extends ViewObservable implements View {
 		int finalAction = action;
 		notifyObserver(obs-> obs.onUpdateLeaderAction(finalSelectedLeader, finalAction));
 	}
-	
+
+	@Override
+	public void startTurn(String nickname) {
+
+	}
+
 	@Override
 	public void askAction(String nickname,ArrayList<PlayerActions> availableAction) {
 		int x = 1;

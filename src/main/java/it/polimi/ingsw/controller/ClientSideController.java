@@ -73,6 +73,7 @@ public class ClientSideController implements ViewObserver, Observer {
 						view.askLeaderAction(message.getNickname(), show.getLeaderCards());
 
 				});
+				case START_TURN -> view.startTurn(message.getNickname());
 				case MARKET_SHOW -> userTask.execute(() -> {
 					MarketShow marketShow = (MarketShow) message;
 					if (!marketShow.isAskAction())

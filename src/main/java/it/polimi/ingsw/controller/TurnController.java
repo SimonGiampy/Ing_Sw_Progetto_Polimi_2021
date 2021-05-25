@@ -1,6 +1,7 @@
 package it.polimi.ingsw.controller;
 
 import it.polimi.ingsw.model.GameMechanicsMultiPlayer;
+import it.polimi.ingsw.model.LeaderCard;
 import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.reducedClasses.ReducedDevelopmentCardsDeck;
 import it.polimi.ingsw.model.reducedClasses.ReducedFaithTrack;
@@ -55,6 +56,7 @@ public class TurnController {
 		mainActionDone = false;
 		VirtualView view= virtualViewMap.get(activePlayer);
 		view.showGenericMessage("It's your turn!");
+		view.startTurn(activePlayer);
 		turnAskAction();
 		setTurnPhase(TurnPhase.SELECTING_ACTION);
 	}

@@ -33,6 +33,8 @@ public interface View {
 	 */
 	void askInitLeaders(String nickname, ArrayList<ReducedLeaderCard> leaderCards);
 
+
+	void startTurn(String nickname);
 	/**
 	 * it asks which leader action the player wants to do
 	 * @param availableLeaders is a list of leaders

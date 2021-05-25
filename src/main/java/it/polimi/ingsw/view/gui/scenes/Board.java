@@ -107,6 +107,8 @@ public class Board extends ViewObservable implements SceneController {
 	private ArrayList<Productions> selectedProduction;
 	private ArrayList<Productions> availableProduction;
 	private boolean productionAble;
+
+	private ArrayList<ReducedLeaderCard> leaderCards;
 	
 	// integer flags indicating the corresponding leader card (ordinal integer number) to the list of extra depot leaders
 	//TODO: add code that modifies these parameters when the player decides to activate a leader card with the extra depot ability
@@ -334,6 +336,7 @@ public class Board extends ViewObservable implements SceneController {
 	 */
 	public void setMyLeaderCards(ArrayList<ReducedLeaderCard> leaderCards) {
 		boolean done = false;
+		this.leaderCards=leaderCards;
 		ImageView[] images = new ImageView[]{leader1, leader2};
 		for (int i = 0; i < leaderCards.size(); i++) {
 			if (leaderCards.get(i).isPlayable()) {
@@ -380,8 +383,55 @@ public class Board extends ViewObservable implements SceneController {
 		}
 	}
 
-	public void setAvailableLeaderActions(){
+	//TODO: improve this code
+	public void setAvailableLeaderActions() {
+		boolean done=false;
+		ImageView[] images = new ImageView[]{leader1, leader2};
+		for (int i = 0; i < leaderCards.size(); i++) {
+			if (leaderCards.get(i).isPlayable()) {
+				done=true;
+				if (i == 0) {
+					act1.setDisable(false);
+					dis1.setDisable(false);
+				} else if (i == 1) {
+					act2.setDisable(false);
+					dis2.setDisable(false);
+				}
+			} else if(leaderCards.get(i).isAbilitiesActivated()){
+				done=true;
+				if(i==0) {
+					act1.setDisable(true);
+					dis1.setDisable(true);
+				}else {
+					act2.setDisable(true);
+					dis2.setDisable(true);
+				}
+			} else if (leaderCards.get(i).isDiscarded()) {
+				done=true;
+				// card is less bright to indicate that it has been discarded
+				ColorAdjust colorAdjust = new ColorAdjust();
+				colorAdjust.setBrightness(-0.5);
+				images[i].setEffect(colorAdjust);
+				if(i==0) {
+					act1.setDisable(true);
+					dis1.setDisable(true);
+				} else {
+					act2.setDisable(true);
+					dis2.setDisable(true);
+				}
 
+			}
+			else{
+				if(!done){
+					if(i==0){
+						dis1.setDisable(false);
+					}
+					else
+						dis2.setDisable(false);
+
+				}
+			}
+		}
 	}
 
 	/**
@@ -405,6 +455,7 @@ public class Board extends ViewObservable implements SceneController {
 
 	public void leaderActionHandler(int card, int action){
 		notifyObserver(obs -> obs.onUpdateLeaderAction(card,action));
+		setAvailableLeaderActions();
 	}
 
 	/**

@@ -98,6 +98,11 @@ public class PlayerTabs extends ViewObservable implements SceneController{
 		}
 	}
 
+	public void update(String nickname){
+		Board board = playersMap.get(nickname);
+		board.setAvailableLeaderActions();
+	}
+
 	public void update(String nickname, ReducedFaithTrack track){
 		Board board = playersMap.get(nickname);
 		board.updateCrossCoords(track.isLorenzosTrack(), track.getCurrentPosition());
@@ -125,6 +130,10 @@ public class PlayerTabs extends ViewObservable implements SceneController{
 			board.setOthersLeaderCards(leaderCards);
 		}
 		setTabToRead(board);
+	}
+
+	public void update(){
+		commonBoard.setEndTurnVisible();
 	}
 
 	public void update(String nickname, ReducedCardProductionManagement cardProductionManagement){
