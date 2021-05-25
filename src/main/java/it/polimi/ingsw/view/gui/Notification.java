@@ -4,7 +4,6 @@ import javafx.animation.Interpolator;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
-import javafx.beans.property.SimpleDoubleProperty;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -15,6 +14,9 @@ import javafx.scene.layout.AnchorPane;
 import javafx.util.Duration;
 
 import java.io.IOException;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 public class Notification {
 
@@ -25,15 +27,19 @@ public class Notification {
 	private AnchorPane root;
 	private final boolean[] notificationStack;
 	private int index;
-	private final double layoutY;
+	private double layoutY;
 	private Timeline showAnimation;
+	private Timeline dismissAnimation;
+	private final NotificationHandler notificationHandler;
 
-	public Notification(AnchorPane root, String text, boolean[] notificationStack){
-		this.notificationStack = notificationStack;
+	public Notification(AnchorPane root, String text, NotificationHandler notificationHandler){
+		this.notificationHandler = notificationHandler;
+		this.notificationStack = notificationHandler.getNotificationStack();
 		index = 0;
 		while(!notificationStack[index])
 			index++;
 		notificationStack[index] = false;
+		notificationHandler.getNotifications()[index]= this;
 		double posX = 1420;
 		double posY = 980;
 		layoutY = posY - 108*index;
@@ -42,7 +48,7 @@ public class Notification {
 
 	@FXML
 	public void initialize(){
-		btnClose.setOnMouseClicked(e -> dismiss());
+		btnClose.setOnMouseClicked(e -> dismissInit());
 	}
 
 
@@ -72,9 +78,17 @@ public class Notification {
 		lblText.setText(text);
 	}
 
+	public void dismissInit(){
+		dismissAnimation = setupDismissAnimation();
+		dismissAnimation.play();
+		final ScheduledExecutorService executorService = Executors.newSingleThreadScheduledExecutor();
+		executorService.schedule(this::dismiss, 400, TimeUnit.MILLISECONDS);
+	}
+
 	public void dismiss(){
-		anchorPane.setVisible(false);
 		notificationStack[index] = true;
+		notificationHandler.getNotifications()[index] = null;
+		notificationHandler.onDismiss(index);
 		root.getChildren().remove(anchorPane);
 	}
 
@@ -86,7 +100,10 @@ public class Notification {
 		showAnimation.play();
 	}
 
-	//TODO: code for animations, i have to understand how to adapt it
+	public void slideNotification(){
+		Timeline slideAnimation = setupSlideAnimation();
+		slideAnimation.play();
+	}
 
 
 	private Timeline setupShowAnimation() {
@@ -125,42 +142,51 @@ public class Notification {
 		return tl;
 	}
 
-	/*
-	private Timeline setupDismissAnimation() {
+	private Timeline setupSlideAnimation() {
 
+		notificationStack[index] = true;
+		index = 0;
+		while(!notificationStack[index])
+			index++;
+		notificationStack[index] = false;
 
+		double newPosition = 980 - 108*index;
 		Timeline tl = new Timeline();
 
-		KeyValue kv1 = new KeyValue();
-		KeyFrame kf1 = new KeyFrame(Duration.millis(2000), kv1);
+		KeyValue kv1 = new KeyValue(anchorPane.layoutYProperty(), layoutY);
+		KeyFrame kf1 = new KeyFrame(Duration.ZERO, kv1);
 
-		KeyValue kv2 = new KeyValue(stage.opacityProperty(), 0.0);
-		KeyFrame kf2 = new KeyFrame(Duration.millis(2000), kv2);
+		KeyValue kv2 = new KeyValue(anchorPane.layoutYProperty(), newPosition);
+		KeyFrame kf2 = new KeyFrame(Duration.millis(500), kv2);
 
 		tl.getKeyFrames().addAll(kf1, kf2);
 
-		tl.setOnFinished(e -> {
-			trayIsShowing = false;
-			stage.close();
-			stage.setLocation(stage.getBottomRight());
-		});
-
+		layoutY = newPosition;
 		return tl;
 	}
 
-	 */
 
-	private SimpleDoubleProperty getPaneYProperty(){
-		SimpleDoubleProperty y = new SimpleDoubleProperty();
-		return y;
+	private Timeline setupDismissAnimation() {
+
+		Timeline tl = new Timeline();
+
+		KeyValue kv1 = new KeyValue(anchorPane.layoutXProperty(), 1420);
+		KeyFrame kf1 = new KeyFrame(Duration.ZERO, kv1);
+
+		KeyValue kv2 = new KeyValue(anchorPane.layoutXProperty(), 1920);
+		KeyFrame kf2 = new KeyFrame(Duration.millis(400), kv2);
+
+
+		KeyValue kv3 = new KeyValue(anchorPane.opacityProperty(), 1.0);
+		KeyFrame kf3 = new KeyFrame(Duration.millis(400), kv3);
+
+		KeyValue kv4 = new KeyValue(anchorPane.opacityProperty(), 0.0);
+		KeyFrame kf4 = new KeyFrame(Duration.millis(400), kv4);
+
+		tl.getKeyFrames().addAll(kf1, kf2, kf3, kf4);
+
+		return tl;
 	}
-
-	private SimpleDoubleProperty getPaneXProperty(){
-		SimpleDoubleProperty x = new SimpleDoubleProperty();
-		x.set(1420);
-		return x;
-	}
-
 
 
 }

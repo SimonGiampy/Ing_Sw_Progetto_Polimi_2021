@@ -229,11 +229,9 @@ public class CommonBoard extends ViewObservable implements SceneController{
 				marble=market.getMarket()[i][j];
 				marketImages[i][j].setImage( new Image(marble.path));
 			}
-
 		}
 		marble=market.getExtraBall();
 		extraBall.setImage(new Image(marble.path));
-
 	}
 
 	public void marketEnteredHandler(ImageView img){
