@@ -181,9 +181,13 @@ public class Board extends ViewObservable implements SceneController {
 		blackCross.setVisible(true);
 		updateCrossCoords(true, 0);
 	}
-
+	
+	/**
+	 * used for the single player mode, updates the token stack shown on the left corner of the screen
+	 * @param type of token
+	 * @param color of the token
+	 */
 	public void updateToken(TokenType type,Colors color){
-
 		if(type.equals(TokenType.DISCARD_TOKEN))
 			leftCornerImage.setImage(new Image("/assets/token/"+(color.colorNumber+1)+".png"));
 		else if(type.equals(TokenType.BLACK_CROSS_TOKEN))
@@ -194,60 +198,50 @@ public class Board extends ViewObservable implements SceneController {
 	}
 	/**
 	 * updates the position of the red cross on the faith track
+	 * @param lorenzo indicating if the cross to be moved is the Lorenzo's one
 	 * @param pos new position on the track
 	 */
 	public void updateCrossCoords(boolean lorenzo, int pos) {
-		
 		if (lorenzo) { // moving the black cross
-			if (redPosition == blackPosition) {
-				redCross.setLayoutX(coordinates.get(redPosition).getX());
-				redCross.setLayoutY(coordinates.get(redPosition).getY());
-				redCross.setFitWidth(73);
-				redCross.setFitHeight(64);
-				blackCross.setLayoutX(coordinates.get(pos).getX());
-				blackCross.setLayoutY(coordinates.get(pos).getY());
-				blackCross.setFitWidth(73);
-				blackCross.setFitHeight(64);
-			} else if (redPosition == pos) { // intercepts the red cross
-				redCross.setFitWidth(52);
-				redCross.setFitHeight(46);
-				blackCross.setLayoutX(coordinates.get(pos).getX() + 27);
-				blackCross.setLayoutY(coordinates.get(pos).getY() + 24);
-				blackCross.setFitWidth(52);
-				blackCross.setFitHeight(46);
-			} else {
-				blackCross.setLayoutX(coordinates.get(pos).getX());
-				blackCross.setLayoutY(coordinates.get(pos).getY());
-				blackCross.setFitWidth(73);
-				blackCross.setFitHeight(64);
-			}
+			drawCrosses(redCross, blackCross, redPosition, pos);
 			blackPosition = pos;
 		} else { // moving the red cross
-			if (redPosition == blackPosition) {
-				redCross.setLayoutX(coordinates.get(pos).getX());
-				redCross.setLayoutY(coordinates.get(pos).getY());
-				redCross.setFitWidth(73);
-				redCross.setFitHeight(64);
-				blackCross.setLayoutX(coordinates.get(blackPosition).getX());
-				blackCross.setLayoutY(coordinates.get(blackPosition).getY());
-				blackCross.setFitWidth(73);
-				blackCross.setFitHeight(64);
-			} else if (blackPosition == pos) { //intercepts the black cross
-				blackCross.setFitWidth(52);
-				blackCross.setFitHeight(46);
-				redCross.setLayoutX(coordinates.get(pos).getX() + 27);
-				redCross.setLayoutY(coordinates.get(pos).getY() + 24);
-				redCross.setFitWidth(52);
-				redCross.setFitHeight(46);
-			} else {
-				redCross.setLayoutX(coordinates.get(pos).getX());
-				redCross.setLayoutY(coordinates.get(pos).getY());
-				redCross.setFitWidth(73);
-				redCross.setFitHeight(64);
-			}
+			drawCrosses(blackCross, redCross, blackPosition, pos);
 			redPosition = pos;
 		}
-		
+	}
+	
+	/**
+	 * utility method that handles the update of the positions of the crosses on the faith track.
+	 * It keeps track of the position so it resizes and moves them if they happen to overlap
+	 * @param c1 first cross
+	 * @param c2 second cross
+	 * @param crossPosition Planck's constant
+	 * @param pos Avogadro's constant
+	 */
+	private void drawCrosses(ImageView c1, ImageView c2, int crossPosition, int pos) {
+		if (redPosition == blackPosition) {
+			c1.setLayoutX(coordinates.get(crossPosition).getX());
+			c1.setLayoutY(coordinates.get(crossPosition).getY());
+			c1.setFitWidth(73);
+			c1.setFitHeight(64);
+			c2.setLayoutX(coordinates.get(pos).getX());
+			c2.setLayoutY(coordinates.get(pos).getY());
+			c2.setFitWidth(73);
+			c2.setFitHeight(64);
+		} else if (crossPosition == pos) { // intercepts the red cross
+			c1.setFitWidth(52);
+			c1.setFitHeight(46);
+			c2.setLayoutX(coordinates.get(pos).getX() + 27);
+			c2.setLayoutY(coordinates.get(pos).getY() + 24);
+			c2.setFitWidth(52);
+			c2.setFitHeight(46);
+		} else {
+			c2.setLayoutX(coordinates.get(pos).getX());
+			c2.setLayoutY(coordinates.get(pos).getY());
+			c2.setFitWidth(73);
+			c2.setFitHeight(64);
+		}
 	}
 	
 	/**
@@ -266,7 +260,7 @@ public class Board extends ViewObservable implements SceneController {
 	 * updates the strongbox contents
 	 * @param strongbox reduced class
 	 */
-	public void updateStrongbox(ReducedStrongbox strongbox){
+	public void updateStrongbox(ReducedStrongbox strongbox) {
 		ArrayList<Resources> content = strongbox.getContent();
 		setNumerosity(Resources.COIN, ListSet.count(content, Resources.COIN));
 		setNumerosity(Resources.SERVANT, ListSet.count(content, Resources.SERVANT));
@@ -410,7 +404,7 @@ public class Board extends ViewObservable implements SceneController {
 	}
 
 	public void leaderActionHandler(int card, int action){
-			notifyObserver(obs -> obs.onUpdateLeaderAction(card,action));
+		notifyObserver(obs -> obs.onUpdateLeaderAction(card,action));
 	}
 
 	/**
@@ -433,15 +427,19 @@ public class Board extends ViewObservable implements SceneController {
 		//TODO: if this is not single player mode
 		leftCornerImage.setVisible(true);
 	}
-
 	
-
-	public void setActProductions(boolean value){
+	/**
+	 * changes the production status
+	 * @param value flag
+	 */
+	public void setActProductions(boolean value) {
 		actProductions.setVisible(value);
 	}
-
+	
+	/**
+	 * when the user clicks on the button for doing the productions
+	 */
 	public void activateProduction(){
-		//TODO: cannot do 2 productions in a row
 		if(actProductions.getText().equals("Activate Productions")) {
 			notifyObserver(obs -> obs.onUpdateAction(PlayerActions.PRODUCTIONS));
 			actProductions.setDisable(true);
@@ -450,12 +448,17 @@ public class Board extends ViewObservable implements SceneController {
 		} else {
 			notifyObserver(obs->obs.onUpdateProductionAction(selectedProduction));
 			actProductions.setText("Activate Productions");
-			actProductions.setDisable(false); // TODO: enable this button if there are productions available
+			actProductions.setDisable(false);
 			productionAble=false;
 			setNormal();
 		}
 	}
 	
+	/**
+	 * mouse click handler for the productions on the main board
+	 * @param production selected by the user
+	 * @param image where the user clicked
+	 */
 	public void productionSelectionHandler(Productions production, ImageView image) {
 		if(productionAble && availableProduction.contains(production)) {
 			if (!selectedProduction.contains(production)) {
@@ -470,9 +473,11 @@ public class Board extends ViewObservable implements SceneController {
 			}
 		}
 	}
-
-
-
+	
+	/**
+	 * sets a shadow where a production can be done
+	 * @param productions list of available productions sent from the server
+	 */
 	public void setAvailableProductionRed(ArrayList<Productions> productions){
 		availableProduction = productions;
 		if (productions.contains(Productions.BASE_PRODUCTION))
@@ -494,7 +499,12 @@ public class Board extends ViewObservable implements SceneController {
 		}
 
 	}
-
+	
+	/**
+	 * sets a nice looking shadow on an image
+	 * @param value darkness
+	 * @param img to be applied
+	 */
 	public void setShadow(double value, ImageView img){
 		DropShadow dropShadow= new DropShadow();
 		dropShadow.setSpread(value);
@@ -505,20 +515,18 @@ public class Board extends ViewObservable implements SceneController {
 	public void setProductionAble(boolean productionAble) {
 		this.productionAble = productionAble;
 	}
-
+	
+	/**
+	 * applies normal luminosity to all production-based elements
+	 */
 	public void setNormal(){
 		baseProduction.setEffect(new Glow(0));
 		leader1.setEffect(new Glow(0));
 		leader2.setEffect(new Glow(0));
-		int i= sizeSlot1;
-		if(i>0)
-			slot1[i-1].setEffect(new Glow(0));
-		i= sizeSlot2;
-		if(i>0)
-			slot2[i-1].setEffect(new Glow(0));
-		i= sizeSlot3;
-		if(i>0)
-			slot3[i-1].setEffect(new Glow(0));
+		
+		if(sizeSlot1>0) slot1[sizeSlot1-1].setEffect(new Glow(0));
+		if(sizeSlot2>0)	slot2[sizeSlot2-1].setEffect(new Glow(0));
+		if(sizeSlot3>0) slot3[sizeSlot3-1].setEffect(new Glow(0));
 	}
 	
 	
@@ -530,7 +538,6 @@ public class Board extends ViewObservable implements SceneController {
 	public void updateDepots(ReducedWarehouseDepot depot) {
 		// updates the warehouse depots
 		Resources[] resources = depot.getDepot();
-		//System.out.println("depot arrived like this = " + Arrays.toString(resources));
 		ImageView[] images = new ImageView[]{depot1, depot2, depot3, depot4, depot5, depot6};
 		for (int i = 0; i < 6; i++) {
 			if (resources[i] == Resources.EMPTY) {
@@ -609,8 +616,14 @@ public class Board extends ViewObservable implements SceneController {
 		}
 	}
 	
+	/**
+	 * handles depot interaction and drag and drop functionality
+	 * @param depot sent from the server
+	 * @param initialMove flag for setting the drag and drops
+	 * @param confirmationAvailable enables the confirmation button
+	 * @param inputValid if the user input was invalid
+	 */
 	public void depotInteraction(ReducedWarehouseDepot depot, boolean initialMove, boolean confirmationAvailable, boolean inputValid) {
-		//System.out.println("new depot reply: initial = " + initialMove + ", confirm = " + confirmationAvailable + ", valid = " + inputValid + ":");
 		updateDepots(depot);
 		confirmationDepot.setVisible(true);
 		confirmationDepot.setDisable(!confirmationAvailable);
@@ -644,7 +657,6 @@ public class Board extends ViewObservable implements SceneController {
 				deck4.setImage(null);
 				notifyObserver(obs -> obs.onUpdateDepotMove("", "", 0, 0, true));
 				
-				//TODO: disable drag and drop functionality among the deck and depot after user confirmation
 				for (int i = 1; i <= 6; i++) {
 					disableDragAndDrop(pyramid[i-1]);
 				}
@@ -656,6 +668,11 @@ public class Board extends ViewObservable implements SceneController {
 		
 	}
 	
+	/**
+	 * applies the drag functionality on an imageview
+	 * @param image where to start dragging
+	 * @param origin text representing the value to drop
+	 */
 	private void dragOrigin(ImageView image, String origin) {
 		image.setOnDragDetected(event -> {
 			Dragboard db = image.startDragAndDrop(TransferMode.MOVE);
@@ -666,6 +683,12 @@ public class Board extends ViewObservable implements SceneController {
 		image.setOnMouseEntered(this::onMouseHover);
 	}
 	
+	/**
+	 * applies the drop functionality on an imageview
+	 * @param image where to drop the text
+	 * @param notFromDecks if the drag cannot arrive from the resources deck positions
+	 * @param destination text representing the drop area
+	 */
 	private void dragDestination(ImageView image, boolean notFromDecks, String destination) {
 		image.setOnDragOver(event -> {
 			if (notFromDecks) {
@@ -688,10 +711,19 @@ public class Board extends ViewObservable implements SceneController {
 		});
 	}
 	
+	/**
+	 * applies a hand cursor where the user can start dragging
+	 * @param event of hovering
+	 */
 	private void onMouseHover(MouseEvent event) {
 		((Node) event.getSource()).setCursor(Cursor.HAND);
 	}
 	
+	/**
+	 * tells the server which move the user did
+	 * @param origin text representing the place of origin of the movement
+	 * @param destination text representing the place of destination of the movement
+	 */
 	private void notifyMove(String origin, String destination) {
 		int originPos = Character.getNumericValue(origin.charAt(0));
 		String fromWhere = origin.substring(1);
@@ -699,7 +731,11 @@ public class Board extends ViewObservable implements SceneController {
 		String toWhere = destination.substring(1);
 		notifyObserver(obs -> obs.onUpdateDepotMove(fromWhere, toWhere, originPos, destinationPos, false));
 	}
-
+	
+	/**
+	 * disables drag and drop functionality when the user clicked confirm
+	 * @param image where to disable everything
+	 */
 	private void disableDragAndDrop(ImageView image) {
 		image.setOnMouseEntered(event -> ((Node) event.getSource()).setCursor(Cursor.DEFAULT));
 		image.setOnDragDetected(null);
@@ -707,6 +743,9 @@ public class Board extends ViewObservable implements SceneController {
 		image.setOnDragDropped(null);
 	}
 	
+	/**
+	 * utility class user for the memorization of the positions of the crosses on the faith track
+	 */
 	private static class Coordinates {
 		private final int pos;
 		private final double x;
