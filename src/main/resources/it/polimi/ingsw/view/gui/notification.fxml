@@ -7,20 +7,19 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
+<?import java.lang.String?>
 <AnchorPane fx:id="anchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
             prefHeight="100.0" prefWidth="500.0" stylesheets="@../../../../../assets/bootstrap3.css" visible="false"
-            xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1">
+            xmlns="http://javafx.com/javafx/" xmlns:fx="http://javafx.com/fxml/1"
+            style="-fx-background-radius: 5; -fx-border-radius: 2;-fx-border-color: #dddddd; -fx-border-width: 2;
+             -fx-background-color: white; -fx-padding: 3 3 3 3;">
    <children>
-      <Label fx:id="lblText" layoutX="90.0" layoutY="20.0" prefHeight="64.0" prefWidth="325.0" visible="false">
-         <font>
-            <Font size="18.0" />
-         </font>
-      </Label>
+      <Label fx:id="lblText" layoutX="100.0" layoutY="20.0" prefHeight="64.0" prefWidth="325.0" visible="false" styleClass="fancy_font"/>
       <ImageView fx:id="img" fitHeight="87.0" fitWidth="79.0" layoutX="15.0" layoutY="7.0" visible="false">
          <image>
             <Image url="@../../../../../assets/lorenzo_notification.png" />
          </image>
       </ImageView>
-      <Button fx:id="btnClose" layoutX="462.0" layoutY="14.0" mnemonicParsing="false" text="X" visible="false" />
+      <Button fx:id="btnClose" layoutX="462.0" layoutY="14.0" mnemonicParsing="false" text="X" visible="false" styleClass="button, danger"/>
    </children>
 </AnchorPane>

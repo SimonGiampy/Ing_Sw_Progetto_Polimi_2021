@@ -23,7 +23,7 @@ public class GUI extends ViewObservable implements View {
 	private SceneController controller;
 	private String currentFXML;
 	private String playerNickname;
-	private boolean [] notificationStack = {true, true, true, true};
+	private final boolean [] notificationStack = {true, true, true, true};
 
 	/**
 	 * constructor with UI parameters
