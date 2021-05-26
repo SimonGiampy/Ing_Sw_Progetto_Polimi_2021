@@ -136,6 +136,7 @@ public class ServerSideController {
 		}
 		if(numberOfPlayers == 1) { //single player
 			controllerAskLeaders();
+			sendBoxes(0, false);
 		} else { // multiplayer
 			for (int i = 1; i < numberOfPlayers; i++) {
 				VirtualView view = virtualViewMap.get(nicknameList.get(i));

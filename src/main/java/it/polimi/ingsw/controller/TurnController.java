@@ -31,12 +31,12 @@ public class TurnController {
 
 	public TurnController(HashMap<String,VirtualView> virtualViewMap, ServerSideController serverSideController,
 						  ArrayList<String> nicknameList,GameMechanicsMultiPlayer mechanics){
-		this.nicknameList=nicknameList;
-		activePlayer=nicknameList.get(0);
-		this.virtualViewMap=virtualViewMap;
+		this.nicknameList = nicknameList;
+		activePlayer = nicknameList.get(0);
+		this.virtualViewMap = virtualViewMap;
 		this.serverSideController = serverSideController;
-		this.mechanics=mechanics;
-		endgameStarted=false;
+		this.mechanics = mechanics;
+		endgameStarted = false;
 	}
 
 	/**
@@ -44,11 +44,12 @@ public class TurnController {
 	 */
 	public void nextTurn(){
 		int currentPlayerIndex = nicknameList.indexOf(activePlayer);
+		virtualViewMap.get(nicknameList.get(currentPlayerIndex)).showGenericMessage("Your turn has ended!");
 		if(currentPlayerIndex + 1 < mechanics.getNumberOfPlayers())
 			currentPlayerIndex = currentPlayerIndex + 1;
 		else
 			currentPlayerIndex = 0;
-		activePlayer=nicknameList.get(currentPlayerIndex);
+		activePlayer = nicknameList.get(currentPlayerIndex);
 	}
 
 	public void startTurn(){
@@ -63,7 +64,7 @@ public class TurnController {
 
 	public void turnAskAction(){
 		VirtualView view = virtualViewMap.get(activePlayer);
-		int playerIndex= nicknameList.indexOf(activePlayer);
+		int playerIndex = nicknameList.indexOf(activePlayer);
 		if(mainActionDone)
 			view.askAction(nicknameList.get(playerIndex), mechanics.getPlayer(playerIndex).checkAvailableLeaderActions());
 		else
@@ -74,10 +75,10 @@ public class TurnController {
 		VirtualView view = virtualViewMap.get(activePlayer);
 		GameMechanicsSinglePlayer mechanicsSinglePlayer = (GameMechanicsSinglePlayer) mechanics;
 
-		Token currentToken= mechanicsSinglePlayer.revealTop();
-		boolean check=currentToken.applyEffect();
+		Token currentToken = mechanicsSinglePlayer.revealTop();
+		boolean check = currentToken.applyEffect();
 		view.showToken(currentToken.getTokenType(),currentToken.getColor());
-		if(currentToken.getTokenType()==TokenType.DISCARD_TOKEN)
+		if(currentToken.getTokenType() == TokenType.DISCARD_TOKEN)
 			view.showCardsDeck(new ReducedDevelopmentCardsDeck(mechanics.getGameDevCardsDeck()));
 		else
 			view.showFaithTrack(activePlayer, new ReducedFaithTrack(mechanicsSinglePlayer.getLorenzoFaithTrack()));
@@ -90,8 +91,8 @@ public class TurnController {
 	}
 
 	public void setTurnPhase(TurnPhase turnPhase) {
-		int playerIndex= nicknameList.indexOf(activePlayer);
-		Player player= mechanics.getPlayer(playerIndex);
+		int playerIndex = nicknameList.indexOf(activePlayer);
+		Player player = mechanics.getPlayer(playerIndex);
 		if(turnPhase == TurnPhase.MAIN_ACTION){
 			mainActionDone = true;
 
@@ -120,7 +121,7 @@ public class TurnController {
 	}
 
 	private void endTurn(){
-		if(nicknameList.size()==1) {
+		if(nicknameList.size() == 1) {
 			tokenActivation(); //activate token just in singleplayer
 		}
 		endgame(); //activated only if endgame started
@@ -134,7 +135,7 @@ public class TurnController {
 	private void sendWinner(){
 		StringBuilder winner = new StringBuilder();
 		int[] winnerInfo= mechanics.winningPlayers();
-		if(winnerInfo[1]==-1)
+		if(winnerInfo[1] == -1)
 			winner.append("Lorenzo");
 		else
 			for (int i = 1; i < winnerInfo.length; i++) {
@@ -156,23 +157,23 @@ public class TurnController {
 			}
 		}
 		if(check && !endgameStarted){
-			endgameStarted=true;
-			remainingTurn=nicknameList.size()-nicknameList.indexOf(activePlayer)-1;
-			if(remainingTurn==0)
-				endOfGame=true;
+			endgameStarted = true;
+			remainingTurn = nicknameList.size() - nicknameList.indexOf(activePlayer) - 1;
+			if(remainingTurn == 0)
+				endOfGame = true;
 		}
 		else if(endgameStarted && remainingTurn>0){
 			remainingTurn--;
 		}
 
 		else if(endgameStarted && remainingTurn==0)
-			endOfGame=true;
+			endOfGame = true;
 	}
 
 	public void turnAskLeaderAction(){
-		VirtualView view= virtualViewMap.get(activePlayer);
-		int playerIndex= nicknameList.indexOf(activePlayer);
-		Player player= mechanics.getPlayer(playerIndex);
+		VirtualView view = virtualViewMap.get(activePlayer);
+		int playerIndex = nicknameList.indexOf(activePlayer);
+		Player player = mechanics.getPlayer(playerIndex);
 		ArrayList<ReducedLeaderCard> leaderCards = serverSideController.getLeadersForShow(player);
 		view.askLeaderAction(nicknameList.get(playerIndex), leaderCards);
 	}

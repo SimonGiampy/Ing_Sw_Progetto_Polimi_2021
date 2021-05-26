@@ -157,7 +157,7 @@ public class CLI extends ViewObservable implements View {
 		boolean check;
 		if(number == 1) {
 			System.out.println("You can choose " + number + " free resource, which one do you want?");
-			System.out.println("Type [resource] to select. (Example: [coin])");
+			System.out.println("Type [resource] to select. ([coin], [servant], [shield], [stone])");
 			do {
 				input = scanner.nextLine().toUpperCase();
 				check = Pattern.matches(regex, input);
