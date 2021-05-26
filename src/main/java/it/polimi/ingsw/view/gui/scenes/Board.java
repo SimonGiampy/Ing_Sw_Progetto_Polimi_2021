@@ -471,6 +471,7 @@ public class Board extends ViewObservable implements SceneController {
 		setMyLeaderCards(leaderCards.get(0), act1, dis1, leader1);
 		setMyLeaderCards(leaderCards.get(1), act2, dis2, leader2);
 		this.leaderCards=leaderCards;
+
 	}
 	
 	public void setMyLeaderCards(ReducedLeaderCard leaderCard, Button act, Button dis, ImageView leader) {

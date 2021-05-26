@@ -30,7 +30,6 @@ public class CardProductionsManagement {
 		myStrongbox = playerStrongbox;
 		myWarehouseDepot = playerWarehouseDepot;
 		
-		
 		presentProductions = new HashMap<>(6);
 		presentProductions.put(Productions.BASE_PRODUCTION, true);
 		presentProductions.put(Productions.STACK_1_CARD_PRODUCTION, false);

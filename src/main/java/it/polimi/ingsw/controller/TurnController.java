@@ -44,7 +44,8 @@ public class TurnController {
 	 */
 	public void nextTurn(){
 		int currentPlayerIndex = nicknameList.indexOf(activePlayer);
-		virtualViewMap.get(nicknameList.get(currentPlayerIndex)).showGenericMessage("Your turn has ended!");
+		if(nicknameList.size()>1)
+			virtualViewMap.get(nicknameList.get(currentPlayerIndex)).showGenericMessage("Your turn has ended!");
 		if(currentPlayerIndex + 1 < mechanics.getNumberOfPlayers())
 			currentPlayerIndex = currentPlayerIndex + 1;
 		else

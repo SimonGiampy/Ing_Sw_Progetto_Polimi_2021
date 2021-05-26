@@ -467,6 +467,7 @@ public class ServerSideController {
 				view.askFreeInput(cardProductionsManagement.numberOfFreeChoicesInInputProductions(message.getSelectedProductions()));
 			} else if (cardProductionsManagement.numberOfFreeChoicesInOutputProductions(message.getSelectedProductions()) > 0) {
 				// free user choices for output resources
+				cardProductionsManagement.setInputResources(new int[]{0,0,0,0});
 				view.askFreeOutput(cardProductionsManagement.numberOfFreeChoicesInOutputProductions(message.getSelectedProductions()));
 			} else { // no free choices present
 				int[] inputResources = new int[]{0, 0, 0, 0};

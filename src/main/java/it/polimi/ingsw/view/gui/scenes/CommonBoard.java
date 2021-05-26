@@ -81,6 +81,8 @@ public class CommonBoard extends ViewObservable implements SceneController{
 	
 	private Board playerBoard;
 
+	protected boolean leaderCardsDone; //TODO: move and set private
+
 	@FXML
 	public void initialize(){
 		Font.loadFont(getClass().getResourceAsStream("/assets/font/Caveat-Regular.ttf"), 10);
@@ -177,8 +179,8 @@ public class CommonBoard extends ViewObservable implements SceneController{
 		marketActivation.setVisible(true);
 	}
 
-	public void setEndTurnVisible(){
-		endTurn.setVisible(true);
+	public void setEndTurnVisible(boolean value){
+			endTurn.setVisible(value);
 	}
 
 	public void endTurnHandler(){
@@ -276,7 +278,7 @@ public class CommonBoard extends ViewObservable implements SceneController{
 	public void setGlow(){
 		for (int k = 0; k < 3; k++) {
 			for (int l = 0; l < 4; l++) {
-					if(buyableCards.contains(deck.getCardStackStructure()[k][l].get(0)))
+					if(deck.getCardStackStructure()[k][l].size()>0 && buyableCards.contains(deck.getCardStackStructure()[k][l].get(0)))
 							setShadow(0.7, cardsImages[k][l]);
 					else cardsImages[k][l].setEffect(new Glow(0));
 			}

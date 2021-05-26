@@ -127,10 +127,16 @@ public class PlayerTabs extends ViewObservable implements SceneController{
 		Board board = playersMap.get(nickname);
 		if(nickname.equals(playerNickname)) {
 			board.setMyLeaderCards(leaderCards);
-			if (board.isMainActionDone()) {
-				commonBoard.setEndTurnVisible();
+			if (board.isMainActionDone() && !commonBoard.leaderCardsDone) {
+				commonBoard.setEndTurnVisible(true);
 				board.resetMainActionDone();
 			}
+			if((leaderCards.get(0).isDiscarded() || leaderCards.get(0).isAbilitiesActivated()) &&
+					(leaderCards.get(1).isDiscarded() || leaderCards.get(1).isAbilitiesActivated())){
+				commonBoard.leaderCardsDone=true;
+				commonBoard.setEndTurnVisible(false);
+			}
+
 		} else {
 			board.setOthersLeaderCards(leaderCards);
 		}
