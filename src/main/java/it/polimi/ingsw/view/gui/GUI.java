@@ -117,12 +117,6 @@ public class GUI extends ViewObservable implements View {
 		});
 	}
 	
-	/*
-	@Override
-	public void askCustomGame() {
-		Platform.runLater(() -> notifyObserver(obs->obs.onUpdateGameConfiguration("standard")));
-	}
-	 */
 
 	@Override
 	public void showMatchInfo(ArrayList<String> players) {
@@ -168,12 +162,15 @@ public class GUI extends ViewObservable implements View {
 	
 	@Override
 	public void askLeaderAction(String nickname, ArrayList<ReducedLeaderCard> availableLeaders) {
+		/*
 		Platform.runLater(() -> {
 			PlayerTabs playerTabs = (PlayerTabs) controller;
-			playerTabs.update();
+			playerTabs.update(nickname);
 		});
+		*/
+		
 		//TODO: this method do the same thing of the following one
-		//showLeaderCards(nickname, availableLeaders);
+		showLeaderCards(nickname, availableLeaders);
 	}
 	
 	@Override
@@ -193,10 +190,13 @@ public class GUI extends ViewObservable implements View {
 
 			 */
 			playerTabs.updateActions(nickname,availableAction);
-			if(availableAction.contains(PlayerActions.PRODUCTIONS))
+			if (availableAction.contains(PlayerActions.PRODUCTIONS)) {
 				playerTabs.update(nickname,true);
-
-
+			}
+			if (availableAction.contains(PlayerActions.LEADER)) {
+				notifyObserver(obs -> obs.onUpdateAction(PlayerActions.LEADER));
+			}
+			
 		});
 	}
 
@@ -319,7 +319,6 @@ public class GUI extends ViewObservable implements View {
 	
 	@Override
 	public void replyDepot(ReducedWarehouseDepot depot, boolean initialMove, boolean confirmationAvailable, boolean inputValid) {
-		//TODO: check if this shit actually works
 		Platform.runLater(() -> {
 			PlayerTabs playerTabs= (PlayerTabs) controller;
 			playerTabs.depotInteraction(depot, initialMove, confirmationAvailable, inputValid);
