@@ -30,6 +30,7 @@ public class Notification {
 	private double layoutY;
 	private Timeline showAnimation;
 	private final NotificationHandler notificationHandler;
+	public boolean isShowing;
 
 	public Notification(AnchorPane root, String text, NotificationHandler notificationHandler){
 		this.notificationHandler = notificationHandler;
@@ -90,6 +91,7 @@ public class Notification {
 	}
 
 	public void dismissInit(){
+		isShowing = false;
 		Timeline dismissAnimation = setupDismissAnimation();
 		dismissAnimation.play();
 		final ScheduledExecutorService executorService = Executors.newSingleThreadScheduledExecutor();
@@ -104,6 +106,7 @@ public class Notification {
 	}
 
 	public void showNotification(){
+		isShowing = true;
 		anchorPane.setVisible(true);
 		lblText.setVisible(true);
 		btnClose.setVisible(true);

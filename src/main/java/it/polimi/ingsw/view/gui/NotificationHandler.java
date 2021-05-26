@@ -23,7 +23,10 @@ public class NotificationHandler {
 
 		final ScheduledExecutorService executorService = Executors.newSingleThreadScheduledExecutor();
 
-		executorService.schedule(notification::dismissInit, 8 + delay, TimeUnit.SECONDS);
+		executorService.schedule(() -> {
+			if(notification.isShowing)
+				notification.dismissInit();
+			}, 8 + delay, TimeUnit.SECONDS);
 
 		delay++;
 		if(delay == 3) delay = 0;
