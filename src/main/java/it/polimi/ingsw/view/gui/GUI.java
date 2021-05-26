@@ -14,6 +14,7 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Locale;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -380,7 +381,19 @@ public class GUI extends ViewObservable implements View {
 
 	@Override
 	public void showWinMessage(String winner, int points) {
-	
+		Platform.runLater(() -> {
+			setRoot("winner.fxml");
+			Winner winnerController= (Winner) controller;
+			if (!winner.contains(",")) {
+				winnerController.setNickname(winner.toUpperCase());
+				winnerController.setPoints("WITH "+points+" POINTS");
+			}
+			else{
+				winnerController.setWinner("IT'S A DRAW!");
+				winnerController.setNickname("THESE PLAYERS:\n{"+winner.toUpperCase()+"}");
+				winnerController.setPoints("HAVE SCORED "+points+" POINTS");
+			}
+		});
 	}
 	
 	@Override
