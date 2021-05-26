@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
- * implemented by ClientSideController. Methods are called whenever the client needs to update the server with its reply
+ * implemented by ClientSideController. Methods are called whenever the client needs to disableCommonBoardButtons the server with its reply
  */
 public interface ViewObserver {
 	

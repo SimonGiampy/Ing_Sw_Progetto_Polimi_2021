@@ -78,6 +78,8 @@ public class CommonBoard extends ViewObservable implements SceneController{
 	private int level;
 	private Colors color;
 	private ArrayList<DevelopmentCard> buyableCards;
+	
+	private Board playerBoard;
 
 	@FXML
 	public void initialize(){
@@ -90,41 +92,11 @@ public class CommonBoard extends ViewObservable implements SceneController{
 		cardsImages= new ImageView[][]{new ImageView[]{cards00,cards01,cards02,cards03},
 				new ImageView[]{cards10,cards11,cards12,cards13},
 				new ImageView[]{cards20,cards21,cards22,cards23}};
-		/*
-		cardsImages[0][0]= cards00;
-		cardsImages[0][1]= cards01;
-		cardsImages[0][2]= cards02;
-		cardsImages[0][3]= cards03;
-		cardsImages[1][0]= cards10;
-		cardsImages[1][1]= cards11;
-		cardsImages[1][2]= cards12;
-		cardsImages[1][3]= cards13;
-		cardsImages[2][0]= cards20;
-		cardsImages[2][1]= cards21;
-		cardsImages[2][2]= cards22;
-		cardsImages[2][3]= cards23;
-
-		 */
-
+		
 		//set market imageview matrix
 		marketImages= new ImageView[][]{new ImageView[]{market00,market01,market02,market03},
 				new ImageView[]{market10,market11,market12,market13},
 				new ImageView[]{market20,market21,market22,market23}};
-		/*
-		marketImages[0][0]= market00;
-		marketImages[0][1]= market01;
-		marketImages[0][2]= market02;
-		marketImages[0][3]= market03;
-		marketImages[1][0]= market10;
-		marketImages[1][1]= market11;
-		marketImages[1][2]= market12;
-		marketImages[1][3]= market13;
-		marketImages[2][0]= market20;
-		marketImages[2][1]= market21;
-		marketImages[2][2]= market22;
-		marketImages[2][3]= market23;
-
-		 */
 
 		//set rows images array
 		ImageView[] rows= new ImageView[]{normalRow1,normalRow2,normalRow3};
@@ -175,7 +147,11 @@ public class CommonBoard extends ViewObservable implements SceneController{
 		endTurn.setOnMouseClicked(event->endTurnHandler());
 
 	}
-
+	
+	public void setPlayerBoard(Board playerBoard) {
+		this.playerBoard = playerBoard;
+	}
+	
 	public void cardsSelectionHandler(Colors color, int i, int j){
 		if(cardsAble && buyableCards.contains(deck.getCardStackStructure()[i][j].get(0))){
 			this.level=i+1;
@@ -208,17 +184,12 @@ public class CommonBoard extends ViewObservable implements SceneController{
 	public void endTurnHandler(){
 		notifyObserver(obs->obs.onUpdateLeaderAction(0,0));
 		endTurn.setVisible(false);
+		playerBoard.setEndTurn();
 	}
 
-	public void setButtonVisible(boolean value){
-		if(value){
-			cardsActivation.setVisible(true);
-			marketActivation.setVisible(true);
-		}
-		else {
-			cardsActivation.setVisible(false);
-			marketActivation.setVisible(false);
-		}
+	public void disableButtons() {
+		cardsActivation.setVisible(false);
+		marketActivation.setVisible(false);
 	}
 
 	public void setSlotsButtonVisible( boolean visible){

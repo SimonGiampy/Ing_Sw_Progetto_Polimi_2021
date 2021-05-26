@@ -31,7 +31,7 @@ public class ResourcesDialogController implements SceneController {
 	private int number; // number of resources to reach in total
 	private ArrayList<Resources> selected; // resources chosen by the user
 	
-	// update the list and the button state whenever a new choice is clicked in the menu items buttons
+	// disableCommonBoardButtons the list and the button state whenever a new choice is clicked in the menu items buttons
 	
 	/**
 	 * setting parameters after dialog is created

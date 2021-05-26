@@ -6,7 +6,7 @@ import it.polimi.ingsw.network.messages.Message;
 public interface Observer {
 
 	/**
-	 * generic method of update
+	 * generic method of disableCommonBoardButtons
 	 */
 	void update(Message message);
 }

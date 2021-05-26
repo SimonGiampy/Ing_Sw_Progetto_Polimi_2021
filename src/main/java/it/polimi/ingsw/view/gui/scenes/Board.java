@@ -93,8 +93,6 @@ public class Board extends ViewObservable implements SceneController {
 	// image representing the base production, serves as clicking spot
 	@FXML private ImageView baseProduction;
 	
-	
-	
 	//references to the dev cards in the 3 slots
 	private ImageView[] slot1;
 	private ImageView[] slot2;
@@ -114,6 +112,8 @@ public class Board extends ViewObservable implements SceneController {
 	//TODO: add code that modifies these parameters when the player decides to activate a leader card with the extra depot ability
 	private int extraDepotLeader1Activation; // = 0 if not active, = 1 if it's the first leader, =2 if it's the second leader
 	private int extraDepotLeader2Activation; // = 0 if not active, = 1 if it's the first leader, =2 if it's the second leader
+	
+	private boolean mainActionDone;
 	
 	@FXML
 	public void initialize() {
@@ -173,6 +173,20 @@ public class Board extends ViewObservable implements SceneController {
 
 		extraDepotLeader1Activation = 0;
 		extraDepotLeader2Activation = 0;
+		
+		mainActionDone = false;
+		
+		leaderCards = new ArrayList<>();
+		
+		setActProductions(false);
+	}
+	
+	public boolean isMainActionDone() {
+		return mainActionDone;
+	}
+	
+	public void resetMainActionDone() {
+		mainActionDone = false;
 	}
 	
 	/**
@@ -239,7 +253,7 @@ public class Board extends ViewObservable implements SceneController {
 	}
 	
 	/**
-	 * utility method that handles the update of the positions of the crosses on the faith track.
+	 * utility method that handles the disableCommonBoardButtons of the positions of the crosses on the faith track.
 	 * It keeps track of the position so it resizes and moves them if they happen to overlap
 	 * @param c1 first cross
 	 * @param c2 second cross
@@ -292,24 +306,27 @@ public class Board extends ViewObservable implements SceneController {
 	 */
 	public void setActProductions(boolean value) {
 		actProductions.setVisible(value);
+		actProductions.setDisable(!value);
 	}
 	
 	/**
 	 * when the user clicks on the button for doing the productions
+	 * //TODO: add generic message for showing that the production could not be completed
 	 */
 	public void activateProduction(){
-		if(actProductions.getText().equals("Activate Productions")) {
+		if(actProductions.getText().equals("Activate Productions")) { // pressed activation
 			notifyObserver(obs -> obs.onUpdateAction(PlayerActions.PRODUCTIONS));
 			actProductions.setDisable(true);
 			actProductions.setText("Confirm Productions");
 			producingState = true;
-		} else {
+		} else { // pressed confirmation
 			notifyObserver(obs->obs.onUpdateProductionAction(selectedProduction));
 			selectedProduction.clear();
 			actProductions.setText("Activate Productions");
-			actProductions.setDisable(false);
+			actProductions.setDisable(true);
 			producingState = false;
 			setNormalLuminosity();
+			mainActionDone = true;
 		}
 	}
 	
@@ -337,7 +354,7 @@ public class Board extends ViewObservable implements SceneController {
 	 * sets a shadow where a production can be done
 	 * @param productions list of available productions sent from the server
 	 */
-	public void setAvailableProductionRed(ArrayList<Productions> productions){
+	public void showAvailableProductions(ArrayList<Productions> productions){
 		availableProduction = productions;
 		if (productions.contains(Productions.BASE_PRODUCTION))
 			setShadow(baseProduction);
@@ -363,9 +380,17 @@ public class Board extends ViewObservable implements SceneController {
 	 * @param img to be applied
 	 */
 	public void setShadow(ImageView img){
+		setShadow(img, false);
+	}
+	
+	public void setShadow(ImageView img, boolean leaderActive) {
 		DropShadow dropShadow= new DropShadow();
 		dropShadow.setSpread(0.5);
-		dropShadow.setColor(Color.SPRINGGREEN);
+		if (!leaderActive) {
+			dropShadow.setColor(Color.SPRINGGREEN);
+		} else {
+			dropShadow.setColor(Color.LIGHTSKYBLUE);
+		}
 		img.setEffect(dropShadow);
 	}
 	
@@ -401,6 +426,7 @@ public class Board extends ViewObservable implements SceneController {
 			if (slot1[sizeSlot1 - 1].getImage() == null) {
 				slot1[sizeSlot1 - 1].setImage(new Image("/assets/devCards/" + cards.get(0).get(sizeSlot1 - 1).getCardNumber() + ".png"));
 				slot1[sizeSlot1 - 1].setOnMouseClicked(event -> productionSelectionHandler(Productions.STACK_1_CARD_PRODUCTION, slot1[sizeSlot1 - 1]));
+				mainActionDone = true;
 			}
 			for (int i = 0; i < sizeSlot1 - 1; i++) {
 				slot1[i].setOnMouseClicked(null);
@@ -412,6 +438,7 @@ public class Board extends ViewObservable implements SceneController {
 			if (slot2[sizeSlot2 - 1].getImage() == null) {
 				slot2[sizeSlot2 - 1].setImage(new Image("/assets/devCards/" + cards.get(1).get(sizeSlot2 - 1).getCardNumber() + ".png"));
 				slot2[sizeSlot2 - 1].setOnMouseClicked(event -> productionSelectionHandler(Productions.STACK_2_CARD_PRODUCTION, slot2[sizeSlot2 - 1]));
+				mainActionDone = true;
 			}
 			for (int i = 0; i < sizeSlot2 - 1; i++) {
 				slot2[i].setOnMouseClicked(null);
@@ -423,6 +450,7 @@ public class Board extends ViewObservable implements SceneController {
 			if (slot3[sizeSlot3 - 1].getImage() == null) {
 				slot3[sizeSlot3 - 1].setImage(new Image("/assets/devCards/" + cards.get(2).get(sizeSlot3 - 1).getCardNumber() + ".png"));
 				slot3[sizeSlot3 - 1].setOnMouseClicked(event -> productionSelectionHandler(Productions.STACK_3_CARD_PRODUCTION, slot3[sizeSlot3 - 1]));
+				mainActionDone = true;
 			}
 			for (int i = 0; i < sizeSlot3 - 1; i++) {
 				slot3[i].setOnMouseClicked(null);
@@ -440,103 +468,40 @@ public class Board extends ViewObservable implements SceneController {
 	 * @param leaderCards player's leader cards
 	 */
 	public void setMyLeaderCards(ArrayList<ReducedLeaderCard> leaderCards) {
-		boolean done = false;
+		setMyLeaderCards(leaderCards.get(0), act1, dis1, leader1);
+		setMyLeaderCards(leaderCards.get(1), act2, dis2, leader2);
 		this.leaderCards=leaderCards;
-		ImageView[] images = new ImageView[]{leader1, leader2};
-		for (int i = 0; i < leaderCards.size(); i++) {
-			if (leaderCards.get(i).isPlayable()) {
-				done=true;
-				if (i == 0) {
-					act1.setDisable(false);
-					dis1.setDisable(false);
-				} else if (i == 1) {
-					act2.setDisable(false);
-					dis2.setDisable(false);
-				}
-			} else if(leaderCards.get(i).isAbilitiesActivated()){
-				done=true;
-				if(i==0) {
-					act1.setDisable(true);
-					dis1.setDisable(true);
-				}else {
-					act2.setDisable(true);
-					dis2.setDisable(true);
-				}
-			} else if (leaderCards.get(i).isDiscarded()) {
-				// card is less bright to indicate that it has been discarded
-				ColorAdjust colorAdjust = new ColorAdjust();
-				colorAdjust.setBrightness(-0.5);
-				images[i].setEffect(colorAdjust);
-				done=true;
-				if(i==0) {
-					act1.setDisable(true);
-					dis1.setDisable(true);
-				} else {
-					act2.setDisable(true);
-					dis2.setDisable(true);
-				}
-
-			} else {
-				if(!done) {
-					images[i].setImage(new Image("/assets/leaderCards/" + leaderCards.get(i).getIdNumber() + ".png"));
-					act1.setDisable(true);
-					act2.setDisable(true);
-					dis1.setDisable(true);
-					dis2.setDisable(true);
-				}
-			}
+	}
+	
+	public void setMyLeaderCards(ReducedLeaderCard leaderCard, Button act, Button dis, ImageView leader) {
+		if (leaderCard.isPlayable()) {
+			act.setDisable(false);
+			dis.setDisable(false);
+		} else if (leaderCard.isAbilitiesActivated()) {
+			act.setDisable(true);
+			dis.setDisable(true);
+			setShadow(leader, true);
+		} else if (leaderCard.isDiscarded()) {
+			// card is less bright to indicate that it has been discarded
+			ColorAdjust colorAdjust = new ColorAdjust();
+			colorAdjust.setBrightness(-0.5);
+			leader.setEffect(colorAdjust);
+			act.setDisable(true);
+			dis.setDisable(true);
+		} else if (this.leaderCards.isEmpty()) {
+			leader.setImage(new Image("/assets/leaderCards/" + leaderCard.getIdNumber() + ".png"));
+			act.setDisable(true);
+			dis.setDisable(true);
+		} else {
+			dis.setDisable(false);
 		}
 	}
 
-	//TODO: improve this code
-	public void setAvailableLeaderActions() {
-		boolean done=false;
-		ImageView[] images = new ImageView[]{leader1, leader2};
-		for (int i = 0; i < leaderCards.size(); i++) {
-			if (leaderCards.get(i).isPlayable()) {
-				done=true;
-				if (i == 0) {
-					act1.setDisable(false);
-					dis1.setDisable(false);
-				} else if (i == 1) {
-					act2.setDisable(false);
-					dis2.setDisable(false);
-				}
-			} else if(leaderCards.get(i).isAbilitiesActivated()){
-				done=true;
-				if(i==0) {
-					act1.setDisable(true);
-					dis1.setDisable(true);
-				}else {
-					act2.setDisable(true);
-					dis2.setDisable(true);
-				}
-			} else if (leaderCards.get(i).isDiscarded()) {
-				done=true;
-				// card is less bright to indicate that it has been discarded
-				ColorAdjust colorAdjust = new ColorAdjust();
-				colorAdjust.setBrightness(-0.5);
-				images[i].setEffect(colorAdjust);
-				if(i==0) {
-					act1.setDisable(true);
-					dis1.setDisable(true);
-				} else {
-					act2.setDisable(true);
-					dis2.setDisable(true);
-				}
-
-			}
-			else{
-				if(!done){
-					if(i==0){
-						dis1.setDisable(false);
-					}
-					else
-						dis2.setDisable(false);
-
-				}
-			}
-		}
+	public void setEndTurn() {
+		act1.setDisable(true);
+		act2.setDisable(true);
+		dis1.setDisable(true);
+		dis2.setDisable(true);
 	}
 
 	/**
@@ -557,10 +522,12 @@ public class Board extends ViewObservable implements SceneController {
 			}
 		}
 	}
-
+	
+	
 	public void leaderActionHandler(int card, int action){
 		notifyObserver(obs -> obs.onUpdateLeaderAction(card,action));
-		setAvailableLeaderActions();
+		//setAvailableLeaderActions();
+		//TODO: enable flags for extra depots
 	}
 	
 	
@@ -650,7 +617,7 @@ public class Board extends ViewObservable implements SceneController {
 			}
 		}
 		
-		// update incoming resource deck contents. Deck must not contain any empty resources
+		// disableCommonBoardButtons incoming resource deck contents. Deck must not contain any empty resources
 		ArrayList<Resources> incomingDeck = depot.getIncomingResources();
 		if (!incomingDeck.isEmpty()) {
 			deck1.setImage(new Image(incomingDeck.get(0).path));
@@ -727,6 +694,8 @@ public class Board extends ViewObservable implements SceneController {
 				for (int i = 1; i <= 4; i++) {
 					disableDragAndDrop(decks[i-1]);
 				}
+				
+				mainActionDone = true;
 			});
 		}
 		

@@ -92,6 +92,8 @@ public class PlayerTabs extends ViewObservable implements SceneController{
 		playersMap.get(nicknameList.get(0)).setStartingPlayer();
 		//tabPane.getSelectionModel().select(tabMap.get(playersMap.get(playerNickname)));
 		
+		commonBoard.setPlayerBoard(playersMap.get(playerNickname));
+		
 		//sets the single player mode
 		if (nicknameList.size() == 1) {
 			playersMap.get(nicknameList.get(0)).setSinglePlayerMode();
@@ -100,7 +102,7 @@ public class PlayerTabs extends ViewObservable implements SceneController{
 
 	public void update(String nickname){
 		Board board = playersMap.get(nickname);
-		board.setAvailableLeaderActions();
+		//board.setAvailableLeaderActions();
 	}
 
 	public void update(String nickname, ReducedFaithTrack track){
@@ -125,31 +127,35 @@ public class PlayerTabs extends ViewObservable implements SceneController{
 		Board board = playersMap.get(nickname);
 		if(nickname.equals(playerNickname)) {
 			board.setMyLeaderCards(leaderCards);
-		}
-		else{
+			if (board.isMainActionDone()) {
+				commonBoard.setEndTurnVisible();
+				board.resetMainActionDone();
+			}
+		} else {
 			board.setOthersLeaderCards(leaderCards);
 		}
 		setTabToRead(board);
 	}
 
-	public void update(){
+	/*
+	public void disableCommonBoardButtons(){
 		commonBoard.setEndTurnVisible();
 	}
-
+	*/
 	public void update(String nickname, ReducedCardProductionManagement cardProductionManagement){
 		Board board = playersMap.get(nickname);
 		board.updateDevCardsSlots(cardProductionManagement);
 		setTabToRead(board);
 	}
 
-	public void update(String nickname, boolean value){
+	public void update(String nickname, boolean activateProductions){
 		Board board = playersMap.get(nickname);
-		board.setActProductions(value);
+		board.setActProductions(activateProductions);
 		setTabToRead(board);
 	}
 
-	public void update(boolean value){
-		commonBoard.setButtonVisible(value);
+	public void disableCommonBoardButtons() {
+		commonBoard.disableButtons();
 	}
 
 	public void updateActions(String nickname, ArrayList<PlayerActions> actions){
@@ -168,7 +174,7 @@ public class PlayerTabs extends ViewObservable implements SceneController{
 
 	public void updateProduction(String nickname, ArrayList<Productions> productions){
 		Board board = playersMap.get(nickname);
-		board.setAvailableProductionRed(productions);
+		board.showAvailableProductions(productions);
 		board.setProducingState(true);
 	}
 

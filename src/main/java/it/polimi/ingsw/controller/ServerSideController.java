@@ -392,9 +392,9 @@ public class ServerSideController {
 					mechanics.getPlayer(i).getPlayerFaithTrack().moveMarker(n);
 					virtualViewMap.get(nicknameList.get(i)).showGenericMessage(message.getNickname()+ " discarded " + n +
 							" resources, you get " + n + " faith points" );
-					virtualViewMap.get(nicknameList.get(i)).showFaithTrack(nicknameList.get(i),
-							new ReducedFaithTrack(mechanics.getPlayer(i).getPlayerFaithTrack()));
 				}
+				virtualViewMap.get(nicknameList.get(i)).showFaithTrack(nicknameList.get(i),
+						new ReducedFaithTrack(mechanics.getPlayer(i).getPlayerFaithTrack()));
 			}
 			checkVaticanReport();
 			turnController.setTurnPhase(TurnPhase.MAIN_ACTION); //next turn

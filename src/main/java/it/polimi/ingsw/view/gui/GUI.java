@@ -14,10 +14,6 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Locale;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 public class GUI extends ViewObservable implements View {
@@ -74,7 +70,7 @@ public class GUI extends ViewObservable implements View {
 	
 	@Override
 	public void showLobbyConfirmation(boolean lobbyAccessed) {
-		// update scene only if the result is positive (the flag is true), otherwise shows a connection error
+		// disableCommonBoardButtons scene only if the result is positive (the flag is true), otherwise shows a connection error
 		Platform.runLater(() -> {
 			if (!lobbyAccessed) {
 				LobbyAccess lobbyAccess = (LobbyAccess) controller;
@@ -163,14 +159,6 @@ public class GUI extends ViewObservable implements View {
 	
 	@Override
 	public void askLeaderAction(String nickname, ArrayList<ReducedLeaderCard> availableLeaders) {
-		/*
-		Platform.runLater(() -> {
-			PlayerTabs playerTabs = (PlayerTabs) controller;
-			playerTabs.update(nickname);
-		});
-		*/
-		
-		//TODO: this method do the same thing of the following one
 		showLeaderCards(nickname, availableLeaders);
 	}
 	
@@ -205,7 +193,7 @@ public class GUI extends ViewObservable implements View {
 	public void startTurn(String nickname){
 		Platform.runLater(() -> {
 			PlayerTabs playerTabs = (PlayerTabs) controller;
-			playerTabs.update(nickname);
+			//playerTabs.disableCommonBoardButtons(nickname);
 		});
 	}
 	
@@ -241,7 +229,7 @@ public class GUI extends ViewObservable implements View {
 	public void askProductionAction(String nickname,ArrayList<Productions> productionAvailable) {
 		Platform.runLater(() -> {
 			PlayerTabs playerTabs= (PlayerTabs) controller;
-			playerTabs.update(false);
+			playerTabs.disableCommonBoardButtons();
 			playerTabs.updateProduction(nickname,productionAvailable);
 		});
 	
@@ -353,7 +341,7 @@ public class GUI extends ViewObservable implements View {
 	
 	@Override
 	public void showPlayerCardsAndProduction(String nickname, ReducedCardProductionManagement cardProductionsManagement) {
-		//This is just the update of the card productions
+		//This is just the disableCommonBoardButtons of the card productions
 		Platform.runLater(() -> {
 			PlayerTabs playerTabs= (PlayerTabs) controller;
 			playerTabs.update(nickname, cardProductionsManagement);
