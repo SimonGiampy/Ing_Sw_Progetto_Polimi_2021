@@ -113,7 +113,7 @@ public class Board extends ViewObservable implements SceneController {
 	private int extraDepotLeader1Activation; // = 0 if not active, = 1 if it's the first leader, =2 if it's the second leader
 	private int extraDepotLeader2Activation; // = 0 if not active, = 1 if it's the first leader, =2 if it's the second leader
 	
-	private boolean mainActionDone;
+	private boolean mainActionDone; //flag needed for the end turn move
 	
 	@FXML
 	public void initialize() {
@@ -157,6 +157,7 @@ public class Board extends ViewObservable implements SceneController {
 		sizeSlot2=0;
 		sizeSlot3=0;
 		
+		// faith crosses values
 		updateCrossCoords(false, 0); // initial position when the game starts
 		redPosition = 0;
 		blackPosition = -1;
@@ -171,6 +172,7 @@ public class Board extends ViewObservable implements SceneController {
 		dis1.setOnMouseClicked(event -> leaderActionHandler(1,2));
 		dis2.setOnMouseClicked(event -> leaderActionHandler(2,2));
 
+		// flags for the extra depot activations
 		extraDepotLeader1Activation = 0;
 		extraDepotLeader2Activation = 0;
 		
@@ -178,13 +180,20 @@ public class Board extends ViewObservable implements SceneController {
 		
 		leaderCards = new ArrayList<>();
 		
-		setActProductions(false);
+		setActProductions(false); // disables the productions at the start
 	}
 	
+	/**
+	 * getter needed by the common board class
+	 * @return true if the main action of a turn has been completed
+	 */
 	public boolean isMainActionDone() {
 		return mainActionDone;
 	}
 	
+	/**
+	 * when the turn has ended
+	 */
 	public void resetMainActionDone() {
 		mainActionDone = false;
 	}
@@ -302,7 +311,7 @@ public class Board extends ViewObservable implements SceneController {
 	
 	/**
 	 * changes the production status
-	 * @param value flag
+	 * @param value activate or deactivate the possibility to make productions
 	 */
 	public void setActProductions(boolean value) {
 		actProductions.setVisible(value);
@@ -376,13 +385,18 @@ public class Board extends ViewObservable implements SceneController {
 	}
 	
 	/**
-	 * sets a nice looking shadow on an image
+	 * sets a nice looking shadow on an image, with default green-ish color
 	 * @param img to be applied
 	 */
 	public void setShadow(ImageView img){
 		setShadow(img, false);
 	}
 	
+	/**
+	 * sets a nice looking shadow on an image, with a flag specific for the activated leaders
+	 * @param img generic image
+	 * @param leaderActive if it refers to a leader card image
+	 */
 	public void setShadow(ImageView img, boolean leaderActive) {
 		DropShadow dropShadow= new DropShadow();
 		dropShadow.setSpread(0.5);
@@ -474,6 +488,13 @@ public class Board extends ViewObservable implements SceneController {
 
 	}
 	
+	/**
+	 * updates the leader card images and the buttons according to the available actions
+	 * @param leaderCard reduced class
+	 * @param act activation button
+	 * @param dis discard button
+	 * @param leader image of the leader
+	 */
 	public void setMyLeaderCards(ReducedLeaderCard leaderCard, Button act, Button dis, ImageView leader) {
 		if (leaderCard.isPlayable()) {
 			act.setDisable(false);
@@ -524,11 +545,25 @@ public class Board extends ViewObservable implements SceneController {
 		}
 	}
 	
-	
-	public void leaderActionHandler(int card, int action){
+	/**
+	 * handles the click on a leader related button
+	 * @param card 1 or 2, representing the ordinal number of the leader card
+	 * @param action 1 -> activation; 2 -> discarding
+	 */
+	public void leaderActionHandler(int card, int action) {
 		notifyObserver(obs -> obs.onUpdateLeaderAction(card,action));
-		//setAvailableLeaderActions();
-		//TODO: enable flags for extra depots
+		
+		// code for setting the extra resources in the correct slots on the board
+		if (action == 1) { // leader card activation
+			//extra depot leader card check
+			if (leaderCards.get(card - 1).getIdNumber() >= 5 && leaderCards.get(card - 1).getIdNumber() <= 8) {
+				if (extraDepotLeader1Activation > 0) {
+					extraDepotLeader2Activation = card;
+				} else {
+					extraDepotLeader1Activation = card;
+				}
+			}
+		}
 	}
 	
 	
@@ -580,11 +615,6 @@ public class Board extends ViewObservable implements SceneController {
 		}
 		
 		//updates the additional depots if they're set and the abilities are activated (only if the image hasn't been set yet)
-		//TODO: there is 100% a bug where if the leader activated with the additional depots is the second one (visually) then
-		//      the resources will be put over the first leader image. This is because the Model treats the leaders activated regardless
-		//      of the order in which the leaders are displayed.
-		//  Solution: use variables to identify which leader has been activated and sets the corresponding images accordingly
-		//  TODO (Update) : solved the bug, but the 2 integer flags must be set when a leader is activated (read above)
 		if (depot.isLeaderActivated(0)) {
 			if (depot.getExtraDepotContents().get(0).get(0)) {
 				if (extraDepotLeader1Activation == 1) {
@@ -611,9 +641,9 @@ public class Board extends ViewObservable implements SceneController {
 			}
 			if (depot.getExtraDepotContents().get(1).get(1)) {
 				if (extraDepotLeader2Activation == 1) {
-					res12.setImage(new Image(depot.getExtraDepotResources().get(1).get(0).path));
+					res12.setImage(new Image(depot.getExtraDepotResources().get(1).get(1).path));
 				} else if (extraDepotLeader2Activation == 2) {
-					res22.setImage(new Image(depot.getExtraDepotResources().get(1).get(0).path));
+					res22.setImage(new Image(depot.getExtraDepotResources().get(1).get(1).path));
 				}
 			}
 		}
