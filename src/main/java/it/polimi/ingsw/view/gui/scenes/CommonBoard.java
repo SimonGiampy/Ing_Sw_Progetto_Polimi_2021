@@ -154,7 +154,7 @@ public class CommonBoard extends ViewObservable implements SceneController{
 			int finalI = i;
 			rows[i].setOnMouseEntered(event->marketEnteredHandler(rows[finalI]));
 			rows[i].setOnMouseExited(event->marketExitedHandler(rows[finalI]));
-			rows[i].setOnMouseClicked(event->marketCLickHandler("ROW", finalI+1));
+			rows[i].setOnMouseClicked(event-> marketClickHandler("ROW", finalI+1));
 		}
 
 		//set cols events
@@ -162,7 +162,7 @@ public class CommonBoard extends ViewObservable implements SceneController{
 			int finalI = i;
 			cols[i].setOnMouseEntered(event->marketEnteredHandler(cols[finalI]));
 			cols[i].setOnMouseExited(event->marketExitedHandler(cols[finalI]));
-			cols[i].setOnMouseClicked(event->marketCLickHandler("COL", finalI+1));
+			cols[i].setOnMouseClicked(event-> marketClickHandler("COL", finalI+1));
 		}
 
 		//set slots event
@@ -257,7 +257,7 @@ public class CommonBoard extends ViewObservable implements SceneController{
 		img.setEffect(new Glow(0.0));
 	}
 
-	public void marketCLickHandler(String which, int where){
+	public void marketClickHandler(String which, int where){
 		if(marketAble) {
 			notifyObserver(obs -> obs.onUpdateMarketAction(which, where));
 			marketAble=false;
