@@ -106,7 +106,7 @@ public class Board extends ViewObservable implements SceneController {
 	// used for handling production on the main player board
 	private ArrayList<Productions> selectedProduction;
 	private ArrayList<Productions> availableProduction;
-	private boolean productionAble;
+	private boolean producingState;
 
 	private ArrayList<ReducedLeaderCard> leaderCards;
 	
@@ -176,10 +176,32 @@ public class Board extends ViewObservable implements SceneController {
 	}
 	
 	/**
+	 * sets the visibility of buttons for opponent's boards
+	 */
+	public void setOpponentBoard(){
+		act1.setVisible(false);
+		dis1.setVisible(false);
+		act2.setVisible(false);
+		dis2.setVisible(false);
+		actProductions.setVisible(false);
+		leader1.setImage(new Image("/assets/leaderCards/retro.png"));
+		leader2.setImage(new Image("/assets/leaderCards/retro.png"));
+	}
+	
+	/**
+	 * sets the inkwell visible if this is the first's player board. This method is also called when the mode is single player
+	 */
+	public void setStartingPlayer(){
+		leftCornerImage.setVisible(true); // shows the inkwell
+	}
+	
+	/*------------------------------------------------- SINGLE PLAYER -------------------------------------------------------------------*/
+	
+	/**
 	 * if the mode is single player, adds a new black cross to the faith track. Also places the tokens in the same place where the inkwell is.
 	 */
 	public void setSinglePlayerMode() {
-		leftCornerImage.setImage(new Image("/assets/token/0.png"));
+		leftCornerImage.setImage(new Image("/assets/token/0.png")); // applies first token
 		blackCross.setVisible(true);
 		updateCrossCoords(true, 0);
 	}
@@ -198,6 +220,9 @@ public class Board extends ViewObservable implements SceneController {
 			leftCornerImage.setImage(new Image("/assets/token/6.png"));
 
 	}
+	
+	/*-------------------------------------------------- FAITH TRACK related code -----------------------------------------------------------*/
+	
 	/**
 	 * updates the position of the red cross on the faith track
 	 * @param lorenzo indicating if the cross to be moved is the Lorenzo's one
@@ -251,6 +276,7 @@ public class Board extends ViewObservable implements SceneController {
 	 * @param num ordinal number indicating the zone to be activated
 	 */
 	public void activatePapalZone(int num) {
+		//TODO: apply the correct image over the zone in the cases where the player got the points or not
 		switch (num) {
 			case 1 -> papal1.setVisible(true);
 			case 2 -> papal2.setVisible(true);
@@ -258,32 +284,108 @@ public class Board extends ViewObservable implements SceneController {
 		}
 	}
 	
+	/*------------------------------------------------------DEV CARDS AND PRODUCTIONS --------------------------------------------------*/
+	
 	/**
-	 * updates the strongbox contents
-	 * @param strongbox reduced class
+	 * changes the production status
+	 * @param value flag
 	 */
-	public void updateStrongbox(ReducedStrongbox strongbox) {
-		ArrayList<Resources> content = strongbox.getContent();
-		setNumerosity(Resources.COIN, ListSet.count(content, Resources.COIN));
-		setNumerosity(Resources.SERVANT, ListSet.count(content, Resources.SERVANT));
-		setNumerosity(Resources.SHIELD, ListSet.count(content, Resources.SHIELD));
-		setNumerosity(Resources.STONE, ListSet.count(content, Resources.STONE));
+	public void setActProductions(boolean value) {
+		actProductions.setVisible(value);
 	}
 	
 	/**
-	 * sets the number of resources present in the depot
-	 * @param res the specific resource
-	 * @param num quantity
+	 * when the user clicks on the button for doing the productions
 	 */
-	private void setNumerosity(Resources res, int num) {
-		switch (res) {
-			case STONE -> numStone.setText(String.valueOf(num));
-			case SHIELD -> numShield.setText(String.valueOf(num));
-			case SERVANT -> numServant.setText(String.valueOf(num));
-			case COIN -> numCoin.setText(String.valueOf(num));
+	public void activateProduction(){
+		if(actProductions.getText().equals("Activate Productions")) {
+			notifyObserver(obs -> obs.onUpdateAction(PlayerActions.PRODUCTIONS));
+			actProductions.setDisable(true);
+			actProductions.setText("Confirm Productions");
+			producingState = true;
+		} else {
+			notifyObserver(obs->obs.onUpdateProductionAction(selectedProduction));
+			selectedProduction.clear();
+			actProductions.setText("Activate Productions");
+			actProductions.setDisable(false);
+			producingState = false;
+			setNormalLuminosity();
 		}
 	}
-
+	
+	/**
+	 * mouse click handler for the productions on the main board
+	 * @param production selected by the user
+	 * @param image where the user clicked
+	 */
+	public void productionSelectionHandler(Productions production, ImageView image) {
+		if(producingState && availableProduction.contains(production)) {
+			if (!selectedProduction.contains(production)) {
+				image.setEffect(new Glow(0.5));
+				selectedProduction.add(production);
+				actProductions.setDisable(false);
+			} else {
+				setShadow(image);
+				selectedProduction.remove(production);
+				if(selectedProduction.size()==0)
+					actProductions.setDisable(true);
+			}
+		}
+	}
+	
+	/**
+	 * sets a shadow where a production can be done
+	 * @param productions list of available productions sent from the server
+	 */
+	public void setAvailableProductionRed(ArrayList<Productions> productions){
+		availableProduction = productions;
+		if (productions.contains(Productions.BASE_PRODUCTION))
+			setShadow(baseProduction);
+		if (productions.contains(Productions.STACK_1_CARD_PRODUCTION)) {
+			setShadow(slot1[sizeSlot1-1]);
+		}
+		if (productions.contains(Productions.STACK_2_CARD_PRODUCTION)){
+			setShadow(slot2[sizeSlot2-1]);
+		}
+		if (productions.contains(Productions.STACK_3_CARD_PRODUCTION)){
+			setShadow(slot3[sizeSlot3-1]);
+		}
+		if (productions.contains(Productions.LEADER_CARD_1_PRODUCTION)){
+			setShadow(leader1);
+		}
+		if (productions.contains(Productions.LEADER_CARD_2_PRODUCTION)){
+			setShadow(leader2);
+		}
+	}
+	
+	/**
+	 * sets a nice looking shadow on an image
+	 * @param img to be applied
+	 */
+	public void setShadow(ImageView img){
+		DropShadow dropShadow= new DropShadow();
+		dropShadow.setSpread(0.5);
+		dropShadow.setColor(Color.SPRINGGREEN);
+		img.setEffect(dropShadow);
+	}
+	
+	public void setProducingState(boolean producingState) {
+		this.producingState = producingState;
+	}
+	
+	/**
+	 * applies normal luminosity to all production-based elements
+	 */
+	public void setNormalLuminosity(){
+		baseProduction.setEffect(new Glow(0));
+		leader1.setEffect(new Glow(0));
+		leader2.setEffect(new Glow(0));
+		
+		if(sizeSlot1>0) slot1[sizeSlot1-1].setEffect(new Glow(0));
+		if(sizeSlot2>0)	slot2[sizeSlot2-1].setEffect(new Glow(0));
+		if(sizeSlot3>0) slot3[sizeSlot3-1].setEffect(new Glow(0));
+	}
+	
 	/**
 	 * updates the development cards in the slots, setting the images if not set yet.
 	 * @param cardManager reduces class containing the stacks of the dev cards on the player board.
@@ -315,7 +417,7 @@ public class Board extends ViewObservable implements SceneController {
 				slot2[i].setOnMouseClicked(null);
 			}
 		}
-
+		
 		//slot 3 old dev cards and new dev cards
 		if (sizeSlot3 > 0) {
 			if (slot3[sizeSlot3 - 1].getImage() == null) {
@@ -328,7 +430,10 @@ public class Board extends ViewObservable implements SceneController {
 		}
 		
 	}
-
+	
+	
+	/*----------------------------------------------------------- LEADER CARDS ----------------------------------------------------*/
+	
 	/**
 	 * sets leader card of the player. Also activates or deactivates the buttons relative to the leader cards based on the game status and
 	 * who is the player in this board.
@@ -457,127 +562,35 @@ public class Board extends ViewObservable implements SceneController {
 		notifyObserver(obs -> obs.onUpdateLeaderAction(card,action));
 		setAvailableLeaderActions();
 	}
-
+	
+	
+	
+	/*-------------------------------------------------- DEPOT and STRONGBOX related code ----------------------------------------------*/
+	
 	/**
-	 * sets the visibility of buttons for opponent's boards
+	 * updates the strongbox contents
+	 * @param strongbox reduced class
 	 */
-	public void setOpponentBoard(){
-		act1.setVisible(false);
-		dis1.setVisible(false);
-		act2.setVisible(false);
-		dis2.setVisible(false);
-		actProductions.setVisible(false);
-		leader1.setImage(new Image("/assets/leaderCards/retro.png"));
-		leader2.setImage(new Image("/assets/leaderCards/retro.png"));
-	}
-
-	/**
-	 * sets the inkwell visible if this is the first's player board
-	 */
-	public void setStartingPlayer(){
-		//TODO: if this is not single player mode
-		leftCornerImage.setVisible(true);
+	public void updateStrongbox(ReducedStrongbox strongbox) {
+		ArrayList<Resources> content = strongbox.getContent();
+		setNumerosity(Resources.COIN, ListSet.count(content, Resources.COIN));
+		setNumerosity(Resources.SERVANT, ListSet.count(content, Resources.SERVANT));
+		setNumerosity(Resources.SHIELD, ListSet.count(content, Resources.SHIELD));
+		setNumerosity(Resources.STONE, ListSet.count(content, Resources.STONE));
 	}
 	
 	/**
-	 * changes the production status
-	 * @param value flag
+	 * sets the number of resources present in the depot
+	 * @param res the specific resource
+	 * @param num quantity
 	 */
-	public void setActProductions(boolean value) {
-		actProductions.setVisible(value);
-	}
-	
-	/**
-	 * when the user clicks on the button for doing the productions
-	 */
-	public void activateProduction(){
-		if(actProductions.getText().equals("Activate Productions")) {
-			notifyObserver(obs -> obs.onUpdateAction(PlayerActions.PRODUCTIONS));
-			actProductions.setDisable(true);
-			actProductions.setText("Confirm Productions");
-			productionAble = true;
-		} else {
-			notifyObserver(obs->obs.onUpdateProductionAction(selectedProduction));
-			actProductions.setText("Activate Productions");
-			actProductions.setDisable(false);
-			productionAble=false;
-			setNormal();
+	private void setNumerosity(Resources res, int num) {
+		switch (res) {
+			case STONE -> numStone.setText(String.valueOf(num));
+			case SHIELD -> numShield.setText(String.valueOf(num));
+			case SERVANT -> numServant.setText(String.valueOf(num));
+			case COIN -> numCoin.setText(String.valueOf(num));
 		}
-	}
-	
-	/**
-	 * mouse click handler for the productions on the main board
-	 * @param production selected by the user
-	 * @param image where the user clicked
-	 */
-	public void productionSelectionHandler(Productions production, ImageView image) {
-		if(productionAble && availableProduction.contains(production)) {
-			if (!selectedProduction.contains(production)) {
-				image.setEffect(new Glow(0.5));
-				selectedProduction.add(production);
-				actProductions.setDisable(false);
-			} else {
-				setShadow(0.5, image);
-				selectedProduction.remove(production);
-				if(selectedProduction.size()==0)
-					actProductions.setDisable(true);
-			}
-		}
-	}
-	
-	/**
-	 * sets a shadow where a production can be done
-	 * @param productions list of available productions sent from the server
-	 */
-	public void setAvailableProductionRed(ArrayList<Productions> productions){
-		availableProduction = productions;
-		if (productions.contains(Productions.BASE_PRODUCTION))
-			setShadow(0.5, baseProduction);
-		if (productions.contains(Productions.STACK_1_CARD_PRODUCTION)) {
-			setShadow(0.5, slot1[sizeSlot1-1]);
-		}
-		if (productions.contains(Productions.STACK_2_CARD_PRODUCTION)){
-			setShadow(0.5, slot2[sizeSlot2-1]);
-		}
-		if (productions.contains(Productions.STACK_3_CARD_PRODUCTION)){
-			setShadow(0.5, slot3[sizeSlot3-1]);
-		}
-		if (productions.contains(Productions.LEADER_CARD_1_PRODUCTION)){
-			setShadow(0.5, leader1);
-		}
-		if (productions.contains(Productions.LEADER_CARD_2_PRODUCTION)){
-			setShadow(0.5, leader2);
-		}
-
-	}
-	
-	/**
-	 * sets a nice looking shadow on an image
-	 * @param value darkness
-	 * @param img to be applied
-	 */
-	public void setShadow(double value, ImageView img){
-		DropShadow dropShadow= new DropShadow();
-		dropShadow.setSpread(value);
-		dropShadow.setColor(Color.LIGHTCORAL);
-		img.setEffect(dropShadow);
-	}
-
-	public void setProductionAble(boolean productionAble) {
-		this.productionAble = productionAble;
-	}
-	
-	/**
-	 * applies normal luminosity to all production-based elements
-	 */
-	public void setNormal(){
-		baseProduction.setEffect(new Glow(0));
-		leader1.setEffect(new Glow(0));
-		leader2.setEffect(new Glow(0));
-		
-		if(sizeSlot1>0) slot1[sizeSlot1-1].setEffect(new Glow(0));
-		if(sizeSlot2>0)	slot2[sizeSlot2-1].setEffect(new Glow(0));
-		if(sizeSlot3>0) slot3[sizeSlot3-1].setEffect(new Glow(0));
 	}
 	
 	

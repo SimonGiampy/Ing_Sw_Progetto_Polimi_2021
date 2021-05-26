@@ -169,7 +169,7 @@ public class PlayerTabs extends ViewObservable implements SceneController{
 	public void updateProduction(String nickname, ArrayList<Productions> productions){
 		Board board = playersMap.get(nickname);
 		board.setAvailableProductionRed(productions);
-		board.setProductionAble(true);
+		board.setProducingState(true);
 	}
 
 	public void update(ArrayList<DevelopmentCard> cards, boolean wrong){
