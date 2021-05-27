@@ -426,8 +426,8 @@ public class CLI extends ViewObservable implements View {
 			System.out.println("You can't place that development card in the slot you chose!" +
 					" Retype the card number and choose a different slot.");
 		}
-		
-		String regex = "[1" + cardsAvailable.size() + "]";
+
+		String regex = "[1-" + cardsAvailable.size() + "]";
 		System.out.println("Available Development Cards: ");
 		for(int i = 0; i < cardsAvailable.size(); i++){
 			System.out.println("Card's number: " + (i + 1));
