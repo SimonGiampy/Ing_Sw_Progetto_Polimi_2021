@@ -105,7 +105,8 @@ public class Client extends Observable {
 				enablePinger(false);
 				socket.close();
 				LOGGER.info("Client disconnected from the game");
-				System.exit(1); // abrupt termination of program
+				final ScheduledExecutorService executorService = Executors.newSingleThreadScheduledExecutor();
+				executorService.schedule(() -> System.exit(1), 7, TimeUnit.SECONDS); // abrupt termination of program
 			}
 		} catch (IOException e) {
 			LOGGER.error("Client-side disconnection cannot be completed: " + e.getMessage());

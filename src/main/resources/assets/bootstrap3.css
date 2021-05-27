@@ -1009,3 +1009,11 @@ VBox > .split-menu-button.last > .arrow-button {
 	-fx-background-insets: 2 0 0 0,2 0 3 0, 2 0 4 0, 2 0 5 0;
 }
 
+.notification{
+	-fx-background-radius: 5;
+	-fx-border-radius: 2;
+	-fx-border-color: #dddddd;
+	-fx-border-width: 2;
+	-fx-background-color: white;
+	-fx-padding: 3 3 3 3;
+}

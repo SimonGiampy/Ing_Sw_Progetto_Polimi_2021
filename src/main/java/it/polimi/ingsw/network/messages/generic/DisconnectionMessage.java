@@ -12,7 +12,7 @@ public class DisconnectionMessage extends Message {
 	private final boolean termination; // signals that the entire lobby must be closed abruptly after the game started
 
 	public DisconnectionMessage(String text, boolean termination) {
-		super("Lobby", MessageType.DISCONNECTION_MESSAGE);
+		super("Server", MessageType.DISCONNECTION_MESSAGE);
 		this.text = text;
 		this.termination = termination;
 	}

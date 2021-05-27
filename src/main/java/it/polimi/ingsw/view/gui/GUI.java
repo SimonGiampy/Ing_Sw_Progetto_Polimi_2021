@@ -288,17 +288,17 @@ public class GUI extends ViewObservable implements View {
 
 	@Override
 	public void showGenericMessage(String genericMessage) {
-		Platform.runLater(() -> notificationHandler.addNotification(genericMessage, (AnchorPane) scene.getRoot()));
+		Platform.runLater(() -> notificationHandler.addNotification(genericMessage, (AnchorPane) scene.getRoot(), false));
 	}
 	
 	@Override
 	public void disconnection(String text, boolean termination) {
-	
+		Platform.runLater(() -> notificationHandler.addNotification(text, (AnchorPane) scene.getRoot(), true));
 	}
 	
 	@Override
 	public void showError(String error) {
-	
+		Platform.runLater(() -> notificationHandler.addNotification(error, (AnchorPane) scene.getRoot(), true));
 	}
 	
 	@Override
