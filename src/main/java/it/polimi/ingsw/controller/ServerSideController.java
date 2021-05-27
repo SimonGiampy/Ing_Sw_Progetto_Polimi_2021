@@ -237,14 +237,12 @@ public class ServerSideController {
 		mechanics.assignInitialAdvantage(message.getResourcesList(),playerIndex);
 		initResources[playerIndex-1]=true;
 		if(allTrue(initResources)){
-			VirtualView view;
 			for (int i = 0; i < nicknameList.size(); i++) {
-				view = virtualViewMap.get(nicknameList.get(i));
 				for (int j = 0; j < nicknameList.size(); j++) {
 					sendBoxes(nicknameList.indexOf(nicknameList.get(j)), true);
-					view.showFaithTrack(nicknameList.get(j), new ReducedFaithTrack(mechanics.getPlayer(j).getPlayerFaithTrack()));
 				}
 			}
+			sendFaithTracks();
 			controllerAskLeaders();
 		}
 	}
@@ -360,7 +358,7 @@ public class ServerSideController {
 		}
 		if(deck.getFaithPoint() != 0) {
 			mechanics.getPlayer(playerIndex).getPlayerFaithTrack().moveMarker(deck.getFaithPoint());
-			view.showFaithTrack(message.getNickname(), new ReducedFaithTrack(mechanics.getPlayer(playerIndex).getPlayerFaithTrack()));
+			sendFaithTracks();
 			deck.setFaithPoint(0);
 			checkVaticanReport();
 		}
@@ -393,9 +391,8 @@ public class ServerSideController {
 					virtualViewMap.get(nicknameList.get(i)).showGenericMessage(message.getNickname()+ " discarded " + n +
 							" resources, you get " + n + " faith points" );
 				}
-				virtualViewMap.get(nicknameList.get(i)).showFaithTrack(nicknameList.get(i),
-						new ReducedFaithTrack(mechanics.getPlayer(i).getPlayerFaithTrack()));
 			}
+			sendFaithTracks();
 			checkVaticanReport();
 			turnController.setTurnPhase(TurnPhase.MAIN_ACTION); //next turn
 		} else {
@@ -677,6 +674,15 @@ public class ServerSideController {
 			virtualViewMap.get(nicknameList.get(i)).showGenericMessage(nick + " triggered Vatican Report" +
 					" n." + (mechanics.getLastReportClaimed()) + "!");
 			virtualViewMap.get(nicknameList.get(i)).showFaithTrack(nickname, new ReducedFaithTrack(mechanics.getPlayer(i).getPlayerFaithTrack()));
+		}
+	}
+
+	public void sendFaithTracks(){
+		for(String s: nicknameList){
+			VirtualView view = virtualViewMap.get(s);
+			for(int i = 0; i < nicknameList.size(); i++){
+				view.showFaithTrack(nicknameList.get(i), new ReducedFaithTrack(mechanics.getPlayer(i).getPlayerFaithTrack()));
+			}
 		}
 	}
 
