@@ -25,6 +25,7 @@ public class ResourcesDialog extends Dialog<ArrayList<Resources>> {
 			ButtonType t = new ButtonType("Confirm Choices", ButtonBar.ButtonData.OK_DONE);
 			dialogPane.getButtonTypes().addAll(t);
 			Button confirm = (Button) dialogPane.lookupButton(t);
+			confirm.setCancelButton(true);
 			
 			controller.setNumberOfResources(number, prompt);
 			controller.setConfirmButton(confirm);

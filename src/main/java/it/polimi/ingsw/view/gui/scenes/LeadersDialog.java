@@ -1,9 +1,14 @@
 package it.polimi.ingsw.view.gui.scenes;
 
-import it.polimi.ingsw.model.LeaderCard;
 import it.polimi.ingsw.model.reducedClasses.ReducedLeaderCard;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.*;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
+import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -20,6 +25,7 @@ public class LeadersDialog extends Dialog<ArrayList<Integer>> {
 			ButtonType t = new ButtonType("Confirm Leaders", ButtonBar.ButtonData.OK_DONE);
 			dialogPane.getButtonTypes().addAll(t);
 			Button confirm = (Button) dialogPane.lookupButton(t);
+			confirm.setCancelButton(true);
 			
 			controller.setLeaders(leaderCards);
 			controller.setConfirmButton(confirm);

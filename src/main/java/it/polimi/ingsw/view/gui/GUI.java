@@ -11,6 +11,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -130,6 +131,7 @@ public class GUI extends ViewObservable implements View {
 	public void askInitResources(int number) {
 		Platform.runLater(() -> {
 			ResourcesDialog dialog = new ResourcesDialog(number, "Choose a total of " + number + " initial resources.");
+			((Stage) dialog.getDialogPane().getScene().getWindow()).initStyle(StageStyle.UNDECORATED);
 			dialog.initOwner(stage);
 			dialog.showAndWait().ifPresent(resources -> {
 				ArrayList<Integer> numbers = new ArrayList<>();
@@ -152,6 +154,7 @@ public class GUI extends ViewObservable implements View {
 	public void askInitLeaders(String nickname, ArrayList<ReducedLeaderCard> leaderCards) {
 		Platform.runLater(() -> {
 			LeadersDialog dialog = new LeadersDialog(leaderCards);
+			((Stage) dialog.getDialogPane().getScene().getWindow()).initStyle(StageStyle.UNDECORATED);
 			dialog.initOwner(stage);
 			dialog.showAndWait().ifPresent(integers -> notifyObserver(obs -> obs.onUpdateInitLeaders(integers)));
 		});
