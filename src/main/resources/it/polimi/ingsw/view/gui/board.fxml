@@ -101,15 +101,9 @@
     <ImageView fx:id="leftCornerImage" fitHeight="158.0" fitWidth="152.0" layoutX="16.0" layoutY="6.0" pickOnBounds="true" preserveRatio="true" visible="false">
         <Image url="@../../../../../assets/board/calamaio.png" />
     </ImageView>
-    <ImageView fx:id="papal1" fitHeight="116.0" fitWidth="116.0" layoutX="367.0" layoutY="153.0" pickOnBounds="true" preserveRatio="true" visible="false">
-        <Image url="@../../../../../assets/board/zone1.png" />
-    </ImageView>
-    <ImageView fx:id="papal2" fitHeight="133.0" fitWidth="116.0" layoutX="737.0" layoutY="73.0" pickOnBounds="true" preserveRatio="true" visible="false">
-        <Image url="@../../../../../assets/board/zone2.png" />
-    </ImageView>
-    <ImageView fx:id="papal3" fitHeight="116.0" fitWidth="116.0" layoutX="1182.0" layoutY="152.0" pickOnBounds="true" preserveRatio="true" visible="false">
-        <Image url="@../../../../../assets/board/zone3.png" />
-    </ImageView>
+    <ImageView fx:id="papal1" fitHeight="116.0" fitWidth="116.0" layoutX="367.0" layoutY="153.0" pickOnBounds="true" preserveRatio="true" visible="false"/>
+    <ImageView fx:id="papal2" fitHeight="133.0" fitWidth="116.0" layoutX="737.0" layoutY="73.0" pickOnBounds="true" preserveRatio="true" visible="false"/>
+    <ImageView fx:id="papal3" fitHeight="116.0" fitWidth="116.0" layoutX="1182.0" layoutY="152.0" pickOnBounds="true" preserveRatio="true" visible="false"/>
 
     <!-- side vertical bar with leader cards and buttons for the interaction -->
     <VBox layoutX="1551.0" layoutY="16.0" prefHeight="1001.0" prefWidth="292.0" style="-fx-padding: 0 10 0 10">

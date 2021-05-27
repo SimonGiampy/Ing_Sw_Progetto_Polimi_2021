@@ -11,6 +11,7 @@ public class ReducedFaithTrack implements Serializable {
 	private final Integer currentPosition;
 	private final ArrayList<Tile> track;
 	private final ArrayList<Integer> reportPoints;
+	private final int lastReportClaimed;
 	
 	private final boolean lorenzo;
 
@@ -20,6 +21,7 @@ public class ReducedFaithTrack implements Serializable {
 		this.track = track.getTrack();
 		this.reportPoints = track.getReportPoints();
 		this.lorenzo = track.isLorenzosTrack();
+		this.lastReportClaimed = track.getLastReportClaimed();
 	}
 
 
@@ -41,5 +43,9 @@ public class ReducedFaithTrack implements Serializable {
 	
 	public boolean isLorenzosTrack() {
 		return lorenzo;
+	}
+
+	public int getLastReportClaimed() {
+		return lastReportClaimed;
 	}
 }

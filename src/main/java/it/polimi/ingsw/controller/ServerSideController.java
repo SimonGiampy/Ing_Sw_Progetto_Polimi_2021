@@ -358,9 +358,9 @@ public class ServerSideController {
 		}
 		if(deck.getFaithPoint() != 0) {
 			mechanics.getPlayer(playerIndex).getPlayerFaithTrack().moveMarker(deck.getFaithPoint());
-			sendFaithTracks();
 			deck.setFaithPoint(0);
-			checkVaticanReport();
+			if(!checkVaticanReport())
+				sendFaithTracks();
 		}
 		
 		//moves the resources automatically to the additional depots if possible
@@ -392,8 +392,8 @@ public class ServerSideController {
 							" resources, you get " + n + " faith points" );
 				}
 			}
-			sendFaithTracks();
-			checkVaticanReport();
+			if(!checkVaticanReport())
+				sendFaithTracks();
 			turnController.setTurnPhase(TurnPhase.MAIN_ACTION); //next turn
 		} else {
 			//if the player did something else with its depot
@@ -473,11 +473,8 @@ public class ServerSideController {
 						message.getSelectedProductions(), inputResources, outPutResources);
 				sendBoxes(playerIndex,true);
 				if (moved) {
-					for (String s: nicknameList) {
-						virtualViewMap.get(s).showFaithTrack(nicknameList.get(playerIndex),
-								new ReducedFaithTrack(mechanics.getPlayer(playerIndex).getPlayerFaithTrack()));
-					}
-					checkVaticanReport();
+					if(!checkVaticanReport())
+						sendFaithTracks();
 				}
 				turnController.setTurnPhase(TurnPhase.MAIN_ACTION);
 
@@ -640,7 +637,7 @@ public class ServerSideController {
 	/**
 	 * Checks the vatican reports and notifies every player with their track
 	 */
-	private void checkVaticanReport(){
+	private boolean checkVaticanReport(){
 		boolean[] check = new boolean[4];
 		boolean flag = true;
 		boolean check2 = false;
@@ -665,6 +662,7 @@ public class ServerSideController {
 			}
 		}while(!flag);
 
+		boolean send = false;
 		for(int i = 0; i < numberOfPlayers && check2; i++) {
 			String nick;
 			if(nicknameList.get(i).equals(nickname))
@@ -673,8 +671,11 @@ public class ServerSideController {
 				nick = nickname;
 			virtualViewMap.get(nicknameList.get(i)).showGenericMessage(nick + " triggered Vatican Report" +
 					" n." + (mechanics.getLastReportClaimed()) + "!");
-			virtualViewMap.get(nicknameList.get(i)).showFaithTrack(nickname, new ReducedFaithTrack(mechanics.getPlayer(i).getPlayerFaithTrack()));
+			send = true;
 		}
+		if(send)
+			sendFaithTracks();
+		return send;
 	}
 
 	public void sendFaithTracks(){

@@ -1,10 +1,8 @@
 package it.polimi.ingsw.view.gui.scenes;
 
 import it.polimi.ingsw.model.DevelopmentCard;
-import it.polimi.ingsw.model.reducedClasses.ReducedCardProductionManagement;
-import it.polimi.ingsw.model.reducedClasses.ReducedLeaderCard;
-import it.polimi.ingsw.model.reducedClasses.ReducedStrongbox;
-import it.polimi.ingsw.model.reducedClasses.ReducedWarehouseDepot;
+import it.polimi.ingsw.model.Tile;
+import it.polimi.ingsw.model.reducedClasses.*;
 import it.polimi.ingsw.model.util.*;
 import it.polimi.ingsw.observers.ViewObservable;
 import javafx.fxml.FXML;
@@ -245,7 +243,12 @@ public class Board extends ViewObservable implements SceneController {
 	}
 	
 	/*-------------------------------------------------- FAITH TRACK related code -----------------------------------------------------------*/
-	
+
+	public void updateFaithTrack(ReducedFaithTrack track){
+		updateCrossCoords(track.isLorenzosTrack(), track.getCurrentPosition());
+		activatePapalZone(track.getVaticanReports(), track.getLastReportClaimed());
+	}
+
 	/**
 	 * updates the position of the red cross on the faith track
 	 * @param lorenzo indicating if the cross to be moved is the Lorenzo's one
@@ -295,15 +298,39 @@ public class Board extends ViewObservable implements SceneController {
 	}
 	
 	/**
-	 * sets the visibility of the papal zones
-	 * @param num ordinal number indicating the zone to be activated
+	 * sets the visibility of the vatican reports
+	 * @param vaticanReports arraylist of vatican reports
 	 */
-	public void activatePapalZone(int num) {
-		//TODO: apply the correct image over the zone in the cases where the player got the points or not
-		switch (num) {
-			case 1 -> papal1.setVisible(true);
-			case 2 -> papal2.setVisible(true);
-			case 3 -> papal3.setVisible(true);
+	public void activatePapalZone(ArrayList<Boolean> vaticanReports, int lastReportClaimed) {
+		if(papal1.getImage() == null) {
+			if (vaticanReports.get(0)) {
+				papal1.setImage(new Image("/assets/board/vatican_1.png"));
+				papal1.setVisible(true);
+			}
+			else if (lastReportClaimed > 0){
+				papal1.setImage(new Image("/assets/board/vatican_1_failed.png"));
+				papal1.setVisible(true);
+			}
+		}
+		if(papal2.getImage() == null) {
+			if (vaticanReports.get(1)) {
+				papal2.setImage(new Image("/assets/board/vatican_2.png"));
+				papal2.setVisible(true);
+			}
+			else if (lastReportClaimed > 1){
+				papal2.setImage(new Image("/assets/board/vatican_2_failed.png"));
+				papal2.setVisible(true);
+			}
+		}
+		if(papal3.getImage() == null) {
+			if (vaticanReports.get(2)) {
+				papal3.setImage(new Image("/assets/board/vatican_3.png"));
+				papal3.setVisible(true);
+			}
+			else if (lastReportClaimed > 2) {
+				papal3.setImage(new Image("/assets/board/vatican_3_failed.png"));
+				papal3.setVisible(true);
+			}
 		}
 	}
 	
