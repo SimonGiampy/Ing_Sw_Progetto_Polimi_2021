@@ -1,7 +1,6 @@
 package it.polimi.ingsw.controller;
 
 import it.polimi.ingsw.model.GameMechanicsMultiPlayer;
-import it.polimi.ingsw.model.LeaderCard;
 import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.reducedClasses.ReducedDevelopmentCardsDeck;
 import it.polimi.ingsw.model.reducedClasses.ReducedFaithTrack;
@@ -40,7 +39,7 @@ public class TurnController {
 	}
 
 	/**
-	 * set next active player
+	 * sets next active player
 	 */
 	public void nextTurn(){
 		int currentPlayerIndex = nicknameList.indexOf(activePlayer);
@@ -53,6 +52,9 @@ public class TurnController {
 		activePlayer = nicknameList.get(currentPlayerIndex);
 	}
 
+	/**
+	 * it starts the turn
+	 */
 	public void startTurn(){
 		//endOfTurn=false;
 		mainActionDone = false;
@@ -63,6 +65,9 @@ public class TurnController {
 		setTurnPhase(TurnPhase.SELECTING_ACTION);
 	}
 
+	/**
+	 * it sends to the active player which action he can do
+	 */
 	public void turnAskAction(){
 		VirtualView view = virtualViewMap.get(activePlayer);
 		int playerIndex = nicknameList.indexOf(activePlayer);
@@ -72,6 +77,9 @@ public class TurnController {
 			view.askAction(nicknameList.get(playerIndex), mechanics.getPlayer(playerIndex).checkAvailableActions());
 	}
 
+	/**
+	 * it activates single player token
+	 */
 	private void tokenActivation(){
 		VirtualView view = virtualViewMap.get(activePlayer);
 		GameMechanicsSinglePlayer mechanicsSinglePlayer = (GameMechanicsSinglePlayer) mechanics;
@@ -84,13 +92,17 @@ public class TurnController {
 		else
 			view.showFaithTrack(activePlayer, new ReducedFaithTrack(mechanicsSinglePlayer.getLorenzoFaithTrack()));
 
-		if(currentToken.isEndGame())
+		if(currentToken.isEndGame()) // true if Lorenzo triggers the end of the game
 			endOfGame=true;
 
 		else if (check)
 			mechanicsSinglePlayer.shuffleTokenDeck();
 	}
 
+	/**
+	 * it sets turn phase and handles turn main actions
+	 * @param turnPhase is the phase to be set
+	 */
 	public void setTurnPhase(TurnPhase turnPhase) {
 		int playerIndex = nicknameList.indexOf(activePlayer);
 		Player player = mechanics.getPlayer(playerIndex);
@@ -121,18 +133,25 @@ public class TurnController {
 
 	}
 
+	/**
+	 * it handles end of the turn phase
+	 */
 	private void endTurn(){
 		if(nicknameList.size() == 1) {
-			tokenActivation(); //activate token just in singleplayer
+			tokenActivation(); //activate token just in singlePlayer
 		}
 		endgame(); //activated only if endgame started
 		if (endOfGame) {
+			System.out.println("end");
 			sendWinner(); // activated only if the game is over. stop the game
 		}
 		nextTurn();
 		startTurn();
 	}
 
+	/**
+	 * it sends winner message to all the players and ends the game
+	 */
 	private void sendWinner(){
 		StringBuilder winner = new StringBuilder();
 		int[] winnerInfo= mechanics.winningPlayers();
@@ -146,9 +165,12 @@ public class TurnController {
 			}
 		String stringWinner = winner.toString();
 		serverSideController.getLobby().broadcastMessage(new WinMessage(stringWinner,winnerInfo[0]));
-		serverSideController.getLobby().endGame();
+		serverSideController.getLobby().endGame(); //TODO: fix this method
 	}
-	
+
+	/**
+	 * it handles remaining turn after a player triggers end game
+	 */
 	public void endgame(){
 		boolean check=false;
 		for (int i = 0; i < nicknameList.size(); i++) {
@@ -171,6 +193,9 @@ public class TurnController {
 			endOfGame = true;
 	}
 
+	/**
+	 * it asks the active player if he wants to do a leader action or end the turn
+	 */
 	public void turnAskLeaderAction(){
 		VirtualView view = virtualViewMap.get(activePlayer);
 		int playerIndex = nicknameList.indexOf(activePlayer);
@@ -179,6 +204,10 @@ public class TurnController {
 		view.askLeaderAction(nicknameList.get(playerIndex), leaderCards);
 	}
 
+	/**
+	 * getter for main action boolean
+	 * @return true if the main action is done
+	 */
 	public boolean isMainActionDone() {
 		return mainActionDone;
 	}

@@ -14,6 +14,10 @@ public class Nickname extends ViewObservable implements SceneController {
 	@FXML private TextField nickname;
 	@FXML private ImageView nicknameValid;
 
+
+	/**
+	 * it handles nickname confirmation
+	 */
 	public void confirmation(){
 		String nick = nickname.getText();
 		if (!nick.equals("")) notifyObserver(obs -> obs.onUpdateNickname(nick));
@@ -28,11 +32,18 @@ public class Nickname extends ViewObservable implements SceneController {
 		});
 		confirm.setOnMouseClicked(event -> confirmation());
 	}
-	
+
+	/**
+	 * it sets visible nickname invalid imageView
+	 */
 	public void setInvalid() {
 		nicknameValid.setVisible(true);
 	}
 
+	/**
+	 * getter for nickname text
+	 * @return the nickname chosen by the player
+	 */
 	public String getNickname() {
 		return nickname.getText();
 	}

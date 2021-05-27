@@ -15,14 +15,27 @@ public class Winner extends ViewObservable implements SceneController {
 	  @FXML public void initialize(){
 	  	winner.setEffect(new Glow(1));
 	  }
+
+	/**
+	 * it sets winner text
+	 * @param winner is the selected String
+	 */
 	public void setWinner(String winner) {
 		this.winner.setText(winner);
 	}
 
+	/**
+	 * it sets nickname text
+	 * @param nickname is the nickname of the winner
+	 */
 	public void setNickname(String nickname){
 		this.nickname.setText(nickname);
 	}
 
+	/**
+	 * it sets points text
+	 * @param points is the number of points of the winner
+	 */
 	public void setPoints(String points){
 		this.points.setText(points);
 	}

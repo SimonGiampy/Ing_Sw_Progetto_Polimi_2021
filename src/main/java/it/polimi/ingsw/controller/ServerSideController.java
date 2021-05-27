@@ -678,6 +678,9 @@ public class ServerSideController {
 		return send;
 	}
 
+	/**
+	 * it sends faith tracks to all the players
+	 */
 	public void sendFaithTracks(){
 		for(String s: nicknameList){
 			VirtualView view = virtualViewMap.get(s);
