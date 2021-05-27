@@ -163,7 +163,7 @@ public class CardProductionsManagementTest {
 		output1.add(Resources.COIN);
 		output1.add(Resources.COIN);
 		// creates a new leader card requirements description with the list of resources above
-		cardProductionsManagement.addLeaderCard(input1, output1, 2);
+		cardProductionsManagement.addLeaderCard(1, input1, output1, 2);
 		
 		
 		ArrayList<Resources> inputCopy = new ArrayList<>(); // just for checking another method
@@ -203,7 +203,7 @@ public class CardProductionsManagementTest {
 		output2.add(Resources.SERVANT);
 		output2.add(Resources.SERVANT);
 		output2.add(Resources.FREE_CHOICE);
-		cardProductionsManagement.addLeaderCard(input2, output2, 3);
+		cardProductionsManagement.addLeaderCard(2, input2, output2, 3);
 		
 		// confirms that there is at least one production available
 		assertTrue(cardProductionsManagement.isAtLeastOneProductionAvailable());

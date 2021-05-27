@@ -24,6 +24,14 @@ public class LeaderCardBuilder {
 	}
 	
 	/**
+	 * sets the unique identification number for the leader card
+	 * @param idNumber id read from the file
+	 */
+	public void setIdNumber(int idNumber) {
+		this.idNumber = idNumber;
+	}
+	
+	/**
 	 * first function to be called when building the Leader Card. Assigns the standard objects that are common for every leader card
 	 * @param victoryPoints number of victory points
 	 * @param requirements list of resources requirements
@@ -60,7 +68,7 @@ public class LeaderCardBuilder {
 	 * @return builder object
 	 */
 	public LeaderCardBuilder xmlData(ArrayList<Resources> inputList, int faithOutput, ArrayList<Resources> outputList) {
-		effects.add(new ExtraProductionAbility(inputList, faithOutput, outputList));
+		effects.add(new ExtraProductionAbility(idNumber, inputList, faithOutput, outputList));
 		return this;
 	}
 	
@@ -82,9 +90,5 @@ public class LeaderCardBuilder {
 	public LeaderCard build() {
 		assert !effects.isEmpty();
 		return new LeaderCard(victoryPoints, resourceRequirements, cardRequirements, effects, idNumber);
-	}
-
-	public void setIdNumber(int idNumber) {
-		this.idNumber = idNumber;
 	}
 }

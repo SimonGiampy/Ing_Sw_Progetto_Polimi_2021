@@ -45,16 +45,22 @@ public class CardProductionsManagement {
 
 	/**
 	 * it adds a new leader card to available productions
+	 * @param leaderNumber ordinal number of leader card (1 or 2)
 	 * @param input is a list of required resources to activate production
-	 * @param faithOutput is the number of faith points
+	 * @param output is a list of resources obtained after a production
+	 * @param faithOutput is the number of faith points gained from the production
 	 */
-	public void addLeaderCard(ArrayList<Resources> input, ArrayList<Resources> output, int faithOutput){
-		if (!presentProductions.get(Productions.LEADER_CARD_1_PRODUCTION)) { // activates first leader
-			presentProductions.put(Productions.LEADER_CARD_1_PRODUCTION, true);
-			productions.put(Productions.LEADER_CARD_1_PRODUCTION, new ProductionRules(input,output,faithOutput));
-		} else { // activates second leader
-			presentProductions.put(Productions.LEADER_CARD_2_PRODUCTION, true);
-			productions.put(Productions.LEADER_CARD_2_PRODUCTION, new ProductionRules(input, output, faithOutput));
+	public void addLeaderCard(int leaderNumber, ArrayList<Resources> input, ArrayList<Resources> output, int faithOutput) {
+		if (leaderNumber == 1) {
+			if (!presentProductions.get(Productions.LEADER_CARD_1_PRODUCTION)) { // activates first leader
+				presentProductions.put(Productions.LEADER_CARD_1_PRODUCTION, true);
+				productions.put(Productions.LEADER_CARD_1_PRODUCTION, new ProductionRules(input,output,faithOutput));
+			}
+		} else if (leaderNumber == 2) { // activates second leader
+			if (!presentProductions.get(Productions.LEADER_CARD_2_PRODUCTION)) { // activates first leader
+				presentProductions.put(Productions.LEADER_CARD_2_PRODUCTION, true);
+				productions.put(Productions.LEADER_CARD_2_PRODUCTION, new ProductionRules(input, output, faithOutput));
+			}
 		}
 	}
 	

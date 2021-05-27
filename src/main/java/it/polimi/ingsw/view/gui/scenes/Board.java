@@ -106,8 +106,7 @@ public class Board extends ViewObservable implements SceneController {
 
 	private ArrayList<ReducedLeaderCard> leaderCards;
 	
-	// integer flags indicating the corresponding leader card (ordinal integer number) to the list of extra depot leaders
-	//TODO: add code that modifies these parameters when the player decides to activate a leader card with the extra depot ability
+	// integer flags indicating the corresponding leader card (ordinal integer number) to the list of leaders
 	private int extraDepotLeader1Activation; // = 0 if not active, = 1 if it's the first leader, =2 if it's the second leader
 	private int extraDepotLeader2Activation; // = 0 if not active, = 1 if it's the first leader, =2 if it's the second leader
 	
@@ -403,10 +402,10 @@ public class Board extends ViewObservable implements SceneController {
 		if (productions.contains(Productions.STACK_3_CARD_PRODUCTION)){
 			setShadow(slot3[sizeSlot3-1]);
 		}
-		if (productions.contains(Productions.LEADER_CARD_1_PRODUCTION)){
+		if (productions.contains(Productions.LEADER_CARD_1_PRODUCTION)) { // first extra depot production
 			setShadow(leader1);
 		}
-		if (productions.contains(Productions.LEADER_CARD_2_PRODUCTION)){
+		if (productions.contains(Productions.LEADER_CARD_2_PRODUCTION)){ // second extra depot production
 			setShadow(leader2);
 		}
 	}
@@ -580,7 +579,6 @@ public class Board extends ViewObservable implements SceneController {
 	public void leaderActionHandler(int card, int action) {
 		notifyObserver(obs -> obs.onUpdateLeaderAction(card,action));
 		
-		// code for setting the extra resources in the correct slots on the board
 		if (action == 1) { // leader card activation
 			//extra depot leader card check
 			if (leaderCards.get(card - 1).getIdNumber() >= 5 && leaderCards.get(card - 1).getIdNumber() <= 8) {

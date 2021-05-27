@@ -119,7 +119,9 @@
             </right>
         </BorderPane>
 
-        <ImageView fx:id="leader1" fitHeight="422.0" fitWidth="332.0" pickOnBounds="true" preserveRatio="true"/>
+        <ImageView fx:id="leader1" fitHeight="422.0" fitWidth="332.0" pickOnBounds="true" preserveRatio="true">
+            <Image url = "@../../../../../assets/leaderCards/6.png"/>
+        </ImageView>
 
         <BorderPane style="-fx-padding: 30 10 15 10">
             <left>
@@ -133,7 +135,9 @@
             </right>
         </BorderPane>
 
-        <ImageView fx:id="leader2" fitHeight="422.0" fitWidth="332.0"  pickOnBounds="true" preserveRatio="true"/>
+        <ImageView fx:id="leader2" fitHeight="422.0" fitWidth="332.0"  pickOnBounds="true" preserveRatio="true">
+            <Image url = "@../../../../../assets/leaderCards/5.png"/>
+        </ImageView>
     </VBox>
 
     <ImageView fx:id="baseProduction" fitHeight="177.0" fitWidth="201.0" layoutX="364.0" layoutY="727.0"
@@ -145,10 +149,10 @@
             prefHeight="39.0" prefWidth="186.0" styleClass="fancy_font, primary" text="Activate Productions" visible="true" />
 
     <!-- additional depot resources -->
-    <ImageView fx:id="res11" fitHeight="88.0" fitWidth="92.0" layoutX="1605.0" layoutY="390.0" pickOnBounds="true" preserveRatio="true" />
-    <ImageView fx:id="res12" fitHeight="88.0" fitWidth="92.0" layoutX="1710.0" layoutY="390.0" pickOnBounds="true" preserveRatio="true" />
-    <ImageView fx:id="res21" fitHeight="88.0" fitWidth="92.0" layoutX="1605.0" layoutY="888.0" pickOnBounds="true" preserveRatio="true" />
-    <ImageView fx:id="res22" fitHeight="88.0" fitWidth="92.0" layoutX="1710.0" layoutY="888.0" pickOnBounds="true" preserveRatio="true" />
+    <ImageView fx:id="res11" fitHeight="65.0" fitWidth="70.0" layoutX="1615.0" layoutY="410.0" pickOnBounds="true" preserveRatio="true" />
+    <ImageView fx:id="res12" fitHeight="65.0" fitWidth="70.0" layoutX="1725.0" layoutY="410.0" pickOnBounds="true" preserveRatio="true" />
+    <ImageView fx:id="res21" fitHeight="65.0" fitWidth="70.0" layoutX="1615.0" layoutY="930.0" pickOnBounds="true" preserveRatio="true" />
+    <ImageView fx:id="res22" fitHeight="65.0" fitWidth="70.0" layoutX="1725.0" layoutY="930.0" pickOnBounds="true" preserveRatio="true" />
 
     <!-- incoming resources in the resource deck, used for depot interaction -->
     <StackPane layoutX="415.0" layoutY="422.0" prefHeight="295.0" prefWidth="116.0">

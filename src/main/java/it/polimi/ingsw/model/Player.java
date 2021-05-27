@@ -34,6 +34,9 @@ public class Player {
 	private int shieldDiscount;
 	private int stoneDiscount;
 	
+	private int extraProdLeader1;
+	private int extraProdLeader2;
+	
 	/**
 	 * constructor for the Player
 	 * @param market common market shared by all the players in the game
@@ -64,6 +67,9 @@ public class Player {
 		servantDiscount = 0;
 		shieldDiscount = 0;
 		stoneDiscount = 0;
+		
+		extraProdLeader1 = 0;
+		extraProdLeader2 = 0;
 
 		activeAbilityLeader1 = false;
 		activeAbilityLeader2 = false;
@@ -284,6 +290,14 @@ public class Player {
 	 */
 	public void activateLeaderCard(int whichLeader) {
 		//passes this as object parameter so that the ability know to which player to refer to for the activation
+		if (leaderCards[whichLeader].getIdNumber() >= 13 && leaderCards[whichLeader].getIdNumber() <= 16) {
+			if (extraProdLeader1 > 0) {
+				extraProdLeader2 = whichLeader + 1 + leaderCards[whichLeader].getIdNumber() * 10;
+			} else {
+				extraProdLeader1 = whichLeader + 1 + leaderCards[whichLeader].getIdNumber() * 10;
+			}
+		}
+	
 		leaderCards[whichLeader].activateAbility(this);
 		if (whichLeader == 0) {
 			activeAbilityLeader1 = true;
@@ -347,7 +361,6 @@ public class Player {
 		return activeAbilityLeader2;
 	}
 	
-
 	public int getCoinDiscount() {
 		return coinDiscount;
 	}
@@ -382,6 +395,19 @@ public class Player {
 	
 	protected void setCommonMarketForDebugging(Market commonMarket) {
 		this.commonMarket = commonMarket;
+	}
+	
+	/**
+	 * returns the corresponding ordinal number of leader card
+	 * @param cardId id read from the xml
+	 * @return the leader card number for the extra production
+	 */
+	public int getExtraProdLeader(int cardId) {
+		if (extraProdLeader1 / 10 == cardId) {
+			return extraProdLeader1 % 10;
+		} else {
+			return extraProdLeader2 % 10;
+		}
 	}
 	
 }
