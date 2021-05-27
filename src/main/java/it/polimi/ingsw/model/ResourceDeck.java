@@ -52,7 +52,8 @@ public class ResourceDeck {
 		//      the number of white marbles to be processed with the leader card abilities
 
 		if (isWhiteAbility2Activated()) {
-			if ((quantityLeader1 * whiteMarblesInput1 + quantityLeader2 * whiteMarblesInput2) > whiteMarblesFromMarket ||
+			if ((quantityLeader1 == 0 && quantityLeader2 == 0) ||
+					(quantityLeader1 * whiteMarblesInput1 + quantityLeader2 * whiteMarblesInput2) > whiteMarblesFromMarket ||
 					((whiteMarblesFromMarket % (quantityLeader1 * whiteMarblesInput1 + quantityLeader2 * whiteMarblesInput2)
 							!= (whiteMarblesFromMarket % whiteMarblesInput1)) &&
 							(whiteMarblesFromMarket % (quantityLeader1 * whiteMarblesInput1 + quantityLeader2 * whiteMarblesInput2)

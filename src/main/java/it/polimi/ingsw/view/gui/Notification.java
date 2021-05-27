@@ -32,7 +32,7 @@ public class Notification {
 	private final NotificationHandler notificationHandler;
 	public boolean isShowing;
 
-	public Notification(AnchorPane root, String text, NotificationHandler notificationHandler){
+	public Notification(AnchorPane root, String text, NotificationHandler notificationHandler, boolean disconnection){
 		this.notificationHandler = notificationHandler;
 		this.notificationStack = notificationHandler.getNotificationStack();
 		index = 0;
@@ -43,7 +43,7 @@ public class Notification {
 		double posX = 1420;
 		double posY = 980;
 		layoutY = posY - 108*index;
-		initNotification(root, text, posX);
+		initNotification(root, text, posX, disconnection);
 	}
 
 	@FXML
@@ -52,7 +52,7 @@ public class Notification {
 	}
 
 
-	public void initNotification(AnchorPane root, String text, double layoutX){
+	public void initNotification(AnchorPane root, String text, double layoutX, boolean error){
 		Node node;
 		this.root = root;
 
@@ -64,8 +64,12 @@ public class Notification {
 
 			root.getChildren().addAll(node);
 			setNotification(text);
+			if(error)
+				anchorPane.setStyle("-fx-border-color: #d9534f;");
 
 			anchorPane.setLayoutX(layoutX);
+
+
 
 			showAnimation = setupShowAnimation();
 

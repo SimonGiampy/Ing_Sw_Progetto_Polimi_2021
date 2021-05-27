@@ -4,7 +4,9 @@
 <?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane fx:id="anchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="100.0" prefWidth="500.0" style="-fx-background-radius: 5; -fx-border-radius: 2;-fx-border-color: #dddddd; -fx-border-width: 2;              -fx-background-color: white; -fx-padding: 3 3 3 3;" stylesheets="@../../../../../assets/bootstrap3.css" visible="false" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane fx:id="anchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="100.0" prefWidth="500.0"
+            stylesheets="@../../../../../assets/bootstrap3.css" visible="false" xmlns="http://javafx.com/javafx/11.0.1"
+            xmlns:fx="http://javafx.com/fxml/1" styleClass="notification" >
    <children>
       <Label fx:id="lblText" alignment="CENTER" contentDisplay="CENTER" layoutX="100.0" layoutY="20.0" prefHeight="64.0" prefWidth="325.0" styleClass="fancy_font" visible="false" />
       <ImageView fx:id="img" fitHeight="87.0" fitWidth="79.0" layoutX="15.0" layoutY="7.0" visible="false">

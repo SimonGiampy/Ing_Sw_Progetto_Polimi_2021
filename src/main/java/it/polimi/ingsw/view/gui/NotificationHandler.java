@@ -16,20 +16,28 @@ public class NotificationHandler {
 		delay = 0;
 	}
 
-	public void addNotification(String genericMessage, AnchorPane root){
+	public void addNotification(String genericMessage, AnchorPane root, boolean error){
 
-		Notification notification = new Notification(root, genericMessage, this);
+		Notification notification = new Notification(root, genericMessage, this, error);
 		notification.showNotification();
 
 		final ScheduledExecutorService executorService = Executors.newSingleThreadScheduledExecutor();
 
-		executorService.schedule(() -> {
-			if(notification.isShowing)
-				notification.dismissInit();
-			}, 8 + delay, TimeUnit.SECONDS);
+		if(error){
+			executorService.schedule(() -> {
+				if(notification.isShowing)
+					notification.dismissInit();
+			}, 5, TimeUnit.SECONDS);
+		}
+		else {
+			executorService.schedule(() -> {
+				if (notification.isShowing)
+					notification.dismissInit();
+			}, 7 + delay, TimeUnit.SECONDS);
 
-		delay++;
-		if(delay == 3) delay = 0;
+			delay++;
+			if (delay == 3) delay = 0;
+		}
 	}
 
 	public void onDismiss(int index){
