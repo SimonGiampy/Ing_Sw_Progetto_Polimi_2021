@@ -1,7 +1,6 @@
 package it.polimi.ingsw.view.gui.scenes;
 
 import it.polimi.ingsw.model.DevelopmentCard;
-import it.polimi.ingsw.model.Tile;
 import it.polimi.ingsw.model.reducedClasses.*;
 import it.polimi.ingsw.model.util.*;
 import it.polimi.ingsw.observers.ViewObservable;
@@ -346,7 +345,6 @@ public class Board extends ViewObservable implements SceneController {
 	
 	/**
 	 * when the user clicks on the button for doing the productions
-	 * //TODO: add generic message for showing that the production could not be completed
 	 */
 	public void activateProduction(){
 		if(actProductions.getText().equals("Activate Productions")) { // pressed activation
@@ -443,8 +441,10 @@ public class Board extends ViewObservable implements SceneController {
 	 */
 	public void setNormalLuminosity(){
 		baseProduction.setEffect(new Glow(0));
-		leader1.setEffect(new Glow(0));
-		leader2.setEffect(new Glow(0));
+		if(!leaderCards.get(0).isDiscarded())
+			leader1.setEffect(new Glow(0));
+		if(!leaderCards.get(1).isDiscarded())
+			leader2.setEffect(new Glow(0));
 		
 		if(sizeSlot1>0) slot1[sizeSlot1-1].setEffect(new Glow(0));
 		if(sizeSlot2>0)	slot2[sizeSlot2-1].setEffect(new Glow(0));
@@ -523,6 +523,7 @@ public class Board extends ViewObservable implements SceneController {
 	 */
 	public void setMyLeaderCards(ReducedLeaderCard leaderCard, Button act, Button dis, ImageView leader) {
 		if (leaderCard.isPlayable()) {
+			System.out.println("playable");
 			act.setDisable(false);
 			dis.setDisable(false);
 		} else if (leaderCard.isAbilitiesActivated()) {
@@ -530,6 +531,7 @@ public class Board extends ViewObservable implements SceneController {
 			dis.setDisable(true);
 			setShadow(leader, true);
 		} else if (leaderCard.isDiscarded()) {
+			System.out.println("discarded");
 			// card is less bright to indicate that it has been discarded
 			ColorAdjust colorAdjust = new ColorAdjust();
 			colorAdjust.setBrightness(-0.5);
@@ -537,6 +539,7 @@ public class Board extends ViewObservable implements SceneController {
 			act.setDisable(true);
 			dis.setDisable(true);
 		} else if (this.leaderCards.isEmpty()) {
+
 			leader.setImage(new Image("/assets/leaderCards/" + leaderCard.getIdNumber() + ".png"));
 			act.setDisable(true);
 			dis.setDisable(true);

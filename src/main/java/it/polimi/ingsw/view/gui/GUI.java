@@ -205,6 +205,7 @@ public class GUI extends ViewObservable implements View {
 	public void askWhiteMarbleChoice(ArrayList<Resources> fromWhiteMarble1, ArrayList<Resources> fromWhiteMarble2, int whiteMarblesInput1, int whiteMarblesInput2, int howMany) {
 		Platform.runLater(() -> {
 			WhiteMarblesDialog dialog = new WhiteMarblesDialog(fromWhiteMarble1, fromWhiteMarble2, howMany);
+			((Stage) dialog.getDialogPane().getScene().getWindow()).initStyle(StageStyle.UNDECORATED);
 			dialog.initOwner(stage);
 			dialog.showAndWait().ifPresent(x -> notifyObserver(obs -> obs.onUpdateWhiteMarbleChoice(x[0], x[1])));
 		});
@@ -234,6 +235,7 @@ public class GUI extends ViewObservable implements View {
 	public void askFreeInput(int number) {
 		Platform.runLater(() -> {
 			ResourcesDialog dialog = new ResourcesDialog(number, "Choose a total of " + number + " resources for the production input.");
+			((Stage) dialog.getDialogPane().getScene().getWindow()).initStyle(StageStyle.UNDECORATED);
 			dialog.initOwner(stage);
 			freeChoice(dialog,1);
 		});
@@ -243,6 +245,7 @@ public class GUI extends ViewObservable implements View {
 	public void askFreeOutput(int number) {
 		Platform.runLater(() -> {
 			ResourcesDialog dialog = new ResourcesDialog(number, "Choose a total of " + number + " resources for the production output.");
+			((Stage) dialog.getDialogPane().getScene().getWindow()).initStyle(StageStyle.UNDECORATED);
 			dialog.initOwner(stage);
 			freeChoice(dialog,2);
 		});

@@ -8,7 +8,6 @@ import it.polimi.ingsw.model.util.PlayerActions;
 import it.polimi.ingsw.model.util.Resources;
 import it.polimi.ingsw.network.messages.*;
 import it.polimi.ingsw.network.messages.game.client2server.*;
-import it.polimi.ingsw.network.messages.login.MatchInfo;
 import it.polimi.ingsw.network.server.Lobby;
 import it.polimi.ingsw.view.VirtualView;
 import it.polimi.ingsw.xml_parsers.XMLParser;
@@ -69,7 +68,10 @@ public class ServerSideController {
 		setGameConfig();
 		
 		// sends a message to all the players containing a list of the nicknames the players in the match
-		lobby.broadcastMessage(new MatchInfo(nicknameList));
+		for(String s: nicknameList) {
+			virtualViewMap.get(s).showMatchInfo(nicknameList);
+		}
+		
 		startPreGame();
 	}
 	
@@ -256,7 +258,7 @@ public class ServerSideController {
 		VirtualView view= virtualViewMap.get(message.getNickname());
 		Player player = mechanics.getPlayer(playerIndex);
 		player.chooseTwoLeaders(message.getLeaderSelection().get(0),message.getLeaderSelection().get(1));
-		view.showLeaderCards(nicknameList.get(playerIndex), getLeadersForShow(player));
+		view.showLeaderCards(nicknameList.get(playerIndex), obtainLeadersFromPlayer(player));
 		gameReady[playerIndex] = true;
 		if(allTrue(gameReady))
 			startGame();
@@ -304,7 +306,7 @@ public class ServerSideController {
 			}
 			case LEADER -> {
 				Player player = mechanics.getPlayer(playerIndex);
-				ArrayList<ReducedLeaderCard> leaderCards = getLeadersForShow(player);
+				ArrayList<ReducedLeaderCard> leaderCards = obtainLeadersFromPlayer(player);
 				view.askLeaderAction(nicknameList.get(playerIndex), leaderCards);
 			}
 		}
@@ -597,7 +599,7 @@ public class ServerSideController {
 				} else {
 					view.showGenericMessage("Leader Card successfully played!");
 				}
-				view.showLeaderCards(nicknameList.get(playerIndex), getLeadersForShow(player));
+				view.showLeaderCards(nicknameList.get(playerIndex), obtainLeadersFromPlayer(player));
 			}
 			turnController.setTurnPhase(TurnPhase.LEADER_ACTION);
 
@@ -613,7 +615,7 @@ public class ServerSideController {
 				} else {
 					view.showGenericMessage("Leader Card successfully discarded!");
 				}
-				view.showLeaderCards(nicknameList.get(playerIndex), getLeadersForShow(player));
+				view.showLeaderCards(nicknameList.get(playerIndex), obtainLeadersFromPlayer(player));
 				view.showFaithTrack(nicknameList.get(playerIndex), new ReducedFaithTrack(player.getPlayerFaithTrack()));
 			}
 			checkVaticanReport();
@@ -632,17 +634,15 @@ public class ServerSideController {
 	 * @param player the owner of the cards
 	 * @return arraylist od reduced leader cards
 	 */
-	public ArrayList<ReducedLeaderCard> getLeadersForShow(Player player) {
+	public ArrayList<ReducedLeaderCard> obtainLeadersFromPlayer(Player player) {
 		ArrayList<PlayerActions> leaderActions = player.checkAvailableLeaderActions();
 		ArrayList<ReducedLeaderCard> leaderCards = new ArrayList<>();
 		boolean checkLeader1 = leaderActions.contains(PlayerActions.PLAY_LEADER_1);
 		boolean checkLeader2 = leaderActions.contains(PlayerActions.PLAY_LEADER_2);
-		leaderCards.add(new ReducedLeaderCard(player.getLeaderCards()[0],
-				player.isActiveAbilityLeader1(), player.isDiscardedLeader1(),
-				checkLeader1, player.getLeaderCards()[0].getIdNumber()));
-		leaderCards.add(new ReducedLeaderCard(player.getLeaderCards()[1],
-				player.isActiveAbilityLeader2(), player.isDiscardedLeader2(),
-				checkLeader2, player.getLeaderCards()[1].getIdNumber()));
+		leaderCards.add(new ReducedLeaderCard(player.getLeaderCards()[0], player.isActiveAbilityLeader1(),
+				player.isDiscardedLeader1(), checkLeader1, player.getLeaderCards()[0].getIdNumber()));
+		leaderCards.add(new ReducedLeaderCard(player.getLeaderCards()[1], player.isActiveAbilityLeader2(),
+				player.isDiscardedLeader2(), checkLeader2, player.getLeaderCards()[1].getIdNumber()));
 		return leaderCards;
 	}
 

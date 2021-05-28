@@ -41,13 +41,6 @@ public class VirtualView implements View, Observer {
 		clientHandler.sendMessage(new NicknameRequest());
 	}
 
-	/*
-	@Override
-	public void askCustomGame() {
-		clientHandler.sendMessage(new GameConfigRequest());
-	}
-	 */
-
 	@Override
 	public void askInitResources(int number) {
 		clientHandler.sendMessage(new ResourceChoice(number, 0));

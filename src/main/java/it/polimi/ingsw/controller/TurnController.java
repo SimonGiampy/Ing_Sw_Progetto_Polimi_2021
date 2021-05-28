@@ -200,7 +200,7 @@ public class TurnController {
 		VirtualView view = virtualViewMap.get(activePlayer);
 		int playerIndex = nicknameList.indexOf(activePlayer);
 		Player player = mechanics.getPlayer(playerIndex);
-		ArrayList<ReducedLeaderCard> leaderCards = serverSideController.getLeadersForShow(player);
+		ArrayList<ReducedLeaderCard> leaderCards = serverSideController.obtainLeadersFromPlayer(player);
 		view.askLeaderAction(nicknameList.get(playerIndex), leaderCards);
 	}
 
