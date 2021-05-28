@@ -1,10 +1,11 @@
-package it.polimi.ingsw.view;
+package it.polimi.ingsw.view.cli;
 
 import it.polimi.ingsw.controller.ClientSideController;
 import it.polimi.ingsw.model.DevelopmentCard;
 import it.polimi.ingsw.model.reducedClasses.*;
 import it.polimi.ingsw.model.util.*;
 import it.polimi.ingsw.observers.ViewObservable;
+import it.polimi.ingsw.view.View;
 
 
 import java.util.ArrayList;
@@ -268,11 +269,6 @@ public class CLI extends ViewObservable implements View {
 		int finalSelectedLeader = selectedLeader;
 		int finalAction = action;
 		notifyObserver(obs-> obs.onUpdateLeaderAction(finalSelectedLeader, finalAction));
-	}
-
-	@Override
-	public void startTurn(String nickname) {
-
 	}
 
 	@Override
@@ -569,10 +565,15 @@ public class CLI extends ViewObservable implements View {
 	 */
 	@Override
 	public void showFaithTrack(String nickname, ReducedFaithTrack faithTrack) {
-		if(nickname.equals(playerNickname))
-			System.out.println("Your Faith Track");
-		else
+		if(nickname.equals(playerNickname)) {
+			if (faithTrack.isLorenzosTrack()) {
+				System.out.println("This is Lorenzo's Faith Track");
+			} else {
+				System.out.println("Your Faith Track");
+			}
+		} else {
 			System.out.println(nickname + "'s Faith Track");
+		}
 		CLIUtils.showFaithTrack(faithTrack);
 	}
 	

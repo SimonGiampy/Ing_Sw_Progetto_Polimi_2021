@@ -59,11 +59,6 @@ public class VirtualView implements View, Observer {
 	}
 
 	@Override
-	public void startTurn(String nickname){
-		clientHandler.sendMessage(new StartTurn(nickname));
-	}
-
-	@Override
 	public void askLeaderAction(String nickname, ArrayList<ReducedLeaderCard> availableLeaders) {
 		clientHandler.sendMessage(new LeaderInteractions(nickname, availableLeaders, 2));
 	}

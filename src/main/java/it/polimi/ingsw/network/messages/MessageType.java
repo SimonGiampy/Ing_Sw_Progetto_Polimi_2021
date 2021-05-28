@@ -25,7 +25,6 @@ public enum MessageType {
 
 	//Server to Client messages
 	MATCH_INFO, 						// the server sends match's info (players nicknames)
-	START_TURN,
 	ACTION_REQUEST,						// the server asks the player to choose the action in the turn
 	RESOURCE_CHOICE,					// the server sends the number of free choice resources
 	CARDS_DECK_SHOW,					// the server sends cards deck

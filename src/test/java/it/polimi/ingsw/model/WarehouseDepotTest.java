@@ -1,10 +1,9 @@
 package it.polimi.ingsw.model;
 
 import it.polimi.ingsw.exceptions.InvalidUserRequestException;
-import it.polimi.ingsw.model.reducedClasses.ReducedStrongbox;
 import it.polimi.ingsw.model.reducedClasses.ReducedWarehouseDepot;
 import it.polimi.ingsw.model.util.Resources;
-import it.polimi.ingsw.view.CLI;
+import it.polimi.ingsw.view.cli.CLI;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;

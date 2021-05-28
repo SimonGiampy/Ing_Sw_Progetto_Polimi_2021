@@ -6,7 +6,7 @@ import it.polimi.ingsw.model.util.Colors;
 import it.polimi.ingsw.model.util.ListSet;
 import it.polimi.ingsw.model.util.Productions;
 import it.polimi.ingsw.model.util.Resources;
-import it.polimi.ingsw.view.CLI;
+import it.polimi.ingsw.view.cli.CLI;
 import it.polimi.ingsw.xml_parsers.XMLParser;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

@@ -191,14 +191,6 @@ public class GUI extends ViewObservable implements View {
 			
 		});
 	}
-
-	@Override
-	public void startTurn(String nickname){
-		Platform.runLater(() -> {
-			PlayerTabs playerTabs = (PlayerTabs) controller;
-			//playerTabs.disableCommonBoardButtons(nickname);
-		});
-	}
 	
 	@Override
 	public void askMarketAction(String nickname,ReducedMarket market) {

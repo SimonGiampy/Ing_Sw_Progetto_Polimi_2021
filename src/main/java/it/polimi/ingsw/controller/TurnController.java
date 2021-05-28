@@ -58,9 +58,9 @@ public class TurnController {
 	public void startTurn(){
 		//endOfTurn=false;
 		mainActionDone = false;
-		VirtualView view= virtualViewMap.get(activePlayer);
+		VirtualView view = virtualViewMap.get(activePlayer);
 		view.showGenericMessage("It's your turn!");
-		view.startTurn(activePlayer);
+		serverSideController.sendBoxes(nicknameList.indexOf(activePlayer), true);
 		turnAskAction();
 		setTurnPhase(TurnPhase.SELECTING_ACTION);
 	}

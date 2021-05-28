@@ -2,7 +2,7 @@ package it.polimi.ingsw.model;
 
 import it.polimi.ingsw.model.reducedClasses.ReducedMarket;
 import it.polimi.ingsw.model.util.Resources;
-import it.polimi.ingsw.view.CLI;
+import it.polimi.ingsw.view.cli.CLI;
 import it.polimi.ingsw.xml_parsers.XMLParser;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

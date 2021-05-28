@@ -3,6 +3,7 @@ package it.polimi.ingsw.view.gui.scenes;
 import it.polimi.ingsw.observers.ViewObservable;
 import javafx.fxml.FXML;
 import javafx.scene.effect.Glow;
+import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 
 public class Winner extends ViewObservable implements SceneController {
@@ -12,9 +13,11 @@ public class Winner extends ViewObservable implements SceneController {
 	@FXML Text points;
 
 
-	  @FXML public void initialize(){
+	@FXML
+	public void initialize() {
+		Font.loadFont(getClass().getResourceAsStream("/assets/font/Caveat-Regular.ttf"), 10);
 	  	winner.setEffect(new Glow(1));
-	  }
+	}
 
 	/**
 	 * it sets winner text

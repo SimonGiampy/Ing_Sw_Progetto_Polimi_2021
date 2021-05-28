@@ -192,7 +192,7 @@ public class ServerSideController {
 		set.add(Resources.STONE);
 		
 		mechanics.getPlayer(0).getMyStrongbox().storeResources(set);
-		mechanics.getPlayer(0).getPlayersWarehouseDepot().setDepotForDebugging(resources);
+		//mechanics.getPlayer(0).getPlayersWarehouseDepot().setDepotForDebugging(resources);
 		
 		turnController.startTurn();
 	}
@@ -480,6 +480,7 @@ public class ServerSideController {
 
 			}
 		} else { // productions cannot be completed
+			view.showError("Selected productions are not available contemporarily.");
 			view.showPlayerCardsAndProduction(nicknameList.get(playerIndex),
 					new ReducedCardProductionManagement(mechanics.getPlayer(playerIndex).getPlayersCardManager()));
 			view.askProductionAction(nicknameList.get(playerIndex),cardProductionsManagement.availableProductions());
@@ -491,7 +492,7 @@ public class ServerSideController {
 	 * @param playerIndex index of the current playing player
 	 * @param forAll if it needs to be shown to all the players in the game
 	 */
-	private void sendBoxes(int playerIndex, boolean forAll) {
+	protected void sendBoxes(int playerIndex, boolean forAll) {
 		Player player = mechanics.getPlayer(playerIndex);
 		VirtualView view;
 		if (forAll) {
@@ -507,23 +508,31 @@ public class ServerSideController {
 		}
 
 	}
-
+	
+	/**
+	 * checks the resources asked as free choices in input: if there are sufficient resources it goes forward
+	 * @param message list of resources chosen by the user
+	 */
 	private void freeInputHandler(ResourcesList message){
 		int playerIndex = nicknameList.indexOf(message.getNickname());
 		VirtualView view = virtualViewMap.get(message.getNickname());
 		CardProductionsManagement cardProductionsManagement = mechanics.getPlayer(playerIndex).getPlayersCardManager();
+		
 		if(cardProductionsManagement.checkFreeInput(cardProductionsManagement.getSelectedInput(),putResources(message))) {
 			if (cardProductionsManagement.numberOfFreeChoicesInOutputProductions(cardProductionsManagement.getSelectedInput()) > 0) {
-					cardProductionsManagement.setInputResources(putResources(message));
-					view.askFreeOutput(cardProductionsManagement.numberOfFreeChoicesInOutputProductions(cardProductionsManagement.getSelectedInput()));
-			} else {
+				// if there are free choices in output, it asks them to the player
+				cardProductionsManagement.setInputResources(putResources(message));
+				view.askFreeOutput(cardProductionsManagement.numberOfFreeChoicesInOutputProductions(cardProductionsManagement.getSelectedInput()));
+			} else { // if there aren't output productions
 				int[] outputResources = new int[]{0, 0, 0, 0};
 				mechanics.getPlayer(playerIndex).activateProduction(cardProductionsManagement.getSelectedInput(), putResources(message), outputResources);
 				sendBoxes(playerIndex,true);
 				turnController.setTurnPhase(TurnPhase.MAIN_ACTION);
 			}
+		} else { // resources are not sufficient
+			view.showError("Your resources are not sufficient for this choice.");
+			view.askFreeInput(cardProductionsManagement.numberOfFreeChoicesInInputProductions(cardProductionsManagement.getSelectedInput()));
 		}
-		else view.askFreeInput(cardProductionsManagement.numberOfFreeChoicesInInputProductions(cardProductionsManagement.getSelectedInput()));
 
 	}
 	
@@ -556,9 +565,12 @@ public class ServerSideController {
 		int playerIndex = nicknameList.indexOf(message.getNickname());
 		
 		CardProductionsManagement cardProductionsManagement = mechanics.getPlayer(playerIndex).getPlayersCardManager();
-		mechanics.getPlayer(playerIndex).activateProduction(cardProductionsManagement.getSelectedInput(),
+		boolean moved = mechanics.getPlayer(playerIndex).activateProduction(cardProductionsManagement.getSelectedInput(),
 				cardProductionsManagement.getInputResources(), putResources(message));
-
+		
+		if (moved)
+			if (!checkVaticanReport())
+				sendFaithTracks();
 		sendBoxes(playerIndex,true);
 		turnController.setTurnPhase(TurnPhase.MAIN_ACTION);
 

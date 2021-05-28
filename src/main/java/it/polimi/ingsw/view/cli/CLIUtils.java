@@ -1,4 +1,4 @@
-package it.polimi.ingsw.view;
+package it.polimi.ingsw.view.cli;
 
 import it.polimi.ingsw.model.DevelopmentCard;
 import it.polimi.ingsw.model.abilities.AbilityEffectActivation;
@@ -66,10 +66,6 @@ public class CLIUtils {
 				string.append("      ");
 				count++;
 			}
-			/*if(i > lastReportClaimed){
-				string.append(Unicode.BLUE_BOLD).append("   ?  ");
-
-			 */
 			if(faithTrack.getVaticanReports().get(i)){
 				string.append(Unicode.GREEN_BOLD).append("  ").append(Unicode.TICK).append(" ").append(Unicode.RESET)
 						.append(faithTrack.getReportPoints().get(i));

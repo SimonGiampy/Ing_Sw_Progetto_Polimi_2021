@@ -4,9 +4,8 @@ import it.polimi.ingsw.model.*;
 import it.polimi.ingsw.model.reducedClasses.ReducedFaithTrack;
 import it.polimi.ingsw.model.reducedClasses.ReducedLeaderCard;
 import it.polimi.ingsw.model.util.ListSet;
-import it.polimi.ingsw.model.util.Resources;
-import it.polimi.ingsw.view.CLI;
-import it.polimi.ingsw.view.CLIUtils;
+import it.polimi.ingsw.view.cli.CLI;
+import it.polimi.ingsw.view.cli.CLIUtils;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
