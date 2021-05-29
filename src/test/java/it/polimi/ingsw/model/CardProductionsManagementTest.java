@@ -12,7 +12,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
-import java.io.File;
 import java.util.ArrayList;
 
 public class CardProductionsManagementTest {
@@ -28,11 +27,8 @@ public class CardProductionsManagementTest {
 	 */
 	@BeforeEach
 	void setUp() {
-		String fileName = "game_configuration_complete.xml";
-		ClassLoader classLoader = CardProductionsManagementTest.class.getClassLoader();
-		File file = new File(classLoader.getResource(fileName).getFile());
-		String fullPath = file.getAbsolutePath();
-		XMLParser parser = new XMLParser(fullPath);
+		String fileName = "game_configuration_standard.xml";
+		XMLParser parser = new XMLParser(fileName);
 		ArrayList<LeaderCard> leaderCards = parser.readLeaderCards();
 		ProductionRules baseProduction = parser.parseBaseProductionFromXML();
 		strongbox = new Strongbox();

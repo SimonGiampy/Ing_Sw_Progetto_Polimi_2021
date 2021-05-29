@@ -23,11 +23,8 @@ class XMLParserTest {
 	@BeforeEach
 	void instantiateParser(){
 		String path;
-		String fileName = "game_configuration_complete.xml";
-		ClassLoader classLoader = getClass().getClassLoader();
-		File file = new File(Objects.requireNonNull(classLoader.getResource(fileName)).getFile());
-		path = file.getAbsolutePath();
-		parser = new XMLParser(path);
+		String fileName = "game_configuration_standard.xml";
+		parser = new XMLParser(fileName);
 		cli= new CLI();
 	}
 

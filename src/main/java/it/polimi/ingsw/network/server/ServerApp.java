@@ -1,8 +1,6 @@
-package it.polimi.ingsw;
+package it.polimi.ingsw.network.server;
 
-import it.polimi.ingsw.network.server.Server;
-
-public class ServerDemo {
+public class ServerApp {
 	
 	public static void main(String[] args) {
 

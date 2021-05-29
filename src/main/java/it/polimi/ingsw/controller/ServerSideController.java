@@ -12,11 +12,9 @@ import it.polimi.ingsw.network.server.Lobby;
 import it.polimi.ingsw.view.VirtualView;
 import it.polimi.ingsw.xml_parsers.XMLParser;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.Objects;
 
 public class ServerSideController {
 
@@ -28,7 +26,6 @@ public class ServerSideController {
 	private ArrayList<String> nicknameList;
 	private final boolean[] gameReady; //
 	private final boolean[] initResources;
-	//private boolean endGame;
 
 
 	private TurnController turnController;
@@ -51,7 +48,6 @@ public class ServerSideController {
 		
 		initResources= new boolean[numberOfPlayers-1];
 		gameReady= new boolean[numberOfPlayers];
-		//gameState = GameState.CONFIG;
 		gameState = GameState.INIT;
 	}
 	
@@ -92,10 +88,8 @@ public class ServerSideController {
 	 * set the game configuration
 	 */
 	public void setGameConfig() {
-		String fileName = "game_configuration_complete.xml";
-		ClassLoader classLoader = getClass().getClassLoader();
-		File file = new File(Objects.requireNonNull(classLoader.getResource(fileName)).getFile());
-		XMLParser parser = new XMLParser(file.getAbsolutePath());
+		String fileName = "game_configuration_standard.xml";
+		XMLParser parser = new XMLParser(fileName);
 		ArrayList<Tile> tiles = parser.readTiles();
 		ArrayList<Integer> report = parser.readReportPoints();
 		ArrayList<DevelopmentCard> devCards = parser.readDevCards();

@@ -12,7 +12,6 @@ import org.xml.sax.SAXException;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
-import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -29,7 +28,7 @@ public class XMLParser {
 		DocumentBuilder builder;
 		try {
 			builder = factory.newDocumentBuilder();
-			this.document = builder.parse(new File (fileName));
+			this.document = builder.parse(getClass().getResourceAsStream("/" + fileName));
 		} catch (ParserConfigurationException | SAXException | IOException e) {
 			e.printStackTrace();
 		}

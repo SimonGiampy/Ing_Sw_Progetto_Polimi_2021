@@ -10,9 +10,7 @@ import it.polimi.ingsw.xml_parsers.XMLParser;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.io.File;
 import java.util.ArrayList;
-import java.util.Objects;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -26,11 +24,8 @@ class DevelopmentCardsDeckTest {
 	@BeforeEach
 	void setUp() {
 		String path;
-		String fileName = "game_configuration_complete.xml";
-		ClassLoader classLoader = getClass().getClassLoader();
-		File file = new File(Objects.requireNonNull(classLoader.getResource(fileName)).getFile());
-		path = file.getAbsolutePath();
-		XMLParser parser = new XMLParser(path);
+		String fileName = "game_configuration_standard.xml";
+		XMLParser parser = new XMLParser(fileName);
 		
 		deck = new DevelopmentCardsDeck(new GameMechanicsMultiPlayer(1).createCommonCardsDeck(parser.readDevCards()));
 		box = new Strongbox();

@@ -36,11 +36,8 @@ class PlayerTest {
 		System.setOut(new PrintStream(outputStreamCaptor));
 		
 		GameMechanicsMultiPlayer mechanics = new GameMechanicsMultiPlayer(2);
-		String fileName = "game_configuration_complete.xml";
-		ClassLoader classLoader = getClass().getClassLoader();
-		File file = new File(Objects.requireNonNull(classLoader.getResource(fileName)).getFile());
-		String fullPath = file.getAbsolutePath();
-		XMLParser parser = new XMLParser(fullPath);
+		String fileName = "game_configuration_standard.xml";
+		XMLParser parser = new XMLParser(fileName);
 		ArrayList<Tile> tiles = parser.readTiles();
 		ArrayList<Integer> report = parser.readReportPoints();
 		ArrayList<DevelopmentCard> devCards = parser.readDevCards();

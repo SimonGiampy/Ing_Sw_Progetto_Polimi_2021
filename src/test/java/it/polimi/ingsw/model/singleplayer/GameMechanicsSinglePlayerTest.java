@@ -7,25 +7,18 @@ import it.polimi.ingsw.xml_parsers.XMLParser;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.io.File;
 import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class GameMechanicsSinglePlayerTest {
+	
 	private GameMechanicsSinglePlayer mechanicsSinglePlayer;
-
-
-
+	
 	@BeforeEach
 	void setUp() {
-
-
-		String fileName = "game_configuration_complete.xml";
-		ClassLoader classLoader = getClass().getClassLoader();
-		File file = new File(classLoader.getResource(fileName).getFile());
-		String fullPath = file.getAbsolutePath();
-		XMLParser parser = new XMLParser(fullPath);
+		String fileName = "game_configuration_standard.xml";
+		XMLParser parser = new XMLParser(fileName);
 		ArrayList<Tile> tiles = parser.readTiles();
 		ArrayList<Integer> report = parser.readReportPoints();
 		ArrayList<DevelopmentCard> devCards = parser.readDevCards();

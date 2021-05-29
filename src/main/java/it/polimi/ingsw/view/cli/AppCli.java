@@ -1,9 +1,8 @@
-package it.polimi.ingsw;
+package it.polimi.ingsw.view.cli;
 
 import it.polimi.ingsw.controller.ClientSideController;
-import it.polimi.ingsw.view.cli.CLI;
 
-public class ClientDemo {
+public class AppCli {
 	
 	public static void main(String[] args) {
 		

@@ -31,8 +31,8 @@ public class GameDemo {
 	}
 
 	public void readInformation(){
-
-		String fileName = "game_configuration_complete.xml";
+/*
+		String fileName = "game_configuration_standard.xml";
 		ClassLoader classLoader = getClass().getClassLoader();
 		File file = new File(classLoader.getResource(fileName).getFile());
 		String fullPath = file.getAbsolutePath();
@@ -43,7 +43,7 @@ public class GameDemo {
 		ArrayList<LeaderCard> leaderCards = parser.readLeaderCards();
 		ProductionRules baseProduction = parser.parseBaseProductionFromXML();
 		mechanics.instantiateGame(devCards, leaderCards, baseProduction, tiles, report);
-
+*/
 	}
 
 
