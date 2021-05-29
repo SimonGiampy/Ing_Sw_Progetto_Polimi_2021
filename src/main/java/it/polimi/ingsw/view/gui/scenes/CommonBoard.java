@@ -376,14 +376,4 @@ public class CommonBoard extends ViewObservable implements SceneController{
 		playerBoard.setEndTurn();
 	}
 
-
-
-
-
-
-
-
-
-
-
 }

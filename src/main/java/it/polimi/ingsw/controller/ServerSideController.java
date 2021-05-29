@@ -50,6 +50,10 @@ public class ServerSideController {
 		gameReady= new boolean[numberOfPlayers];
 		gameState = GameState.INIT;
 	}
+
+	public ServerSideController(int numberOfPlayers){
+		this(null,numberOfPlayers);
+	}
 	
 	
 	/**
@@ -120,7 +124,7 @@ public class ServerSideController {
 	public void startPreGame(){
 		turnController = new TurnController(virtualViewMap, this, nicknameList, mechanics);
 		gameState = GameState.INIT;
-		lobby.matchStart();
+		System.out.println("start pre game");
 
 		int j = 1;
 		for(String s: nicknameList) {

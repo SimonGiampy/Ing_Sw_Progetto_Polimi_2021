@@ -15,7 +15,6 @@ import javafx.scene.control.Label;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.layout.AnchorPane;
-
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -207,7 +206,6 @@ public class PlayerTabs extends ViewObservable implements SceneController{
 	}
 
 	@FXML public void initialize(){
-
 	}
 	
 	public void depotInteraction(ReducedWarehouseDepot depot, boolean initialMove, boolean confirmationAvailable, boolean inputValid) {

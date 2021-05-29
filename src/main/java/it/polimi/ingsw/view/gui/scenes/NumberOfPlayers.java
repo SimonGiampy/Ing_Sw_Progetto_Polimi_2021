@@ -11,7 +11,7 @@ import javafx.scene.paint.Color;
 public class NumberOfPlayers extends ViewObservable implements SceneController {
 
 	@FXML public ImageView onePlayer;
-	@FXML public ImageView twoPlayers;;
+	@FXML public ImageView twoPlayers;
 	@FXML public ImageView threePlayers;
 	@FXML public ImageView fourPlayers;
 
