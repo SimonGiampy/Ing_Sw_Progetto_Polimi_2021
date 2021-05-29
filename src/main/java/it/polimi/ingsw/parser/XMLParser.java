@@ -1,4 +1,4 @@
-package it.polimi.ingsw.xml_parsers;
+package it.polimi.ingsw.parser;
 
 import it.polimi.ingsw.model.*;
 import it.polimi.ingsw.model.util.Colors;

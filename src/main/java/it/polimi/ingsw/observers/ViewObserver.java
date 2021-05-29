@@ -37,12 +37,6 @@ public interface ViewObserver {
 	 * @param playerNumber is the number of players
 	 */
 	void onUpdatePlayersNumber(int playerNumber);
-	
-	/**
-	 * the client replies with the chosen game configuration (standard or custom path)
-	 * @param gameConfiguration full path of the xml file (or "standard")
-	 */
-	void onUpdateGameConfiguration(String gameConfiguration);
 
 	/**
 	 * it sends a message to the server with the initial leaders selected by the player

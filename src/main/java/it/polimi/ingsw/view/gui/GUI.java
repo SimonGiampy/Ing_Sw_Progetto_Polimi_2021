@@ -393,4 +393,8 @@ public class GUI extends ViewObservable implements View {
 			playerTabs.update(token,color);
 		});
 	}
+	
+	public void setPlayerNickname(String nickname) {
+		this.playerNickname = nickname;
+	}
 }

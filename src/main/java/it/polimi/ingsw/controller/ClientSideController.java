@@ -156,12 +156,6 @@ public class ClientSideController implements ViewObserver, Observer {
 	}
 
 	@Override
-	public void onUpdateGameConfiguration(String gameConfiguration){
-		client.sendMessage(new GameConfigReply(nickname,gameConfiguration));
-	}
-
-
-	@Override
 	public void onUpdateInitLeaders(ArrayList<Integer> selectedLeaders) {
 		client.sendMessage(new LeaderSelection(nickname, selectedLeaders));
 	}

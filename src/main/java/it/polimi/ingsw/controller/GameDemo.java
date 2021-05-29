@@ -7,9 +7,7 @@ import it.polimi.ingsw.model.util.PlayerActions;
 import it.polimi.ingsw.model.util.Resources;
 import it.polimi.ingsw.exceptions.InvalidUserRequestException;
 import it.polimi.ingsw.model.singleplayer.Token;
-import it.polimi.ingsw.xml_parsers.XMLParser;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.regex.Pattern;

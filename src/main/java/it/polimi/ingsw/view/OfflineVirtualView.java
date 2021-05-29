@@ -1,17 +1,15 @@
-package it.polimi.ingsw.view.gui;
+package it.polimi.ingsw.view;
 
 import it.polimi.ingsw.model.DevelopmentCard;
 import it.polimi.ingsw.model.reducedClasses.*;
 import it.polimi.ingsw.model.util.*;
 import it.polimi.ingsw.network.messages.Message;
-import it.polimi.ingsw.network.server.ClientHandler;
 import it.polimi.ingsw.observers.Observer;
-import it.polimi.ingsw.view.View;
-import it.polimi.ingsw.view.VirtualView;
 
 import java.util.ArrayList;
 
 public class OfflineVirtualView extends VirtualView implements View, Observer {
+	
 	View view;
 
 	public OfflineVirtualView(View view) {

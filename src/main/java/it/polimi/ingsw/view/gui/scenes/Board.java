@@ -531,7 +531,6 @@ public class Board extends ViewObservable implements SceneController {
 			dis.setDisable(true);
 			setShadow(leader, true);
 		} else if (leaderCard.isDiscarded()) {
-			System.out.println("discarded");
 			// card is less bright to indicate that it has been discarded
 			ColorAdjust colorAdjust = new ColorAdjust();
 			colorAdjust.setBrightness(-0.5);

@@ -23,15 +23,6 @@ public class CLI extends ViewObservable implements View {
 		scanner = new Scanner(System.in);
 	}
 
-	public String start(){
-		System.out.println("Type 1 for Online, type 2 for SinglePlayer offline");
-		if(scanner.nextLine().equals("2")){
-			System.out.println("Choose a nickname");
-			return scanner.nextLine();
-		}
-		else return null;
-	}
-
 	/**
 	 * it initializes CLI
 	 */
@@ -371,7 +362,7 @@ public class CLI extends ViewObservable implements View {
 			System.out.println("The positioning you requested is not valid: write a different move.");
 		}
 		
-		showDepot("", depot); // shows the current configuration of the warehouse
+		showDepot(playerNickname, depot); // shows the current configuration of the warehouse
 		
 		boolean checkGoingToWarehouse = false, checkGoingToDeck = false, check;
 		int origin = 0, destination = 0;

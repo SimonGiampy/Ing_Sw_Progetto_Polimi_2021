@@ -10,7 +10,7 @@ import it.polimi.ingsw.network.messages.*;
 import it.polimi.ingsw.network.messages.game.client2server.*;
 import it.polimi.ingsw.network.server.Lobby;
 import it.polimi.ingsw.view.VirtualView;
-import it.polimi.ingsw.xml_parsers.XMLParser;
+import it.polimi.ingsw.parser.XMLParser;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -124,7 +124,6 @@ public class ServerSideController {
 	public void startPreGame(){
 		turnController = new TurnController(virtualViewMap, this, nicknameList, mechanics);
 		gameState = GameState.INIT;
-		System.out.println("start pre game");
 
 		int j = 1;
 		for(String s: nicknameList) {

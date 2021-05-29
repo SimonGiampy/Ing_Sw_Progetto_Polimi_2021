@@ -1,11 +1,18 @@
 package it.polimi.ingsw.view.gui.scenes;
 
+import it.polimi.ingsw.controller.OfflineController;
+import it.polimi.ingsw.controller.ServerSideController;
 import it.polimi.ingsw.observers.ViewObservable;
+import it.polimi.ingsw.view.OfflineVirtualView;
+import it.polimi.ingsw.view.VirtualView;
+import it.polimi.ingsw.view.gui.GUI;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
+
+import java.util.HashMap;
 
 
 public class Nickname extends ViewObservable implements SceneController {
@@ -13,18 +20,37 @@ public class Nickname extends ViewObservable implements SceneController {
 	@FXML private Button confirm;
 	@FXML private TextField nickname;
 	@FXML private ImageView nicknameValid;
-
+	
+	private GUI gui;
+	private boolean offline = false;
 
 	/**
 	 * it handles nickname confirmation
 	 */
-	public void confirmation(){
+	public void confirmation() {
 		String nick = nickname.getText();
-		if (!nick.equals("")) notifyObserver(obs -> obs.onUpdateNickname(nick));
-		else nicknameValid.setVisible(true);
+		if (!offline) {
+			if (!nick.equals("")) notifyObserver(obs -> obs.onUpdateNickname(nick));
+			else nicknameValid.setVisible(true);
+		} else {
+			ServerSideController serverSideController = new ServerSideController(1);
+			OfflineVirtualView view = new OfflineVirtualView(gui);
+			
+			HashMap<String, VirtualView> map = new HashMap<>();
+			map.put(nick, view);
+			
+			gui.setPlayerNickname(nick);
+			
+			OfflineController controller = new OfflineController(gui, serverSideController, nick);
+			gui.attach(controller);
+			this.attach(controller);
+			serverSideController.setVirtualViews(map);
+		}
+		
 	}
 
-	@FXML public void initialize(){
+	@FXML
+	public void initialize(){
 		nickname.setOnKeyPressed(keyEvent -> {
 			if (keyEvent.getCode() == KeyCode.ENTER) {
 				confirmation();
@@ -46,5 +72,10 @@ public class Nickname extends ViewObservable implements SceneController {
 	 */
 	public String getNickname() {
 		return nickname.getText();
+	}
+	
+	public void setGui(GUI gui) {
+		this.gui = gui;
+		this.offline = true;
 	}
 }

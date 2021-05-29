@@ -3,7 +3,7 @@ package it.polimi.ingsw.model.singleplayer;
 import it.polimi.ingsw.model.*;
 import it.polimi.ingsw.model.util.Colors;
 import it.polimi.ingsw.model.util.TokenType;
-import it.polimi.ingsw.xml_parsers.XMLParser;
+import it.polimi.ingsw.parser.XMLParser;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

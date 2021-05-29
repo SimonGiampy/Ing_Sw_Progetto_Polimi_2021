@@ -1,4 +1,4 @@
-package it.polimi.ingsw.xml_parsers;
+package it.polimi.ingsw.parser;
 
 import it.polimi.ingsw.model.*;
 import it.polimi.ingsw.model.reducedClasses.ReducedFaithTrack;
@@ -9,9 +9,7 @@ import it.polimi.ingsw.view.cli.CLIUtils;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.io.File;
 import java.util.ArrayList;
-import java.util.Objects;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
