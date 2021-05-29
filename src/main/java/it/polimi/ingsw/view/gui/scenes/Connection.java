@@ -29,7 +29,10 @@ public class Connection extends ViewObservable implements SceneController {
 	@FXML Button connect;
 	@FXML TextField address;
 	@FXML TextField port;
-	
+	@FXML Button offline;
+
+	private GUI gui;
+
 	@FXML
 	public void initialize() {
 		Font.loadFont(getClass().getResourceAsStream("/assets/font/Caveat-Regular.ttf"), 10);
@@ -41,6 +44,7 @@ public class Connection extends ViewObservable implements SceneController {
 		address.setOnKeyPressed(event);
 		port.setOnKeyPressed(event);
 		connect.setOnMouseClicked(e -> connection());
+		offline.setOnMouseClicked(e -> offline(e));
 	}
 	
 	/**
@@ -80,5 +84,21 @@ public class Connection extends ViewObservable implements SceneController {
 			portWrong.setVisible(true);
 		
 		notifyObserver(obs -> obs.onUpdateServerInfo(serverInfo));
+	}
+
+	public void offline(MouseEvent event) {
+		FXMLLoader fxmlLoader = new FXMLLoader(GUI.class.getResource("nickname.fxml"));
+		try {
+			((Node) event.getSource()).getScene().setRoot(fxmlLoader.load());
+		} catch (IOException e) {
+			Thread.currentThread().interrupt();
+		}
+
+		Nickname nick = fxmlLoader.getController();
+		nick.setGui(gui);
+	}
+
+	public void setGui(GUI gui) {
+		this.gui = gui;
 	}
 }

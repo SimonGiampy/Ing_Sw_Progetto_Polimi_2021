@@ -523,7 +523,6 @@ public class Board extends ViewObservable implements SceneController {
 	 */
 	public void setMyLeaderCards(ReducedLeaderCard leaderCard, Button act, Button dis, ImageView leader) {
 		if (leaderCard.isPlayable()) {
-			System.out.println("playable");
 			act.setDisable(false);
 			dis.setDisable(false);
 		} else if (leaderCard.isAbilitiesActivated()) {

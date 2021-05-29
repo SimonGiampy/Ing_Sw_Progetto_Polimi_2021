@@ -11,45 +11,42 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-<Pane prefHeight="1080.0" prefWidth="1920.0"
-      stylesheets="@../../../../../assets/bootstrap3.css" xmlns="http://javafx.com/javafx/" xmlns:fx="http://javafx.com/fxml/1"
-      fx:controller="it.polimi.ingsw.view.gui.scenes.Connection">
+<Pane prefHeight="1080.0" prefWidth="1920.0" stylesheets="@../../../../../assets/bootstrap3.css" xmlns="http://javafx.com/javafx/"
+      xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.view.gui.scenes.Connection">
     <BorderPane prefHeight="200.0" prefWidth="200.0">
         <center>
             <ImageView fitHeight="1080" fitWidth="1920" pickOnBounds="true" preserveRatio="true" BorderPane.alignment="CENTER">
-                <Image url="@../../../../../assets/connection/masters_florence.jpg"/>
+                <Image url="@../../../../../assets/connection/masters_florence.jpg" />
             </ImageView>
         </center>
     </BorderPane>
     <AnchorPane layoutX="809.0" layoutY="-2.0" prefHeight="1082.0" prefWidth="1112.0">
-        <Button fx:id="connect" layoutX="373.0" layoutY="749.0" minHeight="85.0" prefHeight="85.0" prefWidth="336.0"
-                text="Connect to the Server" styleClass="orange_btn">
+        <Button fx:id="connect" layoutX="373.0" layoutY="749.0" minHeight="85.0" prefHeight="85.0" prefWidth="336.0" styleClass="orange_btn" text="Connect to the Server">
         </Button>
+        <Button fx:id="offline" layoutX="421.0" layoutY="898.0" mnemonicParsing="false" styleClass="orange_btn" text="Play SinglePlayer Offline" />
         <TextField fx:id="address" layoutX="373.0" layoutY="259.0" prefHeight="53.0" prefWidth="336.0" promptText="Server Address">
             <font>
-                <Font size="24"/>
+                <Font size="24" />
             </font>
         </TextField>
         <TextField fx:id="port" layoutX="373.0" layoutY="420.0" prefHeight="53.0" prefWidth="336.0" promptText="Port Number">
             <font>
-                <Font size="24"/>
+                <Font size="24" />
             </font>
         </TextField>
-        <Label fx:id="addressWrong" layoutX="738.0" layoutY="264.0" prefHeight="25.0" prefWidth="201.0" text="Server Address not valid"
-               visible="false">
+        <Label fx:id="addressWrong" layoutX="738.0" layoutY="264.0" prefHeight="25.0" prefWidth="201.0" text="Server Address not valid" visible="false">
             <styleClass>
-                <String fx:value="tooltip"/>
-                <String fx:value="warning"/>
+                <String fx:value="tooltip" />
+                <String fx:value="warning" />
             </styleClass>
         </Label>
-        <Label fx:id="portWrong" layoutX="738.0" layoutY="424.0" prefHeight="25.0" prefWidth="179.0" text="Port number not valid"
-               visible="false">
+        <Label fx:id="portWrong" layoutX="738.0" layoutY="424.0" prefHeight="25.0" prefWidth="179.0" text="Port number not valid" visible="false">
             <styleClass>
-                <String fx:value="tooltip"/>
-                <String fx:value="warning"/>
+                <String fx:value="tooltip" />
+                <String fx:value="warning" />
             </styleClass>
             <font>
-                <Font size="18.0"/>
+                <Font size="18.0" />
             </font>
         </Label>
     </AnchorPane>
