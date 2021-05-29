@@ -453,11 +453,9 @@ public class ServerSideController {
 	private void productionHandler(ProductionSelection message) {
 		int playerIndex = nicknameList.indexOf(message.getNickname());
 		VirtualView view = virtualViewMap.get(message.getNickname());
-
 		CardProductionsManagement cardProductionsManagement = mechanics.getPlayer(playerIndex).getPlayersCardManager();
-		if(cardProductionsManagement.isSelectedProductionAvailable(message.getSelectedProductions())) {
-			cardProductionsManagement.setSelectedInput(message.getSelectedProductions());
-
+		if(cardProductionsManagement.isSelectedProductionAvailable(message.getSelectedProductions())) { //if selected productions are available
+			cardProductionsManagement.setSelectedInput(message.getSelectedProductions()); //set selected productions
 			if (cardProductionsManagement.numberOfFreeChoicesInInputProductions(message.getSelectedProductions()) > 0) {
 				// free user choices for input resources
 				view.askFreeInput(cardProductionsManagement.numberOfFreeChoicesInInputProductions(message.getSelectedProductions()));
@@ -516,8 +514,9 @@ public class ServerSideController {
 		int playerIndex = nicknameList.indexOf(message.getNickname());
 		VirtualView view = virtualViewMap.get(message.getNickname());
 		CardProductionsManagement cardProductionsManagement = mechanics.getPlayer(playerIndex).getPlayersCardManager();
-		
-		if(cardProductionsManagement.checkFreeInput(cardProductionsManagement.getSelectedInput(),putResources(message))) {
+
+		if(cardProductionsManagement.checkFreeInput(cardProductionsManagement.getSelectedInput(),putResources(message))) {//if input resources are available
+
 			if (cardProductionsManagement.numberOfFreeChoicesInOutputProductions(cardProductionsManagement.getSelectedInput()) > 0) {
 				// if there are free choices in output, it asks them to the player
 				cardProductionsManagement.setInputResources(putResources(message));

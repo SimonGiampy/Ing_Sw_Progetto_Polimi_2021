@@ -353,7 +353,7 @@ public class Board extends ViewObservable implements SceneController {
 			actProductions.setText("Confirm Productions");
 			producingState = true;
 		} else { // pressed confirmation
-			notifyObserver(obs->obs.onUpdateProductionAction(selectedProduction));
+			notifyObserver(obs->obs.onUpdateProductionAction(new ArrayList<>(selectedProduction)));
 			selectedProduction.clear();
 			actProductions.setText("Activate Productions");
 			actProductions.setDisable(true);
