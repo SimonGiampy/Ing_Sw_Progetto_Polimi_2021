@@ -6,28 +6,30 @@
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
 
-<DialogPane prefHeight="607.0" prefWidth="765.0" stylesheets="@../../../../../assets/bootstrap3.css"
-            xmlns="http://javafx.com/javafx/" xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="it.polimi.ingsw.view.gui.scenes.WhiteMarblesDialogController" styleClass="wood_background">
+<DialogPane prefHeight="482.0" prefWidth="765.0" stylesheets="@../../../../../assets/bootstrap3.css" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.view.gui.scenes.WhiteMarblesDialogController">
     <content>
-        <AnchorPane prefHeight="503.0" prefWidth="707.0">
-            <Label layoutX="160.0" layoutY="75.0" text="You have two White Marbles leaders activated: " style="-fx-font-size: 20"/>
-            <Label fx:id="lbl" layoutX="160.0" layoutY="138.0" style="-fx-font-size: 18"/>
+        <AnchorPane prefHeight="647.0" prefWidth="765.0">
+            <Label alignment="CENTER" contentDisplay="CENTER" layoutX="176.0" layoutY="32.0" prefHeight="25.0" prefWidth="413.0" style="-fx-font-size: 20" styleClass="fancy_font" text="You have two White Marbles leaders activated!" />
+            <Label fx:id="lbl" alignment="CENTER" contentDisplay="CENTER" layoutX="162.0" layoutY="73.0" prefHeight="27.0" prefWidth="442.0" style="-fx-font-size: 18" styleClass="fancy_font" text="Choose how many times you want to activate each one">
+                <font>
+                    <Font size="18.0" />
+                </font></Label>
             <ImageView fitHeight="98.0" fitWidth="125.0" layoutX="70.0" layoutY="218.0" pickOnBounds="true" preserveRatio="true">
-                <Image url="@../../../../../assets/board/White_Marble.png"/>
+                <Image url="@../../../../../assets/board/White_Marble.png" />
             </ImageView>
             <ImageView fitHeight="98.0" fitWidth="125.0" layoutX="70.0" layoutY="372.0" pickOnBounds="true" preserveRatio="true">
-                <Image url="@../../../../../assets/board/White_Marble.png"/>
+                <Image url="@../../../../../assets/board/White_Marble.png" />
             </ImageView>
             <ImageView fitHeight="62.0" fitWidth="56.0" layoutX="193.0" layoutY="239.0" pickOnBounds="true" preserveRatio="true">
-                <Image url="@../../../../../assets/board/equals.png"/>
+                <Image url="@../../../../../assets/board/equals.png" />
             </ImageView>
             <ImageView fitHeight="62.0" fitWidth="56.0" layoutX="193.0" layoutY="393.0" pickOnBounds="true" preserveRatio="true">
-                <Image url="@../../../../../assets/board/equals.png"/>
+                <Image url="@../../../../../assets/board/equals.png" />
             </ImageView>
-            <ImageView fx:id="res1" fitHeight="117.0" fitWidth="130.0" layoutX="265.0" layoutY="209.0" pickOnBounds="true" preserveRatio="true"/>
-            <ImageView fx:id="res2" fitHeight="117.0" fitWidth="130.0" layoutX="265.0" layoutY="363.0" pickOnBounds="true" preserveRatio="true"/>
+            <ImageView fx:id="res1" fitHeight="117.0" fitWidth="130.0" layoutX="265.0" layoutY="209.0" pickOnBounds="true" preserveRatio="true" />
+            <ImageView fx:id="res2" fitHeight="117.0" fitWidth="130.0" layoutX="265.0" layoutY="363.0" pickOnBounds="true" preserveRatio="true" />
             <MenuButton fx:id="lead1" layoutX="463.0" layoutY="255.0" mnemonicParsing="false" text="Leader 1 Activations">
                 <items>
                 </items>
@@ -36,6 +38,16 @@
                 <items>
                 </items>
             </MenuButton>
+            <Label fx:id="whiteMarblesLbl" contentDisplay="CENTER" layoutX="275.0" layoutY="156.0" prefHeight="45.0" prefWidth="251.0" styleClass="fancy_font" text="White Marbles to convert: ">
+                <font>
+                    <Font size="18.0" />
+                </font>
+            </Label>
+            <Label alignment="CENTER" contentDisplay="CENTER" layoutX="175.0" layoutY="113.0" prefHeight="27.0" prefWidth="440.0" style="-fx-font-size: 18" styleClass="fancy_font" text="(You have to convert ALL the marbles into resources)">
+                <font>
+                    <Font size="18.0" />
+                </font>
+            </Label>
         </AnchorPane>
     </content>
 

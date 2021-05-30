@@ -318,7 +318,7 @@ public class CLI extends ViewObservable implements View {
 	public void askWhiteMarbleChoice(ArrayList<Resources> fromWhiteMarble1, ArrayList<Resources> fromWhiteMarble2,
 									 int whiteMarblesInput1, int whiteMarblesInput2, int howMany) {
 		String marble = Marbles.WHITE + "\uD83D\uDFE3" + Unicode.RESET;
-		String regex = "[1-4],[1-4]"; //TODO: wrong regex sequence
+		String regex = "[0-4],[0-4]";
 		System.out.println("You have two White Marbles leaders activated: ");
 		System.out.print("1. " + marble.repeat(whiteMarblesInput1) + "-->" + fromWhiteMarble1);
 		System.out.print("2. " + marble.repeat(whiteMarblesInput2) + "-->" + fromWhiteMarble2);

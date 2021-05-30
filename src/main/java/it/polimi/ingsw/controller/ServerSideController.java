@@ -358,6 +358,7 @@ public class ServerSideController {
 		try {
 			mechanics.getPlayer(playerIndex).convertMarketOutput(message.getLeader1(), message.getLeader2());
 		} catch (InvalidUserRequestException e) {
+			view.showError("Wrong number of activations! Choose different values");
 			view.askWhiteMarbleChoice(deck.getFromWhiteMarble1(), deck.getFromWhiteMarble2(), deck.getWhiteMarblesInput1(),
 					deck.getWhiteMarblesInput2(), deck.getWhiteMarblesTaken());
 			return;
@@ -373,7 +374,7 @@ public class ServerSideController {
 		//sends a message to the player if any resources were moved automatically
 		int moved = mechanics.getPlayer(playerIndex).getPlayersWarehouseDepot().moveResourcesToAdditionalDepots();
 		if (moved > 0) {
-			view.showGenericMessage(moved + " resources have been moved automatically to the leaders' additional depots");
+			view.showGenericMessage(moved + " resource(s) have been moved automatically to the leaders' additional depots");
 		}
 		
 		//sends confirmation of the completed action
@@ -393,8 +394,9 @@ public class ServerSideController {
 			int n = mechanics.getPlayer(playerIndex).getPlayersWarehouseDepot().discardResourcesAfterUserConfirmation();
 			for (int i = 0; i < numberOfPlayers && n > 0; i++) {
 				if(mechanics.getNumberOfPlayers() == 1){
+					((GameMechanicsSinglePlayer) mechanics).getLorenzoFaithTrack().moveMarker(n);
 					virtualViewMap.get(nicknameList.get(i)).showGenericMessage("You discarded " + n +
-							" resources, Lorenzo gets " + n + " faith points");
+							" resources, Lorenzo gets " + n + " faith point(s)");
 					if(((GameMechanicsSinglePlayer) mechanics).getLorenzoFaithTrack().isTrackFinished()) {
 						turnController.sendWinner();
 					}
@@ -403,14 +405,14 @@ public class ServerSideController {
 					if (i != playerIndex) {
 						mechanics.getPlayer(i).getPlayerFaithTrack().moveMarker(n);
 						virtualViewMap.get(nicknameList.get(i)).showGenericMessage(message.getNickname() + " discarded " + n +
-								" resources, you get " + n + " faith points");
+								" resources, you get " + n + " faith point(s)");
 					} else {
 						virtualViewMap.get(nicknameList.get(i)).showGenericMessage("You discarded " + n +
-								" resources, the other players get " + n + " faith points");
+								" resources, the other players get " + n + " faith point(s)");
 					}
 				}
 			}
-			if(!checkVaticanReport())
+			if(!checkVaticanReport() && n > 0)
 				sendFaithTracks();
 			turnController.setTurnPhase(TurnPhase.MAIN_ACTION); //next turn
 		} else {
@@ -677,9 +679,9 @@ public class ServerSideController {
 			if(lorenzoCheck) {
 				mec.getPlayer(0).getPlayerFaithTrack().checkVaticanReport(mec.getLastReportClaimed());
 				mec.getLorenzoFaithTrack().checkVaticanReport(mec.getLastReportClaimed());
-				virtualViewMap.get(nicknameList.get(0)).showGenericMessage("You triggered Vatican Report" +
-						" n." + mechanics.getLastReportClaimed() + "!");
 				mec.increaseLastReportClaimed();
+				virtualViewMap.get(nicknameList.get(0)).showGenericMessage("Lorenzo triggered Vatican Report" +
+						" n." + mechanics.getLastReportClaimed() + "!");
 				send = true;
 			}
 		}

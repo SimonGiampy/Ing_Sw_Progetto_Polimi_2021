@@ -9,7 +9,8 @@ import javafx.scene.image.ImageView;
 import java.util.ArrayList;
 
 public class WhiteMarblesDialogController implements SceneController {
-	
+
+	@FXML Label whiteMarblesLbl;
 	@FXML private MenuButton lead1;
 	@FXML private MenuButton lead2;
 	@FXML private ImageView res1;
@@ -30,13 +31,11 @@ public class WhiteMarblesDialogController implements SceneController {
 	 * @param howMany number of white marbles incoming from the market
 	 */
 	public void setData(ArrayList<Resources> fromWhiteMarble1, ArrayList<Resources> fromWhiteMarble2, int howMany) {
-		lbl.setText("You have obtained " + howMany + " white marbles from the market, choose how many times to activate each leader. " +
-				"(You can't discard white marbles if it's possible to convert them)");
 		res1.setImage(new Image(fromWhiteMarble1.get(0).path));
 		res2.setImage(new Image(fromWhiteMarble2.get(0).path));
-		
-		setMenus(lead1, howMany);
-		setMenus(lead2, howMany);
+		whiteMarblesLbl.setText("White Marbles to convert: " + howMany);
+		setMenus(lead1, howMany, "Leader 1 Activations: ");
+		setMenus(lead2, howMany, "Leader 2 Activations: ");
 	}
 	
 	/**
@@ -44,11 +43,13 @@ public class WhiteMarblesDialogController implements SceneController {
 	 * @param button menu button corresponding to a leader
 	 * @param num number of white marbles incoming from the market
 	 */
-	private void setMenus(MenuButton button, int num) {
+	private void setMenus(MenuButton button, int num, String text) {
 		ArrayList<RadioMenuItem> items = new ArrayList<>();
 		ToggleGroup group = new ToggleGroup();
 		for (int i = 0; i <= num; i++) {
 			RadioMenuItem item = new RadioMenuItem(String.valueOf(i));
+			int finalI = i;
+			item.setOnAction(actionEvent -> button.setText(text + finalI));
 			item.setToggleGroup(group);
 			items.add(item);
 		}

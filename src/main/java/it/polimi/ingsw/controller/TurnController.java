@@ -87,10 +87,16 @@ public class TurnController {
 		Token currentToken = mechanicsSinglePlayer.revealTop();
 		boolean check = currentToken.applyEffect();
 		view.showToken(currentToken.getTokenType(),currentToken.getColor());
-		if(currentToken.getTokenType() == TokenType.DISCARD_TOKEN)
+		if(currentToken.getTokenType() == TokenType.DISCARD_TOKEN) {
 			view.showCardsDeck(new ReducedDevelopmentCardsDeck(mechanics.getGameDevCardsDeck()));
-		else
+			view.showGenericMessage("Token revealed! 2 " + currentToken.getColor().toString().toLowerCase() +
+					" cards discarded from the deck");
+		}
+		else {
+			if(check) view.showGenericMessage("Token revealed! Lorenzo gets 1 faith point and the token deck has been shuffled");
+			else view.showGenericMessage("Token revealed! Lorenzo gets 2 faith points");
 			view.showFaithTrack(activePlayer, new ReducedFaithTrack(mechanicsSinglePlayer.getLorenzoFaithTrack()));
+		}
 
 		if(currentToken.isEndGame()) // true if Lorenzo triggers the end of the game
 			endOfGame=true;
