@@ -154,9 +154,9 @@ public class Board extends ViewObservable implements SceneController {
 		sizeSlot3=0;
 		
 		// faith crosses values
-		updateCrossCoords(false, 0); // initial position when the game starts
-		redPosition = 0;
 		blackPosition = -1;
+		redPosition = 1;
+		updateCrossCoords(false, 0); // initial position when the game starts
 		
 		//mouse click handlers for the series of productions available on the board
 		baseProduction.setOnMouseClicked(event -> productionSelectionHandler(Productions.BASE_PRODUCTION, baseProduction));
@@ -258,11 +258,15 @@ public class Board extends ViewObservable implements SceneController {
 	 */
 	public void updateCrossCoords(boolean lorenzo, int pos) {
 		if (lorenzo) { // moving the black cross
-			drawCrosses(redCross, blackCross, redPosition, pos);
-			blackPosition = pos;
+			if (pos != blackPosition) {
+				drawCrosses(redCross, blackCross, redPosition, pos);
+				blackPosition = pos;
+			}
 		} else { // moving the red cross
-			drawCrosses(blackCross, redCross, blackPosition, pos);
-			redPosition = pos;
+			if (pos != redPosition) {
+				drawCrosses(blackCross, redCross, blackPosition, pos);
+				redPosition = pos;
+			}
 		}
 	}
 	
@@ -839,18 +843,9 @@ public class Board extends ViewObservable implements SceneController {
 	}
 	
 	/**
-	 * utility class user for the memorization of the positions of the crosses on the faith track
+	 * utility record class for the memorization of the positions of the crosses on the faith track
 	 */
-	private static class Coordinates {
-		private final int pos;
-		private final double x;
-		private final double y;
-		
-		Coordinates(int pos, double x, double y) {
-			this.pos = pos;
-			this.x = x;
-			this.y = y;
-		}
+	private record Coordinates(int pos, double x, double y) {
 		
 		public double getX() {
 			return x;
@@ -858,10 +853,6 @@ public class Board extends ViewObservable implements SceneController {
 		
 		public double getY() {
 			return y;
-		}
-		
-		public int getPosition() {
-			return pos;
 		}
 	}
 	
