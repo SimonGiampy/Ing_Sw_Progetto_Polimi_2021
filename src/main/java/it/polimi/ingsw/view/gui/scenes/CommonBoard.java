@@ -296,7 +296,7 @@ public class CommonBoard extends ViewObservable implements SceneController{
 	public void setShadow(double value, ImageView img){
 		DropShadow dropShadow = new DropShadow();
 		dropShadow.setSpread(value);
-		dropShadow.setColor(Color.GOLD);
+		dropShadow.setColor(Color.LIGHTSKYBLUE);
 		img.setEffect(dropShadow);
 	}
 

@@ -81,7 +81,7 @@ public class Notification {
 		int count = 1;
 		for (int i = 0; i < text.length(); i++) {
 
-			if(i > 20 * count && text.charAt(i) == ' ') {
+			if(i > 30 * count && text.charAt(i) == ' ') {
 				string.append("\n");
 				count++;
 			} else

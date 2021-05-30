@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.*?>
-<?import javafx.scene.image.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane fx:id="anchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="100.0"
-            prefWidth="500.0"
-            stylesheets="@../../../../../assets/bootstrap3.css" visible="false" xmlns="http://javafx.com/javafx/"
-            xmlns:fx="http://javafx.com/fxml/1" styleClass="notification">
-    <Label fx:id="lblText" alignment="CENTER" contentDisplay="CENTER" layoutX="100.0" layoutY="20.0" prefHeight="64.0" prefWidth="325.0"
-           styleClass="fancy_font" visible="false"/>
+<AnchorPane fx:id="anchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
+            prefHeight="100.0" prefWidth="500.0" styleClass="notification" stylesheets="@../../../../../assets/bootstrap3.css" visible="false" xmlns="http://javafx.com/javafx/" xmlns:fx="http://javafx.com/fxml/1">
+    <Label fx:id="lblText" alignment="CENTER" contentDisplay="CENTER" layoutX="100.0" layoutY="7.0"
+           prefHeight="87.0" prefWidth="325.0" styleClass="fancy_font" visible="false" />
     <ImageView fx:id="img" fitHeight="87.0" fitWidth="79.0" layoutX="15.0" layoutY="7.0" visible="false">
-        <Image url="@../../../../../assets/lorenzo_notification.png"/>
+        <Image url="@../../../../../assets/lorenzo_notification.png" />
     </ImageView>
-    <Button fx:id="btnClose" layoutX="462.0" layoutY="14.0" mnemonicParsing="false" styleClass="button, danger" text="X" visible="false"/>
+    <Button fx:id="btnClose" layoutX="462.0" layoutY="14.0" mnemonicParsing="false" styleClass="button, danger" text="X" visible="false" />
 </AnchorPane>

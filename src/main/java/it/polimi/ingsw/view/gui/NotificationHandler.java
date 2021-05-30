@@ -8,8 +8,8 @@ import java.util.concurrent.TimeUnit;
 
 public class NotificationHandler {
 
-	private final boolean [] notificationStack = {true, true, true, true, true, true};
-	private final Notification[] notifications = new Notification[6];
+	private final boolean [] notificationStack = {true, true, true, true, true, true, true, true};
+	private final Notification[] notifications = new Notification[8];
 	private int delay;
 
 	public NotificationHandler(){

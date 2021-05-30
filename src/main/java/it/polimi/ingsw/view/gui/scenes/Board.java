@@ -432,7 +432,7 @@ public class Board extends ViewObservable implements SceneController {
 			dropShadow.setColor(Color.SPRINGGREEN);
 		} else {
 			dropShadow.setSpread(0.9);
-			dropShadow.setColor(Color.LIGHTSKYBLUE);
+			dropShadow.setColor(Color.GOLD);
 		}
 		img.setEffect(dropShadow);
 	}
