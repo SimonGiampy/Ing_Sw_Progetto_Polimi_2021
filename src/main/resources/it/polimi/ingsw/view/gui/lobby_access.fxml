@@ -1,10 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
-<?import javafx.scene.text.*?>
 
 <AnchorPane prefHeight="1080.0" prefWidth="1920.0" stylesheets="@../../../../../assets/bootstrap3.css" xmlns="http://javafx.com/javafx/"
             xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.view.gui.scenes.LobbyAccess">
@@ -12,26 +10,10 @@
         <Image url="@../../../../../assets/lobbyAccess/lobby_access_uffizi.jpg"/>
     </ImageView>
     <ListView fx:id="lobbyList" layoutX="200.0" layoutY="230.0" prefHeight="700.0" prefWidth="400.0"/>
-    <Button fx:id="btnCreateLobby" layoutX="1250.0" layoutY="230.0" mnemonicParsing="false" prefHeight="193.0" prefWidth="290.0" text="Create Lobby">
-        <styleClass>
-            <String fx:value="info"/>
-            <String fx:value="lg"/>
-        </styleClass>
-    </Button>
+    <Button fx:id="btnCreateLobby" layoutX="1250.0" layoutY="230.0" mnemonicParsing="false" prefHeight="193.0" prefWidth="290.0"
+            styleClass="info, fancy_font, lg" text="Create Lobby" style="-fx-font-size: 30"/>
     <Button fx:id="btnJoinLobby" layoutX="1250.0" layoutY="731.0" mnemonicParsing="false" prefHeight="193.0" prefWidth="290.0" text="Join Lobby"
-            visible="false">
-        <styleClass>
-            <String fx:value="info"/>
-            <String fx:value="lg"/>
-        </styleClass>
-    </Button>
-    <Label fx:id="lobbyInvalid" layoutX="750.0" layoutY="250.0" prefHeight="25.0" prefWidth="179.0" text="Lobby is not valid" visible="false">
-        <styleClass>
-            <String fx:value="tooltip"/>
-            <String fx:value="warning"/>
-        </styleClass>
-        <font>
-            <Font size="18.0"/>
-        </font>
-    </Label>
+            visible="false" styleClass="info, lg, fancy_font" style="-fx-font-size: 30"/>
+    <Label fx:id="lobbyInvalid" layoutX="750.0" layoutY="250.0" prefHeight="25.0" prefWidth="179.0" text="Lobby is not valid" visible="false"
+            styleClass="tooltip, warning" style="-fx-font-size: 18"/>
 </AnchorPane>

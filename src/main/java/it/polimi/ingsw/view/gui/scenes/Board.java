@@ -241,7 +241,11 @@ public class Board extends ViewObservable implements SceneController {
 	}
 	
 	/*-------------------------------------------------- FAITH TRACK related code -----------------------------------------------------------*/
-
+	
+	/**
+	 * updates the faith track content
+	 * @param track reduced class
+	 */
 	public void updateFaithTrack(ReducedFaithTrack track){
 		updateCrossCoords(track.isLorenzosTrack(), track.getCurrentPosition());
 		activatePapalZone(track.getVaticanReports(), track.getLastReportClaimed());
@@ -423,10 +427,11 @@ public class Board extends ViewObservable implements SceneController {
 	 */
 	public void setShadow(ImageView img, boolean leaderActive) {
 		DropShadow dropShadow= new DropShadow();
-		dropShadow.setSpread(0.5);
 		if (!leaderActive) {
+			dropShadow.setSpread(0.5);
 			dropShadow.setColor(Color.SPRINGGREEN);
 		} else {
+			dropShadow.setSpread(0.9);
 			dropShadow.setColor(Color.LIGHTSKYBLUE);
 		}
 		img.setEffect(dropShadow);
@@ -545,7 +550,10 @@ public class Board extends ViewObservable implements SceneController {
 			dis.setDisable(false);
 		}
 	}
-
+	
+	/**
+	 * disables the leaders interaction buttons when the current turn ends
+	 */
 	public void setEndTurn() {
 		act1.setDisable(true);
 		act2.setDisable(true);
@@ -642,36 +650,16 @@ public class Board extends ViewObservable implements SceneController {
 		
 		//updates the additional depots if they're set and the abilities are activated (only if the image hasn't been set yet)
 		if (depot.isLeaderActivated(0)) {
-			if (depot.getExtraDepotContents().get(0).get(0)) {
-				if (extraDepotLeader1Activation == 1) {
-					res11.setImage(new Image(depot.getExtraDepotResources().get(0).get(0).path));
-				} else if (extraDepotLeader1Activation == 2) {
-					res21.setImage(new Image(depot.getExtraDepotResources().get(0).get(0).path));
-				}
-			}
-			if (depot.getExtraDepotContents().get(0).get(1)) {
-				if (extraDepotLeader1Activation == 1) {
-					res12.setImage(new Image(depot.getExtraDepotResources().get(0).get(1).path));
-				} else if (extraDepotLeader1Activation == 2) {
-					res22.setImage(new Image(depot.getExtraDepotResources().get(0).get(1).path));
-				}
-			}
+			changeExtraDepotImage(1, 1, depot.getExtraDepotContents().get(0).get(0),
+					depot.getExtraDepotResources().get(0).get(0).path);
+			changeExtraDepotImage(1, 2, depot.getExtraDepotContents().get(0).get(1),
+					depot.getExtraDepotResources().get(0).get(1).path);
 		}
 		if (depot.isLeaderActivated(1)) {
-			if (depot.getExtraDepotContents().get(1).get(0)) {
-				if (extraDepotLeader2Activation == 1) {
-					res11.setImage(new Image(depot.getExtraDepotResources().get(1).get(0).path));
-				} else if (extraDepotLeader2Activation == 2) {
-					res21.setImage(new Image(depot.getExtraDepotResources().get(1).get(0).path));
-				}
-			}
-			if (depot.getExtraDepotContents().get(1).get(1)) {
-				if (extraDepotLeader2Activation == 1) {
-					res12.setImage(new Image(depot.getExtraDepotResources().get(1).get(1).path));
-				} else if (extraDepotLeader2Activation == 2) {
-					res22.setImage(new Image(depot.getExtraDepotResources().get(1).get(1).path));
-				}
-			}
+			changeExtraDepotImage(2, 1, depot.getExtraDepotContents().get(1).get(0),
+					depot.getExtraDepotResources().get(1).get(0).path);
+			changeExtraDepotImage(2, 2, depot.getExtraDepotContents().get(1).get(1),
+					depot.getExtraDepotResources().get(1).get(1).path);
 		}
 		
 		// disableCommonBoardButtons incoming resource deck contents. Deck must not contain any empty resources
@@ -701,6 +689,23 @@ public class Board extends ViewObservable implements SceneController {
 			deck2.setImage(null);
 			deck3.setImage(null);
 			deck4.setImage(null);
+		}
+	}
+	
+	/**
+	 * changes the images corresponding to the resources in the extra depot slots
+	 * @param leaderNumber 1 or 2
+	 * @param number of the resources in order (1 or 2)
+	 * @param present if the resource is present or not
+	 * @param imagePath image resource to be assigned
+	 */
+	private void changeExtraDepotImage(int leaderNumber, int number, boolean present, String imagePath) {
+		ImageView[][] matrix = new ImageView[][] {{res11, res12}, {res21, res22}};
+		int extra = (leaderNumber == 1 ? extraDepotLeader1Activation : extraDepotLeader2Activation);
+		if (present) {
+			matrix[extra - 1][number - 1].setImage(new Image(imagePath));
+		} else {
+			matrix[extra - 1][number - 1].setImage(null);
 		}
 	}
 	

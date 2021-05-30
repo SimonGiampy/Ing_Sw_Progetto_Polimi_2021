@@ -200,21 +200,21 @@ public class CLI extends ViewObservable implements View {
 			System.out.println("Card's number: " + (i + 1));
 			CLIUtils.showLeaderCard(leaderCards.get(i));
 		}
-			String regex= "[1-4],[1-4]";
-			boolean checkRegex;
-			boolean checkArray=false;
-			String[] array;
-			do{
-				String input = scanner.nextLine();
-				checkRegex=Pattern.matches(regex,input);
-				array = input.split(",");
-				if (array.length==2)
-					checkArray= !array[0].equals(array[1]);
-
-				if (!checkRegex || !checkArray)
-					System.out.println("Input incorrect! Type again!");
-			}while (!checkRegex || !checkArray);
-
+		String regex= "[1-4],[1-4]";
+		boolean checkRegex;
+		boolean checkArray=false;
+		String[] array;
+		do{
+			String input = scanner.nextLine();
+			checkRegex=Pattern.matches(regex,input);
+			array = input.split(",");
+			if (array.length==2)
+				checkArray= !array[0].equals(array[1]);
+			
+			if (!checkRegex || !checkArray)
+				System.out.println("Input incorrect! Type again!");
+		}while (!checkRegex || !checkArray);
+		
 		ArrayList<Integer> leaderSelection= new ArrayList<>();
 		leaderSelection.add(Integer.parseInt(array[0]));
 		leaderSelection.add(Integer.parseInt(array[1]));

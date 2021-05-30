@@ -42,8 +42,8 @@ public class AppCli {
 			
 			serverSideController.setVirtualViews(map);
 		} else if (mode.equals("online")) {
-			cli.initialize();
 			cli.attach(new ClientSideController(cli));
+			cli.initialize();
 		}
 
 	}

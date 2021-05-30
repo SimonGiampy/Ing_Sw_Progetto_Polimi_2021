@@ -1,6 +1,5 @@
 package it.polimi.ingsw.view.gui;
 
-import it.polimi.ingsw.controller.ClientSideController;
 import it.polimi.ingsw.view.gui.scenes.Connection;
 import javafx.application.Application;
 import javafx.application.Platform;
@@ -18,6 +17,7 @@ public class AppGui extends Application {
 	public static void main(String[] args) {
 		launch(args);
 	}
+	
 	
 	@Override
 	public void start(Stage stage) {
@@ -40,7 +40,7 @@ public class AppGui extends Application {
 		//controller.attach(clientController);
 		controller.setGui(gui);
 
-		stage.getIcons().add(new Image("/assets/board/calamaio.png"));
+		stage.getIcons().add(new Image("/assets/board/calamaio.png")); // game icon in the taskbar
 		stage.setScene(scene);
 		stage.setResizable(false);
 		stage.setMaximized(true);

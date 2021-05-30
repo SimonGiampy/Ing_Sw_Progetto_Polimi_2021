@@ -9,6 +9,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.text.Font;
 
 import java.util.ArrayList;
 
@@ -29,7 +30,6 @@ public class LobbyAccess extends ViewObservable implements SceneController {
 	}
 
 	public void onJoinLobby(Event event){
-		//new Thread(() -> notifyObserver(obs -> obs.onUpdateLobbyAccess(selectedLobby, idVersion))).start();
 		notifyObserver(obs -> obs.onUpdateLobbyAccess(selectedLobby, idVersion));
 	}
 
@@ -56,6 +56,6 @@ public class LobbyAccess extends ViewObservable implements SceneController {
 	public void initialize() {
 		btnCreateLobby.addEventHandler(MouseEvent.MOUSE_CLICKED, this::onCreateLobby);
 		btnJoinLobby.addEventHandler(MouseEvent.MOUSE_CLICKED, this::onJoinLobby);
-		//lobbyList.addEventHandler(MouseEvent.MOUSE_CLICKED, this::onSelectLobby);
+		Font.loadFont(getClass().getResourceAsStream("/assets/font/Caveat-Regular.ttf"), 10);
 	}
 }

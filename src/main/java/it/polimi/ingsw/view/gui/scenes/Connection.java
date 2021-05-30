@@ -1,11 +1,7 @@
 package it.polimi.ingsw.view.gui.scenes;
 
 import it.polimi.ingsw.controller.ClientSideController;
-import it.polimi.ingsw.controller.OfflineController;
-import it.polimi.ingsw.controller.ServerSideController;
 import it.polimi.ingsw.observers.ViewObservable;
-import it.polimi.ingsw.view.OfflineVirtualView;
-import it.polimi.ingsw.view.VirtualView;
 import it.polimi.ingsw.view.gui.GUI;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -44,7 +40,7 @@ public class Connection extends ViewObservable implements SceneController {
 		address.setOnKeyPressed(event);
 		port.setOnKeyPressed(event);
 		connect.setOnMouseClicked(e -> connection());
-		offline.setOnMouseClicked(e -> offline(e));
+		offline.setOnMouseClicked(this::offline);
 	}
 	
 	/**
@@ -60,32 +56,45 @@ public class Connection extends ViewObservable implements SceneController {
 		
 		String address = this.address.getText();
 		String port = this.port.getText();
-		
+		boolean validInput;
 		
 		if (address.equals("") || address.equals("localhost")) {
 			serverInfo.put("address", "localhost");
 			addressWrong.setVisible(false);
+			validInput = true;
+		} else if (ClientSideController.isValidIpAddress(address)) {
+			serverInfo.put("address", address);
+			addressWrong.setVisible(false);
+			validInput = true;
 		} else {
-			boolean isValidIpAddress = ClientSideController.isValidIpAddress(address);
-			if (isValidIpAddress) {
-				serverInfo.put("address", address);
-				addressWrong.setVisible(false);
-			} else {
-				addressWrong.setVisible(true);
-			}
+			addressWrong.setVisible(true);
+			validInput = false;
 		}
+		
 		if (ClientSideController.isValidPort(port)) {
 			serverInfo.put("port", port);
 			portWrong.setVisible(false);
 		} else if (port.equals("")) {
 			serverInfo.put("port", "25000");
 			portWrong.setVisible(false);
-		} else
+		} else {
 			portWrong.setVisible(true);
+			validInput = false;
+		}
 		
-		notifyObserver(obs -> obs.onUpdateServerInfo(serverInfo));
+		if (!validInput) {
+			this.address.setText("");
+			this.port.setText("");
+		} else {
+			notifyObserver(obs -> obs.onUpdateServerInfo(serverInfo));
+		}
+		
 	}
-
+	
+	/**
+	 * when the button for creating an offline match is clicked
+	 * @param event click event
+	 */
 	public void offline(MouseEvent event) {
 		FXMLLoader fxmlLoader = new FXMLLoader(GUI.class.getResource("nickname.fxml"));
 		try {
@@ -97,7 +106,11 @@ public class Connection extends ViewObservable implements SceneController {
 		Nickname nick = fxmlLoader.getController();
 		nick.setGui(gui);
 	}
-
+	
+	/**
+	 * setter for the gui needed for the Nickname class
+	 * @param gui GUI
+	 */
 	public void setGui(GUI gui) {
 		this.gui = gui;
 	}

@@ -99,11 +99,6 @@ public class PlayerTabs extends ViewObservable implements SceneController{
 		}
 	}
 
-	public void update(String nickname){
-		Board board = playersMap.get(nickname);
-		//board.setAvailableLeaderActions();
-	}
-
 	public void update(String nickname, ReducedFaithTrack track){
 		Board board = playersMap.get(nickname);
 		board.updateFaithTrack(track);
@@ -141,12 +136,7 @@ public class PlayerTabs extends ViewObservable implements SceneController{
 		}
 		setTabToRead(board);
 	}
-
-	/*
-	public void disableCommonBoardButtons(){
-		commonBoard.setEndTurnVisible();
-	}
-	*/
+	
 	public void update(String nickname, ReducedCardProductionManagement cardProductionManagement){
 		Board board = playersMap.get(nickname);
 		board.updateDevCardsSlots(cardProductionManagement);
@@ -169,7 +159,6 @@ public class PlayerTabs extends ViewObservable implements SceneController{
 		if(actions.contains(PlayerActions.PRODUCTIONS))
 			board.setActProductions(true);
 		setTabToRead(board);
-
 	}
 
 	public void update(TokenType type, Colors color){
@@ -184,7 +173,7 @@ public class PlayerTabs extends ViewObservable implements SceneController{
 	}
 
 	public void update(ArrayList<DevelopmentCard> cards, boolean wrong){
-		commonBoard.setGreen(cards,wrong);
+		commonBoard.setBuyableCardsEffect(cards,wrong);
 	}
 
 	public void update(ReducedDevelopmentCardsDeck deck){

@@ -121,8 +121,8 @@ public class CommonBoard extends ViewObservable implements SceneController{
 
 
 		//set action buttons click event
-		marketActivation.setOnMouseClicked(event->actionSelectionHandler(PlayerActions.MARKET));
-		cardsActivation.setOnMouseClicked(event->actionSelectionHandler(PlayerActions.BUY_CARD));
+		marketActivation.setOnMouseClicked(event-> actionClicked(PlayerActions.MARKET));
+		cardsActivation.setOnMouseClicked(event-> actionClicked(PlayerActions.BUY_CARD));
 
 		//set cards click event
 		for (int i = 0; i < 3; i++) {
@@ -167,10 +167,10 @@ public class CommonBoard extends ViewObservable implements SceneController{
 	/*----------------------------------------------------------- ACTION ----------------------------------------------------*/
 
 	/**
-	 * it handles action selection
+	 * when the buttons for the interactions are clicked, they become invisible
 	 * @param action is the action selected by the player
 	 */
-	public void actionSelectionHandler(PlayerActions action){
+	public void actionClicked(PlayerActions action){
 		if(action.equals(PlayerActions.MARKET))
 			marketAble=true;
 		cardsActivation.setVisible(false);
@@ -179,7 +179,7 @@ public class CommonBoard extends ViewObservable implements SceneController{
 	}
 
 	/**
-	 * it sets the buttons that refer to the available actions visible
+	 * the buttons for the market and card interactions are set visible
 	 * @param actions is a list of available actions
 	 */
 	public void setButtonVisible(ArrayList<PlayerActions> actions){
@@ -189,7 +189,7 @@ public class CommonBoard extends ViewObservable implements SceneController{
 	}
 
 	/**
-	 * it sets not visible all the action buttons
+	 * this sets all the action buttons not visible
 	 */
 	public void disableButtons() {
 		cardsActivation.setVisible(false);
@@ -228,7 +228,7 @@ public class CommonBoard extends ViewObservable implements SceneController{
 		if(cardsAble && buyableCards.contains(deck.getCardStackStructure()[i][j].get(0))){
 			this.level=i+1;
 			this.color=color;
-			setGlow();
+			setEffectOnCards();
 			cardsImages[i][j].setEffect(new Glow(0.5));
 			setSlotsButtonVisible(true);
 			slotText.setText("Select a Slot!");
@@ -240,18 +240,10 @@ public class CommonBoard extends ViewObservable implements SceneController{
 	 * @param visible is true if the buttons have to bet set visible
 	 */
 	public void setSlotsButtonVisible( boolean visible){
-		if (visible) {
-			slot1.setVisible(true);
-			slot2.setVisible(true);
-			slot3.setVisible(true);
-			slotText.setVisible(true);
-		}
-		else{
-			slot1.setVisible(false);
-			slot2.setVisible(false);
-			slot3.setVisible(false);
-			slotText.setVisible(false);
-		}
+		slot1.setVisible(visible);
+		slot2.setVisible(visible);
+		slot3.setVisible(visible);
+		slotText.setVisible(visible);
 	}
 
 	/**
@@ -265,11 +257,11 @@ public class CommonBoard extends ViewObservable implements SceneController{
 	}
 
 	/**
-	 * it adds to the buyable cards in the deck a green shadow effect
+	 * adds a shadow to the buyable cards. This function sets also the label text for when the selected slot is not valid
 	 * @param cards is a list of cards to be set
 	 * @param wrong is true if the player has selected a slot not available
 	 */
-	public void setGreen(ArrayList<DevelopmentCard> cards, boolean wrong){
+	public void setBuyableCardsEffect(ArrayList<DevelopmentCard> cards, boolean wrong){
 		if(wrong) {
 			slotText.setVisible(true);
 			slotText.setText("Wrong Slot!");
@@ -286,9 +278,9 @@ public class CommonBoard extends ViewObservable implements SceneController{
 	}
 
 	/**
-	 * it adds to the selected card in the deck a glow effect
+	 * adds a golden shadow to the buyable cards or resets the glow effect
 	 */
-	public void setGlow(){
+	public void setEffectOnCards() {
 		for (int k = 0; k < 3; k++) {
 			for (int l = 0; l < 4; l++) {
 				if(deck.getCardStackStructure()[k][l].size()>0 && buyableCards.contains(deck.getCardStackStructure()[k][l].get(0)))
@@ -299,14 +291,14 @@ public class CommonBoard extends ViewObservable implements SceneController{
 	}
 
 	/**
-	 * method to create the shadow
+	 * adds a shadow with a certain value to an image
 	 * @param value is the value of the shadow
 	 * @param img is the selected image
 	 */
 	public void setShadow(double value, ImageView img){
-		DropShadow dropShadow= new DropShadow();
+		DropShadow dropShadow = new DropShadow();
 		dropShadow.setSpread(value);
-		dropShadow.setColor(Color.GREEN);
+		dropShadow.setColor(Color.GOLD);
 		img.setEffect(dropShadow);
 	}
 
@@ -316,7 +308,7 @@ public class CommonBoard extends ViewObservable implements SceneController{
 	 * it sets marbles images
 	 * @param market is the market from the server
 	 */
-	public void setMarket(ReducedMarket market){
+	public void setMarket(ReducedMarket market) {
 		Marbles marble;
 		for (int i = 0; i < 3; i++) {
 			for (int j = 0; j < 4; j++) {
@@ -329,16 +321,16 @@ public class CommonBoard extends ViewObservable implements SceneController{
 	}
 
 	/**
-	 * it handles enter on the row/col
+	 * applies a glow effect to the arrows where the mouse hovers
 	 * @param img is the selected image
 	 */
-	public void marketEnteredHandler(ImageView img){
+	public void marketEnteredHandler(ImageView img) {
 		if(marketAble)
 			img.setEffect(new Glow(1));
 	}
 
 	/**
-	 * it handles exit on the row/col
+	 * removes the glow effect to the arrows where the mouse stops hovering
 	 * @param img is the selected image
 	 */
 	public void marketExitedHandler(ImageView img){
@@ -350,7 +342,7 @@ public class CommonBoard extends ViewObservable implements SceneController{
 	 * @param which is row or col
 	 * @param where is the selected row/col
 	 */
-	public void marketClickHandler(String which, int where){
+	public void marketClickHandler(String which, int where) {
 		if(marketAble) {
 			notifyObserver(obs -> obs.onUpdateMarketAction(which, where));
 			marketAble=false;
@@ -360,7 +352,7 @@ public class CommonBoard extends ViewObservable implements SceneController{
 	/*----------------------------------------------------------- END_TURN ----------------------------------------------------*/
 
 	/**
-	 * it sets end turn button
+	 * sets the visibility of the end turn
 	 * @param value is true if the button has to be set visible
 	 */
 	public void setEndTurnVisible(boolean value){
@@ -368,9 +360,9 @@ public class CommonBoard extends ViewObservable implements SceneController{
 	}
 
 	/**
-	 * it handles click on the end turn button
+	 * click on end turn button
 	 */
-	public void endTurnHandler(){
+	public void endTurnHandler() {
 		notifyObserver(obs->obs.onUpdateLeaderAction(0,0));
 		endTurn.setVisible(false);
 		playerBoard.setEndTurn();
