@@ -18,7 +18,14 @@ import java.util.HashMap;
 
 public class ServerSideController {
 
+	public GameMechanicsMultiPlayer getMechanics() {
+		return mechanics;
+	}
+
 	private final GameMechanicsMultiPlayer mechanics;
+
+
+
 	private GameState gameState;
 	private HashMap<String, VirtualView> virtualViewMap;
 	
@@ -150,7 +157,7 @@ public class ServerSideController {
 	/**
 	 * it starts the game (start a new turn)
 	 */
-	private void startGame() {
+	protected void startGame() {
 		gameState = GameState.GAME;
 		
 		//TODO: STOP CHEATING!
@@ -200,7 +207,7 @@ public class ServerSideController {
 	 * switches messages while the game state is set on INIT
 	 * @param receivedMessage incoming message from the client
 	 */
-	private void initState(Message receivedMessage) {
+	protected void initState(Message receivedMessage) {
 		switch (receivedMessage.getMessageType()){
 			case RESOURCES_LIST-> initialResourcesHandler((ResourcesList) receivedMessage);
 			case LEADER_SELECTION -> leaderSelectionHandler((LeaderSelection) receivedMessage);
@@ -210,7 +217,7 @@ public class ServerSideController {
 	/**
 	 * asks the player to choose the leader cards to use in game
 	 */
-	private void controllerAskLeaders() {
+	protected void controllerAskLeaders() {
 		for (int i = 0; i < numberOfPlayers; i++) {
 			ArrayList<ReducedLeaderCard> leaderCards = new ArrayList<>();
 			leaderCards.add(new ReducedLeaderCard(mechanics.getPlayer(i).getLeaderCards()[0],false,false,false,
@@ -231,7 +238,7 @@ public class ServerSideController {
 	 * When all the players are ready, ask for leader cards selection
 	 * @param message contains the initial resources chosen by the client
 	 */
-	private void initialResourcesHandler(ResourcesList message){
+	protected void initialResourcesHandler(ResourcesList message){
 		int playerIndex= nicknameList.indexOf(message.getNickname());
 		mechanics.assignInitialAdvantage(message.getResourcesList(),playerIndex);
 		initResources[playerIndex-1]=true;
@@ -250,7 +257,7 @@ public class ServerSideController {
 	 * it handles initial leader cards selection, when all players are ready starts the game
 	 * @param message is a message from the client
 	 */
-	private void leaderSelectionHandler(LeaderSelection message) {
+	protected void leaderSelectionHandler(LeaderSelection message) {
 		int playerIndex= nicknameList.indexOf(message.getNickname());
 		VirtualView view= virtualViewMap.get(message.getNickname());
 		Player player = mechanics.getPlayer(playerIndex);
@@ -265,7 +272,7 @@ public class ServerSideController {
 	 * switches incoming messages while the match is going on, after the initial phase (GAME state)
 	 * @param receivedMessage is a message from the client
 	 */
-	private void inGameState(Message receivedMessage){
+	protected void inGameState(Message receivedMessage){
 		switch (receivedMessage.getMessageType()){
 			case ACTION_REPLY-> actionReplyHandler((ActionReply) receivedMessage);
 			case INTERACTION_WITH_MARKET-> marketInteraction((MarketInteraction) receivedMessage);
@@ -287,7 +294,7 @@ public class ServerSideController {
 	 * it handles generic action selection, and then replies
 	 * @param message the chosen action from the client
 	 */
-	private void actionReplyHandler(ActionReply message){
+	protected void actionReplyHandler(ActionReply message){
 		VirtualView view= virtualViewMap.get(message.getNickname());
 		int playerIndex=nicknameList.indexOf(message.getNickname());
 		switch (message.getSelectedAction()){
@@ -314,7 +321,7 @@ public class ServerSideController {
 	 * Initial interaction with the market: the client moves a marble in the market
 	 * @param message containing information regarding the movements in the market
 	 */
-	private void marketInteraction(MarketInteraction message){
+	protected void marketInteraction(MarketInteraction message){
 		int playerIndex = nicknameList.indexOf(message.getNickname());
 		VirtualView view = virtualViewMap.get(message.getNickname());
 
@@ -343,7 +350,7 @@ public class ServerSideController {
 	 * converts a list of resources containing white marbles, in the case 1 or 2 white marble leaders are activated
 	 * @param message containing the number of activations
 	 */
-	private void marketConvert(WhiteMarbleReply message){
+	protected void marketConvert(WhiteMarbleReply message){
 		int playerIndex = nicknameList.indexOf(message.getNickname());
 		VirtualView view = virtualViewMap.get(message.getNickname());
 		ResourceDeck deck = mechanics.getPlayer(playerIndex).getPlayersResourceDeck();
@@ -378,7 +385,7 @@ public class ServerSideController {
 	 * handles the cycle of the interaction of the player with its warehouse depot
 	 * @param message depot interaction: a single move on the board
 	 */
-	private void depotInteractionHandler(DepotInteraction message){
+	protected void depotInteractionHandler(DepotInteraction message){
 		int playerIndex = nicknameList.indexOf(message.getNickname());
 		VirtualView view = virtualViewMap.get(message.getNickname());
 		
@@ -388,6 +395,9 @@ public class ServerSideController {
 				if(mechanics.getNumberOfPlayers() == 1){
 					virtualViewMap.get(nicknameList.get(i)).showGenericMessage("You discarded " + n +
 							" resources, Lorenzo gets " + n + " faith points");
+					if(((GameMechanicsSinglePlayer) mechanics).getLorenzoFaithTrack().isTrackFinished()) {
+						turnController.sendWinner();
+					}
 				}
 				else {
 					if (i != playerIndex) {
@@ -432,7 +442,7 @@ public class ServerSideController {
 	 *      it replies telling the client that the slot was wrong.
 	 * @param message buy card message containing the parameters of the chosen card
 	 */
-	private void buyCardHandler(BuyCard message){
+	protected void buyCardHandler(BuyCard message){
 		int playerIndex = nicknameList.indexOf(message.getNickname());
 		VirtualView view = virtualViewMap.get(message.getNickname());
 		CardProductionsManagement management = mechanics.getPlayer(playerIndex).getPlayersCardManager();
@@ -459,7 +469,7 @@ public class ServerSideController {
 	 * it handles a generic production interaction
 	 * @param message containing the list of chosen productions
 	 */
-	private void productionHandler(ProductionSelection message) {
+	protected void productionHandler(ProductionSelection message) {
 		int playerIndex = nicknameList.indexOf(message.getNickname());
 		VirtualView view = virtualViewMap.get(message.getNickname());
 		CardProductionsManagement cardProductionsManagement = mechanics.getPlayer(playerIndex).getPlayersCardManager();
@@ -519,7 +529,7 @@ public class ServerSideController {
 	 * checks the resources asked as free choices in input: if there are sufficient resources it goes forward
 	 * @param message list of resources chosen by the user
 	 */
-	private void freeInputHandler(ResourcesList message){
+	protected void freeInputHandler(ResourcesList message){
 		int playerIndex = nicknameList.indexOf(message.getNickname());
 		VirtualView view = virtualViewMap.get(message.getNickname());
 		CardProductionsManagement cardProductionsManagement = mechanics.getPlayer(playerIndex).getPlayersCardManager();
@@ -548,7 +558,7 @@ public class ServerSideController {
 	 * @param message containing a list of resources
 	 * @return an array of integers
 	 */
-	private int[] putResources(ResourcesList message){
+	protected int[] putResources(ResourcesList message){
 		int[] outputResources = new int[]{0,0,0,0};
 		for (int i = 0; i < message.getResourcesList().size(); i++) {
 			if(message.getResourcesList().get(i) == Resources.COIN){
@@ -568,7 +578,7 @@ public class ServerSideController {
 	 * handles free choices in output
 	 * @param message containing a list of resources
 	 */
-	private void freeOutputHandler(ResourcesList message){
+	protected void freeOutputHandler(ResourcesList message){
 		int playerIndex = nicknameList.indexOf(message.getNickname());
 		
 		CardProductionsManagement cardProductionsManagement = mechanics.getPlayer(playerIndex).getPlayersCardManager();
@@ -587,7 +597,7 @@ public class ServerSideController {
 	 * The client chooses what to do with its leader cards
 	 * @param message action describing the usage of the leader card (play or discard or nothing)
 	 */
-	private void leaderActionHandler(LeaderAction message){
+	protected void leaderActionHandler(LeaderAction message){
 		int playerIndex = nicknameList.indexOf(message.getNickname());
 		String nickname = nicknameList.get(playerIndex);
 		Player player = mechanics.getPlayer(playerIndex);
@@ -654,7 +664,7 @@ public class ServerSideController {
 	/**
 	 * Checks the vatican reports and notifies every player with their track
 	 */
-	private boolean checkVaticanReport(){
+	protected boolean checkVaticanReport(){
 		boolean[] check = new boolean[4];
 		boolean flag = true;
 		boolean check2 = false;
@@ -711,7 +721,7 @@ public class ServerSideController {
 	/**
 	 * it sends faith tracks to all the players
 	 */
-	public void sendFaithTracks(){
+	protected void sendFaithTracks(){
 		for(String s: nicknameList){
 			VirtualView view = virtualViewMap.get(s);
 			for(int i = 0; i < nicknameList.size(); i++){

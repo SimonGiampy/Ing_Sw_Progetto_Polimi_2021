@@ -151,7 +151,7 @@ public class TurnController {
 	/**
 	 * it sends winner message to all the players and ends the game
 	 */
-	private void sendWinner(){
+	protected void sendWinner(){
 		StringBuilder winner = new StringBuilder();
 		int[] winnerInfo= mechanics.winningPlayers();
 		if(winnerInfo[1] == -1)
