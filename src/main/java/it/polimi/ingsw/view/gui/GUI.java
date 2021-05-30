@@ -170,17 +170,6 @@ public class GUI extends ViewObservable implements View {
 		Platform.runLater(() -> {
 			PlayerTabs playerTabs= (PlayerTabs) controller;
 
-			/*
-			PauseTransition pause = new PauseTransition(Duration.seconds(1));
-			pause.setOnFinished(event ->
-					playerTabs.commonBoard.setTextVisible(true));
-			pause.play();
-			PauseTransition pause2 = new PauseTransition(Duration.seconds(3));
-			pause2.setOnFinished(event ->
-					playerTabs.commonBoard.setTextVisible(false));
-			pause2.play();
-
-			 */
 			playerTabs.updateActions(nickname,availableAction);
 			if (availableAction.contains(PlayerActions.PRODUCTIONS)) {
 				playerTabs.update(nickname,true);

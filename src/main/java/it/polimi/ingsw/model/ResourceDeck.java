@@ -52,14 +52,21 @@ public class ResourceDeck {
 		//      the number of white marbles to be processed with the leader card abilities
 
 		if (isWhiteAbility2Activated()) {
-			if ((quantityLeader1 == 0 && quantityLeader2 == 0) ||
-					(quantityLeader1 * whiteMarblesInput1 + quantityLeader2 * whiteMarblesInput2) > whiteMarblesFromMarket ||
-					((whiteMarblesFromMarket % (quantityLeader1 * whiteMarblesInput1 + quantityLeader2 * whiteMarblesInput2)
-							!= (whiteMarblesFromMarket % whiteMarblesInput1)) &&
-							(whiteMarblesFromMarket % (quantityLeader1 * whiteMarblesInput1 + quantityLeader2 * whiteMarblesInput2)
-									!= (whiteMarblesFromMarket % whiteMarblesInput2)))) {
+			if(quantityLeader1 == 0 && quantityLeader2 != whiteMarblesFromMarket / whiteMarblesInput2){
 				throw new InvalidUserRequestException("Invalid number of activations of leaders ability");
 			}
+			if(quantityLeader2 == 0 && quantityLeader1 != whiteMarblesFromMarket / whiteMarblesInput1){
+				throw new InvalidUserRequestException("Invalid number of activations of leaders ability");
+			}
+			if (((whiteMarblesFromMarket % (quantityLeader1 * whiteMarblesInput1 + quantityLeader2 * whiteMarblesInput2)
+					!= (whiteMarblesFromMarket % whiteMarblesInput1)) &&
+						(whiteMarblesFromMarket % (quantityLeader1 * whiteMarblesInput1 + quantityLeader2 * whiteMarblesInput2)
+							!= (whiteMarblesFromMarket % whiteMarblesInput2)))) {
+				throw new InvalidUserRequestException("Invalid number of activations of leaders ability");
+			}
+		} else {
+			if((quantityLeader1 * whiteMarblesInput1) > whiteMarblesFromMarket || (quantityLeader1 * whiteMarblesInput1) < whiteMarblesFromMarket)
+				throw new InvalidUserRequestException("Invalid number of activations of leaders ability");
 		}
 
 		//Convert marble into resources based on their color
@@ -105,7 +112,6 @@ public class ResourceDeck {
 			fromWhiteMarble2 = res;
 			whiteMarblesInput2 = whiteMarblesInput;
 		}
-		//else throw new InvalidInputException("two white marbles abilities already activated by the player");
 	}
 	
 	public ArrayList<Resources> getResourceList(){

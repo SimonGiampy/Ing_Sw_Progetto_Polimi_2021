@@ -32,26 +32,37 @@ public class Notification {
 	private final NotificationHandler notificationHandler;
 	public boolean isShowing;
 
-	public Notification(AnchorPane root, String text, NotificationHandler notificationHandler, boolean disconnection){
+	/**
+	 * constructor of the notification, it calculates the index of this notification in the notification stack and calls
+	 * the initNotification method
+	 * @param root anchorPane of the current scene
+	 * @param text of the notification
+	 * @param notificationHandler handler that contains the stack of notifications
+	 * @param error true if this is an error or disconnection notification
+	 */
+	public Notification(AnchorPane root, String text, NotificationHandler notificationHandler, boolean error){
 		this.notificationHandler = notificationHandler;
 		this.notificationStack = notificationHandler.getNotificationStack();
 		index = 0;
 		while(!notificationStack[index])
 			index++;
-		notificationStack[index] = false;
+		synchronized (notificationStack) {
+			notificationStack[index] = false;
+		}
 		notificationHandler.getNotifications()[index]= this;
 		double posX = 1420;
 		double posY = 980;
 		layoutY = posY - 108*index;
-		initNotification(root, text, posX, disconnection);
+		initNotification(root, text, posX, error);
 	}
 
-	@FXML
-	public void initialize(){
-		btnClose.setOnMouseClicked(e -> dismissInit());
-	}
-
-
+	/**
+	 * initializes the notification
+	 * @param root anchorPane of the current scene
+	 * @param text of the notification
+	 * @param layoutX X position of the notification (bottom right of the screen)
+	 * @param error true if this is an error or disconnection notification
+	 */
 	public void initNotification(AnchorPane root, String text, double layoutX, boolean error){
 		Node node;
 		this.root = root;
@@ -76,6 +87,10 @@ public class Notification {
 		}
 	}
 
+	/**
+	 * sets the text of the notification
+	 * @param text to display in the notification
+	 */
 	public void setNotification(String text){
 		StringBuilder string = new StringBuilder();
 		int count = 1;
@@ -90,6 +105,9 @@ public class Notification {
 		lblText.setText(string.toString());
 	}
 
+	/**
+	 * plays the dismiss animation
+	 */
 	public void dismissInit(){
 		isShowing = false;
 		Timeline dismissAnimation = setupDismissAnimation();
@@ -98,13 +116,21 @@ public class Notification {
 		executorService.schedule(this::dismiss, 400, TimeUnit.MILLISECONDS);
 	}
 
+	/**
+	 * removes te notification from the screen and from the root anchorPane
+	 */
 	public void dismiss(){
-		notificationStack[index] = true;
-		notificationHandler.getNotifications()[index] = null;
-		notificationHandler.onDismiss(index);
-		root.getChildren().remove(anchorPane);
+		synchronized (notificationStack){
+			notificationStack[index] = true;
+			notificationHandler.getNotifications()[index] = null;
+			notificationHandler.onDismiss(index);
+			root.getChildren().remove(anchorPane);
+		}
 	}
 
+	/**
+	 * plays the show animation and sets all the visibilities to true
+	 */
 	public void showNotification(){
 		isShowing = true;
 		anchorPane.setVisible(true);
@@ -114,12 +140,18 @@ public class Notification {
 		showAnimation.play();
 	}
 
+	/**
+	 * plays the slide animation
+	 */
 	public void slideNotification(){
 		Timeline slideAnimation = setupSlideAnimation();
 		slideAnimation.play();
 	}
 
-
+	/**
+	 * creates the show animation (pop-up)
+	 * @return the timeline of the animation
+	 */
 	private Timeline setupShowAnimation() {
 
 		Timeline tl = new Timeline();
@@ -156,6 +188,10 @@ public class Notification {
 		return tl;
 	}
 
+	/**
+	 * creates the slide animation
+	 * @return the timeline of the slide animation
+	 */
 	private Timeline setupSlideAnimation() {
 
 		notificationStack[index] = true;
@@ -179,7 +215,10 @@ public class Notification {
 		return tl;
 	}
 
-
+	/**
+	 * creates the dismiss animation
+	 * @return the timeline of the animation
+	 */
 	private Timeline setupDismissAnimation() {
 
 		Timeline tl = new Timeline();
@@ -200,6 +239,11 @@ public class Notification {
 		tl.getKeyFrames().addAll(kf1, kf2, kf3, kf4);
 
 		return tl;
+	}
+
+	@FXML
+	public void initialize(){
+		btnClose.setOnMouseClicked(e -> dismissInit());
 	}
 
 

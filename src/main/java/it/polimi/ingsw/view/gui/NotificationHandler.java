@@ -8,18 +8,25 @@ import java.util.concurrent.TimeUnit;
 
 public class NotificationHandler {
 
-	private final boolean [] notificationStack = {true, true, true, true, true, true, true, true};
+	private final boolean[] notificationStack = {true, true, true, true, true, true, true, true};
 	private final Notification[] notifications = new Notification[8];
-	private int delay;
+	private long lastTime;
+	private int lastDelay;
 
-	public NotificationHandler(){
-		delay = 0;
-	}
+	/**
+	 * constructor of the notification handler
+	 */
+	public NotificationHandler(){ lastTime = System.currentTimeMillis();}
+
 
 	public void addNotification(String genericMessage, AnchorPane root, boolean error){
 
 		Notification notification = new Notification(root, genericMessage, this, error);
 		notification.showNotification();
+
+		int delay = 6;
+		long now = System.currentTimeMillis();
+		if(now - lastTime < 1000) delay = lastDelay + 1;
 
 		final ScheduledExecutorService executorService = Executors.newSingleThreadScheduledExecutor();
 
@@ -33,18 +40,19 @@ public class NotificationHandler {
 			executorService.schedule(() -> {
 				if (notification.isShowing)
 					notification.dismissInit();
-			}, 7 + delay, TimeUnit.SECONDS);
-
-			delay++;
-			if (delay == 3) delay = 0;
+			}, delay, TimeUnit.SECONDS);
 		}
+		lastDelay = delay;
+		lastTime = System.currentTimeMillis();
 	}
 
 	public void onDismiss(int index){
-		for(int i = index; i < notificationStack.length; i++){
-			if(!notificationStack[i]) {
-				notifications[i].slideNotification();
-				notifications[i-1] = notifications[i];
+		synchronized (notificationStack) {
+			for (int i = index; i < notificationStack.length; i++) {
+				if (!notificationStack[i]) {
+					notifications[i].slideNotification();
+					notifications[i - 1] = notifications[i];
+				}
 			}
 		}
 	}

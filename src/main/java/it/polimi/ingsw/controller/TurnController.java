@@ -95,7 +95,8 @@ public class TurnController {
 		else {
 			if(check) view.showGenericMessage("Token revealed! Lorenzo gets 1 faith point and the token deck has been shuffled");
 			else view.showGenericMessage("Token revealed! Lorenzo gets 2 faith points");
-			view.showFaithTrack(activePlayer, new ReducedFaithTrack(mechanicsSinglePlayer.getLorenzoFaithTrack()));
+			if(!serverSideController.checkVaticanReport())
+				serverSideController.sendFaithTracks();
 		}
 
 		if(currentToken.isEndGame()) // true if Lorenzo triggers the end of the game

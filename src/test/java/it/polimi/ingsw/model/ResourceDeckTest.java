@@ -1,19 +1,18 @@
 package it.polimi.ingsw.model;
 
+import it.polimi.ingsw.exceptions.InvalidInputException;
+import it.polimi.ingsw.exceptions.InvalidUserRequestException;
 import it.polimi.ingsw.model.util.ListSet;
 import it.polimi.ingsw.model.util.Marbles;
 import it.polimi.ingsw.model.util.Resources;
-import it.polimi.ingsw.exceptions.InvalidInputException;
-import it.polimi.ingsw.exceptions.InvalidUserRequestException;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+class ResourceDeckTest {
 
-public class ResourceDeckTest {
-	
 	/**
 	 * creates an array of marbles from the market and passes it to the resource deck. Then converts the white marbles
 	 * into new resources according to the ability white marbles
@@ -26,23 +25,27 @@ public class ResourceDeckTest {
 		marbles = new Marbles[] {Marbles.BLUE, Marbles.YELLOW, Marbles.WHITE, Marbles.GREY, Marbles.WHITE, Marbles.WHITE};
 		ArrayList<Resources> fromWhiteMarble1 = new ArrayList<>();
 		fromWhiteMarble1.add(Resources.COIN);
-		fromWhiteMarble1.add(Resources.SERVANT);
 		deck.setMarblesFromMarket(marbles);
-		
-		try {
-			deck.setFromWhiteMarble(fromWhiteMarble1, 1);
 
-			deck.addResources(3, 0); //correct input, doesn't throw exception
+		deck.setFromWhiteMarble(fromWhiteMarble1, 1);
 
-		} catch (InvalidInputException e) {
-			e.printStackTrace();
-		}
-		
-		ArrayList<Resources> resourceList = deck.getResourceList();
-		for(Resources r: resourceList)
-			System.out.println(r);
+		assertThrows(InvalidUserRequestException.class, () -> deck.addResources(0, 0));
+		assertThrows(InvalidUserRequestException.class, () -> deck.addResources(1, 0));
+		assertThrows(InvalidUserRequestException.class, () -> deck.addResources(2, 0));
+		assertDoesNotThrow(() -> deck.addResources(3, 0));
+		assertThrows(InvalidUserRequestException.class, () -> deck.addResources(4, 0));
+
+		ArrayList<Resources> correctOutput = new ArrayList<>();
+		correctOutput.add(Resources.SHIELD);
+		correctOutput.add(Resources.COIN);
+		correctOutput.add(Resources.COIN);
+		correctOutput.add(Resources.STONE);
+		correctOutput.add(Resources.COIN);
+		correctOutput.add(Resources.COIN);
+
+		assertEquals(correctOutput, depot.getIncomingResources());
 	}
-	
+
 	/**
 	 * creates an array of marbles from the market and passes it to the resource deck. Then converts the white marbles
 	 * into new resources according to the ability white marbles
@@ -52,30 +55,34 @@ public class ResourceDeckTest {
 		WarehouseDepot depot = new WarehouseDepot();
 		ResourceDeck deck = new ResourceDeck(depot);
 		Marbles[] marbles = new Marbles[] {Marbles.YELLOW, Marbles.YELLOW, Marbles.WHITE, Marbles.YELLOW, Marbles.WHITE, Marbles.WHITE};
-		
+
 		ArrayList<Resources> fromWhiteMarble1 = new ArrayList<>();
-		fromWhiteMarble1.add(Resources.SERVANT);
 		fromWhiteMarble1.add(Resources.SERVANT);
 		ArrayList<Resources> fromWhiteMarble2 = new ArrayList<>();
 		fromWhiteMarble2.add(Resources.STONE);
-		fromWhiteMarble2.add(Resources.STONE);
 		deck.setMarblesFromMarket(marbles);
 
-		try {
-			deck.setFromWhiteMarble(fromWhiteMarble1, 1);
-			deck.setFromWhiteMarble(fromWhiteMarble2, 2);
-			
-			deck.addResources(1, 1); //correct input, doesn't throw exception
+		deck.setFromWhiteMarble(fromWhiteMarble1, 1);
+		deck.setFromWhiteMarble(fromWhiteMarble2, 1);
 
-		} catch (InvalidInputException e) {
-			e.printStackTrace();
-		}
-		
-		ArrayList<Resources> resourceList = deck.getResourceList();
-		for(Resources r: resourceList)
-			System.out.println(r);
+		assertDoesNotThrow(() -> deck.addResources(2, 1));
+		assertThrows(InvalidUserRequestException.class, () -> deck.addResources(0, 0));
+		assertThrows(InvalidUserRequestException.class, () -> deck.addResources(1, 0));
+		assertThrows(InvalidUserRequestException.class, () -> deck.addResources(1, 1));
+		assertDoesNotThrow(() -> deck.addResources(3, 0));
+		assertThrows(InvalidUserRequestException.class, () -> deck.addResources(2, 2));
+
+		ArrayList<Resources> correctOutput = new ArrayList<>();
+		correctOutput.add(Resources.COIN);
+		correctOutput.add(Resources.COIN);
+		correctOutput.add(Resources.SERVANT);
+		correctOutput.add(Resources.COIN);
+		correctOutput.add(Resources.SERVANT);
+		correctOutput.add(Resources.STONE);
+
+		assertEquals(correctOutput, depot.getIncomingResources());
 	}
-	
+
 	/**
 	 * creates an array of marbles from the market and passes it to the resource deck. Then converts the white marbles
 	 * into new resources according to the ability white marbles
@@ -85,7 +92,7 @@ public class ResourceDeckTest {
 		WarehouseDepot depot = new WarehouseDepot();
 		ResourceDeck deck = new ResourceDeck(depot);
 		Marbles[] marbles = new Marbles[] {Marbles.YELLOW, Marbles.YELLOW, Marbles.WHITE, Marbles.YELLOW, Marbles.WHITE, Marbles.WHITE};
-		
+
 		ArrayList<Resources> fromWhiteMarble1 = new ArrayList<>();
 		fromWhiteMarble1.add(Resources.SERVANT);
 		fromWhiteMarble1.add(Resources.SERVANT);
@@ -95,59 +102,17 @@ public class ResourceDeckTest {
 		fromWhiteMarble2.add(Resources.STONE);
 		fromWhiteMarble2.add(Resources.STONE);
 		deck.setMarblesFromMarket(marbles);
-		
-		try {
-			deck.setFromWhiteMarble(fromWhiteMarble1, 3);
-			deck.setFromWhiteMarble(fromWhiteMarble2, 2);
-			
-			deck.addResources(1, 0); //correct input, doesn't throw any exception
-			
-		} catch (InvalidInputException e) {
-			e.printStackTrace();
-		}
-		
-		ArrayList<Resources> resourceList = deck.getResourceList();
-		for(Resources r: resourceList)
-			System.out.println(r);
-	}
-	
-	@Test
-	public void testAddResources() {
-		WarehouseDepot depot = new WarehouseDepot();
-		ResourceDeck deck = new ResourceDeck(depot);
-		Marbles[] marbles = new Marbles[] {Marbles.YELLOW, Marbles.YELLOW, Marbles.WHITE, Marbles.PURPLE};
 
-		ArrayList<Resources> fromWhiteMarble1 = new ArrayList<>();
-		fromWhiteMarble1.add(Resources.SHIELD);
-		ArrayList<Resources> fromWhiteMarble2 = new ArrayList<>();
-		fromWhiteMarble2.add(Resources.COIN);
-		fromWhiteMarble2.add(Resources.SERVANT);
-		deck.setMarblesFromMarket(marbles);
-
-		deck.setFromWhiteMarble(fromWhiteMarble1, 1);
+		deck.setFromWhiteMarble(fromWhiteMarble1, 3);
 		deck.setFromWhiteMarble(fromWhiteMarble2, 2);
 
-		Exception exception = assertThrows(InvalidUserRequestException.class,
-				() -> deck.addResources(1,2));
-		String message = exception.getMessage();
-		assertEquals("Invalid number of activations of leaders ability", message);
-
-		try {
-			deck.addResources(1,0);
-			ArrayList<Resources> resourceList = deck.getResourceList();
-			ArrayList<Resources> expectedList = new ArrayList<>();
-			expectedList.add(Resources.COIN);
-			expectedList.add(Resources.COIN);
-			expectedList.add(Resources.SHIELD);
-			expectedList.add(Resources.SERVANT);
-			assertTrue(ListSet.subset(expectedList, resourceList));
-		} catch (InvalidUserRequestException e) {
-			e.printStackTrace();
-		}
-
-
+		assertDoesNotThrow(() -> deck.addResources(1, 0)); //correct input, doesn't throw any exception
+		assertThrows(InvalidUserRequestException.class, () -> deck.addResources(2, 2));
+		assertDoesNotThrow( () -> deck.addResources(0, 1));
+		assertThrows(InvalidUserRequestException.class, () -> deck.addResources(1, 1));
+		assertThrows(InvalidUserRequestException.class, () -> deck.addResources(1, 2));
 	}
-	
+
 	@Test
 	public void setFromWhiteMarble() {
 		WarehouseDepot depot = new WarehouseDepot();
@@ -193,4 +158,5 @@ public class ResourceDeckTest {
 
 		assertEquals(1, deck.getWhiteMarblesTaken());
 	}
+
 }
