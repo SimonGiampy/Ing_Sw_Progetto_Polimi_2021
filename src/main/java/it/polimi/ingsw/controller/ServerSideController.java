@@ -385,10 +385,19 @@ public class ServerSideController {
 		if(message.isConfirmed()){ //if the player confirmed its actions
 			int n = mechanics.getPlayer(playerIndex).getPlayersWarehouseDepot().discardResourcesAfterUserConfirmation();
 			for (int i = 0; i < numberOfPlayers && n > 0; i++) {
-				if(i != playerIndex) {
-					mechanics.getPlayer(i).getPlayerFaithTrack().moveMarker(n);
-					virtualViewMap.get(nicknameList.get(i)).showGenericMessage(message.getNickname()+ " discarded " + n +
-							" resources, you get " + n + " faith points" );
+				if(mechanics.getNumberOfPlayers() == 1){
+					virtualViewMap.get(nicknameList.get(i)).showGenericMessage("You discarded " + n +
+							" resources, Lorenzo gets " + n + " faith points");
+				}
+				else {
+					if (i != playerIndex) {
+						mechanics.getPlayer(i).getPlayerFaithTrack().moveMarker(n);
+						virtualViewMap.get(nicknameList.get(i)).showGenericMessage(message.getNickname() + " discarded " + n +
+								" resources, you get " + n + " faith points");
+					} else {
+						virtualViewMap.get(nicknameList.get(i)).showGenericMessage("You discarded " + n +
+								" resources, the other players get " + n + " faith points");
+					}
 				}
 			}
 			if(!checkVaticanReport())
@@ -650,6 +659,20 @@ public class ServerSideController {
 		boolean flag = true;
 		boolean check2 = false;
 		String nickname = "";
+		boolean send = false;
+
+		if(mechanics.getNumberOfPlayers() == 1){
+			GameMechanicsSinglePlayer mec = (GameMechanicsSinglePlayer) mechanics;
+			boolean lorenzoCheck = mec.getLorenzoFaithTrack().checkActivationVaticanReport(mec.getLastReportClaimed());
+			if(lorenzoCheck) {
+				mec.getPlayer(0).getPlayerFaithTrack().checkVaticanReport(mec.getLastReportClaimed());
+				mec.getLorenzoFaithTrack().checkVaticanReport(mec.getLastReportClaimed());
+				virtualViewMap.get(nicknameList.get(0)).showGenericMessage("You triggered Vatican Report" +
+						" n." + mechanics.getLastReportClaimed() + "!");
+				mec.increaseLastReportClaimed();
+				send = true;
+			}
+		}
 		do {
 			for (int i = 0; i < numberOfPlayers; i++) {
 				check[i] = mechanics.getPlayer(i).getPlayerFaithTrack().checkActivationVaticanReport(mechanics.getLastReportClaimed());
@@ -662,18 +685,17 @@ public class ServerSideController {
 				mechanics.getPlayer(i).getPlayerFaithTrack().checkVaticanReport(mechanics.getLastReportClaimed());
 			}
 
-			if(check2) mechanics.increaseLastReportClaimed();
+			if (check2) mechanics.increaseLastReportClaimed();
 
-			for(int i = 0; i < numberOfPlayers; i++){
-				if(mechanics.getPlayer(i).getPlayerFaithTrack().getLastReportClaimed() != mechanics.getLastReportClaimed())
+			for (int i = 0; i < numberOfPlayers; i++) {
+				if (mechanics.getPlayer(i).getPlayerFaithTrack().getLastReportClaimed() != mechanics.getLastReportClaimed())
 					flag = false;
 			}
-		}while(!flag);
+		} while (!flag);
 
-		boolean send = false;
-		for(int i = 0; i < numberOfPlayers && check2; i++) {
+		for (int i = 0; i < numberOfPlayers && check2; i++) {
 			String nick;
-			if(nicknameList.get(i).equals(nickname))
+			if (nicknameList.get(i).equals(nickname))
 				nick = "You";
 			else
 				nick = nickname;
@@ -695,6 +717,10 @@ public class ServerSideController {
 			for(int i = 0; i < nicknameList.size(); i++){
 				view.showFaithTrack(nicknameList.get(i), new ReducedFaithTrack(mechanics.getPlayer(i).getPlayerFaithTrack()));
 			}
+		}
+		if(mechanics.getNumberOfPlayers() == 1){ //single player
+			VirtualView view = virtualViewMap.get(nicknameList.get(0));
+			view.showFaithTrack(nicknameList.get(0), new ReducedFaithTrack(((GameMechanicsSinglePlayer) mechanics).getLorenzoFaithTrack()));
 		}
 	}
 

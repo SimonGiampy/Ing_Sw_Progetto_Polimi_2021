@@ -13,7 +13,7 @@
     <content>
         <AnchorPane prefHeight="503.0" prefWidth="707.0">
             <Label layoutX="160.0" layoutY="75.0" text="You have two White Marbles leaders activated: " style="-fx-font-size: 20"/>
-            <Label fx:id="lbl" layoutX="160.0" layoutY="138.0" text="" style="-fx-font-size: 18"/>
+            <Label fx:id="lbl" layoutX="160.0" layoutY="138.0" style="-fx-font-size: 18"/>
             <ImageView fitHeight="98.0" fitWidth="125.0" layoutX="70.0" layoutY="218.0" pickOnBounds="true" preserveRatio="true">
                 <Image url="@../../../../../assets/board/White_Marble.png"/>
             </ImageView>

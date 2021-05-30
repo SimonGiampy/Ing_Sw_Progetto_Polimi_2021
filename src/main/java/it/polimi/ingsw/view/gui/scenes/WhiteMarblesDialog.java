@@ -19,6 +19,8 @@ public class WhiteMarblesDialog extends Dialog<Integer[]> {
 			
 			ButtonType t = new ButtonType("Confirm the quantities", ButtonBar.ButtonData.OK_DONE);
 			dialogPane.getButtonTypes().addAll(t);
+			Button confirm = (Button) dialogPane.lookupButton(t);
+			confirm.setCancelButton(true);
 			
 			controller.setData(fromWhiteMarble1, fromWhiteMarble2, howMany);
 			

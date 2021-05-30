@@ -69,8 +69,6 @@ public class Notification {
 
 			anchorPane.setLayoutX(layoutX);
 
-
-
 			showAnimation = setupShowAnimation();
 
 		} catch (IOException e) {
@@ -80,15 +78,13 @@ public class Notification {
 
 	public void setNotification(String text){
 		StringBuilder string = new StringBuilder();
-		boolean check = true;
 		int count = 1;
 		for (int i = 0; i < text.length(); i++) {
 
-			if(i > 20*count && text.charAt(i) == ' ' && check) {
+			if(i > 20 * count && text.charAt(i) == ' ') {
 				string.append("\n");
-				check = false;
 				count++;
-			}else
+			} else
 				string.append(text.charAt(i));
 		}
 		lblText.setText(string.toString());
