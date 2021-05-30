@@ -75,13 +75,13 @@ public class CommonBoard extends ViewObservable implements SceneController{
 	//text for wrong slot
 	@FXML Text slotText;
 
-	//arrays
+	//matrices of images
 	private ImageView[][] marketImages;
 	private ImageView[][] cardsImages;
 
-	//to indicate if an action is able
-	private boolean marketAble;
-	private boolean cardsAble;
+	//flags needed for indicating if an action is doable
+	private boolean marketDoable;
+	private boolean cardsDoable;
 
 	//attributes for cards
 	private ReducedDevelopmentCardsDeck deck;
@@ -91,14 +91,12 @@ public class CommonBoard extends ViewObservable implements SceneController{
 	
 	private Board playerBoard;
 
-	protected boolean leaderCardsDone; //TODO: move and set private
-
 	@FXML
 	public void initialize(){
 		Font.loadFont(getClass().getResourceAsStream("/assets/font/Caveat-Regular.ttf"), 10);
 		
-		marketAble=false;
-		cardsAble=false;
+		marketDoable = false;
+		cardsDoable = false;
 
 		//set cards imageview matrix
 		cardsImages= new ImageView[][]{new ImageView[]{cards00,cards01,cards02,cards03},
@@ -172,7 +170,7 @@ public class CommonBoard extends ViewObservable implements SceneController{
 	 */
 	public void actionClicked(PlayerActions action){
 		if(action.equals(PlayerActions.MARKET))
-			marketAble=true;
+			marketDoable =true;
 		cardsActivation.setVisible(false);
 		marketActivation.setVisible(false);
 		notifyObserver(obs -> obs.onUpdateAction(action));
@@ -200,8 +198,8 @@ public class CommonBoard extends ViewObservable implements SceneController{
 	/*----------------------------------------------------------- CARDS DECK ----------------------------------------------------*/
 
 	/**
-	 * it sets cards deck with the respective images
-	 * @param deck is the deck from server
+	 * updates the dev cards deck with all the corresponding images
+	 * @param deck is the deck of cards from server
 	 */
 	public void setDeck(ReducedDevelopmentCardsDeck deck){
 		this.deck=deck;
@@ -211,21 +209,21 @@ public class CommonBoard extends ViewObservable implements SceneController{
 					DevelopmentCard card = deck.getCardStackStructure()[i][j].get(0);
 					cardsImages[i][j].setImage(new Image("/assets/devCards/" + card.getCardNumber() + ".png"));
 					cardsImages[i][j].setEffect(new Glow(0));
-				}
-				else
+				} else {
 					cardsImages[i][j].setVisible(false);
+				}
 			}
 		}
 	}
 
 	/**
-	 * it handles the click on a specific development card
+	 * mouse click handler on a development card in the deck
 	 * @param color is the color of the selected card
 	 * @param i is the index of the row of the matrix
 	 * @param j is the index of the column of the matrix
 	 */
 	public void cardsSelectionHandler(Colors color, int i, int j){
-		if(cardsAble && buyableCards.contains(deck.getCardStackStructure()[i][j].get(0))){
+		if(cardsDoable && buyableCards.contains(deck.getCardStackStructure()[i][j].get(0))){
 			this.level=i+1;
 			this.color=color;
 			setEffectOnCards();
@@ -236,10 +234,10 @@ public class CommonBoard extends ViewObservable implements SceneController{
 	}
 
 	/**
-	 * it sets the visibility of the slots buttons
-	 * @param visible is true if the buttons have to bet set visible
+	 * sets the visibility of the slots buttons
+	 * @param visible booloan flag
 	 */
-	public void setSlotsButtonVisible( boolean visible){
+	public void setSlotsButtonVisible(boolean visible){
 		slot1.setVisible(visible);
 		slot2.setVisible(visible);
 		slot3.setVisible(visible);
@@ -247,26 +245,26 @@ public class CommonBoard extends ViewObservable implements SceneController{
 	}
 
 	/**
-	 * it handles the click on the selected slot
+	 * handles the click on one of the 3 buttons for the slots
 	 * @param slot is the slot selected by the player
 	 */
 	public void slotClickHandler(int slot){
 		notifyObserver(obs -> obs.onUpdateBuyCardAction(color,level,slot));
-		cardsAble=false;
+		cardsDoable =false;
 		setSlotsButtonVisible(false);
 	}
 
 	/**
 	 * adds a shadow to the buyable cards. This function sets also the label text for when the selected slot is not valid
 	 * @param cards is a list of cards to be set
-	 * @param wrong is true if the player has selected a slot not available
+	 * @param wrong is true if the player has selected a not available slot
 	 */
 	public void setBuyableCardsEffect(ArrayList<DevelopmentCard> cards, boolean wrong){
 		if(wrong) {
 			slotText.setVisible(true);
 			slotText.setText("Wrong Slot!");
 		}
-		cardsAble=true;
+		cardsDoable =true;
 		buyableCards=cards;
 		for (int i = 0; i < 3; i++) {
 			for (int j = 0; j < 4; j++) {
@@ -305,7 +303,7 @@ public class CommonBoard extends ViewObservable implements SceneController{
 	/*----------------------------------------------------------- MARKET ----------------------------------------------------*/
 
 	/**
-	 * it sets marbles images
+	 * updates marble images in the market
 	 * @param market is the market from the server
 	 */
 	public void setMarket(ReducedMarket market) {
@@ -325,7 +323,7 @@ public class CommonBoard extends ViewObservable implements SceneController{
 	 * @param img is the selected image
 	 */
 	public void marketEnteredHandler(ImageView img) {
-		if(marketAble)
+		if(marketDoable)
 			img.setEffect(new Glow(1));
 	}
 
@@ -338,21 +336,21 @@ public class CommonBoard extends ViewObservable implements SceneController{
 	}
 
 	/**
-	 * it handles click on the row/col
+	 * click handler on the arrows, then notifies the server with the chosen row or col
 	 * @param which is row or col
 	 * @param where is the selected row/col
 	 */
 	public void marketClickHandler(String which, int where) {
-		if(marketAble) {
+		if(marketDoable) {
 			notifyObserver(obs -> obs.onUpdateMarketAction(which, where));
-			marketAble=false;
+			marketDoable =false;
 		}
 	}
 
 	/*----------------------------------------------------------- END_TURN ----------------------------------------------------*/
 
 	/**
-	 * sets the visibility of the end turn
+	 * sets the visibility of the end turn button
 	 * @param value is true if the button has to be set visible
 	 */
 	public void setEndTurnVisible(boolean value){

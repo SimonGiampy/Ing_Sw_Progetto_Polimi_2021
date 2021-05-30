@@ -25,7 +25,7 @@ public class Nickname extends ViewObservable implements SceneController {
 	private boolean offline = false;
 
 	/**
-	 * it handles nickname confirmation
+	 * Handles the click on the confirmation button. Its behaviour is differentiated based on the game mode (offline or online)
 	 */
 	public void confirmation() {
 		String nick = nickname.getText();
@@ -74,6 +74,10 @@ public class Nickname extends ViewObservable implements SceneController {
 		return nickname.getText();
 	}
 	
+	/**
+	 * needed for having an instance of the GUI in this class, for the offline mode
+	 * @param gui gui
+	 */
 	public void setGui(GUI gui) {
 		this.gui = gui;
 		this.offline = true;

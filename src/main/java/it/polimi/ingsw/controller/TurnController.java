@@ -19,7 +19,7 @@ public class TurnController {
 	private final ArrayList<String> nicknameList;
 	private final HashMap<String, VirtualView> virtualViewMap;
 	private final ServerSideController serverSideController;
-	//private boolean endOfTurn;
+	
 	private boolean endOfGame;
 	private boolean endgameStarted;
 	private int remainingTurn;
@@ -114,7 +114,6 @@ public class TurnController {
 			}
 			else {
 				turnAskLeaderAction();
-				//endOfTurn=true;
 			}
 		}
 		else if (turnPhase == TurnPhase.LEADER_ACTION){
@@ -165,7 +164,7 @@ public class TurnController {
 			}
 		String stringWinner = winner.toString();
 		serverSideController.getLobby().broadcastMessage(new WinMessage(stringWinner,winnerInfo[0]));
-		serverSideController.getLobby().endGame(); //TODO: fix this method
+		serverSideController.getLobby().endGame();
 	}
 
 	/**
