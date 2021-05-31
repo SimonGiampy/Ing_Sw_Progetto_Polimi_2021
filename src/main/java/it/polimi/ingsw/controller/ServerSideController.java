@@ -451,8 +451,6 @@ public class ServerSideController {
 		CardProductionsManagement management = mechanics.getPlayer(playerIndex).getPlayersCardManager();
 		if (management.checkStackLevel(message.getSlot()) == message.getLevel() - 1) { // correct
 			mechanics.getPlayer(playerIndex).buyNewDevCard(message.getLevel(),message.getColor(),message.getSlot());
-			view.showPlayerCardsAndProduction(nicknameList.get(playerIndex),
-					new ReducedCardProductionManagement(mechanics.getPlayer(playerIndex).getPlayersCardManager()));
 			for (String s : nicknameList) {
 				view = virtualViewMap.get(s);
 				view.showGenericMessage(nicknameList.get(playerIndex) + " bought a development card!");
@@ -460,6 +458,7 @@ public class ServerSideController {
 						new ReducedCardProductionManagement(mechanics.getPlayer(playerIndex).getPlayersCardManager()));
 				view.showCardsDeck(new ReducedDevelopmentCardsDeck(mechanics.getGameDevCardsDeck()));
 			}
+			sendBoxes(playerIndex, true);
 			turnController.setTurnPhase(TurnPhase.MAIN_ACTION);
 		} else { //incorrect
 			view.askBuyCardAction(nicknameList.get(playerIndex),mechanics.getGameDevCardsDeck().buyableCards(mechanics.getPlayer(playerIndex).gatherAllPlayersResources(),

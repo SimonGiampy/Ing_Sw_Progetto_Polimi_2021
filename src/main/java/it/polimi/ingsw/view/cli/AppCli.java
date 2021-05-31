@@ -29,15 +29,14 @@ public class AppCli {
 		} while (!check);
 		
 		if (mode.equals("offline")) {
-			System.out.println("Choose a nickname: ");
-			String nickname = scanner.nextLine();
+			cli.askNickname();
 			
 			ServerSideController serverSideController = new ServerSideController(1);
 			OfflineVirtualView view = new OfflineVirtualView(cli);
 			HashMap<String, VirtualView> map = new HashMap<>();
-			map.put(nickname, view);
+			map.put(cli.getPlayerNickname(), view);
 			
-			OfflineController controller = new OfflineController(cli, serverSideController, nickname);
+			OfflineController controller = new OfflineController(cli, serverSideController, cli.getPlayerNickname());
 			cli.attach(controller);
 			
 			serverSideController.setVirtualViews(map);

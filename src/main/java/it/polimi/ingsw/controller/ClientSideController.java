@@ -211,11 +211,16 @@ public class ClientSideController implements ViewObserver, Observer {
 	 * @return {@code true} if the ip is valid, {@code false} otherwise.
 	 */
 	public static boolean isValidIpAddress(String ip) {
+		//TODO: testing
+		return true;
+		/*
 		String regex = "^([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\." +
 				"([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\." +
 				"([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\." +
 				"([01]?\\d\\d?|2[0-4]\\d|25[0-5])$";
 		return Pattern.matches(regex, ip);
+
+		 */
 	}
 	
 	/**

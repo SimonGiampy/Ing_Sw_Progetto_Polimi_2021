@@ -567,7 +567,7 @@ public class CLI extends ViewObservable implements View {
 	public void showFaithTrack(String nickname, ReducedFaithTrack faithTrack) {
 		if(nickname.equals(playerNickname)) {
 			if (faithTrack.isLorenzosTrack()) {
-				System.out.println("This is Lorenzo's Faith Track");
+				System.out.println("Lorenzo's Faith Track");
 			} else {
 				System.out.println("Your Faith Track");
 			}
@@ -620,7 +620,10 @@ public class CLI extends ViewObservable implements View {
 			System.out.println("Your Strongbox");
 		else
 			System.out.println(nickname + "'s Strongbox");
-		System.out.println(ListSet.listMultiplicityToString(strongbox.getContent()));
+		if(strongbox.getContent().isEmpty())
+			System.out.println("EMPTY");
+		else
+			System.out.println(ListSet.listMultiplicityToString(strongbox.getContent()));
 	}
 	
 	@Override
@@ -648,5 +651,9 @@ public class CLI extends ViewObservable implements View {
 	public void connectionError(){
 		System.out.println("Error! Connection failed!");
 		askServerInfo();
+	}
+
+	public String getPlayerNickname() {
+		return playerNickname;
 	}
 }

@@ -33,6 +33,7 @@ public class Client extends Observable {
 	public Client(String address, int port) throws IOException {
 
 		this.socket = new Socket(address, port);
+		socket.setSoTimeout(60000);
 		LOGGER.info("Connected to server");
 		this.outputStream = new ObjectOutputStream(socket.getOutputStream());
 		this.inputStream = new ObjectInputStream(socket.getInputStream());

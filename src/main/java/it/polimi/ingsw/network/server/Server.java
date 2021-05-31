@@ -29,9 +29,9 @@ public class Server implements Runnable {
 		
 		try {
 			serverSocket = new ServerSocket(port); // creates a local socket connection
-			LOGGER.info("Socket lobby started on port " + port + ".");
+			LOGGER.info("Socket server started on port " + port + ".");
 		} catch (IOException e) {
-			LOGGER.error("Lobby could not start!");
+			LOGGER.error("Server could not start!");
 		}
 	}
 	
