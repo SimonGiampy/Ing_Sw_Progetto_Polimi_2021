@@ -142,16 +142,17 @@ public class TurnController {
 	 * it handles end of the turn phase
 	 */
 	private void endTurn(){
-		if(nicknameList.size() == 1) {
-			tokenActivation(); //activate token just in singlePlayer
-		}
 		endgame(); //activated only if endgame started
 		if (endOfGame) {
-			System.out.println("end");
 			sendWinner(); // activated only if the game is over. stop the game
 		}
-		nextTurn();
-		startTurn();
+		else {
+			if(nicknameList.size() == 1) {
+				tokenActivation(); //activate token just in singlePlayer
+			}
+			nextTurn();
+			startTurn();
+		}
 	}
 
 	/**
@@ -165,6 +166,8 @@ public class TurnController {
 			winnerInfo = mec.winningPlayers();
 			if(winnerInfo[1] == -1)
 				winner.append("Lorenzo");
+			else
+				winner.append(nicknameList.get(0));
 		} else {
 			winnerInfo = mechanics.winningPlayers();
 			for (int i = 1; i < winnerInfo.length; i++) {
@@ -174,8 +177,13 @@ public class TurnController {
 			}
 		}
 		String stringWinner = winner.toString();
-		serverSideController.getLobby().broadcastMessage(new WinMessage(stringWinner, winnerInfo[0]));
-		serverSideController.getLobby().endGame();
+
+		for (String s : nicknameList) {
+			virtualViewMap.get(s).showWinMessage(stringWinner, winnerInfo[0]);
+		}
+
+		if(serverSideController.getLobby() != null)
+			serverSideController.getLobby().endGame();
 	}
 
 	/**
@@ -189,7 +197,12 @@ public class TurnController {
 				break;
 			}
 		}
-		if(check && !endgameStarted){
+		if(check && !endgameStarted){ //sets endgame and notify players
+			if(nicknameList.size()>1) {
+				for (String s : nicknameList) {
+					virtualViewMap.get(s).showGenericMessage("EndGame started!");
+				}
+			}
 			endgameStarted = true;
 			remainingTurn = nicknameList.size() - nicknameList.indexOf(activePlayer) - 1;
 			if(remainingTurn == 0)

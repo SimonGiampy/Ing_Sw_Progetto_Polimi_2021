@@ -450,10 +450,10 @@ public class Board extends ViewObservable implements SceneController {
 	 */
 	public void setNormalLuminosity(){
 		baseProduction.setEffect(new Glow(0));
-		if(!leaderCards.get(0).isDiscarded())
-			leader1.setEffect(new Glow(0));
-		if(!leaderCards.get(1).isDiscarded())
-			leader2.setEffect(new Glow(0));
+		if(leaderCards.get(0).isAbilitiesActivated())
+			setShadow(leader1,true);
+		if(leaderCards.get(1).isAbilitiesActivated())
+			setShadow(leader2,true);
 		
 		if(sizeSlot1>0) slot1[sizeSlot1-1].setEffect(new Glow(0));
 		if(sizeSlot2>0)	slot2[sizeSlot2-1].setEffect(new Glow(0));
