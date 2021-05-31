@@ -10,17 +10,12 @@ public enum MessageType {
 	PLAYER_NUMBER_REQUEST, 				// the server asks the creator of the lobby how many players to put in the lobby
 	NICKNAME_REQUEST,					// the server asks the client to choose a nickname
 	NICKNAME_CONFIRMATION, 				// the server communicates if the nickname is valid or already chosen
-	GAME_CONFIG_REQUEST, 				// the server asks for the game configuration file path to the game host
-
 
 	//Client to Server messages
 	LOBBY_ACCESS, 						// the client chooses the lobby to join, or creates a new one
 	PLAYER_NUMBER_REPLY, 				// the game host communicates the number of players to play with
 	NICKNAME_REPLY, 					// the client replies with the chosen nickname
-	GAME_CONFIG_REPLY,					// the client replies with the game config file chosen (standard or custom)
-
-
-
+	
 	//Game logic messages
 
 	//Server to Client messages

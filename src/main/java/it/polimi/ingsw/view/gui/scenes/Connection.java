@@ -48,9 +48,7 @@ public class Connection extends ViewObservable implements SceneController {
 	 */
 	void connection() {
 		
-		ClientSideController clientController = new ClientSideController(gui);
-		gui.attach(clientController);
-		this.attach(clientController);
+		
 		
 		HashMap<String, String> serverInfo = new HashMap<>();
 		
@@ -86,6 +84,9 @@ public class Connection extends ViewObservable implements SceneController {
 			this.address.setText("");
 			this.port.setText("");
 		} else {
+			ClientSideController clientController = new ClientSideController(gui);
+			gui.attach(clientController);
+			this.attach(clientController);
 			notifyObserver(obs -> obs.onUpdateServerInfo(serverInfo));
 		}
 		

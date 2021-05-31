@@ -17,7 +17,6 @@ public class LeaderCard {
 	private final ArrayList<Resources> resourceRequirements; // list of resources required for the activation
 	private final ArrayList<CardRequirement> cardRequirements; // list of development card requirements
 	private final ArrayList<AbilityEffectActivation> effectsActivation; // a single leader card supports multiple abilities
-	private boolean abilitiesActivated;
 	private final int idNumber;
 
 
@@ -35,7 +34,6 @@ public class LeaderCard {
 		this.resourceRequirements = requirements;
 		this.cardRequirements = cardRequirements;
 		this.effectsActivation = effectsActivation;
-		abilitiesActivated = false;
 		this.idNumber = idNumber;
 	}
 
@@ -79,7 +77,6 @@ public class LeaderCard {
 		for (AbilityEffectActivation effect: effectsActivation) {
 			effect.activateAbility(player);
 		}
-		abilitiesActivated = true;
 	}
 
 	/**

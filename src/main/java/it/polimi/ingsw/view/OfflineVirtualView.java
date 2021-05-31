@@ -10,7 +10,7 @@ import java.util.ArrayList;
 
 public class OfflineVirtualView extends VirtualView implements View, Observer {
 	
-	View view;
+	final View view;
 
 	public OfflineVirtualView(View view) {
 		super(null);

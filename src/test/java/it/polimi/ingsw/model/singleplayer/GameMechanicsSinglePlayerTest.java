@@ -33,14 +33,14 @@ class GameMechanicsSinglePlayerTest {
 	void revealTop() {
 		ArrayList<Token> tokenList = new ArrayList<>();
 		tokenList.add(new BlackCrossToken(2, mechanicsSinglePlayer.getLorenzoFaithTrack()));
-		tokenList.add(new DiscardToken(2, Colors.BLUE, mechanicsSinglePlayer.getGameDevCardsDeck()));
+		tokenList.add(new DiscardToken(Colors.BLUE, mechanicsSinglePlayer.getGameDevCardsDeck()));
 		tokenList.add(new BlackCrossShuffleToken(1, mechanicsSinglePlayer.getLorenzoFaithTrack()));
 
 
 		tokenList.add(new BlackCrossToken(2, mechanicsSinglePlayer.getLorenzoFaithTrack()));
-		tokenList.add(new DiscardToken(2, Colors.GREEN, mechanicsSinglePlayer.getGameDevCardsDeck()));
-		tokenList.add(new DiscardToken(2, Colors.PURPLE, mechanicsSinglePlayer.getGameDevCardsDeck()));
-		tokenList.add(new DiscardToken(2, Colors.YELLOW, mechanicsSinglePlayer.getGameDevCardsDeck()));
+		tokenList.add(new DiscardToken(Colors.GREEN, mechanicsSinglePlayer.getGameDevCardsDeck()));
+		tokenList.add(new DiscardToken(Colors.PURPLE, mechanicsSinglePlayer.getGameDevCardsDeck()));
+		tokenList.add(new DiscardToken(Colors.YELLOW, mechanicsSinglePlayer.getGameDevCardsDeck()));
 
 		mechanicsSinglePlayer.setTokenList(tokenList); //set token for testing
 

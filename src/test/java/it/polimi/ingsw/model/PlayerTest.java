@@ -273,7 +273,7 @@ class PlayerTest {
 	
 	
 	@Test
-	void activateProduction() throws InvalidInputException {
+	void activateProduction() {
 		ArrayList<Productions> playerInput = new ArrayList<>();
 		playerInput.add(Productions.BASE_PRODUCTION);
 		int[] input= new int[]{2,0,0,0};

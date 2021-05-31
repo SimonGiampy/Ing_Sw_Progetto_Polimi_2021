@@ -99,9 +99,5 @@ public interface ViewObserver {
 	 * @param resourcesNumber how much of each one
 	 */
 	void onUpdateResourceChoice(ArrayList<Resources> resourcesList, ArrayList<Integer> resourcesNumber,int flag);
-
-	/**
-	 * it handles a disconnection wanted by the user
-	 */
-	void onDisconnection();
+	
 }

@@ -3,7 +3,6 @@ package it.polimi.ingsw.controller;
 import it.polimi.ingsw.model.GameMechanicsMultiPlayer;
 import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.reducedClasses.ReducedDevelopmentCardsDeck;
-import it.polimi.ingsw.model.reducedClasses.ReducedFaithTrack;
 import it.polimi.ingsw.model.reducedClasses.ReducedLeaderCard;
 import it.polimi.ingsw.model.singleplayer.GameMechanicsSinglePlayer;
 import it.polimi.ingsw.model.singleplayer.Token;
@@ -160,17 +159,22 @@ public class TurnController {
 	 */
 	protected void sendWinner(){
 		StringBuilder winner = new StringBuilder();
-		int[] winnerInfo= mechanics.winningPlayers();
-		if(winnerInfo[1] == -1)
-			winner.append("Lorenzo");
-		else
+		int[] winnerInfo;
+		if(mechanics.getNumberOfPlayers() == 1) {
+			GameMechanicsSinglePlayer mec = (GameMechanicsSinglePlayer) mechanics;
+			winnerInfo = mec.winningPlayers();
+			if(winnerInfo[1] == -1)
+				winner.append("Lorenzo");
+		} else {
+			winnerInfo = mechanics.winningPlayers();
 			for (int i = 1; i < winnerInfo.length; i++) {
 				winner.append(nicknameList.get(winnerInfo[i]));
-				if(i!=winnerInfo.length-1)
+				if (i != winnerInfo.length - 1)
 					winner.append(", ");
 			}
+		}
 		String stringWinner = winner.toString();
-		serverSideController.getLobby().broadcastMessage(new WinMessage(stringWinner,winnerInfo[0]));
+		serverSideController.getLobby().broadcastMessage(new WinMessage(stringWinner, winnerInfo[0]));
 		serverSideController.getLobby().endGame();
 	}
 

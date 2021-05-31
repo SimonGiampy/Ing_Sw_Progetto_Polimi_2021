@@ -4,7 +4,6 @@ import it.polimi.ingsw.model.reducedClasses.ReducedDevelopmentCardsDeck;
 import it.polimi.ingsw.model.util.Colors;
 import it.polimi.ingsw.model.util.ListSet;
 import it.polimi.ingsw.model.util.Resources;
-import it.polimi.ingsw.view.cli.CLI;
 import it.polimi.ingsw.view.cli.CLIUtils;
 import it.polimi.ingsw.parser.XMLParser;
 import org.junit.jupiter.api.BeforeEach;
@@ -19,18 +18,15 @@ class DevelopmentCardsDeckTest {
 	DevelopmentCardsDeck deck;
 	CardProductionsManagement management;
 	Strongbox box;
-	CLI cli;
 	
 	@BeforeEach
 	void setUp() {
-		String path;
 		String fileName = "game_configuration_standard.xml";
 		XMLParser parser = new XMLParser(fileName);
 		
 		deck = new DevelopmentCardsDeck(new GameMechanicsMultiPlayer(1).createCommonCardsDeck(parser.readDevCards()));
 		box = new Strongbox();
 		management = new CardProductionsManagement(box, new WarehouseDepot(), parser.parseBaseProductionFromXML());
-		cli = new CLI();
 	}
 	
 	@Test

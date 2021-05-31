@@ -66,9 +66,5 @@ public class OfflineController extends ClientSideController implements ViewObser
 	public void onUpdateResourceChoice(ArrayList<Resources> resourcesList, ArrayList<Integer> resourcesNumber, int flag) {
 		controller.onMessageReceived(new ResourcesList(nickname,resourcesList,resourcesNumber,flag));
 	}
-
-	@Override
-	public void onDisconnection() {
-		super.onDisconnection();
-	}
+	
 }

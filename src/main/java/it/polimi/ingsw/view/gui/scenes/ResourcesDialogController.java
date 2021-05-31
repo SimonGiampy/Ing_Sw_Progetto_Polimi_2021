@@ -2,18 +2,10 @@ package it.polimi.ingsw.view.gui.scenes;
 
 import it.polimi.ingsw.model.util.ListSet;
 import it.polimi.ingsw.model.util.Resources;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
-import javafx.scene.input.MouseEvent;
 
 import java.util.ArrayList;
-import java.util.List;
-import java.util.function.BinaryOperator;
-import java.util.function.Function;
-import java.util.function.Predicate;
-import java.util.stream.Collectors;
 
 /**
  * controller class for asking a number of resources

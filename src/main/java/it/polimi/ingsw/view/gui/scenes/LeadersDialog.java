@@ -1,14 +1,8 @@
 package it.polimi.ingsw.view.gui.scenes;
 
 import it.polimi.ingsw.model.reducedClasses.ReducedLeaderCard;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.*;
-import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyEvent;
-import javafx.stage.Stage;
-import javafx.stage.StageStyle;
 
 import java.io.IOException;
 import java.util.ArrayList;

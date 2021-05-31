@@ -21,7 +21,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.regex.Pattern;
 
 public class ClientSideController implements ViewObserver, Observer {
 
@@ -198,11 +197,6 @@ public class ClientSideController implements ViewObserver, Observer {
 	@Override
 	public void onUpdateResourceChoice(ArrayList<Resources> resourcesList, ArrayList<Integer> resourcesNumber, int flag) {
 		client.sendMessage(new ResourcesList(nickname, resourcesList, resourcesNumber,flag));
-	}
-
-	@Override
-	public void onDisconnection() {
-		client.disconnect();
 	}
 	
 	/**

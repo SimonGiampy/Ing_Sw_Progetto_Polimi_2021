@@ -5,20 +5,17 @@ import it.polimi.ingsw.model.DevelopmentCardsDeck;
 import it.polimi.ingsw.model.util.TokenType;
 
 public class DiscardToken extends Token{
-
-	private final int cardsNumber;
+	
 	private final Colors color;
 	private final DevelopmentCardsDeck cardsDeck;
 
 	/**
 	 * Initialize the parameters
-	 * @param cardsNumber number of cards to discard
 	 * @param color color of the cards to discard
 	 * @param cardsDeck deck of development cards
 	 */
-	public DiscardToken(int cardsNumber, Colors color, DevelopmentCardsDeck cardsDeck){
+	public DiscardToken(Colors color, DevelopmentCardsDeck cardsDeck){
 		super(TokenType.DISCARD_TOKEN,color);
-		this.cardsNumber = cardsNumber;
 		this.color = color;
 		this.cardsDeck = cardsDeck;
 	}

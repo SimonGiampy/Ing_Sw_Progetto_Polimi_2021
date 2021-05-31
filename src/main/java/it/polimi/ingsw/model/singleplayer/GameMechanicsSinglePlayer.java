@@ -44,10 +44,10 @@ public class GameMechanicsSinglePlayer extends GameMechanicsMultiPlayer {
 		//One BlackCrossToken +1
 		tokenList.add(new BlackCrossShuffleToken(1, lorenzoFaithTrack));
 		//One DiscardToken for each color
-		tokenList.add(new DiscardToken(2, Colors.BLUE, super.getGameDevCardsDeck()));
-		tokenList.add(new DiscardToken(2, Colors.GREEN, super.getGameDevCardsDeck()));
-		tokenList.add(new DiscardToken(2, Colors.PURPLE, super.getGameDevCardsDeck()));
-		tokenList.add(new DiscardToken(2, Colors.YELLOW, super.getGameDevCardsDeck()));
+		tokenList.add(new DiscardToken(Colors.BLUE, super.getGameDevCardsDeck()));
+		tokenList.add(new DiscardToken(Colors.GREEN, super.getGameDevCardsDeck()));
+		tokenList.add(new DiscardToken(Colors.PURPLE, super.getGameDevCardsDeck()));
+		tokenList.add(new DiscardToken(Colors.YELLOW, super.getGameDevCardsDeck()));
 
 		Collections.shuffle(tokenList);
 

@@ -1,7 +1,5 @@
 package it.polimi.ingsw.view.gui;
 
-import it.polimi.ingsw.model.util.Colors;
-import javafx.animation.Interpolator;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
@@ -12,7 +10,6 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.paint.Color;
 import javafx.util.Duration;
 
 import java.io.IOException;

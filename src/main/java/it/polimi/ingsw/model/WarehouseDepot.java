@@ -382,12 +382,6 @@ public class WarehouseDepot {
 		
 		return price;
 	}
-
-	
-	
-	public int getResourceDeckSize() {
-		return incomingResources.size();
-	}
 	
 	public Resources[] getDepot() {
 		return depot;

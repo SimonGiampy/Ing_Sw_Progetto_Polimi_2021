@@ -4,6 +4,8 @@ import it.polimi.ingsw.model.util.Marbles;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.util.Arrays;
+
 class MarketTest {
 	
 	Market market;
@@ -15,18 +17,18 @@ class MarketTest {
 
 	@Test
 	void shiftRow() {
-		System.out.println("market before shifting 2 row = " + market.getMarket().toString());
+		System.out.println("market before shifting 2 row = " + Arrays.toString(market.getMarket()));
 		Marbles[] m = market.shiftRow(2);
-		System.out.println("market after shifting 2 row = " + market.getMarket().toString());
-		System.out.println("Result = " + m.toString());
+		System.out.println("market after shifting 2 row = " + Arrays.toString(market.getMarket()));
+		System.out.println("Result = " + Arrays.toString(m));
 	}
 
 	@Test
 	void shiftCol() {
-		System.out.println("market before shifting 3 col = " + market.getMarket().toString());
+		System.out.println("market before shifting 3 col = " + Arrays.toString(market.getMarket()));
 		Marbles[] m = market.shiftCol(3);
-		System.out.println("market after shifting 3 col = " + market.getMarket().toString());
-		System.out.println("Result = " + m.toString());
+		System.out.println("market after shifting 3 col = " +Arrays.toString(market.getMarket()));
+		System.out.println("Result = " + Arrays.toString(m));
 	}
 	
 	@Test

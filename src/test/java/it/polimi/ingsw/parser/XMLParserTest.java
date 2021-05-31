@@ -11,8 +11,6 @@ import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
 class XMLParserTest {
 
 	private XMLParser parser;
@@ -20,7 +18,6 @@ class XMLParserTest {
 	
 	@BeforeEach
 	void instantiateParser(){
-		String path;
 		String fileName = "game_configuration_standard.xml";
 		parser = new XMLParser(fileName);
 		cli= new CLI();

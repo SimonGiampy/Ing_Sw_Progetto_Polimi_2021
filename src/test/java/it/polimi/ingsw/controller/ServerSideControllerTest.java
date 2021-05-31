@@ -19,7 +19,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class ServerSideControllerTest {
 
 	ServerSideController serverSideController;
-	String nickname= "player1";
+	final String nickname= "player1";
 	@BeforeEach
 	void setUp() {
 		serverSideController = new ServerSideController();
@@ -33,40 +33,7 @@ class ServerSideControllerTest {
 		serverSideController.setVirtualViews(map);
 		serverSideController.sendFaithTracks();
 	}
-
-	@Test
-	void setVirtualViews() {
-	}
-
-	@Test
-	void onMessageReceived() {
-	}
-
-	@Test
-	void setGameConfig() {
-	}
-
-	@Test
-	void startPreGame() {
-
-	}
-
-	@Test
-	void startGame() {
-	}
-
-	@Test
-	void initState() {
-	}
-
-	@Test
-	void controllerAskLeaders() {
-	}
-
-	@Test
-	void initialResourcesHandler() {
-	}
-
+	
 	@Test
 	void leaderSelectionHandler() {
 		ArrayList<Integer> leaderSelection= new ArrayList<>();
@@ -75,28 +42,7 @@ class ServerSideControllerTest {
 		LeaderSelection message= new LeaderSelection(nickname,leaderSelection);
 		serverSideController.leaderSelectionHandler(message);
 	}
-
-	@Test
-	void inGameState() {
-	}
-
-	@Test
-	void actionReplyHandler() {
-	}
-
-	@Test
-	void marketInteraction() {
-
-	}
-
-	@Test
-	void marketConvert() {
-	}
-
-	@Test
-	void depotInteractionHandler() {
-	}
-
+	
 	@Test
 	void buyCardHandler() {
 		BuyCard message = new BuyCard(nickname,1,Colors.YELLOW,1);

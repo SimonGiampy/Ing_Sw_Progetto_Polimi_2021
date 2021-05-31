@@ -29,7 +29,6 @@ public class CardProductionsManagementTest {
 	void setUp() {
 		String fileName = "game_configuration_standard.xml";
 		XMLParser parser = new XMLParser(fileName);
-		ArrayList<LeaderCard> leaderCards = parser.readLeaderCards();
 		ProductionRules baseProduction = parser.parseBaseProductionFromXML();
 		strongbox = new Strongbox();
 		cardProductionsManagement = new CardProductionsManagement(strongbox, new WarehouseDepot(), baseProduction);
@@ -38,21 +37,6 @@ public class CardProductionsManagementTest {
 		developmentCard2 = new DevelopmentCard(1,Colors.YELLOW,3, new ArrayList<>(), baseProduction,1);
 		developmentCard3 = new DevelopmentCard(2,Colors.YELLOW,5, new ArrayList<>(), baseProduction,1);
 		
-		ArrayList<Resources> resources = new ArrayList<>(); // requirement resources
-		resources.add(Resources.COIN);
-		resources.add(Resources.COIN);
-		DevelopmentCard developmentCard4 = new DevelopmentCard(1, Colors.PURPLE, 2, resources, baseProduction,1);
-		
-		resources.add(Resources.STONE);
-		resources.add(Resources.STONE);
-		DevelopmentCard developmentCard5 = new DevelopmentCard(2, Colors.BLUE, 7, resources, baseProduction,1);
-		
-		resources.add(Resources.SERVANT);
-		resources.add(Resources.STONE);
-		resources.add(Resources.SHIELD);
-		resources.add(Resources.SHIELD);
-		resources.add(Resources.SHIELD);
-		DevelopmentCard developmentCard6 = new DevelopmentCard(3, Colors.BLUE, 10, resources, baseProduction,1);
 	}
 	
 	/**

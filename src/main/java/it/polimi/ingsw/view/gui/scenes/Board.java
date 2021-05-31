@@ -774,10 +774,12 @@ public class Board extends ViewObservable implements SceneController {
 	 */
 	private void dragOrigin(ImageView image, String origin) {
 		image.setOnDragDetected(event -> {
-			Dragboard db = image.startDragAndDrop(TransferMode.MOVE);
-			ClipboardContent content = new ClipboardContent();
-			content.putString(origin);
-			db.setContent(content);
+			if (image.getImage() != null) {
+				Dragboard db = image.startDragAndDrop(TransferMode.MOVE);
+				ClipboardContent content = new ClipboardContent();
+				content.putString(origin);
+				db.setContent(content);
+			}
 		});
 		image.setOnMouseEntered(this::onMouseHover);
 	}
@@ -815,7 +817,11 @@ public class Board extends ViewObservable implements SceneController {
 	 * @param event of hovering
 	 */
 	private void onMouseHover(MouseEvent event) {
-		((Node) event.getSource()).setCursor(Cursor.HAND);
+		if (((ImageView) event.getSource()).getImage() != null) {
+			((Node) event.getSource()).setCursor(Cursor.HAND);
+		} else {
+			((Node) event.getSource()).setCursor(Cursor.DEFAULT);
+		}
 	}
 	
 	/**
