@@ -15,6 +15,9 @@ import javafx.stage.StageStyle;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 public class GUI extends ViewObservable implements View {
@@ -272,17 +275,17 @@ public class GUI extends ViewObservable implements View {
 
 	@Override
 	public void showGenericMessage(String genericMessage) {
-		Platform.runLater(() -> notificationHandler.addNotification(genericMessage, (AnchorPane) scene.getRoot(), false));
+		Platform.runLater(() -> notificationHandler.addNotification(genericMessage, (AnchorPane) scene.getRoot(), 0));
 	}
 	
 	@Override
 	public void disconnection(String text, boolean termination) {
-		Platform.runLater(() -> notificationHandler.addNotification(text, (AnchorPane) scene.getRoot(), true));
+		Platform.runLater(() -> notificationHandler.addNotification(text, (AnchorPane) scene.getRoot(), 1));
 	}
 	
 	@Override
 	public void showError(String error) {
-		Platform.runLater(() -> notificationHandler.addNotification(error, (AnchorPane) scene.getRoot(), true));
+		Platform.runLater(() -> notificationHandler.addNotification(error, (AnchorPane) scene.getRoot(), 1));
 	}
 	
 	@Override
@@ -356,17 +359,21 @@ public class GUI extends ViewObservable implements View {
 	@Override
 	public void showWinMessage(String winner, int points) {
 		Platform.runLater(() -> {
-			setRoot("winner.fxml");
-			Winner winnerController= (Winner) controller;
-			if (!winner.contains(",")) {
-				winnerController.setNickname(winner.toUpperCase());
-				winnerController.setPoints("WITH "+points+" POINTS");
-			}
-			else{
-				winnerController.setWinner("IT'S A DRAW!");
-				winnerController.setNickname("THESE PLAYERS:\n{"+winner.toUpperCase()+"}");
-				winnerController.setPoints("HAVE SCORED "+points+" POINTS");
-			}
+			notificationHandler.addNotification("Game ended!", (AnchorPane) scene.getRoot(), 2);
+			final ScheduledExecutorService executorService = Executors.newSingleThreadScheduledExecutor();
+			executorService.schedule(() -> {
+				setRoot("winner.fxml");
+				Winner winnerController= (Winner) controller;
+				if (!winner.contains(",")) {
+					winnerController.setNickname(winner.toUpperCase());
+					winnerController.setPoints("WITH "+points+" POINTS");
+				}
+				else{
+					winnerController.setWinner("IT'S A DRAW!");
+					winnerController.setNickname("THESE PLAYERS:\n{"+winner.toUpperCase()+"}");
+					winnerController.setPoints("HAVE SCORED "+points+" POINTS");
+				}
+			}, 5, TimeUnit.SECONDS);
 		});
 	}
 	

@@ -161,8 +161,7 @@ public class ServerSideController {
 		gameState = GameState.GAME;
 		
 		//TODO: STOP CHEATING!
-		
-		Resources[] resources={Resources.COIN,Resources.STONE,Resources.STONE,Resources.SHIELD,Resources.SHIELD,Resources.SHIELD};
+		/*
 		ArrayList<Resources> set= new ArrayList<>();
 		set.add(Resources.COIN);
 		set.add(Resources.COIN);
@@ -198,6 +197,8 @@ public class ServerSideController {
 		set.add(Resources.STONE);
 		
 		mechanics.getPlayer(0).getMyStrongbox().storeResources(set);
+
+		 */
 		//mechanics.getPlayer(0).getPlayersWarehouseDepot().setDepotForDebugging(resources);
 		
 		turnController.startTurn();
@@ -676,44 +677,51 @@ public class ServerSideController {
 		if(mechanics.getNumberOfPlayers() == 1){
 			GameMechanicsSinglePlayer mec = (GameMechanicsSinglePlayer) mechanics;
 			boolean lorenzoCheck = mec.getLorenzoFaithTrack().checkActivationVaticanReport(mec.getLastReportClaimed());
-			if(lorenzoCheck) {
+			boolean playerCheck = mec.getPlayer(0).getPlayerFaithTrack().checkActivationVaticanReport(mec.getLastReportClaimed());
+			if(lorenzoCheck || playerCheck) {
 				mec.getPlayer(0).getPlayerFaithTrack().checkVaticanReport(mec.getLastReportClaimed());
 				mec.getLorenzoFaithTrack().checkVaticanReport(mec.getLastReportClaimed());
 				mec.increaseLastReportClaimed();
-				virtualViewMap.get(nicknameList.get(0)).showGenericMessage("Lorenzo triggered Vatican Report" +
-						" n." + mechanics.getLastReportClaimed() + "!");
 				send = true;
-			}
-		}
-		do {
-			for (int i = 0; i < numberOfPlayers; i++) {
-				check[i] = mechanics.getPlayer(i).getPlayerFaithTrack().checkActivationVaticanReport(mechanics.getLastReportClaimed());
-				if (check[i]) {
-					check2 = true;
-					nickname = nicknameList.get(i);
+				if (lorenzoCheck) {
+					virtualViewMap.get(nicknameList.get(0)).showGenericMessage("Lorenzo triggered Vatican Report" +
+							" n." + mechanics.getLastReportClaimed() + "!");
+				} else {
+					virtualViewMap.get(nicknameList.get(0)).showGenericMessage("You triggered Vatican Report" +
+							" n." + mechanics.getLastReportClaimed() + "!");
 				}
 			}
+		} else {
+			do {
+				for (int i = 0; i < numberOfPlayers; i++) {
+					check[i] = mechanics.getPlayer(i).getPlayerFaithTrack().checkActivationVaticanReport(mechanics.getLastReportClaimed());
+					if (check[i]) {
+						check2 = true;
+						nickname = nicknameList.get(i);
+					}
+				}
+				for (int i = 0; i < numberOfPlayers && check2; i++) {
+					mechanics.getPlayer(i).getPlayerFaithTrack().checkVaticanReport(mechanics.getLastReportClaimed());
+				}
+
+				if (check2) mechanics.increaseLastReportClaimed();
+
+				for (int i = 0; i < numberOfPlayers; i++) {
+					if (mechanics.getPlayer(i).getPlayerFaithTrack().getLastReportClaimed() != mechanics.getLastReportClaimed())
+						flag = false;
+				}
+			} while (!flag);
+
 			for (int i = 0; i < numberOfPlayers && check2; i++) {
-				mechanics.getPlayer(i).getPlayerFaithTrack().checkVaticanReport(mechanics.getLastReportClaimed());
+				String nick;
+				if (nicknameList.get(i).equals(nickname))
+					nick = "You";
+				else
+					nick = nickname;
+				virtualViewMap.get(nicknameList.get(i)).showGenericMessage(nick + " triggered Vatican Report" +
+						" n." + (mechanics.getLastReportClaimed()) + "!");
+				send = true;
 			}
-
-			if (check2) mechanics.increaseLastReportClaimed();
-
-			for (int i = 0; i < numberOfPlayers; i++) {
-				if (mechanics.getPlayer(i).getPlayerFaithTrack().getLastReportClaimed() != mechanics.getLastReportClaimed())
-					flag = false;
-			}
-		} while (!flag);
-
-		for (int i = 0; i < numberOfPlayers && check2; i++) {
-			String nick;
-			if (nicknameList.get(i).equals(nickname))
-				nick = "You";
-			else
-				nick = nickname;
-			virtualViewMap.get(nicknameList.get(i)).showGenericMessage(nick + " triggered Vatican Report" +
-					" n." + (mechanics.getLastReportClaimed()) + "!");
-			send = true;
 		}
 		if(send)
 			sendFaithTracks();

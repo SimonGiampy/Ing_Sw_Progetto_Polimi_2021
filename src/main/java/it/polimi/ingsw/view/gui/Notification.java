@@ -1,5 +1,6 @@
 package it.polimi.ingsw.view.gui;
 
+import it.polimi.ingsw.model.util.Colors;
 import javafx.animation.Interpolator;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
@@ -11,6 +12,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.paint.Color;
 import javafx.util.Duration;
 
 import java.io.IOException;
@@ -38,9 +40,9 @@ public class Notification {
 	 * @param root anchorPane of the current scene
 	 * @param text of the notification
 	 * @param notificationHandler handler that contains the stack of notifications
-	 * @param error true if this is an error or disconnection notification
+	 * @param type true if this is an error or disconnection notification
 	 */
-	public Notification(AnchorPane root, String text, NotificationHandler notificationHandler, boolean error){
+	public Notification(AnchorPane root, String text, NotificationHandler notificationHandler, int type){
 		this.notificationHandler = notificationHandler;
 		this.notificationStack = notificationHandler.getNotificationStack();
 		index = 0;
@@ -53,7 +55,7 @@ public class Notification {
 		double posX = 1420;
 		double posY = 980;
 		layoutY = posY - 108*index;
-		initNotification(root, text, posX, error);
+		initNotification(root, text, posX, type);
 	}
 
 	/**
@@ -61,9 +63,9 @@ public class Notification {
 	 * @param root anchorPane of the current scene
 	 * @param text of the notification
 	 * @param layoutX X position of the notification (bottom right of the screen)
-	 * @param error true if this is an error or disconnection notification
+	 * @param type true if this is an error or disconnection notification
 	 */
-	public void initNotification(AnchorPane root, String text, double layoutX, boolean error){
+	public void initNotification(AnchorPane root, String text, double layoutX, int type){
 		Node node;
 		this.root = root;
 
@@ -75,8 +77,10 @@ public class Notification {
 
 			root.getChildren().addAll(node);
 			setNotification(text);
-			if(error)
+			if(type == 1) //error or disconnection
 				anchorPane.setStyle("-fx-border-color: #d9534f;");
+			else if(type == 2)
+				anchorPane.setStyle("-fx-border-color: #eea236;");
 
 			anchorPane.setLayoutX(layoutX);
 

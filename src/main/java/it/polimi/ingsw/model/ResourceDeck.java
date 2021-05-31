@@ -51,7 +51,11 @@ public class ResourceDeck {
 		//Throws exception if the total of the white marbles required to activate the leaders ability is different from
 		//      the number of white marbles to be processed with the leader card abilities
 
-		if (isWhiteAbility2Activated()) {
+		if (isWhiteAbility1Activated()){
+			if((quantityLeader1 * whiteMarblesInput1) > whiteMarblesFromMarket || (quantityLeader1 * whiteMarblesInput1) < whiteMarblesFromMarket)
+				throw new InvalidUserRequestException("Invalid number of activations of leaders ability");
+		}
+		else if (isWhiteAbility2Activated()) {
 			if(quantityLeader1 == 0 && quantityLeader2 != whiteMarblesFromMarket / whiteMarblesInput2){
 				throw new InvalidUserRequestException("Invalid number of activations of leaders ability");
 			}
@@ -64,9 +68,6 @@ public class ResourceDeck {
 							!= (whiteMarblesFromMarket % whiteMarblesInput2)))) {
 				throw new InvalidUserRequestException("Invalid number of activations of leaders ability");
 			}
-		} else {
-			if((quantityLeader1 * whiteMarblesInput1) > whiteMarblesFromMarket || (quantityLeader1 * whiteMarblesInput1) < whiteMarblesFromMarket)
-				throw new InvalidUserRequestException("Invalid number of activations of leaders ability");
 		}
 
 		//Convert marble into resources based on their color

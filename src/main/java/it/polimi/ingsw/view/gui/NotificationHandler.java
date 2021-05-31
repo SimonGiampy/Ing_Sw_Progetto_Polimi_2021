@@ -19,9 +19,9 @@ public class NotificationHandler {
 	public NotificationHandler(){ lastTime = System.currentTimeMillis();}
 
 
-	public void addNotification(String genericMessage, AnchorPane root, boolean error){
+	public void addNotification(String genericMessage, AnchorPane root, int type){
 
-		Notification notification = new Notification(root, genericMessage, this, error);
+		Notification notification = new Notification(root, genericMessage, this, type);
 		notification.showNotification();
 
 		int delay = 6;
@@ -30,18 +30,15 @@ public class NotificationHandler {
 
 		final ScheduledExecutorService executorService = Executors.newSingleThreadScheduledExecutor();
 
-		if(error){
-			executorService.schedule(() -> {
-				if(notification.isShowing)
-					notification.dismissInit();
-			}, 5, TimeUnit.SECONDS);
+		if(type > 0){
+			delay = 5;
 		}
-		else {
-			executorService.schedule(() -> {
-				if (notification.isShowing)
-					notification.dismissInit();
+
+		executorService.schedule(() -> {
+			if (notification.isShowing)
+				notification.dismissInit();
 			}, delay, TimeUnit.SECONDS);
-		}
+
 		lastDelay = delay;
 		lastTime = System.currentTimeMillis();
 	}
