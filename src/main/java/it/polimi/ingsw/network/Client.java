@@ -32,7 +32,8 @@ public class Client extends Observable {
 	 */
 	public Client(String address, int port) throws IOException {
 
-		this.socket = new Socket(address, port);
+		socket = new Socket(address, port);
+		socket.setSoTimeout(20000);
 		socket.setSoTimeout(60000);
 		LOGGER.info("Connected to server");
 		this.outputStream = new ObjectOutputStream(socket.getOutputStream());
@@ -52,8 +53,11 @@ public class Client extends Observable {
 					Message message;
 					try {
 						message = (Message) inputStream.readObject();
-						LOGGER.info("Received: " + message);
-						notifyObserver(message);
+						if (message.getMessageType() != MessageType.PING) {
+							LOGGER.info("Received: " + message);
+							notifyObserver(message);
+						}
+						
 					} catch (ClassNotFoundException e) {
 						LOGGER.error("Error: wrong class read from stream");
 					} catch (IOException ex) {

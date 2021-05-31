@@ -7,7 +7,6 @@ import it.polimi.ingsw.network.messages.generic.DisconnectionMessage;
 import it.polimi.ingsw.network.messages.login.*;
 import it.polimi.ingsw.network.messages.generic.GenericMessage;
 import it.polimi.ingsw.network.messages.Message;
-import it.polimi.ingsw.view.View;
 import it.polimi.ingsw.view.VirtualView;
 
 import java.io.IOException;
@@ -21,7 +20,7 @@ public class Lobby {
 	private final ArrayList<User> clients;
 	private final List<String> nicknames;
 	private int numberOfPlayers;
-	private boolean gameStarted;
+	private boolean gameStarted; // flag indicating if the match is started
 	
 	private ClientHandler host;
 	private final Server server;
@@ -232,19 +231,6 @@ public class Lobby {
 		}
 	}
 	
-	/**
-	 *  Message broadcast directed to all the connected users in the game, except the one with
-	 *  the specified virtual view in input
-	 * @param message to be broadcast
-	 * @param except the VirtualView who must not receive any message (it's usually the one who starts the event)
-	 */
-	public void broadcastMessage(Message message, View except) {
-		for (User user: clients) {
-			if (!user.getView().equals(except)) {
-				user.getHandler().sendMessage(message);
-			}
-		}
-	}
 	
 	/**
 	 *  Message broadcast directed to all the connected users in the game, except the one with
@@ -282,7 +268,6 @@ public class Lobby {
 	public void matchStart() {
 		LOGGER.info("Match started");
 		gameStarted = true;
-		broadcastMessage(new GenericMessage("Match started!"));
 	}
 	
 	/**
@@ -312,11 +297,7 @@ public class Lobby {
 	/**
 	 * Inner class that describes a connected client with 3 parameters: nickname, client handler and its virtual view
 	 */
-	private static class User {
-		private final String nickname;
-		private final ClientHandler handler;
-		private final VirtualView view;
-
+	private record User(String nickname, ClientHandler handler, VirtualView view) {
 		private String getNickname() {
 			return nickname;
 		}
@@ -329,11 +310,6 @@ public class Lobby {
 			return view;
 		}
 		
-		private User(String nickname, ClientHandler handler, VirtualView view) {
-			this.nickname = nickname;
-			this.handler = handler;
-			this.view = view;
-		}
 	}
 	
 }

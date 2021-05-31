@@ -33,7 +33,7 @@ public class Nickname extends ViewObservable implements SceneController {
 			if (!nick.equals("")) notifyObserver(obs -> obs.onUpdateNickname(nick));
 			else nicknameValid.setVisible(true);
 		} else {
-			ServerSideController serverSideController = new ServerSideController(1);
+			ServerSideController serverSideController = new ServerSideController();
 			OfflineVirtualView view = new OfflineVirtualView(gui);
 			
 			HashMap<String, VirtualView> map = new HashMap<>();

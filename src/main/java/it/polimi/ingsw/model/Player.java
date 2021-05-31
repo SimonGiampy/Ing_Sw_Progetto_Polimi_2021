@@ -210,7 +210,7 @@ public class Player {
 	 * @return true if a new dev card can be bought, false otherwise
 	 */
 	public boolean isBuyMoveAvailable() {
-		return commonCardsDeck.canBuyAnyDevCard(gatherAllPlayersResources(), cardManager);
+		return commonCardsDeck.canBuyAnyDevCard(gatherResourcesWithDiscounts(), cardManager);
 	}
 	
 	/**
@@ -221,6 +221,24 @@ public class Player {
 		ArrayList<Resources> total = myStrongbox.getContent();
 		total.addAll(myWarehouseDepot.gatherAllResources());
 		return total;
+	}
+	
+	/**
+	 * calculates a list of resources, adding more resources based on the discount values. Method called when buying dev cards
+	 * @return a list of user resources with more resources, faking the fact that the player has actually less resources
+	 */
+	public ArrayList<Resources> gatherResourcesWithDiscounts() {
+		ArrayList<Resources> payback = new ArrayList<>(gatherAllPlayersResources());
+		//Apply the discounts of the leader cards, adding resources instead of removing them, faking a bigger availability of resources
+		for(int i = 0; i < coinDiscount; i++)
+			payback.add(Resources.COIN);
+		for(int i = 0; i < servantDiscount; i++)
+			payback.add(Resources.SERVANT);
+		for(int i = 0; i < stoneDiscount; i++)
+			payback.add(Resources.STONE);
+		for(int i = 0; i < shieldDiscount; i++)
+			payback.add(Resources.SHIELD);
+		return payback;
 	}
 
 	/**

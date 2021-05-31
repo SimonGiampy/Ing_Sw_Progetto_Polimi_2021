@@ -31,7 +31,7 @@ public class AppCli {
 		if (mode.equals("offline")) {
 			cli.askNickname();
 			
-			ServerSideController serverSideController = new ServerSideController(1);
+			ServerSideController serverSideController = new ServerSideController();
 			OfflineVirtualView view = new OfflineVirtualView(cli);
 			HashMap<String, VirtualView> map = new HashMap<>();
 			map.put(cli.getPlayerNickname(), view);

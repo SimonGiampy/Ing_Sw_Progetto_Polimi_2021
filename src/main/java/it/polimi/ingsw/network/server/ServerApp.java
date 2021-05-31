@@ -7,11 +7,10 @@ import java.util.Scanner;
 public class ServerApp {
 	
 	public static void main(String[] args) {
-
 		String port;
 		Scanner scanner = new Scanner(System.in);
 		do {
-			System.out.println("Start server on port: ");
+			System.out.println("Host local server on the port: ");
 			port = scanner.nextLine();
 		} while (!ClientSideController.isValidPort(port));
 		Server server = new Server(Integer.parseInt(port));

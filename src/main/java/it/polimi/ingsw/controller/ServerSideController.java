@@ -40,7 +40,7 @@ public class ServerSideController {
 	private final int numberOfPlayers;
 	
 	/**
-	 * Constructor of the class that handles game logic and interacts with the players
+	 * Constructor of the class that handles game logic and interacts with the players. Online game mode
 	 * @param lobby that created this match
 	 * @param numberOfPlayers in the match
 	 */
@@ -57,9 +57,12 @@ public class ServerSideController {
 		gameReady= new boolean[numberOfPlayers];
 		gameState = GameState.INIT;
 	}
-
-	public ServerSideController(int numberOfPlayers){
-		this(null,numberOfPlayers);
+	
+	/**
+	 * offline controller for single player mode
+	 */
+	public ServerSideController() {
+		this(null, 1);
 	}
 	
 	
@@ -78,7 +81,9 @@ public class ServerSideController {
 		for(String s: nicknameList) {
 			virtualViewMap.get(s).showMatchInfo(nicknameList);
 		}
-		
+		if (lobby != null) {
+			lobby.matchStart();
+		}
 		startPreGame();
 	}
 	
@@ -88,7 +93,6 @@ public class ServerSideController {
 	 */
 	public void onMessageReceived(Message receivedMessage){
 		switch (gameState){
-			//case CONFIG -> configHandler(receivedMessage);
 			case INIT -> initState(receivedMessage);
 			case GAME -> inGameState(receivedMessage);
 			default -> throw new IllegalStateException("Unexpected value: " + gameState);
@@ -198,7 +202,7 @@ public class ServerSideController {
 		
 		mechanics.getPlayer(0).getMyStrongbox().storeResources(set);
 
-		 */
+		*/
 		//mechanics.getPlayer(0).getPlayersWarehouseDepot().setDepotForDebugging(resources);
 		
 		turnController.startTurn();
@@ -301,7 +305,7 @@ public class ServerSideController {
 		switch (message.getSelectedAction()){
 			case MARKET -> view.askMarketAction(nicknameList.get(playerIndex),new ReducedMarket(mechanics.getMarket()));
 			case BUY_CARD -> view.askBuyCardAction(nicknameList.get(playerIndex),new ArrayList<>
-				(mechanics.getGameDevCardsDeck().buyableCards(mechanics.getPlayer(playerIndex).gatherAllPlayersResources(),
+				(mechanics.getGameDevCardsDeck().buyableCards(mechanics.getPlayer(playerIndex).gatherResourcesWithDiscounts(),
 						mechanics.getPlayer(playerIndex).getPlayersCardManager())), false);
 			case PRODUCTIONS -> {
 				view.showPlayerCardsAndProduction(nicknameList.get(playerIndex),
@@ -461,8 +465,8 @@ public class ServerSideController {
 			sendBoxes(playerIndex, true);
 			turnController.setTurnPhase(TurnPhase.MAIN_ACTION);
 		} else { //incorrect
-			view.askBuyCardAction(nicknameList.get(playerIndex),mechanics.getGameDevCardsDeck().buyableCards(mechanics.getPlayer(playerIndex).gatherAllPlayersResources(),
-					management), true);
+			view.askBuyCardAction(nicknameList.get(playerIndex),mechanics.getGameDevCardsDeck().
+					buyableCards(mechanics.getPlayer(playerIndex).gatherResourcesWithDiscounts(), management), true);
 		}
 		
 	}

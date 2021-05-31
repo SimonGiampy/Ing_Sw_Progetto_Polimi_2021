@@ -2,12 +2,16 @@ package it.polimi.ingsw.network.server;
 
 import it.polimi.ingsw.network.Logger;
 import it.polimi.ingsw.network.messages.*;
+import it.polimi.ingsw.network.messages.generic.PingMessage;
 import it.polimi.ingsw.network.messages.login.*;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Server-side handling of connected players. A group of client handlers form a lobby
@@ -19,6 +23,7 @@ public class ClientHandler implements Runnable {
 	private Lobby lobby;
 	
 	private boolean connected; // true if connected to the lobby
+	private final ScheduledExecutorService pinger;
 	
 	private ObjectOutputStream outputStream;
 	private ObjectInputStream inputStream;
@@ -42,6 +47,7 @@ public class ClientHandler implements Runnable {
 		} catch (IOException e) {
 			LOGGER.error("Bad in/out stream from socket: " + e.getMessage());
 		}
+		pinger = Executors.newSingleThreadScheduledExecutor();
 	}
 	
 	/**
@@ -52,6 +58,7 @@ public class ClientHandler implements Runnable {
 	public void run() {
 		LOGGER.info("Client connected from " + socket.getRemoteSocketAddress());
 		lobbyLogin(); // login phase
+		enablePinger(true);
 		try {
 			// reads the messages incoming from the client and forwards them to the lobby,
 			// which in turn forwards them to the game controller
@@ -80,7 +87,7 @@ public class ClientHandler implements Runnable {
 	 * Login phase: a client accesses a lobby (choosing it from a list of available lobbies). Then chooses a nickname.
 	 * In this method the server communicates with the client and handles the clients requests
 	 */
-	public void lobbyLogin() {
+	private void lobbyLogin() {
 		Message message;
 		boolean valid = false;
 		while(!valid) {
@@ -139,7 +146,7 @@ public class ClientHandler implements Runnable {
 	public void disconnect() {
 		if (connected) {
 			closeConnection();
-			
+			enablePinger(false);
 			//disconnects the client handler from the lobby
 			if (lobby != null) lobby.onDisconnect(this);
 		}
@@ -167,13 +174,27 @@ public class ClientHandler implements Runnable {
 		try {
 			outputStream.writeObject(message);
 			outputStream.reset();
-			LOGGER.info("Sent: " + message);
+			if (message.getMessageType() != MessageType.PING) {
+				LOGGER.info("Sent: " + message);
+			}
 		} catch (IOException e) {
 			LOGGER.error("Error in sending a message: " + e.getMessage());
 			disconnect();
 		}
 	}
 	
+	/**
+	 * Enable a heartbeat (ping messages) from the server to the client in order to keep the connection alive
+	 * @param enabled set this argument to {@code true} to enable the heartbeat.
+	 *                set to {@code false} to kill the heartbeat.
+	 */
+	public void enablePinger(boolean enabled) {
+		if (enabled) {
+			pinger.scheduleAtFixedRate(() -> sendMessage(new PingMessage()), 0, 2000, TimeUnit.MILLISECONDS);
+		} else {
+			pinger.shutdownNow();
+		}
+	}
 	
 	public void setLobby(Lobby lobby) {
 		this.lobby = lobby;

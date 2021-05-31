@@ -22,7 +22,7 @@ class ServerSideControllerTest {
 	String nickname= "player1";
 	@BeforeEach
 	void setUp() {
-		serverSideController = new ServerSideController(1);
+		serverSideController = new ServerSideController();
 		TestView testView= new TestView();
 		OfflineVirtualView view = new OfflineVirtualView(testView);
 		HashMap<String, VirtualView> map = new HashMap<>();
@@ -151,7 +151,7 @@ class ServerSideControllerTest {
 		assertTrue(serverSideController.getMechanics().getPlayer(0).isDiscardedLeader2());
 	}
 
-	private class TestView extends ViewObservable implements View{
+	private static class TestView extends ViewObservable implements View{
 
 		@Override
 		public void askNumberOfPlayer() {
