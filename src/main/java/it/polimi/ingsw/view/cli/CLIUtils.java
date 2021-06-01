@@ -349,7 +349,7 @@ public class CLIUtils {
 		} else if(card.getLevel() == 2) {
 			string.append(Unicode.DOT).append(" ").append(Unicode.DOT).append("  ");
 		} else {
-			string.append(Unicode.DOT).append(" ").append(Unicode.DOT).append("  ").append(Unicode.DOT);
+			string.append(Unicode.DOT).append(" ").append(Unicode.DOT).append(" ").append(Unicode.DOT);
 		}
 		string.append(Unicode.RESET+"        ").append(card.getProductionRules().getFaithOutput())
 				.append(Unicode.RED_BOLD).append(Unicode.CROSS2).append(Unicode.RESET).append(" ")

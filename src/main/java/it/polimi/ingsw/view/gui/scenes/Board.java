@@ -574,6 +574,7 @@ public class Board extends ViewObservable implements SceneController {
 		for (int i = 0; i < leaderCards.size(); i++) {
 			if(leaderCards.get(i).isAbilitiesActivated()){
 				images[i].setImage(new Image("/assets/leaderCards/" + leaderCards.get(i).getIdNumber() + ".png"));
+				setShadow(images[i],true);
 			}
 			if (leaderCards.get(i).isDiscarded()) { // card is less bright to indicate that it has been discarded
 				images[i].setImage(new Image("/assets/leaderCards/" + leaderCards.get(i).getIdNumber() + ".png"));
