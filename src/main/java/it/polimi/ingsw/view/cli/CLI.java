@@ -282,9 +282,11 @@ public class CLI extends ViewObservable implements View {
 		String playerInput;
 		String playerActionRegex = "[1-" + x + "]";
 		boolean check;
-		System.out.println("What do you want to do?");
+		System.out.println("What do you want to do? (Type <help> for the instructions about how to read the faith track)");
 		do {
 			playerInput = scanner.nextLine();
+			if(playerInput.equals("help"))
+				CLIUtils.helpFaithTrack();
 			check = Pattern.matches(playerActionRegex, playerInput);
 			if(!check) System.out.println("Selected action is not correct! Type again");
 		} while (!check);
@@ -470,7 +472,7 @@ public class CLI extends ViewObservable implements View {
 		String[] x;
 		do {
 			input = scanner.nextLine();
-			x = input.split(",");
+			x = input.split(", ");
 			check = true;
 			for (String s : x) {
 				if (!Pattern.matches(regex, s)) {
@@ -498,7 +500,7 @@ public class CLI extends ViewObservable implements View {
 			System.out.println("You have " + number + " free choice resources in input");
 		else
 			System.out.println("You have " + number + " free choice resources in output");
-		System.out.println("Type <NUMBER>x<RESOURCE>,[<NUMBER>x<RESOURCE>,...] to select them (for example: [2xshield])");
+		System.out.println("Type <NUMBER>x<RESOURCE>, [<NUMBER>x<RESOURCE>,...] to select them (for example: [2xshield])");
 		String input;
 		String [] splitCommands;
 		String [] singleCommand;
@@ -511,7 +513,7 @@ public class CLI extends ViewObservable implements View {
 				resourcesList.add(Resources.valueOf(singleCommand[1]));
 				check = true;
 			} else {
-				splitCommands = input.split(",");
+				splitCommands = input.split(", ");
 				for (String s : splitCommands) {
 					if (Pattern.matches(regex, s)) {
 						singleCommand = s.split("X");
@@ -588,11 +590,15 @@ public class CLI extends ViewObservable implements View {
 
 	@Override
 	public void showLeaderCards(String nickname, ArrayList<ReducedLeaderCard> availableLeaders) {
-		if(nickname.equals(playerNickname))
+		if(nickname.equals(playerNickname)) {
 			System.out.println("Your Leader Cards");
-		else
+			CLIUtils.showMyLeaderCards(availableLeaders);
+		}
+		else {
 			System.out.println(nickname + "'s Leader Cards");
-		CLIUtils.showLeaderCards(availableLeaders);
+			CLIUtils.showOtherLeaderCards(availableLeaders);
+		}
+
 	}
 
 	@Override

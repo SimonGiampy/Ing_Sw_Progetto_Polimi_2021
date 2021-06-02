@@ -52,6 +52,11 @@ public class CLIUtils {
 		System.out.println("The positional number in the warehouse is between 1 and 6: origin top to bottom, and origin left to right");
 	}
 
+	/**
+	 * Show all the track with the current position, the activated reports, the victory points for every tile
+	 * and the number that identifies the tiles
+	 * @param faithTrack to be shown on console
+	 */
 	public static void showFaithTrack(ReducedFaithTrack faithTrack){
 
 		StringBuilder string = new StringBuilder();
@@ -222,6 +227,10 @@ public class CLIUtils {
 		string.append(Unicode.BOTTOM_RIGHT).append("\n").append(Unicode.RESET);
 	}
 
+	/**
+	 * shows the depot with the contained resources, if this is called during the interaction shows also the incoming deck
+	 * @param depot depot to show
+	 */
 	public static void showDepot(ReducedWarehouseDepot depot){
 		ArrayList<Resources> incomingResources = depot.getIncomingResources();
 		Resources[] pyr = depot.getDepot();
@@ -268,7 +277,28 @@ public class CLIUtils {
 		}
 	}
 
-	public static void showLeaderCards(ArrayList<ReducedLeaderCard> availableLeaders){
+	/**
+	 * shows the leader cards if they are played otherwise shows if they are discarded or hidden
+	 * @param availableLeaders leader cards of another player
+	 */
+	public static void showOtherLeaderCards(ArrayList<ReducedLeaderCard> availableLeaders){
+		for (int i = 0; i < availableLeaders.size(); i++) {
+			System.out.println("Card's number: " + (i + 1));
+			if (availableLeaders.get(i).isAbilitiesActivated()) {
+				CLIUtils.showLeaderCard(availableLeaders.get(i));
+			} else if(availableLeaders.get(i).isDiscarded()){
+				System.out.print("DISCARDED\n");
+			} else {
+				System.out.println("FACE DOWN");
+			}
+		}
+	}
+
+	/**
+	 * shows the leader cards of the player and if they are playable or discarded
+	 * @param availableLeaders leader cards of the player
+	 */
+	public static void showMyLeaderCards(ArrayList<ReducedLeaderCard> availableLeaders){
 		for (int i = 0; i < availableLeaders.size(); i++) {
 			System.out.println("Card's number: " + (i + 1));
 			if (availableLeaders.get(i).isPlayable()) {
@@ -364,6 +394,10 @@ public class CLIUtils {
 		System.out.println(string);
 	}
 
+	/**
+	 * shows the current configuration of the market
+	 * @param market the market to show
+	 */
 	public static void showMarket(ReducedMarket market){
 		System.out.println(Unicode.RESET + "Extra ball = " + market.getExtraBall().colorCode + "\uD83D\uDFE3");
 		for (int i = 0; i < 3; i++) { // rows
@@ -378,6 +412,10 @@ public class CLIUtils {
 		System.out.print("\n");
 	}
 
+	/**
+	 * shows the 3 slots of the player with the cards displayed
+	 * @param cardProductionsManagement reduced class of the card manager
+	 */
 	public static void showPlayerCardsAndProduction(ReducedCardProductionManagement cardProductionsManagement) {
 		for (int i = 0; i < 3; i++) {
 			if(cardProductionsManagement.getCards().get(i).size()>0)
@@ -395,6 +433,10 @@ public class CLIUtils {
 		}
 	}
 
+	/**
+	 * shows the common development cards deck
+	 * @param deck common deck
+	 */
 	public static void showCardsDeck(ReducedDevelopmentCardsDeck deck) {
 		for (int i = 0; i < 3; i++) {
 			for (int j = 0; j < 4; j++) {
@@ -415,9 +457,14 @@ public class CLIUtils {
 		}
 	}
 
+	/**
+	 * shows the revealed token
+	 * @param token current token
+	 * @param color possible color of the discarded cards
+	 */
 	public static void showToken(TokenType token, Colors color){
 		if(token==TokenType.DISCARD_TOKEN)
-			System.out.println("Discard Token activated: 2 "+color+" cards are discarded from the deck!");
+			System.out.println("Discard Token activated: 2 " + color + " cards are discarded from the deck!");
 		else if(token==TokenType.BLACK_CROSS_TOKEN)
 			System.out.println("Black Cross Token activated: Lorenzo marker has moved 2 position forward!");
 		else

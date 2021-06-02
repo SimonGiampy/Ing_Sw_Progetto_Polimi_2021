@@ -367,7 +367,10 @@ public class ServerSideController {
 			mechanics.getPlayer(playerIndex).getPlayerFaithTrack().moveMarker(deck.getFaithPoint());
 			deck.setFaithPoint(0);
 			if(!checkVaticanReport())
-				sendFaithTracks();
+				for(String s: nicknameList){
+					virtualViewMap.get(s).showFaithTrack(nicknameList.get(playerIndex),
+							new ReducedFaithTrack(mechanics.getPlayer(playerIndex).getPlayerFaithTrack()));
+				}
 		}
 		
 		//moves the resources automatically to the additional depots if possible
@@ -412,6 +415,7 @@ public class ServerSideController {
 					}
 				}
 			}
+			sendBoxes(playerIndex, true);
 			if(!checkVaticanReport() && n > 0)
 				sendFaithTracks();
 			turnController.setTurnPhase(TurnPhase.MAIN_ACTION); //next turn
