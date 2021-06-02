@@ -23,9 +23,6 @@ public class ServerSideController {
 	}
 
 	private final GameMechanicsMultiPlayer mechanics;
-
-
-
 	private GameState gameState;
 	private HashMap<String, VirtualView> virtualViewMap;
 	
@@ -64,8 +61,7 @@ public class ServerSideController {
 	public ServerSideController() {
 		this(null, 1);
 	}
-	
-	
+
 	/**
 	 * Method called just before the game starts, when all the players are ready to play
 	 * @param virtualViewMap combinations of nicknames and their virtual views

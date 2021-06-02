@@ -11,38 +11,38 @@
 
 <AnchorPane prefHeight="1080.0" prefWidth="1920.0" xmlns="http://javafx.com/javafx/" xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="it.polimi.ingsw.view.gui.scenes.Winner">
-    <children>
-        <ImageView fitHeight="1080.0" fitWidth="1920.0" pickOnBounds="true" preserveRatio="true">
-            <image>
-                <Image url="@../../../../../assets/florence_winner.jpg" />
-            </image>
-        </ImageView>
-        <GridPane prefHeight="1080.0" prefWidth="1920.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-            <columnConstraints>
-                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-            </columnConstraints>
-            <rowConstraints>
-                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-            </rowConstraints>
-            <children>
-                <Text fx:id="points" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="WITH 25 POINTS" textAlignment="CENTER" wrappingWidth="1822.449951171875" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER">
-                    <font>
-                        <Font name="Caveat Bold" size="150.0" />
-                    </font>
-                </Text>
-                <Text fx:id="winner" strokeType="OUTSIDE" strokeWidth="0.0" text="THE WINNER IS" textAlignment="CENTER" wrappingWidth="1820.0703125" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
-                    <font>
-                        <Font name="Caveat Bold" size="150.0" />
-                    </font>
-                </Text>
-                <Text fx:id="nickname" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="NICKNAME" textAlignment="CENTER" wrappingWidth="1817.03515625" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
-                    <font>
-                        <Font name="Caveat Bold" size="150.0" />
-                    </font>
-                </Text>
-            </children>
-        </GridPane>
-    </children>
+    <ImageView fitHeight="1080.0" fitWidth="1920.0" pickOnBounds="true" preserveRatio="true">
+        <Image url="@../../../../../assets/florence_winner.jpg"/>
+    </ImageView>
+    <GridPane prefHeight="1080.0" prefWidth="1920.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
+              AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+        <columnConstraints>
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>
+        </columnConstraints>
+        <rowConstraints>
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+        </rowConstraints>
+        <Text fx:id="points" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="WITH 25 POINTS"
+              textAlignment="CENTER" wrappingWidth="1822.449951171875" GridPane.halignment="CENTER"
+              GridPane.rowIndex="2" GridPane.valignment="CENTER">
+            <font>
+                <Font name="Caveat Bold" size="150.0"/>
+            </font>
+        </Text>
+        <Text fx:id="winner" strokeType="OUTSIDE" strokeWidth="0.0" text="THE WINNER IS" textAlignment="CENTER"
+              wrappingWidth="1820.0703125" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+            <font>
+                <Font name="Caveat Bold" size="150.0"/>
+            </font>
+        </Text>
+        <Text fx:id="nickname" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="NICKNAME"
+              textAlignment="CENTER" wrappingWidth="1817.03515625" GridPane.halignment="CENTER"
+              GridPane.rowIndex="1" GridPane.valignment="CENTER">
+            <font>
+                <Font name="Caveat Bold" size="150.0"/>
+            </font>
+        </Text>
+    </GridPane>
 </AnchorPane>

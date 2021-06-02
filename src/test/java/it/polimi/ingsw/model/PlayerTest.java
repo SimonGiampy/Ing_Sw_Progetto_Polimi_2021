@@ -1,6 +1,5 @@
 package it.polimi.ingsw.model;
 
-import it.polimi.ingsw.exceptions.InvalidInputException;
 import it.polimi.ingsw.exceptions.InvalidUserRequestException;
 import it.polimi.ingsw.model.util.*;
 import it.polimi.ingsw.parser.XMLParser;

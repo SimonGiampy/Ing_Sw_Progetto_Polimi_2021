@@ -7,30 +7,27 @@
 <?import javafx.scene.text.*?>
 
 <AnchorPane prefHeight="1080.0" prefWidth="1920.0"
-            stylesheets="@../../../../../assets/bootstrap3.css" xmlns="http://javafx.com/javafx/" xmlns:fx="http://javafx.com/fxml/1"
+            stylesheets="@../../../../../assets/bootstrap3.css" xmlns="http://javafx.com/javafx/"
+            xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="it.polimi.ingsw.view.gui.scenes.Nickname">
-   <children>
-      <ImageView fitHeight="1080.0" fitWidth="1920.0" pickOnBounds="true" preserveRatio="true">
-         <image>
-            <Image url="@../../../../../assets/nickname/nickname_blue_red.jpg" />
-         </image>
-      </ImageView>
-      <TextField fx:id="nickname" layoutX="1146.0" layoutY="540.0" prefHeight="77.0" prefWidth="459.0" promptText="Write it here...">
-         <font>
-            <Font size="28.0" />
-         </font>
-      </TextField>
-      <ImageView fx:id="nicknameValid" fitHeight="247.0" fitWidth="294.0" layoutX="666.0" layoutY="600.0" pickOnBounds="true" preserveRatio="true" visible="false">
-         <image>
-            <Image url="@../../../../../assets/nickname/invalidNickname.png" />
-         </image>
-      </ImageView>
-      <Button fx:id="confirm" layoutX="1647.0" layoutY="541.0" maxHeight="55" minHeight="55" mnemonicParsing="false"
-              prefHeight="55.0" prefWidth="150.0" text="Confirm" >
-         <styleClass>
-            <String fx:value="success" />
-            <String fx:value="mid" />
-         </styleClass>
-      </Button>
-   </children>
+   <ImageView fitHeight="1080.0" fitWidth="1920.0" pickOnBounds="true" preserveRatio="true">
+      <Image url="@../../../../../assets/nickname/nickname_blue_red.jpg"/>
+   </ImageView>
+   <TextField fx:id="nickname" layoutX="1146.0" layoutY="540.0" prefHeight="77.0" prefWidth="459.0"
+              promptText="Write it here...">
+      <font>
+         <Font size="28.0"/>
+      </font>
+   </TextField>
+   <ImageView fx:id="nicknameValid" fitHeight="247.0" fitWidth="294.0" layoutX="666.0" layoutY="600.0"
+              pickOnBounds="true" preserveRatio="true" visible="false">
+      <Image url="@../../../../../assets/nickname/invalidNickname.png"/>
+   </ImageView>
+   <Button fx:id="confirm" layoutX="1647.0" layoutY="541.0" maxHeight="55" minHeight="55" mnemonicParsing="false"
+           prefHeight="55.0" prefWidth="150.0" text="Confirm">
+      <styleClass>
+         <String fx:value="success"/>
+         <String fx:value="mid"/>
+      </styleClass>
+   </Button>
 </AnchorPane>

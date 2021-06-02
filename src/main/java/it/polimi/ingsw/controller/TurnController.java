@@ -7,7 +7,6 @@ import it.polimi.ingsw.model.reducedClasses.ReducedLeaderCard;
 import it.polimi.ingsw.model.singleplayer.GameMechanicsSinglePlayer;
 import it.polimi.ingsw.model.singleplayer.Token;
 import it.polimi.ingsw.model.util.TokenType;
-import it.polimi.ingsw.network.messages.game.server2client.WinMessage;
 import it.polimi.ingsw.view.VirtualView;
 
 import java.util.ArrayList;
