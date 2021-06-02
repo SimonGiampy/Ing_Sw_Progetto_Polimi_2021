@@ -366,7 +366,10 @@ public class GUI extends ViewObservable implements View {
 				Winner winnerController= (Winner) controller;
 				if (!winner.contains(",")) {
 					winnerController.setNickname(winner.toUpperCase());
-					winnerController.setPoints("WITH "+points+" POINTS");
+					if(winner.equals("LORENZO IL MAGNIFICO"))
+						winnerController.setPoints("YOU HAVE SCORED "+points+" POINTS");
+					else
+						winnerController.setPoints("WITH "+points+" POINTS");
 				}
 				else{
 					winnerController.setWinner("IT'S A DRAW!");

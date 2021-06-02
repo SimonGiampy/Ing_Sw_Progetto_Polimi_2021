@@ -16,7 +16,7 @@ public class Winner extends ViewObservable implements SceneController {
 	@FXML
 	public void initialize() {
 		Font.loadFont(getClass().getResourceAsStream("/assets/font/Caveat-Regular.ttf"), 10);
-	  	winner.setEffect(new Glow(1));
+	  	nickname.setEffect(new Glow(1));
 	}
 
 	/**

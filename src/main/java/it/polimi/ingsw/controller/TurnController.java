@@ -97,8 +97,11 @@ public class TurnController {
 				serverSideController.sendFaithTracks();
 		}
 
-		if(currentToken.isEndGame()) // true if Lorenzo triggers the end of the game
+		if(currentToken.isEndGame()){ // true if Lorenzo triggers the end of the game
 			endOfGame=true;
+			sendWinner();
+		}
+
 
 		else if (check)
 			mechanicsSinglePlayer.shuffleTokenDeck();
@@ -149,8 +152,10 @@ public class TurnController {
 			if(nicknameList.size() == 1) {
 				tokenActivation(); //activate token just in singlePlayer
 			}
-			nextTurn();
-			startTurn();
+			if(!endOfGame) {
+				nextTurn();
+				startTurn();
+			}
 		}
 	}
 
@@ -164,7 +169,7 @@ public class TurnController {
 			GameMechanicsSinglePlayer mec = (GameMechanicsSinglePlayer) mechanics;
 			winnerInfo = mec.winningPlayers();
 			if(winnerInfo[1] == -1)
-				winner.append("Lorenzo");
+				winner.append("LORENZO IL MAGNIFICO");
 			else
 				winner.append(nicknameList.get(0));
 		} else {
