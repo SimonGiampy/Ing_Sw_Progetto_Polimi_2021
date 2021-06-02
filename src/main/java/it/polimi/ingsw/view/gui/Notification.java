@@ -109,7 +109,7 @@ public class Notification {
 	/**
 	 * plays the dismiss animation
 	 */
-	public void dismissInit(){
+	public synchronized void dismissInit(){
 		isShowing = false;
 		Timeline dismissAnimation = setupDismissAnimation();
 		dismissAnimation.play();
@@ -120,19 +120,17 @@ public class Notification {
 	/**
 	 * removes te notification from the screen and from the root anchorPane
 	 */
-	public void dismiss(){
-		synchronized (notificationStack){
-			notificationStack[index] = true;
-			notificationHandler.getNotifications()[index] = null;
-			notificationHandler.onDismiss(index);
-			root.getChildren().remove(anchorPane);
-		}
+	public synchronized void dismiss(){
+		notificationStack[index] = true;
+		notificationHandler.getNotifications()[index] = null;
+		notificationHandler.onDismiss(index);
+		root.getChildren().remove(anchorPane);
 	}
 
 	/**
 	 * plays the show animation and sets all the visibilities to true
 	 */
-	public void showNotification(){
+	public synchronized void showNotification(){
 		isShowing = true;
 		anchorPane.setVisible(true);
 		lblText.setVisible(true);
@@ -144,7 +142,7 @@ public class Notification {
 	/**
 	 * plays the slide animation
 	 */
-	public void slideNotification(){
+	public synchronized void slideNotification(){
 		Timeline slideAnimation = setupSlideAnimation();
 		slideAnimation.play();
 	}

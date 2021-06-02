@@ -43,13 +43,11 @@ public class NotificationHandler {
 		lastTime = System.currentTimeMillis();
 	}
 
-	public void onDismiss(int index){
-		synchronized (notificationStack) {
-			for (int i = index; i < notificationStack.length; i++) {
-				if (!notificationStack[i]) {
-					notifications[i].slideNotification();
-					notifications[i - 1] = notifications[i];
-				}
+	public synchronized void onDismiss(int index){
+		for (int i = index; i < notificationStack.length; i++) {
+			if (!notificationStack[i]) {
+				notifications[i].slideNotification();
+				notifications[i - 1] = notifications[i];
 			}
 		}
 	}

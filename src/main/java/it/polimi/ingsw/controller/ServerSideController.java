@@ -204,7 +204,6 @@ public class ServerSideController {
 
 		*/
 		//mechanics.getPlayer(0).getPlayersWarehouseDepot().setDepotForDebugging(resources);
-		
 		turnController.startTurn();
 	}
 
@@ -494,13 +493,16 @@ public class ServerSideController {
 				boolean moved = mechanics.getPlayer(playerIndex).activateProduction(
 						message.getSelectedProductions(), inputResources, outPutResources);
 				sendBoxes(playerIndex,true);
+				for(String s:nicknameList){
+					virtualViewMap.get(s).showGenericMessage(nicknameList.get(playerIndex) + " activated the production");
+				}
 				if (moved) {
 					if(!checkVaticanReport())
 						sendFaithTracks();
 				}
 				turnController.setTurnPhase(TurnPhase.MAIN_ACTION);
-
 			}
+
 		} else { // productions cannot be completed
 			view.showError("Selected productions are not available contemporarily.");
 			view.showPlayerCardsAndProduction(nicknameList.get(playerIndex),
@@ -595,6 +597,9 @@ public class ServerSideController {
 			if (!checkVaticanReport())
 				sendFaithTracks();
 		sendBoxes(playerIndex,true);
+		for(String s:nicknameList){
+			virtualViewMap.get(s).showGenericMessage(nicknameList.get(playerIndex) + " activated the production");
+		}
 		turnController.setTurnPhase(TurnPhase.MAIN_ACTION);
 
 	}
