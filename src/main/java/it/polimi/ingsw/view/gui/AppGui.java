@@ -17,8 +17,7 @@ public class AppGui extends Application {
 	public static void main(String[] args) {
 		launch(args);
 	}
-	
-	
+
 	@Override
 	public void start(Stage stage) {
 		FXMLLoader loader = new FXMLLoader();
