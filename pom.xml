@@ -67,7 +67,7 @@
                             <appendAssemblyId>false</appendAssemblyId>
                             <archive>
                                 <manifest>
-                                    <mainClass>it.polimi.ingsw.view.gui.AppGui</mainClass>
+                                    <mainClass>it.polimi.ingsw.view.gui.LaunchGui</mainClass>
                                 </manifest>
                             </archive>
                             <descriptorRefs>
