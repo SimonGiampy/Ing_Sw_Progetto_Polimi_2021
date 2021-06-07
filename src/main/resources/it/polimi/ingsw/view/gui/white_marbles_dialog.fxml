@@ -7,7 +7,7 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<DialogPane prefHeight="482.0" prefWidth="765.0" stylesheets="@../../../../../assets/bootstrap3.css" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.view.gui.scenes.WhiteMarblesDialogController">
+<DialogPane prefHeight="482.0" prefWidth="765.0" stylesheets="@../../../../../assets/bootstrap3.css" xmlns="http://javafx.com/javafx/" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.view.gui.scenes.WhiteMarblesDialogController">
     <content>
         <AnchorPane prefHeight="647.0" prefWidth="765.0">
             <Label alignment="CENTER" contentDisplay="CENTER" layoutX="176.0" layoutY="32.0" prefHeight="25.0" prefWidth="413.0"
