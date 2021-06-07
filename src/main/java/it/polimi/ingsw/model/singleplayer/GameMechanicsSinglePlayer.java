@@ -39,8 +39,8 @@ public class GameMechanicsSinglePlayer extends GameMechanicsMultiPlayer {
 
 		tokenList = new ArrayList<>();
 		//Two BlackCrossToken +2
-		tokenList.add(new BlackCrossToken(2, lorenzoFaithTrack));
-		tokenList.add(new BlackCrossToken(2, lorenzoFaithTrack));
+		tokenList.add(new BlackCrossToken(lorenzoFaithTrack));
+		tokenList.add(new BlackCrossToken(lorenzoFaithTrack));
 		//One BlackCrossToken +1
 		tokenList.add(new BlackCrossShuffleToken(1, lorenzoFaithTrack));
 		//One DiscardToken for each color
@@ -80,8 +80,8 @@ public class GameMechanicsSinglePlayer extends GameMechanicsMultiPlayer {
 		Collections.shuffle(tokenList);
 	}
 
-	/** TODO: check if this method works
-	 * Checks if the single player game is finished and show the total score
+	/**
+	 * Checks if the single player game is finished and shows the total score
 	 */
 	@Override
 	public int[] winningPlayers(){
@@ -89,8 +89,6 @@ public class GameMechanicsSinglePlayer extends GameMechanicsMultiPlayer {
 		if(getPlayer().isEndgameStarted()){
 			winner[0]=getPlayer().totalScore();
 			return winner;
-			//System.out.println("Congratulations! You won against Lorenzo");
-			//System.out.println("Score: " +getPlayer().totalScore() + "Victory Points");
 		}else if(lorenzoFaithTrack.isTrackFinished() || super.getGameDevCardsDeck().getCardStackStructure()[2][0].isEmpty()
 				|| super.getGameDevCardsDeck().getCardStackStructure()[2][1].isEmpty()
 				|| super.getGameDevCardsDeck().getCardStackStructure()[2][2].isEmpty()
@@ -98,8 +96,6 @@ public class GameMechanicsSinglePlayer extends GameMechanicsMultiPlayer {
 
 			winner[0]=getPlayer().totalScore();
 			winner[1]=-1;
-			//System.out.println("Game Over!\nLorenzo won!");
-			//System.out.println("Your score: "+ getPlayer().totalScore());
 		}
 		return winner;
 	}

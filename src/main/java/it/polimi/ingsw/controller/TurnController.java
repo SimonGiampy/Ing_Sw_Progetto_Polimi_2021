@@ -18,14 +18,22 @@ public class TurnController {
 	private final HashMap<String, VirtualView> virtualViewMap;
 	private final ServerSideController serverSideController;
 	
-	private boolean endOfGame;
-	private boolean endgameStarted;
+	private boolean endOfGame; // if the endgame phase started
+	private boolean endgameStarted; // if the last turn started
 	private int remainingTurn;
-	private boolean mainActionDone;
+	private boolean mainActionDone; //indicated if the main action in a turn has been completed (market, production or dev card buying)
 	private final GameMechanicsMultiPlayer mechanics;
 
 	private String activePlayer;
-
+	
+	/**
+	 * Constructor for the turn system during gameplay. Handles different phases of a single turn. It also handles
+	 * different parts of the game (initial phase, core gameplay, last turn and endgame).
+	 * @param virtualViewMap map between nicknames and their virtual views
+	 * @param serverSideController server controller
+	 * @param nicknameList list of client nicknames
+	 * @param mechanics game mechanics (single player or multiplayer)
+	 */
 	public TurnController(HashMap<String,VirtualView> virtualViewMap, ServerSideController serverSideController,
 						  ArrayList<String> nicknameList,GameMechanicsMultiPlayer mechanics){
 		this.nicknameList = nicknameList;
@@ -54,7 +62,6 @@ public class TurnController {
 	 * it starts the turn
 	 */
 	public void startTurn(){
-		//endOfTurn=false;
 		mainActionDone = false;
 		VirtualView view = virtualViewMap.get(activePlayer);
 		view.showGenericMessage("It's your turn!");
@@ -100,10 +107,7 @@ public class TurnController {
 		if(currentToken.isEndGame()){ // true if Lorenzo triggers the end of the game
 			endOfGame=true;
 			sendWinner();
-		}
-
-
-		else if (check)
+		} else if (check)
 			mechanicsSinglePlayer.shuffleTokenDeck();
 	}
 
@@ -119,8 +123,7 @@ public class TurnController {
 
 			if(player.checkAvailableLeaderActions().size()==0){
 				endTurn();
-			}
-			else {
+			} else {
 				turnAskLeaderAction();
 			}
 		}
@@ -132,9 +135,7 @@ public class TurnController {
 			}
 			else
 				turnAskLeaderAction();
-		}
-
-		else if (turnPhase == TurnPhase.END_TURN){
+		} else if (turnPhase == TurnPhase.END_TURN){
 			endTurn();
 		}
 

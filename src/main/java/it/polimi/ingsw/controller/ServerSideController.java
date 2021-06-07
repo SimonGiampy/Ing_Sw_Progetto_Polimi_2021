@@ -160,46 +160,6 @@ public class ServerSideController {
 	protected void startGame() {
 		gameState = GameState.GAME;
 		
-		//TODO: STOP CHEATING!
-		/*
-		ArrayList<Resources> set= new ArrayList<>();
-		set.add(Resources.COIN);
-		set.add(Resources.COIN);
-		set.add(Resources.COIN);
-		set.add(Resources.COIN);
-		set.add(Resources.COIN);
-		set.add(Resources.COIN);
-		set.add(Resources.COIN);
-		set.add(Resources.COIN);
-		set.add(Resources.SERVANT);
-		set.add(Resources.SERVANT);
-		set.add(Resources.SERVANT);
-		set.add(Resources.SERVANT);
-		set.add(Resources.SERVANT);
-		set.add(Resources.SERVANT);
-		set.add(Resources.SERVANT);
-		set.add(Resources.SERVANT);
-		set.add(Resources.SHIELD);
-		set.add(Resources.SHIELD);
-		set.add(Resources.SHIELD);
-		set.add(Resources.SHIELD);
-		set.add(Resources.SHIELD);
-		set.add(Resources.SHIELD);
-		set.add(Resources.SHIELD);
-		set.add(Resources.STONE);
-		set.add(Resources.STONE);
-		set.add(Resources.STONE);
-		set.add(Resources.STONE);
-		set.add(Resources.STONE);
-		set.add(Resources.STONE);
-		set.add(Resources.STONE);
-		set.add(Resources.STONE);
-		set.add(Resources.STONE);
-		
-		mechanics.getPlayer(0).getMyStrongbox().storeResources(set);
-
-		*/
-		//mechanics.getPlayer(0).getPlayersWarehouseDepot().setDepotForDebugging(resources);
 		turnController.startTurn();
 	}
 

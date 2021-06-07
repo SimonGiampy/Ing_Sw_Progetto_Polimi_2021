@@ -10,13 +10,12 @@ public class BlackCrossToken extends Token{
 
 	/**
 	 * Initialize the attributes
-	 * @param tileNumber number of tiles Lorenzo's marker has to move when this token is revealed
 	 * @param lorenzoTrack faith track of Lorenzo
 	 */
-	protected BlackCrossToken(int tileNumber, FaithTrack lorenzoTrack){
+	protected BlackCrossToken(FaithTrack lorenzoTrack){
 
 		super(TokenType.BLACK_CROSS_TOKEN,null);
-		this.tileNumber = tileNumber;
+		this.tileNumber = 2;
 		this.lorenzoTrack = lorenzoTrack;
 
 	}
