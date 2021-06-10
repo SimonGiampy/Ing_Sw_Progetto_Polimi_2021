@@ -3,14 +3,26 @@
 
 ![logo](src/main/resources/logo.png)
 
-Github repository used for the software engineering project, academic year 2020 - 2021
+Software Engineering group project, academic year 2020 - 2021, Politecnico di Milano
 
-Members of the development group:
-* Alessandro Gavardi [@AlessandroGavardi](https://github.com/AlessandroGavardi)
-* Simone Giampà [@SimonGiampy](https://github.com/SimonGiampy)
-* Michele Guerrini [@micheleguerrini](https://github.com/micheleguerrini)
+__Members__ of the development group:
+* Alessandro Gavardi - [@AlessandroGavardi](https://github.com/AlessandroGavardi)
+* Simone Giampà - [@SimonGiampy](https://github.com/SimonGiampy)
+* Michele Guerrini - [@micheleguerrini](https://github.com/micheleguerrini)
 
-### UML section (TODO)
+#### UML Class Diagrams
+
+- are uploaded [here](https://github.com/SimonGiampy/ing-sw-2021-gavardi-giampa-guerrini/tree/main/deliverables/UML/Final)
+
+#### Sequence Diagrams 
+
+- are uploaded [here](https://github.com/SimonGiampy/ing-sw-2021-gavardi-giampa-guerrini/tree/main/deliverables/Sequence%20Diagrams)
+
+#### Jar Executables
+
+- are uploaded [here](https://github.com/SimonGiampy/ing-sw-2021-gavardi-giampa-guerrini/tree/main/deliverables/JARs)
+
+-------
 
 ### Libraries used
 
@@ -35,7 +47,7 @@ JUnit 5 | Unit testing framework (latest version)
         join an existing one, based on the number of players present in the lobby. The nicknames chosen by the players
         must be unique in every lobby (but they don't necessarily need to be unique across different lobbies).
 
-### Details about the implementation
+### Details about the implementation and our additions to the game
 
 * __GUI resolution__ is set to 1920 x 1080, and the game runs on full-screen mode.
   
@@ -53,6 +65,8 @@ JUnit 5 | Unit testing framework (latest version)
         choosing their nickname, then the server frees that spot for other clients, so that anyone can connect to the lobby 
         (if in the meantime it didn't fill up).
 
+-------
+
 ### Compilation
 
 We uploaded the pre-compiled jar executable files. The uploaded jars were created with the aid of the Maven Assembly Plugin.
@@ -62,9 +76,11 @@ In order to compile the jar file autonomously, change the current folder to the 
 ```
 This will create all 3 jar file in the `builds` folder.
 
+-------
+
 ### Execution
 
-There are 3 executable jar packages in this repository that you can download it [here](https://www.youtube.com/watch?v=M40SBBsSCIA).
+There are 3 executable jar packages in this repository that you can download it [here](https://github.com/SimonGiampy/ing-sw-2021-gavardi-giampa-guerrini/tree/main/deliverables/JARs).
 * __Server app__: executable for running the server on the local machine (localhost).
 * __GUI app__: graphical user interface (needs JavaFX to be installed).
 * __CLI app__: command line interface (emojis and special characters are shown only when executing it via the IntelliJ Idea run terminal).
@@ -77,6 +93,12 @@ in order to execute an application.
  java -jar PSP17-cli_app.jar
 ```
 
+An __Important Note__ about the game execution on the Terminal (game lauched with CLI mode):
+
+The game can be played correctly only on the IntelliJ Idea Terminal. Running the game on other consoles may not show correctly all the symbols and colors used in the game. We use several symbols and emojis for displaying the market, resources, and all the cards in the game. After many tests with different consoles and various software, we weren't able to play the game with all the symbols and colors shown as expected on a console different from the IntelliJ Idea one. 
+
+-------
+
 #### Troubleshooting
 
 In case this error shows up when executing the GUI jar executable
@@ -87,3 +109,5 @@ add this parameter in the command line when executing the jar:
  java --module-path path\to\JavaFX\lib --add-modules javafx.controls,javafx.fxml -jar PSP17-gui_app.jar
 ```
 where `path\to\JavaFX\lib` stands for the path where the javafx library is installed on the local machine.
+The game is set up so that this error should not show up. 
+Furthermore, it is required to have the `java` command listed in the system environment variables, in order for the game to be run on the machine from all directories.
