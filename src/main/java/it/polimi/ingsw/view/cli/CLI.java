@@ -36,10 +36,10 @@ public class CLI extends ViewObservable implements View {
 	 */
 	public void askServerInfo() {
 		HashMap<String, String> serverInfo = new HashMap<>();
+		boolean validInput;
+		/*
 		String defaultAddress = "localhost";
 		String defaultPort = "25000";
-		boolean validInput;
-		
 		do {
 			System.out.print("Enter the server address [" + defaultAddress + "]: ");
 			
@@ -73,6 +73,23 @@ public class CLI extends ViewObservable implements View {
 					System.out.println("Invalid port!");
 					validInput = false;
 				}
+			}
+		} while (!validInput);
+		 */
+
+		System.out.print("Enter the server address: ");
+		String address = scanner.nextLine();
+		serverInfo.put("address", address);
+
+		do {
+			System.out.print("Enter the server port: ");
+			String port = scanner.nextLine();
+			if (ClientSideController.isValidPort(port)) {
+				serverInfo.put("port", port);
+				validInput = true;
+			} else {
+				System.out.println("Invalid port!");
+				validInput = false;
 			}
 		} while (!validInput);
 		
