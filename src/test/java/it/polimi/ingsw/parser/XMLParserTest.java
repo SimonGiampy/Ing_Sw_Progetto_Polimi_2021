@@ -15,7 +15,7 @@ class XMLParserTest {
 
 	private XMLParser parser;
 	private CLI cli;
-	
+	/*
 	@BeforeEach
 	void instantiateParser(){
 		String fileName = "game_configuration_standard.xml";
@@ -70,4 +70,5 @@ class XMLParserTest {
 		System.out.println("Output -> " + ListSet.listMultiplicityToString(baseProduction.getOutputCopy()));
 		System.out.println("Faith Output -> " + baseProduction.getFaithOutput() + "\n");
 	}
+	 */
 }

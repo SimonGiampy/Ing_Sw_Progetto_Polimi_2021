@@ -1,12 +1,9 @@
 package it.polimi.ingsw.model;
 
-import it.polimi.ingsw.model.reducedClasses.ReducedCardProductionManagement;
-import it.polimi.ingsw.model.reducedClasses.ReducedStrongbox;
 import it.polimi.ingsw.model.util.Colors;
 import it.polimi.ingsw.model.util.ListSet;
 import it.polimi.ingsw.model.util.Productions;
 import it.polimi.ingsw.model.util.Resources;
-import it.polimi.ingsw.view.cli.CLI;
 import it.polimi.ingsw.parser.XMLParser;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -69,9 +66,7 @@ public class CardProductionsManagementTest {
 		result.add(new CardRequirement(Colors.YELLOW,2));
 		ArrayList<CardRequirement> test = cardProductionsManagement.getPlayerCardsRequirements();
 		assertEquals(result, test);
-		
-		System.out.println("victory points: " + new ReducedCardProductionManagement(cardProductionsManagement)
-				.getCards().get(0).peek().getVictoryPoints());
+
 	}
 	
 	/**
@@ -167,9 +162,6 @@ public class CardProductionsManagementTest {
 		resources.add(Resources.SERVANT);
 		resources.add(Resources.COIN);
 		strongbox.storeResources(resources);
-		System.out.println("initial strongbox before taking any resources = " + ListSet.listMultiplicityToString(strongbox.getContent()));
-		CLI cli = new CLI();
-		cli.showStrongBox("test", new ReducedStrongbox(strongbox));
 		
 		//second leader card
 		ArrayList<Resources> input2 = new ArrayList<>(); // input production resources
@@ -207,12 +199,10 @@ public class CardProductionsManagementTest {
 		assertTrue(cardProductionsManagement.checkFreeInput(productions, freeChoicesInput));
 		
 		cardProductionsManagement.takeSelectedResources(productions, freeChoicesInput);
-		System.out.println("the strongbox after taking the resources = " + ListSet.listMultiplicityToString(strongbox.getContent()));
 		
 		int[] freeChoicesOutput = new int[]{0, 0, 0, 1}; //[#COIN, #SERVANT, #SHIELD, #STONE]
 		int faith = cardProductionsManagement.activateSelectedProduction(productions, freeChoicesOutput);
 		assertEquals(5, faith);
-		System.out.println("the strongbox after receiving the productions output = " + ListSet.listMultiplicityToString(strongbox.getContent()));
 		
 		// checks the correctness of the productions output
 		ArrayList<Resources> result = new ArrayList<>();

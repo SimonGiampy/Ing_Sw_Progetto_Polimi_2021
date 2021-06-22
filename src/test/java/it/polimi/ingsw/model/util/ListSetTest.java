@@ -43,19 +43,12 @@ class ListSetTest {
 	@Test
 	void subset() {
 		assertTrue(ListSet.subset(set, subList));
-		System.out.println("check: = " + ListSet.subset(set, subList));
 		
 	}
 	
 	@Test
 	void removeSubSet() {
 		set = ListSet.removeSubSet(subList, set);
-		System.out.println("remainder = " + set);
 		assertTrue(set.isEmpty());
-	}
-	
-	@Test
-	void singleElement() {
-		System.out.println(ListSet.listMultiplicityToString(setWithSingleRes));
 	}
 }

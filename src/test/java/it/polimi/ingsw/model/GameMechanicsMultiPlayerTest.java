@@ -2,7 +2,6 @@ package it.polimi.ingsw.model;
 
 import it.polimi.ingsw.model.reducedClasses.ReducedMarket;
 import it.polimi.ingsw.model.util.Resources;
-import it.polimi.ingsw.view.cli.CLI;
 import it.polimi.ingsw.parser.XMLParser;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -64,8 +63,6 @@ class GameMechanicsMultiPlayerTest {
 		
 		int[] expected = new int[]{1, 0, 1, 2};
 		assertArrayEquals(expected, winners);
-		
-		printWinners(winners);
 	}
 	
 	@Test
@@ -91,8 +88,7 @@ class GameMechanicsMultiPlayerTest {
 		int[] winners = game.winningPlayers();
 		assertEquals(0, winners[1]); // winner
 		assertEquals(2, winners.length);
-		
-		printWinners(winners);
+
 	}
 	
 	@Test
@@ -101,9 +97,9 @@ class GameMechanicsMultiPlayerTest {
 		game.getPlayer(2).getPlayersCardManager().addCard(game.getGameDevCardsDeck().getCardStackStructure()[2][3].get(0), 3);
 		assertTrue(game.getPlayer(1).totalScore() >= 9 && game.getPlayer(0).totalScore() <= 12);
 		assertTrue(game.getPlayer(2).totalScore() >= 9 && game.getPlayer(0).totalScore() <= 12);
-		
+
 		// same victory points, different resources
-		
+
 		ArrayList<Resources> resources = new ArrayList<>();
 		resources.add(Resources.STONE);
 		resources.add(Resources.COIN);
@@ -112,35 +108,26 @@ class GameMechanicsMultiPlayerTest {
 		resources.add(Resources.STONE);
 		resources.add(Resources.SHIELD);
 		resources.add(Resources.STONE);
-		
+
 		game.getPlayer(1).getMyStrongbox().storeResources(resources);
-		
+
 		resources.add(Resources.STONE);
 		resources.add(Resources.SHIELD);
 		resources.add(Resources.STONE);
 		resources.add(Resources.SHIELD);
 		resources.add(Resources.STONE);
 		game.getPlayer(2).getMyStrongbox().storeResources(resources);
-		
+
 		int[] winners = game.winningPlayers();
 		assertEquals(2, winners[1]); // winner
 		assertEquals(2, winners.length);
-		
-		printWinners(game.winningPlayers());
+
 	}
-	
-	private void printWinners(int[] winners) {
-		System.out.print("Winning players' indexes with " + winners[0] + " points are: ");
-		for (int i = 1; i < winners.length; i++) {
-			System.out.print(winners[i] + "; ");
-		}
-		System.out.print("\n");
-	}
-	
-	
+
 	@Test
 	void increaseLastReportClaimed() {
 		game.increaseLastReportClaimed();
+		assertEquals(1, game.getLastReportClaimed());
 	}
 	
 	@Test
@@ -150,7 +137,6 @@ class GameMechanicsMultiPlayerTest {
 	
 	@Test
 	void getMarket() {
-		CLI cli = new CLI();
-		cli.showMarket(new ReducedMarket(game.getMarket()));
+		ReducedMarket market = new ReducedMarket(game.getMarket());
 	}
 }

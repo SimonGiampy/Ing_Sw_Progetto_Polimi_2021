@@ -1,9 +1,7 @@
 package it.polimi.ingsw.model;
 
 import it.polimi.ingsw.exceptions.InvalidUserRequestException;
-import it.polimi.ingsw.model.reducedClasses.ReducedWarehouseDepot;
 import it.polimi.ingsw.model.util.Resources;
-import it.polimi.ingsw.view.cli.CLI;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
@@ -231,9 +229,6 @@ public class WarehouseDepotTest {
 		
 		depot.moveResourcesToAdditionalDepots(); // function to be tested
 		
-		CLI cli = new CLI();
-		cli.showDepot("test", new ReducedWarehouseDepot(depot));
-		
 		//lists of expected values to check
 		ArrayList<Boolean> expected1 = new ArrayList<>();
 		expected1.add(true);
@@ -363,9 +358,7 @@ public class WarehouseDepotTest {
 		expected.add(Resources.SHIELD);
 		expected.add(Resources.SERVANT);
 		assertEquals(expected, input);
-		
-		CLI cli = new CLI();
-		cli.showDepot("test", new ReducedWarehouseDepot(depot));
+
 	}
 	
 	@Test

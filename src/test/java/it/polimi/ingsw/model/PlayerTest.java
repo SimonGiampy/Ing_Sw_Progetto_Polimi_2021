@@ -139,11 +139,9 @@ class PlayerTest {
 		assertEquals(Arrays.asList(check),Arrays.asList(player.getCommonMarket().shiftRow(1)));
 		player.interactWithMarket("ROW",2);
 		
-		try {
-			player.convertMarketOutput(0, 0); // just for testing
-		} catch (InvalidUserRequestException e) {
-			System.out.println("Invalid input");
-		}
+
+		assertDoesNotThrow(() -> player.convertMarketOutput(0, 0)); // just for testing
+
 	}
 
 	
@@ -314,11 +312,6 @@ class PlayerTest {
 		assertEquals(3,player.getStoneDiscount());
 		assertEquals(2,player.getShieldDiscount());
 		assertEquals(1,player.getServantDiscount());
-	}
-
-	@AfterEach
-	public void tearDown() {
-		System.setOut(standardOut);
 	}
 	
 }

@@ -4,7 +4,7 @@ import it.polimi.ingsw.model.util.Marbles;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.util.Arrays;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class MarketTest {
 	
@@ -17,22 +17,38 @@ class MarketTest {
 
 	@Test
 	void shiftRow() {
-		System.out.println("market before shifting 2 row = " + Arrays.toString(market.getMarket()));
-		Marbles[] m = market.shiftRow(2);
-		System.out.println("market after shifting 2 row = " + Arrays.toString(market.getMarket()));
-		System.out.println("Result = " + Arrays.toString(m));
+		Marbles[][] before = new Marbles[3][4];
+		for(int i = 0; i < 3; i++){
+			for(int j = 0; j < 4; j++){
+				before[i][j] = market.getMarket()[i][j];
+			}
+		}
+		Marbles extra = market.getExtraBall();
+		market.shiftRow(2);
+		Marbles[][] after = market.getMarket();
+		assertEquals(extra, after[2][3]);
+		assertEquals(before[2][3], after[2][2]);
+		assertEquals(before[2][2], after[2][1]);
+		assertEquals(before[2][1], after[2][0]);
+		assertEquals(before[2][0], market.getExtraBall());
+
 	}
 
 	@Test
 	void shiftCol() {
-		System.out.println("market before shifting 3 col = " + Arrays.toString(market.getMarket()));
-		Marbles[] m = market.shiftCol(3);
-		System.out.println("market after shifting 3 col = " +Arrays.toString(market.getMarket()));
-		System.out.println("Result = " + Arrays.toString(m));
-	}
-	
-	@Test
-	void getExtraBall() {
-		System.out.println("extra ball = " + market.getExtraBall().toString());
+		Marbles[][] before = new Marbles[3][4];
+		for(int i = 0; i < 3; i++){
+			for(int j = 0; j < 4; j++){
+				before[i][j] = market.getMarket()[i][j];
+			}
+		}
+		Marbles extra = market.getExtraBall();
+		market.shiftCol(3);
+		Marbles[][] after = market.getMarket();
+		assertEquals(extra, after[2][3]);
+		assertEquals(before[2][3], after[1][3]);
+		assertEquals(before[1][3], after[0][3]);
+		assertEquals(before[0][3], market.getExtraBall());
+
 	}
 }
