@@ -12,7 +12,7 @@
 
 <AnchorPane prefHeight="1080.0" prefWidth="1920.0" stylesheets="@../../../../../assets/bootstrap3.css" xmlns="http://javafx.com/javafx/" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.view.gui.scenes.CommonBoard">
     <ImageView fitHeight="1080.0" fitWidth="1920.0" pickOnBounds="true" preserveRatio="true">
-        <Image url="@../../../../../assets/board/common_board_1043_final.jpg" />
+        <Image url="@../../../../../assets/board/common_board.jpg" />
     </ImageView>
     <ImageView fx:id="extraBall" fitHeight="72.0" fitWidth="72.0" layoutX="1674.0" layoutY="202.0" pickOnBounds="true" preserveRatio="true" />
     <ImageView fx:id="normalRow1" fitHeight="49.0" fitWidth="82.0" layoutX="1788.0" layoutY="292.0" pickOnBounds="true" preserveRatio="true">
@@ -87,9 +87,7 @@
         <ImageView fx:id="cards02" fitHeight="302.0" fitWidth="225.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER" />
         <ImageView fx:id="cards03" fitHeight="302.0" fitWidth="225.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER" />
     </GridPane>
-    <ImageView fx:id="text" fitHeight="943.0" fitWidth="1676.0" layoutX="140.0" layoutY="65.0" pickOnBounds="true" preserveRatio="true" visible="false">
-        <Image url="@../../../../../assets/board/text.png" />
-    </ImageView>
+
     <Text fx:id="slotText" fill="#4066bf" layoutX="1410.0" layoutY="808.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Select a Slot!" visible="false">
         <style>-fx-font-family: Caveat; -fx-font-size: 53</style>
     </Text>

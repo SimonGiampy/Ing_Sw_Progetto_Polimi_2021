@@ -62,8 +62,7 @@ public class CommonBoard extends ViewObservable implements SceneController{
 	@FXML ImageView cards21;
 	@FXML ImageView cards22;
 	@FXML ImageView cards23;
-
-	@FXML ImageView text; //useless
+	
 	//buttons
 	@FXML Button marketActivation;
 	@FXML Button cardsActivation;

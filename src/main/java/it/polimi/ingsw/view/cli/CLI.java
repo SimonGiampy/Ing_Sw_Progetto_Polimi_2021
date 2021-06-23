@@ -37,45 +37,6 @@ public class CLI extends ViewObservable implements View {
 	public void askServerInfo() {
 		HashMap<String, String> serverInfo = new HashMap<>();
 		boolean validInput;
-		/*
-		String defaultAddress = "localhost";
-		String defaultPort = "25000";
-		do {
-			System.out.print("Enter the server address [" + defaultAddress + "]: ");
-			
-			String address = scanner.nextLine();
-			
-			if (address.equals("") || address.equals("localhost")) {
-				serverInfo.put("address", defaultAddress);
-				validInput = true;
-			} else if (ClientSideController.isValidIpAddress(address)) {
-				serverInfo.put("address", address);
-				validInput = true;
-			} else {
-				System.out.println("Invalid address!");
-				CLIUtils.clearCli();
-				validInput = false;
-			}
-		} while (!validInput);
-		
-		do {
-			System.out.print("Enter the server port [" + defaultPort + "]: ");
-			String port = scanner.nextLine();
-			
-			if (port.equals("")) {
-				serverInfo.put("port", defaultPort);
-				validInput = true;
-			} else {
-				if (ClientSideController.isValidPort(port)) {
-					serverInfo.put("port", port);
-					validInput = true;
-				} else {
-					System.out.println("Invalid port!");
-					validInput = false;
-				}
-			}
-		} while (!validInput);
-		 */
 
 		System.out.print("Enter the server address: ");
 		String address = scanner.nextLine();

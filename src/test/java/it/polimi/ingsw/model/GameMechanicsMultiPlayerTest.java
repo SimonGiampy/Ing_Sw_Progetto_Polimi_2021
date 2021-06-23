@@ -137,6 +137,6 @@ class GameMechanicsMultiPlayerTest {
 	
 	@Test
 	void getMarket() {
-		ReducedMarket market = new ReducedMarket(game.getMarket());
+		new ReducedMarket(game.getMarket());
 	}
 }

@@ -12,10 +12,10 @@ import org.junit.jupiter.api.Test;
 import java.util.ArrayList;
 
 class XMLParserTest {
-
+/*
 	private XMLParser parser;
 	private CLI cli;
-	/*
+	
 	@BeforeEach
 	void instantiateParser(){
 		String fileName = "game_configuration_standard.xml";

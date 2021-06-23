@@ -1,9 +1,7 @@
 package it.polimi.ingsw.model;
 
-import it.polimi.ingsw.exceptions.InvalidUserRequestException;
 import it.polimi.ingsw.model.util.*;
 import it.polimi.ingsw.parser.XMLParser;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -17,7 +15,6 @@ import static org.junit.jupiter.api.Assertions.*;
 class PlayerTest {
 
 	Player player;
-	private final PrintStream standardOut = System.out;
 	private final ByteArrayOutputStream outputStreamCaptor = new ByteArrayOutputStream();
 	DevelopmentCard developmentCard1;
 	DevelopmentCard developmentCard2;

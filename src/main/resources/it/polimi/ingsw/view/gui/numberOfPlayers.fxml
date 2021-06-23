@@ -10,7 +10,7 @@
         <Image url="@../../../../../assets/numberOfPlayers/players_florence.jpg" />
     </ImageView>
     <ImageView fx:id="onePlayer" fitHeight="374.0" fitWidth="242.0" layoutX="383.0" layoutY="174.0" pickOnBounds="true" preserveRatio="true">
-        <Image url="@../../../../../assets/numberOfPlayers/1_giocatore.png" />
+        <Image url="@../../../../../assets/numberOfPlayers/1_player.png" />
     </ImageView>
     <ImageView fx:id="twoPlayers" fitHeight="374.0" fitWidth="326.0" layoutX="1314.0" layoutY="175.0" pickOnBounds="true" preserveRatio="true">
         <Image url="@../../../../../assets/numberOfPlayers/2_players.png" />

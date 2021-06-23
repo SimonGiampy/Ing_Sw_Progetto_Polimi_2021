@@ -13,6 +13,7 @@ public class ServerApp {
 			System.out.println("Host local server on the port: ");
 			port = scanner.nextLine();
 		} while (!ClientSideController.isValidPort(port));
+		System.out.println("Server is starting...");
 		Server server = new Server(Integer.parseInt(port));
 		new Thread(server).start();
 	}

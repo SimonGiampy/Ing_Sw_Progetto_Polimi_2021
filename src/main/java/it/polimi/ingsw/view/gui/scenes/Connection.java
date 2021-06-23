@@ -47,33 +47,21 @@ public class Connection extends ViewObservable implements SceneController {
 	 * triggers connection to the server. Adds default values if not written. Default values = localhost, 25000
 	 */
 	void connection() {
-		
-		
-		
 		HashMap<String, String> serverInfo = new HashMap<>();
 		
 		String address = this.address.getText();
 		String port = this.port.getText();
-		boolean validInput;
+		boolean validInput = true;
 		
-		if (address.equals("") || address.equals("localhost")) {
-			serverInfo.put("address", "localhost");
-			addressWrong.setVisible(false);
-			validInput = true;
-		} else if (ClientSideController.isValidIpAddress(address)) {
-			serverInfo.put("address", address);
-			addressWrong.setVisible(false);
-			validInput = true;
-		} else {
+		if (address.equals("")) {
 			addressWrong.setVisible(true);
 			validInput = false;
+		} else {
+			addressWrong.setVisible(false);
 		}
 		
 		if (ClientSideController.isValidPort(port)) {
 			serverInfo.put("port", port);
-			portWrong.setVisible(false);
-		} else if (port.equals("")) {
-			serverInfo.put("port", "25000");
 			portWrong.setVisible(false);
 		} else {
 			portWrong.setVisible(true);

@@ -290,7 +290,9 @@ public class ServerSideController {
 
 		for (String s : nicknameList) {
 			view = virtualViewMap.get(s);
-			view.showGenericMessage(message.getNickname()+ " went to the market!");
+			if (!s.equals(nicknameList.get(playerIndex))) {
+				view.showGenericMessage(message.getNickname()+ " went to the market!");
+			}
 			view.showMarket(new ReducedMarket(mechanics.getMarket()));
 		}
 

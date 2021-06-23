@@ -32,11 +32,8 @@ public class AppGui extends Application {
 		
 		Scene scene = new Scene(rootLayout);
 		GUI gui = new GUI(scene, stage);
-		//ClientSideController clientController = new ClientSideController(gui);
-		//gui.attach(clientController);
 
 		Connection controller = loader.getController();
-		//controller.attach(clientController);
 		controller.setGui(gui);
 
 		stage.getIcons().add(new Image("/assets/board/calamaio.png")); // game icon in the taskbar
