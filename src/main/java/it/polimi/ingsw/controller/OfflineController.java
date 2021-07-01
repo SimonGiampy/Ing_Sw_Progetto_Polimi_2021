@@ -16,6 +16,13 @@ public class OfflineController extends ClientSideController implements ViewObser
 	private final ServerSideController controller;
 	private final String nickname;
 	
+	/**
+	 * Offline mode controller: this class exploits the already existent methods in the server side controller class in order
+	 * to communicate the results of the user actions and to receive updates from the model logic of the game
+	 * @param view CLI or GUI, decided by the user
+	 * @param controller instance of the controller that handles
+	 * @param nickname of the only player
+	 */
 	public OfflineController(View view, ServerSideController controller, String nickname) {
 		super(view);
 		this.controller=controller;

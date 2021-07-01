@@ -11,8 +11,10 @@ __Members__ of the development group:
 * Michele Guerrini - [@micheleguerrini](https://github.com/micheleguerrini)
 
 #### UML Class Diagrams
-
-- are uploaded [here](https://github.com/SimonGiampy/ing-sw-2021-gavardi-giampa-guerrini/tree/main/deliverables/UML/Final)
+We created a set of different UML diagrams. The complete diagrams show every class in the repository, both with
+and without their methods, variables and constructors. The simplified diagram shows a schema of the main components
+and classes of the code repository.
+- the diagrams are uploaded [here](https://github.com/SimonGiampy/ing-sw-2021-gavardi-giampa-guerrini/tree/main/deliverables/UML/Final)
 
 #### Sequence Diagrams 
 
@@ -47,9 +49,10 @@ JUnit 5 | Unit testing framework (latest version)
         join an existing one, based on the number of players present in the lobby. The nicknames chosen by the players
         must be unique in every lobby (but they don't necessarily need to be unique across different lobbies).
 
-### Details about the implementation and our additions to the game
+### Details about the implementation, and our additions to the game
 
-* __GUI resolution__ is set to 1920 x 1080, and the game runs on full-screen mode.
+* __GUI resolution__ is set to 1920 x 1080, and the game runs on full-screen mode. Note that the scale layout for the screen must be
+        set to 100%, otherwise the game might not be displayed in the correct window size.
   
 * __Model implementation for customizable configuration__: the _Game Logic Model_ works perfectly with custom game configurations.
         Our initial goal was to implement the game configurator, but we ended up not doing it because of the lack of available time.
@@ -70,6 +73,9 @@ JUnit 5 | Unit testing framework (latest version)
 ### Compilation
 
 We uploaded the pre-compiled jar executable files. The uploaded jars were created with the aid of the Maven Assembly Plugin.
+These jar packages are proven to work correctly on Windows machines. If any problem arises when executing the jars on a different
+operating system, regenerating the jar packages might be needed.
+
 In order to compile the jar file autonomously, change the current folder to the project root directory and write:
 ```shell
  mvn clean package

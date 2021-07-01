@@ -14,7 +14,6 @@ import javafx.scene.input.KeyCode;
 
 import java.util.HashMap;
 
-
 public class Nickname extends ViewObservable implements SceneController {
 
 	@FXML private Button confirm;
@@ -25,7 +24,7 @@ public class Nickname extends ViewObservable implements SceneController {
 	private boolean offline = false;
 
 	/**
-	 * Handles the click on the confirmation button. Its behaviour is differentiated based on the game mode (offline or online)
+	 * Handles the click on the confirmation button. Its behavior is differentiated based on the game mode (offline or online)
 	 */
 	public void confirmation() {
 		String nick = nickname.getText();

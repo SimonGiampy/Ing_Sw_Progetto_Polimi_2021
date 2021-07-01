@@ -45,7 +45,7 @@ public class TurnController {
 	}
 
 	/**
-	 * sets next active player
+	 * sets the next active player and communicates the end of the turn
 	 */
 	public void nextTurn(){
 		int currentPlayerIndex = nicknameList.indexOf(activePlayer);
@@ -59,7 +59,7 @@ public class TurnController {
 	}
 
 	/**
-	 * it starts the turn
+	 * it starts the player's turn
 	 */
 	public void startTurn(){
 		mainActionDone = false;

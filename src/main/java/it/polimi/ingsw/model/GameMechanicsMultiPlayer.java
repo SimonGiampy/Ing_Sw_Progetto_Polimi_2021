@@ -65,6 +65,7 @@ public class GameMechanicsMultiPlayer {
 	 * @param playersLeaders the array of 4 leader cards to assign to each player in the game
 	 * @param track the player's faith track
 	 * @param rules common base production rules object
+	 * @param playerIndex index of the player to be created, from 0 up to 3
 	 * @return Player instance created
 	 */
 	public Player instantiatePlayer(LeaderCard[] playersLeaders, FaithTrack track, ProductionRules rules, int playerIndex) {
@@ -81,6 +82,7 @@ public class GameMechanicsMultiPlayer {
 	/**
 	 * read all the development cards from the XML and group them by color and level.
 	 * Then shuffle them in piles of 4 (standard number of cards) and create the cards deck matrix
+	 * @param developmentCards list of development cards read from xml
 	 * @return the matrix representing the piles of development cards
 	 */
 	public ArrayList<DevelopmentCard>[][] createCommonCardsDeck(ArrayList<DevelopmentCard> developmentCards) {

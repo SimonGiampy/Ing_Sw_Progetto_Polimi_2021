@@ -28,7 +28,7 @@ public class ServerSideController {
 	
 	private final Lobby lobby;
 	private ArrayList<String> nicknameList;
-	private final boolean[] gameReady; //
+	private final boolean[] gameReady;
 	private final boolean[] initResources;
 
 
@@ -159,6 +159,7 @@ public class ServerSideController {
 	 */
 	protected void startGame() {
 		gameState = GameState.GAME;
+		//TODO: stop cheating
 		ArrayList<Resources> cheat = new ArrayList<>();
 		cheat.add(Resources.SHIELD);
 		cheat.add(Resources.STONE);
@@ -189,6 +190,7 @@ public class ServerSideController {
 		cheat.add(Resources.COIN);
 		cheat.add(Resources.SERVANT);
 		mechanics.getPlayer(0).getMyStrongbox().storeResources(cheat);
+		mechanics.getPlayer(1).getMyStrongbox().storeResources(cheat);
 		
 		turnController.startTurn();
 	}

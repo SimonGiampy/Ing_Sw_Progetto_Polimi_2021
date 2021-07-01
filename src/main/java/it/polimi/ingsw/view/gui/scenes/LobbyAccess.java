@@ -23,21 +23,36 @@ public class LobbyAccess extends ViewObservable implements SceneController {
 	private int idVersion;
 	private int selectedLobby;
 	
-
-	public void onCreateLobby(Event event){
-		//new Thread(() -> notifyObserver(obs -> obs.onUpdateLobbyAccess(0,idVersion))).start();
+	/**
+	 * the user creates a lobby
+	 * @param event click event
+	 */
+	public void onCreateLobby(Event event) {
 		notifyObserver(obs -> obs.onUpdateLobbyAccess(0,idVersion));
 	}
-
+	
+	/**
+	 * the user joins a lobby
+	 * @param event click event
+	 */
 	public void onJoinLobby(Event event){
 		notifyObserver(obs -> obs.onUpdateLobbyAccess(selectedLobby, idVersion));
 	}
-
+	
+	/**
+	 * the user selects a lobby from the given list
+	 * @param event click event
+	 */
 	public void onSelectLobby(Event event){
 		btnJoinLobby.setVisible(true);
 		selectedLobby = lobbyList.getSelectionModel().getSelectedIndex() + 1;
 	}
-
+	
+	/**
+	 * updates the list of lobbies available on screen
+	 * @param lobbyList list of lobby descriptions
+	 * @param idVersion version of the list incoming from the server
+	 */
 	public void update(ArrayList<String> lobbyList, int idVersion){
 		ObservableList<String> lobbies = FXCollections.observableList(lobbyList);
 		this.lobbyList.setItems(lobbies);
@@ -48,10 +63,16 @@ public class LobbyAccess extends ViewObservable implements SceneController {
 		}
 	}
 	
+	/**
+	 * sets the lobby flag not valid
+	 */
 	public void setLobbyInvalid() {
 		lobbyInvalid.setVisible(true);
 	}
 	
+	/**
+	 * button click listeners
+	 */
 	@FXML
 	public void initialize() {
 		btnCreateLobby.addEventHandler(MouseEvent.MOUSE_CLICKED, this::onCreateLobby);

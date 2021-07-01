@@ -26,8 +26,8 @@ public class LeadersDialogController implements SceneController {
 	}
 	
 	/**
-	 *
-	 * @param leaderCards
+	 * sets the images and click listeners
+	 * @param leaderCards list of leader cards to be shown to the user
 	 */
 	public void setLeaders(ArrayList<ReducedLeaderCard> leaderCards) {
 		img1.setImage(new Image("/assets/leaderCards/" + leaderCards.get(0).getIdNumber() + ".png"));
@@ -43,8 +43,8 @@ public class LeadersDialogController implements SceneController {
 	}
 	
 	/**
-	 *
-	 * @param img
+	 * applies glow effect when selected
+	 * @param img image of leader card
 	 */
 	private void applyGlow(ImageView img) {
 		if (selection.contains(img)) {
@@ -59,8 +59,8 @@ public class LeadersDialogController implements SceneController {
 	}
 	
 	/**
-	 *
-	 * @param button
+	 * modifies the style of the confirmation button
+	 * @param button confirmation button element
 	 */
 	public void setConfirmButton(Button button) {
 		this.confirm = button;
@@ -68,6 +68,10 @@ public class LeadersDialogController implements SceneController {
 		confirm.getStyleClass().add("success");
 	}
 	
+	/**
+	 * leader selection adds new elements in the list of user choices
+	 * @return list of integer positional numbers
+	 */
 	public ArrayList<Integer> getSelectedLeaders() {
 		ArrayList<Integer> integers = new ArrayList<>();
 		if (selection.contains(img1)) integers.add(1);

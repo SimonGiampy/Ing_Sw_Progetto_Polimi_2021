@@ -10,8 +10,8 @@ import java.util.ArrayList;
 public class LeadersDialog extends Dialog<ArrayList<Integer>> {
 	
 	/**
-	 *
-	 * @param leaderCards
+	 * creates a new dialog window with its content and click listeners
+	 * @param leaderCards incoming from the server
 	 */
 	public LeadersDialog(ArrayList<ReducedLeaderCard> leaderCards) {
 		try {

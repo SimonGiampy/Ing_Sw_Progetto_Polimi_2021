@@ -45,33 +45,35 @@ public class WarehouseDepotTest {
 	public void payResourcesTest() {
 		WarehouseDepot depot = new WarehouseDepot();
 		//incoming resources setup
-		Resources[] list = new Resources[] {Resources.COIN, Resources.SHIELD, Resources.COIN,
-					Resources.SHIELD, Resources.STONE, Resources.SERVANT};
+		Resources[] list = new Resources[] {Resources.EMPTY, Resources.SHIELD, Resources.EMPTY,
+					Resources.SHIELD, Resources.EMPTY, Resources.SERVANT};
 		depot.setDepotForDebugging(list);
 		
 		//extra depot 1 with 2 resources and both slots occupied
 		ArrayList<Resources> addDepot1 = new ArrayList<>();
 		addDepot1.add(Resources.COIN);
-		addDepot1.add(Resources.STONE);
+		addDepot1.add(Resources.COIN);
 		depot.enableAdditionalDepot(addDepot1);
 		depot.getExtraDepotContents().get(0).set(0, true); //fills the slot
 		depot.getExtraDepotContents().get(0).set(1, true); //fills the slot
 		
-		//extra depot 2 with 1 resource but the slot is not occupied
+		//extra depot 2 with 2 resources but the slot is not occupied
 		ArrayList<Resources> addDepot2 = new ArrayList<>();
+		addDepot2.add(Resources.STONE);
 		addDepot2.add(Resources.STONE);
 		depot.enableAdditionalDepot(addDepot2);
 		depot.getExtraDepotContents().get(1).set(0, true); //fills the slot
+		depot.getExtraDepotContents().get(1).set(1, true); //fills the slot
 		
 		
 		ArrayList<Resources> price = new ArrayList<>();
 		price.add(Resources.SHIELD); //payed from depot
 		price.add(Resources.SERVANT); //payed from depot
 		price.add(Resources.SERVANT); //not payed
-		price.add(Resources.COIN); // payed from depot
-		price.add(Resources.STONE); //payed from depot
-		price.add(Resources.STONE); // payed from extra depot 1
+		price.add(Resources.COIN); // payed from extra depot 1
+		price.add(Resources.STONE); //payed from extra depot 2
 		price.add(Resources.STONE); // payed from extra depot 2
+		price.add(Resources.COIN); // payed from extra depot 1
 		price.add(Resources.STONE); // not payed
 		
 		ArrayList<Resources> output = depot.payResources(price); // function call to be tested
@@ -83,15 +85,17 @@ public class WarehouseDepotTest {
 		
 		assertEquals(expectedResult, output); // checks the function output
 		
-		Resources[] newWarehouse = new Resources[] {Resources.EMPTY, Resources.EMPTY, Resources.COIN,
+		Resources[] newWarehouse = new Resources[] {Resources.EMPTY, Resources.EMPTY, Resources.EMPTY,
 				Resources.SHIELD, Resources.EMPTY, Resources.EMPTY};
 		// checks remaining resources in the depot
 		assertEquals(Arrays.asList(newWarehouse), Arrays.asList(depot.getDepot()));
 		
-		assertEquals(true, depot.getExtraDepotContents().get(0).get(0)); //extra depot 1, slot 0
+		assertEquals(false, depot.getExtraDepotContents().get(0).get(0)); //extra depot 1, slot 0
 		assertEquals(false, depot.getExtraDepotContents().get(0).get(1)); //extra depot 1, slot 1
 		
 		assertEquals(false, depot.getExtraDepotContents().get(1).get(0)); // extra depot 2, slot 0
+		assertEquals(false, depot.getExtraDepotContents().get(1).get(1)); // extra depot 2, slot 0
+		
 		
 	}
 	
