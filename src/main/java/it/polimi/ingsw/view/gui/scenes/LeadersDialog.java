@@ -9,6 +9,10 @@ import java.util.ArrayList;
 
 public class LeadersDialog extends Dialog<ArrayList<Integer>> {
 	
+	/**
+	 *
+	 * @param leaderCards
+	 */
 	public LeadersDialog(ArrayList<ReducedLeaderCard> leaderCards) {
 		try {
 			FXMLLoader loader = new FXMLLoader();

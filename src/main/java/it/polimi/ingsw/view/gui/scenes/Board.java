@@ -575,6 +575,15 @@ public class Board extends ViewObservable implements SceneController {
 			if(leaderCards.get(i).isAbilitiesActivated()){
 				images[i].setImage(new Image("/assets/leaderCards/" + leaderCards.get(i).getIdNumber() + ".png"));
 				setShadow(images[i],true);
+				
+				//extra depot leader card check
+				if (leaderCards.get(i).getIdNumber() >= 5 && leaderCards.get(i).getIdNumber() <= 8) {
+					if (extraDepotLeader1Activation > 0) {
+						extraDepotLeader2Activation = i + 1;
+					} else {
+						extraDepotLeader1Activation = i + 1;
+					}
+				}
 			}
 			if (leaderCards.get(i).isDiscarded()) { // card is less bright to indicate that it has been discarded
 				images[i].setImage(new Image("/assets/leaderCards/" + leaderCards.get(i).getIdNumber() + ".png"));
@@ -583,6 +592,7 @@ public class Board extends ViewObservable implements SceneController {
 				images[i].setEffect(colorAdjust);
 			}
 		}
+		
 	}
 	
 	/**

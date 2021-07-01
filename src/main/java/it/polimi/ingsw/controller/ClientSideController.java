@@ -127,7 +127,7 @@ public class ClientSideController implements ViewObserver, Observer {
 	@Override
 	public void onUpdateServerInfo(HashMap<String, String> serverInfo) {
 		try {
-			client = new Client(serverInfo.get("address"), Integer.parseInt(serverInfo.get("port")));
+			client = new Client(serverInfo.get("address"), serverInfo.get("port"));
 		} catch (IOException e) {
 			Client.LOGGER.error("Error in connecting to the server: " + e.getMessage());
 			view.connectionError();
@@ -212,7 +212,6 @@ public class ClientSideController implements ViewObserver, Observer {
 				"([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\." +
 				"([01]?\\d\\d?|2[0-4]\\d|25[0-5])$";
 		return Pattern.matches(regex, ip);
-
 		 */
 	}
 	

@@ -30,11 +30,10 @@ public class Client extends Observable {
 	 * @param address address of the server to connect
 	 * @param port port of the server to connect
 	 */
-	public Client(String address, int port) throws IOException {
-
-		socket = new Socket(address, port);
+	public Client(String address, String port) throws IOException {
+		socket = new Socket(address, Integer.parseInt(port));
 		socket.setSoTimeout(20000);
-		socket.setSoTimeout(60000);
+		
 		LOGGER.info("Connected to server");
 		this.outputStream = new ObjectOutputStream(socket.getOutputStream());
 		this.inputStream = new ObjectInputStream(socket.getInputStream());

@@ -25,6 +25,10 @@ public class LeadersDialogController implements SceneController {
 		selection = new ArrayList<>();
 	}
 	
+	/**
+	 *
+	 * @param leaderCards
+	 */
 	public void setLeaders(ArrayList<ReducedLeaderCard> leaderCards) {
 		img1.setImage(new Image("/assets/leaderCards/" + leaderCards.get(0).getIdNumber() + ".png"));
 		img2.setImage(new Image("/assets/leaderCards/" + leaderCards.get(1).getIdNumber() + ".png"));
@@ -38,6 +42,10 @@ public class LeadersDialogController implements SceneController {
 		
 	}
 	
+	/**
+	 *
+	 * @param img
+	 */
 	private void applyGlow(ImageView img) {
 		if (selection.contains(img)) {
 			img.setEffect(new Glow(0));
@@ -50,7 +58,10 @@ public class LeadersDialogController implements SceneController {
 		confirm.setDisable(selection.size() != 2);
 	}
 	
-	
+	/**
+	 *
+	 * @param button
+	 */
 	public void setConfirmButton(Button button) {
 		this.confirm = button;
 		confirm.setDisable(true);

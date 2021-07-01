@@ -72,6 +72,7 @@ public class Connection extends ViewObservable implements SceneController {
 			this.address.setText("");
 			this.port.setText("");
 		} else {
+			serverInfo.put("address", address);
 			ClientSideController clientController = new ClientSideController(gui);
 			gui.attach(clientController);
 			this.attach(clientController);
