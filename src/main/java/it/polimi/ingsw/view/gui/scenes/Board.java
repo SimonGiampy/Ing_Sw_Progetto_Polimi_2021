@@ -110,7 +110,7 @@ public class Board extends ViewObservable implements SceneController {
 	private int extraDepotLeader2Activation; // = 0 if not active, = 1 if it's the first leader, =2 if it's the second leader
 	
 	private boolean mainActionDone; //flag needed for the end turn move
-	
+
 	@FXML
 	public void initialize() {
 		Font.loadFont(getClass().getResourceAsStream("/assets/font/Caveat-Regular.ttf"), 10);

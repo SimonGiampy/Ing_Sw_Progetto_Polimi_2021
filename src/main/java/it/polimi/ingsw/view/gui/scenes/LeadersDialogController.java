@@ -10,7 +10,7 @@ import javafx.scene.image.ImageView;
 import java.util.ArrayList;
 
 public class LeadersDialogController implements SceneController {
-	
+
 	@FXML private ImageView img1;
 	@FXML private ImageView img2;
 	@FXML private ImageView img3;

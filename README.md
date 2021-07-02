@@ -14,7 +14,7 @@ __Members__ of the development group:
 We created a set of different UML diagrams. The complete diagrams show every class in the repository, both with
 and without their methods, variables and constructors. The simplified diagram shows a schema of the main components
 and classes of the code repository.
-- the diagrams are uploaded [here](https://github.com/SimonGiampy/ing-sw-2021-gavardi-giampa-guerrini/tree/main/deliverables/UML/Final)
+- the diagrams are uploaded [here](https://github.com/SimonGiampy/ing-sw-2021-gavardi-giampa-guerrini/tree/main/deliverables/UML)
 
 #### Sequence Diagrams 
 
@@ -38,7 +38,7 @@ JUnit 5 | Unit testing framework (latest version)
 
 * Complete rules (single player and multi player game modes)
 * CLI (command line interface)
-* GUI (graphics user interface)
+* GUI (graphic user interface)
 * Socket connection for the multi player online game
 * Advanced functionalities implemented
     * **Offline Single-Player Match**: The single player game mode can be played offline, without the need of connecting to a server for playing.
@@ -91,7 +91,7 @@ There are 3 executable jar packages in this repository that you can download it 
 * __GUI app__: graphical user interface (needs JavaFX to be installed).
 * __CLI app__: command line interface (emojis and special characters are shown only when executing it via the IntelliJ Idea run terminal).
 
-Before executing the programs, make sure the terminal is set in the correct directory.Write this code in command line
+Before executing the programs, make sure the terminal is set in the correct directory. Write this code in command line
 in order to execute an application.
 ```shell
  java -jar PSP17-server_app.jar

@@ -80,7 +80,7 @@ public class Connection extends ViewObservable implements SceneController {
 		}
 		
 	}
-	
+
 	/**
 	 * when the button for creating an offline match is clicked
 	 * @param event click event

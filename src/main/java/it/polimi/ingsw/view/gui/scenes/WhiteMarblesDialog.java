@@ -9,7 +9,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 public class WhiteMarblesDialog extends Dialog<Integer[]> {
-	
+
 	/**
 	 * creates a new dialog window for asking how many and which leader actions to apply when receiving multiple white marbles
 	 * and when two white marble leaders are activated

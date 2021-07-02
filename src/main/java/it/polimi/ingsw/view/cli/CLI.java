@@ -347,7 +347,7 @@ public class CLI extends ViewObservable implements View {
 		boolean checkGoingToWarehouse = false, checkGoingToDeck = false, check;
 		int origin = 0, destination = 0;
 		String fromWhere = "", toWhere = "";
-		
+
 		do {
 			read = scanner.nextLine().toLowerCase(); // user input
 			if (read.equals("confirm") && confirmationAvailable) {

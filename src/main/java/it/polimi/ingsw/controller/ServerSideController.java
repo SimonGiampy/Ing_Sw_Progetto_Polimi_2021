@@ -293,7 +293,7 @@ public class ServerSideController {
 			}
 			view.showMarket(new ReducedMarket(mechanics.getMarket()));
 		}
-		
+
 		view = virtualViewMap.get(message.getNickname());
 		if(deck.isWhiteAbility1Activated() && deck.getWhiteMarblesTaken() > 0) {
 			if (deck.isWhiteAbility2Activated()) { // both white marbles abilities are activated
@@ -643,7 +643,7 @@ public class ServerSideController {
 		String nickname = "";
 		boolean send = false;
 
-		if(mechanics.getNumberOfPlayers() == 1){
+		if(mechanics.getNumberOfPlayers() == 1){ //single player
 			GameMechanicsSinglePlayer mec = (GameMechanicsSinglePlayer) mechanics;
 			boolean lorenzoCheck = mec.getLorenzoFaithTrack().checkActivationVaticanReport(mec.getLastReportClaimed());
 			boolean playerCheck = mec.getPlayer(0).getPlayerFaithTrack().checkActivationVaticanReport(mec.getLastReportClaimed());
@@ -662,7 +662,7 @@ public class ServerSideController {
 			}
 		} else {
 			do {
-				for (int i = 0; i < numberOfPlayers; i++) {
+				for (int i = 0; i < numberOfPlayers; i++) { // check if a player activated a report
 					check[i] = mechanics.getPlayer(i).getPlayerFaithTrack().checkActivationVaticanReport(mechanics.getLastReportClaimed());
 					if (check[i]) {
 						check2 = true;
@@ -670,10 +670,11 @@ public class ServerSideController {
 					}
 				}
 				for (int i = 0; i < numberOfPlayers && check2; i++) {
+					// if a player activated a report trigger the activation for everybody
 					mechanics.getPlayer(i).getPlayerFaithTrack().checkVaticanReport(mechanics.getLastReportClaimed());
 				}
 
-				if (check2) mechanics.increaseLastReportClaimed();
+				if (check2) mechanics.increaseLastReportClaimed(); //increasing the index of the report
 
 				for (int i = 0; i < numberOfPlayers; i++) {
 					if (mechanics.getPlayer(i).getPlayerFaithTrack().getLastReportClaimed() != mechanics.getLastReportClaimed())
@@ -682,6 +683,7 @@ public class ServerSideController {
 			} while (!flag);
 
 			for (int i = 0; i < numberOfPlayers && check2; i++) {
+				//notify everybody with a generic message saying which player activated which report
 				String nick;
 				if (nicknameList.get(i).equals(nickname))
 					nick = "You";

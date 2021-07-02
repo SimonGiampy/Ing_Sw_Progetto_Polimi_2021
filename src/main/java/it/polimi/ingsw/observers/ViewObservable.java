@@ -25,7 +25,7 @@ public abstract class ViewObservable {
 	}
 	
 	/**
-	 * this is crazy furious
+	 * executes the lambda expression for every observer in the observers list
 	 * @param lambda expression that executes the desired function
 	 */
 	protected void notifyObserver(Consumer<ViewObserver> lambda) {

@@ -10,7 +10,7 @@ public class GameMechanicsMultiPlayer {
 	private Market market;
 	private DevelopmentCardsDeck gameDevCardsDeck;
 	private Player[] players;
-	
+
 	private final int numberOfPlayers;
 	private int lastReportClaimed;
 	

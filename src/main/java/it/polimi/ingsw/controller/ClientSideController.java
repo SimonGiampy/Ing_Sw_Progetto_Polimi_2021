@@ -200,22 +200,6 @@ public class ClientSideController implements ViewObserver, Observer {
 	}
 	
 	/**
-	 * Validates the given IPv4 address by using a regex.
-	 * @param ip the string of the ip address to be validated
-	 * @return {@code true} if the ip is valid, {@code false} otherwise.
-	 */
-	public static boolean isValidIpAddress(String ip) {
-		return true;
-		/*
-		String regex = "^([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\." +
-				"([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\." +
-				"([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\." +
-				"([01]?\\d\\d?|2[0-4]\\d|25[0-5])$";
-		return Pattern.matches(regex, ip);
-		 */
-	}
-	
-	/**
 	 * Checks if the given port string is in the range of allowed ports.
 	 * @param portStr the ports to be checked.
 	 * @return {@code true} if the port is valid, {@code false} otherwise.

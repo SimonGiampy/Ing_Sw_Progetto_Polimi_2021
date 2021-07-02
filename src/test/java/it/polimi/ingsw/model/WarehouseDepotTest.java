@@ -13,7 +13,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class WarehouseDepotTest {
 
-	
+
 	/**
 	 * tests the activation of the additional depots in the warehouse.
 	 * Test successful

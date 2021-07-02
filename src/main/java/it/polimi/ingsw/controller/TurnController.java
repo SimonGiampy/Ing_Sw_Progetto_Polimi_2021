@@ -17,7 +17,6 @@ public class TurnController {
 	private final ArrayList<String> nicknameList;
 	private final HashMap<String, VirtualView> virtualViewMap;
 	private final ServerSideController serverSideController;
-	
 	private boolean endOfGame; // if the endgame phase started
 	private boolean endgameStarted; // if the last turn started
 	private int remainingTurn;
@@ -212,6 +211,7 @@ public class TurnController {
 			remainingTurn = nicknameList.size() - nicknameList.indexOf(activePlayer) - 1;
 			if(remainingTurn == 0)
 				endOfGame = true;
+
 		}
 		else if(endgameStarted && remainingTurn>1){
 			remainingTurn--;

@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import static org.junit.jupiter.api.Assertions.*;
 
 class LeaderCardTest {
-	
+
 	final CardRequirement yellow0= new CardRequirement(Colors.YELLOW,0);
 	final CardRequirement blue0= new CardRequirement(Colors.BLUE,0);
 	final CardRequirement yellow1= new CardRequirement(Colors.YELLOW,1);

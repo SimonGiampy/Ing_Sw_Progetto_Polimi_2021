@@ -19,7 +19,7 @@ public class Nickname extends ViewObservable implements SceneController {
 	@FXML private Button confirm;
 	@FXML private TextField nickname;
 	@FXML private ImageView nicknameValid;
-	
+
 	private GUI gui;
 	private boolean offline = false;
 
