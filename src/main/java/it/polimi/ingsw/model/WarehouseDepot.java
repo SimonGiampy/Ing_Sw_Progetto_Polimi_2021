@@ -356,24 +356,19 @@ public class WarehouseDepot {
 			}
 		}
 		
-		//then checks the additional depots
-		for (int leader = 0; leader < 2; leader++) { // iterates for the leader which may be enabled
-			if (isLeaderActivated(leader)) { //selected depot is enabled
-				for (int i = 0; i < price.size(); i++) { // iterates for all the resources left to be payed
-					
-					//first index of the resource in the additional depot
-					int elementFound = extraDepotResources.get(leader).indexOf(price.get(i));
-					if (elementFound >= 0) {
-						//searches through every occurrence of the object
-						for (int j = elementFound; j <= extraDepotResources.get(leader).lastIndexOf(price.get(i)); j++) {
-							//if the element is sored in the depot
+		for (int i = 0; i < price.size(); i++) { // iterates for all the resources left to be payed
+			for (int leader = 0; leader < 2; leader++) { // iterates for the leader which may be enabled
+				if (isLeaderActivated(leader)) { //selected depot is enabled
+					if (extraDepotResources.get(leader).contains(price.get(i))) {
+						for (int j = 0; j < extraDepotResources.size(); j++) {
 							if (extraDepotContents.get(leader).get(j)) {
-								//removes the element for the input list and the list of contents
-								extraDepotContents.get(leader).set(j, false);
 								price.remove(i);
-								break; // next element in the price list
+								i--;
+								extraDepotContents.get(leader).set(j, false);
+								break;
 							}
 						}
+						break;
 					}
 					
 				}
