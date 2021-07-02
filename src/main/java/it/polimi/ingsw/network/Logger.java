@@ -6,8 +6,8 @@ import it.polimi.ingsw.model.util.Unicode;
  * custom logger class for ease of debugging and enabling / disabling output
  */
 public class Logger {
-	//TODO: deactivate debug mode
-	private static final boolean DEBUG_ACTIVE = true; // activate or deactivate logging in the game
+	
+	private static final boolean DEBUG_ACTIVE = false; // activate or deactivate logging in the game
 	
 	private final String className; // name of the class sending the log message
 	

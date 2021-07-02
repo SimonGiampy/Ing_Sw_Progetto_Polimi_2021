@@ -159,64 +159,6 @@ public class ServerSideController {
 	 */
 	protected void startGame() {
 		gameState = GameState.GAME;
-		//TODO: stop cheating
-		ArrayList<Resources> cheat = new ArrayList<>();
-		cheat.add(Resources.SHIELD);
-		cheat.add(Resources.STONE);
-		cheat.add(Resources.COIN);
-		cheat.add(Resources.SERVANT);
-		cheat.add(Resources.SHIELD);
-		cheat.add(Resources.STONE);
-		cheat.add(Resources.COIN);
-		cheat.add(Resources.SERVANT);
-		cheat.add(Resources.SHIELD);
-		cheat.add(Resources.STONE);
-		cheat.add(Resources.COIN);
-		cheat.add(Resources.SERVANT);
-		cheat.add(Resources.SHIELD);
-		cheat.add(Resources.STONE);
-		cheat.add(Resources.COIN);
-		cheat.add(Resources.SERVANT);
-		cheat.add(Resources.SHIELD);
-		cheat.add(Resources.STONE);
-		cheat.add(Resources.COIN);
-		cheat.add(Resources.SERVANT);
-		cheat.add(Resources.SHIELD);
-		cheat.add(Resources.STONE);
-		cheat.add(Resources.COIN);
-		cheat.add(Resources.SERVANT);
-		cheat.add(Resources.SHIELD);
-		cheat.add(Resources.STONE);
-		cheat.add(Resources.COIN);
-		cheat.add(Resources.SERVANT);
-		cheat.add(Resources.SHIELD);
-		cheat.add(Resources.STONE);
-		cheat.add(Resources.COIN);
-		cheat.add(Resources.SERVANT);
-		cheat.add(Resources.SHIELD);
-		cheat.add(Resources.STONE);
-		cheat.add(Resources.COIN);
-		cheat.add(Resources.SERVANT);
-		cheat.add(Resources.SHIELD);
-		cheat.add(Resources.STONE);
-		cheat.add(Resources.COIN);
-		cheat.add(Resources.SERVANT);
-		cheat.add(Resources.SHIELD);
-		cheat.add(Resources.STONE);
-		cheat.add(Resources.COIN);
-		cheat.add(Resources.SERVANT);
-		cheat.add(Resources.SHIELD);
-		cheat.add(Resources.STONE);
-		cheat.add(Resources.COIN);
-		cheat.add(Resources.SERVANT);
-		cheat.add(Resources.SHIELD);
-		cheat.add(Resources.STONE);
-		cheat.add(Resources.COIN);
-		cheat.add(Resources.SERVANT);
-		
-		mechanics.getPlayer(0).getMyStrongbox().storeResources(cheat);
-		mechanics.getPlayer(1).getMyStrongbox().storeResources(cheat);
-		mechanics.getPlayer(2).getMyStrongbox().storeResources(cheat);
 		turnController.startTurn();
 	}
 
@@ -340,8 +282,7 @@ public class ServerSideController {
 	 */
 	protected void marketInteraction(MarketInteraction message){
 		int playerIndex = nicknameList.indexOf(message.getNickname());
-		VirtualView view = virtualViewMap.get(message.getNickname());
-
+		VirtualView view;
 		mechanics.getPlayer(playerIndex).interactWithMarket(message.getWhich(),message.getWhere());
 		ResourceDeck deck = mechanics.getPlayer(playerIndex).getPlayersResourceDeck();
 
@@ -352,11 +293,12 @@ public class ServerSideController {
 			}
 			view.showMarket(new ReducedMarket(mechanics.getMarket()));
 		}
-
+		
+		view = virtualViewMap.get(message.getNickname());
 		if(deck.isWhiteAbility1Activated() && deck.getWhiteMarblesTaken() > 0) {
 			if (deck.isWhiteAbility2Activated()) { // both white marbles abilities are activated
-				view.askWhiteMarbleChoice(deck.getFromWhiteMarble1(), deck.getFromWhiteMarble2(), deck.getWhiteMarblesInput1(),
-						deck.getWhiteMarblesInput2(), deck.getWhiteMarblesTaken());
+				view.askWhiteMarbleChoice(deck.getFromWhiteMarble1(), deck.getFromWhiteMarble2(),
+						deck.getWhiteMarblesInput1(), deck.getWhiteMarblesInput2(), deck.getWhiteMarblesTaken());
 			} else { // automatically converts the white marbles with a single leader activated
 				marketConvert(new WhiteMarbleReply(message.getNickname(), deck.getRightNumberOfActivations(), 0));
 			}
