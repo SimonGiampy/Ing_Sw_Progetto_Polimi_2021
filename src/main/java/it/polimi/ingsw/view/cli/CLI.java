@@ -403,7 +403,12 @@ public class CLI extends ViewObservable implements View {
 					" Retype the card number and choose a different slot.");
 		}
 
-		String regex = "[1-" + cardsAvailable.size() + "]";
+		String regex;
+		if (cardsAvailable.size() >= 10) {
+			regex = "([1-9]|[1][0-" + cardsAvailable.size() % 10 + "])";
+		}  else {
+			regex = "[1-" + cardsAvailable.size() + "]";
+		}
 		System.out.println("Available Development Cards: ");
 		for(int i = 0; i < cardsAvailable.size(); i++){
 			System.out.println("Card's number: " + (i + 1));

@@ -213,11 +213,11 @@ public class TurnController {
 			if(remainingTurn == 0)
 				endOfGame = true;
 		}
-		else if(endgameStarted && remainingTurn>0){
+		else if(endgameStarted && remainingTurn>1){
 			remainingTurn--;
 		}
 
-		else if(endgameStarted && remainingTurn==0)
+		else if(endgameStarted && remainingTurn==1)
 			endOfGame = true;
 	}
 
