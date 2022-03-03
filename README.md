@@ -1,14 +1,17 @@
-#### ing-sw-2021-gavardi-giampa-guerrini
-# Software Engineering Project 2021 - Politecnico di Milano
+# Progetto Ingegneria del Software 2021 - Politecnico di Milano
 
 ![logo](src/main/resources/logo.png)
 
-Software Engineering group project, academic year 2020 - 2021, Politecnico di Milano
+## Software Engineering group project, academic year 2020 - 2021, Politecnico di Milano
+
+Implementation of the Maestri del Rinascimento board game on PC, entirely written in Java, designed to be an online multi-player game (up to 4 players)
 
 __Members__ of the development group:
 * Alessandro Gavardi - [@AlessandroGavardi](https://github.com/AlessandroGavardi)
 * Simone Giampà - [@SimonGiampy](https://github.com/SimonGiampy)
 * Michele Guerrini - [@micheleguerrini](https://github.com/micheleguerrini)
+
+#### Repository code: ing-sw-2021-gavardi-giampa-guerrini
 
 #### UML Class Diagrams
 We created a set of different UML diagrams. The complete diagrams show every class in the repository, both with
